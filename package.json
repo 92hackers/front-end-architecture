@@ -1,0 +1,52 @@
+{
+  "name": "front-end-architecture",
+  "version": "0.0.1",
+  "description": "a front end architecture based on react.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "initArch": "./init.sh"
+  },
+  "keywords": [
+    "front",
+    "end",
+    "architecture",
+    "react"
+  ],
+  "author": "92Hackers",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "coffee-loader": "^0.7.2",
+    "coffee-script": "^1.10.0",
+    "config": "^1.21.0",
+    "del": "^2.2.1",
+    "expose-loader": "^0.7.1",
+    "file-loader": "^0.9.0",
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.7",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "postcss-loader": "^0.9.1",
+    "run-sequence": "^1.2.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.5.2",
+    "redux": "^3.5.2",
+    "redux-form": "^5.3.1",
+    "reqwest": "^2.0.5"
+  }
+}
