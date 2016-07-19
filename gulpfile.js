@@ -13,7 +13,7 @@ var env = process.env.NODE_ENV;
 
 gulp.task("clean", () => {
     console.log("haha");
-	del("./build");
+	del(["build"]);
 });
 
 gulp.task("webpack-build", () => {

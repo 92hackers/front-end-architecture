@@ -3,20 +3,24 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var config = require("config");
 var autoPrefixer = require("autoprefixer");
 
-var imageName = "images/[name].[hash:8].[ext]";
-var fontName = "fonts/[name].[hash:8].[ext]";
+//var imageName = "images/[name].[hash:8].[ext]";
+//var fontName = "fonts/[name].[hash:8].[ext]";
 
-module.exports = () => {
+var imageName = "images/[name].[ext]";
+var fontName = "fonts/[name].[ext]";
+
+module.exports = {
 	entry: {
-		main: "../app/main.js"
-	};
+		main: "../app/main"
+	}, 
 	output: {
 		path: "build/",
-		filename: "js/[name].[chunkhash:8].js"
-	};
+		//filename: "js/[name].[chunkhash:8].js"
+		filename: "js/[name].js"
+	}, 
 	resolve: {
 		extentions: ["", ".js", ".coffee", ".jsx"]
-	};
+	}, 
 	module: {
 		loaders: [
 			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
@@ -31,13 +35,13 @@ module.exports = () => {
 			{ test: /\.eot(\?\S*)?$/,  loader: "url",  query: {limit: 100,  name: fontName} },
 			{ test: /\.svg(\?\S*)?$/,  loader: "url",  query: {limit: 10000,  mimetype: "image/svg+xml",  name: fontName} },
 		]
-	};
+	},
 	plugins: [
-		new ExtractTextPlugin("css/[name].[chunkhash:8].css"),
-		new webpack.DefinePlugin("process.env": { NODE_ENV: JSON.stringify("production") }),
-		new webpack.optimize.UglifyJsPlugin(compress: {warnings: false}, sourceMap: false)
-	];
+		new ExtractTextPlugin("css/[name].css"),
+		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify("production") }}),
+		new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false,  sourceMap: false } })
+	],
 	postcss: () => {
-		autoPrefixer(browsers: ["last 2 versions", "> 1%"])
+		autoPrefixer({ browsers: ["last 2 versions", "> 1%"] })
 	}
 }

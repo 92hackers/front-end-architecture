@@ -1,17 +1,8 @@
-import react from 'react'
+import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
-class Test extends react.Component {
-  constructor() {
-    super(props);
-  }
+const Test = () => (
+	<RaisedButton label="default"></RaisedButton>
+)
 
-  render() {
-    return (
-      <div className="test">
-        <h1>nice to meet you.</h1>
-      </div>
-    )
-  }
-}
-
-module.exports = Test;
+export default Test;
