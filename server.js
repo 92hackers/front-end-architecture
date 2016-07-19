@@ -9,7 +9,10 @@ var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "5mb" }));
-app.use(express.static(__dirname + "build"));
+app.use("/js", express.static(__dirname + "/build/js"));
+app.use("/css", express.static(__dirname + "/public"));
+
+app.set("env", "development");
 
 app.get("/", (req, res) => {
 	return res.sendFile(__dirname + "/index.html");

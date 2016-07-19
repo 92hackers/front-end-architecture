@@ -2,6 +2,7 @@ var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var config = require("config");
 var autoPrefixer = require("autoprefixer");
+var path = require("path");
 
 //var imageName = "images/[name].[hash:8].[ext]";
 //var fontName = "fonts/[name].[hash:8].[ext]";
@@ -9,18 +10,20 @@ var autoPrefixer = require("autoprefixer");
 var imageName = "images/[name].[ext]";
 var fontName = "fonts/[name].[ext]";
 
+var mainJsx = path.join(__dirname, "..", "app/main");
+var mainStyle = path.join(__dirname, "..", "app/styles");
+
 module.exports = {
-	entry: {
-		main: "../app/main"
-	}, 
+	// entry: [mainJsx, mainStyle],
+	entry: mainJsx,
 	output: {
 		path: "build/",
 		//filename: "js/[name].[chunkhash:8].js"
 		filename: "js/[name].js"
-	}, 
+	},
 	resolve: {
-		extentions: ["", ".js", ".coffee", ".jsx"]
-	}, 
+		extensions: ["", ".js", ".coffee", ".jsx", ".less"]
+	},
 	module: {
 		loaders: [
 			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
@@ -38,8 +41,8 @@ module.exports = {
 	},
 	plugins: [
 		new ExtractTextPlugin("css/[name].css"),
-		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify("production") }}),
-		new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false,  sourceMap: false } })
+		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify("development") }})
+		//new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
 	],
 	postcss: () => {
 		autoPrefixer({ browsers: ["last 2 versions", "> 1%"] })

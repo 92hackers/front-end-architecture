@@ -1,8 +1,16 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const Test = () => (
-	<RaisedButton label="default"></RaisedButton>
-)
+class Test extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <RaisedButton label="default"></RaisedButton>
+    )
+  }
+}
 
 export default Test;
