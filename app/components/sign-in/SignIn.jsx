@@ -28,6 +28,7 @@ class SignIn extends React.Component {
           <br/>
           <br/>
           <FlatButton type="submit" label="登录" primary={true} style={style}></FlatButton>
+          <FlatButton onClick={this.wechatLogin} primary={true} style={style}>微信登录</FlatButton>
         </form>
       </section>
     )

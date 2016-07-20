@@ -13,6 +13,8 @@ import SignInUpHeader from './components/SignInUpHeader';
 import HomepageHeader from './components/parent-homepage/HomepageHeader';
 import Homepage from './components/parent-homepage/Homepage';
 import SignIn from './components/sign-in/SignIn';
+import TSignIn from './teacher-components/TSignIn';
+import TSignUp from './teacher-components/TSignUp';
 
 class App extends React.Component {
 
@@ -24,7 +26,7 @@ class App extends React.Component {
     return (
       <div className="weteach">
         <HomepageHeader></HomepageHeader>
-        <MuiThemeProvider><SignIn></SignIn></MuiThemeProvider>
+        <MuiThemeProvider><TSignUp></TSignUp></MuiThemeProvider>
         <SiteFooter></SiteFooter>
         <ul id="beian">
           <li> &copy;&nbsp;WeTeach</li>
