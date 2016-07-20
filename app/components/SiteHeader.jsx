@@ -21,10 +21,10 @@ class SiteHeader extends React.Component {
             <a href="javascript:;">免费试听课</a>
           </li>
           <li className="button-wrap">
-            <a href="javascript:;" className="sign-in button">登录</a>
+            <a href="/sign_in" className="sign-in button">登录</a>
           </li>
           <li className="button-wrap">
-            <a href="javascript:;" className="sign-up button">注册</a>
+            <a href="/sign_up" className="sign-up button">注册</a>
           </li>
         </ul>
       </header>

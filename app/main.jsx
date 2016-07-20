@@ -2,13 +2,20 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
-//import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 //import Test from './components/Test.jsx';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import Index from './components/index/Index';
+import SignUp from './components/sign-up/SignUp';
+import ChildInfo from './components/sign-up/ChildInfo';
+import SignInUpHeader from './components/SignInUpHeader';
+import HomepageHeader from './components/parent-homepage/HomepageHeader';
+import Homepage from './components/parent-homepage/Homepage';
+import SignIn from './components/sign-in/SignIn';
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
   }
@@ -16,8 +23,8 @@ class App extends React.Component {
   render () {
     return (
       <div className="weteach">
-        <SiteHeader></SiteHeader>
-        <Index></Index>
+        <HomepageHeader></HomepageHeader>
+        <MuiThemeProvider><SignIn></SignIn></MuiThemeProvider>
         <SiteFooter></SiteFooter>
         <ul id="beian">
           <li> &copy;&nbsp;WeTeach</li>
