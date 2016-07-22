@@ -15,8 +15,7 @@ class TSignIn extends React.Component {
 
   render () {
     var style = {
-      width: "100%",
-      textTransform: "initial"
+      width: "100%"
     };
 
     return (

@@ -15,6 +15,9 @@ import Homepage from './components/parent-homepage/Homepage';
 import SignIn from './components/sign-in/SignIn';
 import TSignIn from './teacher-components/TSignIn';
 import TSignUp from './teacher-components/TSignUp';
+import ActivateEmail from './teacher-components/ActivateEmail';
+import TInfo from './teacher-components/TInfo';
+import FacebookLogin from 'react-facebook-login';
 
 class App extends React.Component {
 
@@ -26,7 +29,14 @@ class App extends React.Component {
     return (
       <div className="weteach">
         <HomepageHeader></HomepageHeader>
-        <MuiThemeProvider><TSignUp></TSignUp></MuiThemeProvider>
+        <FacebookLogin
+        appId="267768116929978"
+        autoLoad={true}
+        fields="name,email,picture"
+        ></FacebookLogin>
+        <MuiThemeProvider>
+          <TInfo></TInfo>
+        </MuiThemeProvider>
         <SiteFooter></SiteFooter>
         <ul id="beian">
           <li> &copy;&nbsp;WeTeach</li>

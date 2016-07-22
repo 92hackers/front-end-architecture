@@ -8,6 +8,10 @@
     "init": "./init.sh",
     "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://git.coding.net/wtp/frontend-teachers.git"
+  },
   "keywords": [
     "front",
     "end",
@@ -49,6 +53,8 @@
     "normalize.css": "^4.2.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
+    "react-facebook-login": "^3.1.0",
+    "react-google-login": "^2.1.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
     "redux": "^3.5.2",

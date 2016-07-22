@@ -72,6 +72,17 @@
   width: 100%;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+
 a {
   text-decoration: none;
 }
@@ -212,4 +223,13 @@ form {
 }
 .sign-in form {
   padding-top: 50px;
+}
+.t-activate-email {
+  color: #666;
+  font-size: 20px;
+  text-align: center;
+  padding: 100px 0;
+}
+.t-activate-email p + p {
+  margin-top: 20px;
 }
