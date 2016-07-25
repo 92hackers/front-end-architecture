@@ -91,6 +91,19 @@ ul {
   list-style: none;
 }
 
+input {
+  font-size: 16px;
+  line-height: 24px;
+  width: 256px;
+  height: 48px;
+  display: inline-block;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
+
 body {
   font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft YaHei',Arial,sans-serif!important;
   font-size: 14px;
@@ -232,4 +245,35 @@ form {
 }
 .t-activate-email p + p {
   margin-top: 20px;
+}
+.typeahead {
+  position: relative;
+}
+.typeahead .typeahead-selector {
+  width: 100%;
+  padding: 20px 0;
+  border: 1px solid rgb(224, 224, 224);
+  border-top: 0;
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+}
+.typeahead-selector a {
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #333;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+}
+.typeahead-selector li {
+  padding: 3px 0;
+}
+.typeahead-selector li:hover {
+  background-color: #ccc;
+}
+.typeahead-selector a:hover {
+  text-decoration: underline;
 }

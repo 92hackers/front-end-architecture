@@ -46,6 +46,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "font-awesome": "^4.6.3",
@@ -57,6 +58,8 @@
     "react-google-login": "^2.1.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
+    "react-tap-event-plugin": "^1.0.0",
+    "react-typeahead": "^2.0.0-alpha.5",
     "redux": "^3.5.2",
     "redux-form": "^5.3.1",
     "reqwest": "^2.0.5"
