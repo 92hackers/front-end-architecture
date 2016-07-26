@@ -277,3 +277,6 @@ form {
 .typeahead-selector a:hover {
   text-decoration: underline;
 }
+#education-experience-caption {
+  margin: 20px 0;
+}

@@ -48,11 +48,13 @@
   "dependencies": {
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
+    "config": "^1.21.0",
     "express": "^4.14.0",
     "font-awesome": "^4.6.3",
     "material-ui": "^0.15.2",
     "normalize.css": "^4.2.0",
     "react": "^15.2.1",
+    "react-cropper": "^0.8.0",
     "react-dom": "^15.2.1",
     "react-facebook-login": "^3.1.0",
     "react-google-login": "^2.1.2",

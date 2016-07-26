@@ -17,6 +17,7 @@ import TSignUp from './teacher-components/TSignUp';
 import ActivateEmail from './teacher-components/ActivateEmail';
 import TInfo from './teacher-components/TInfo';
 import FacebookLogin from 'react-facebook-login';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -33,7 +34,9 @@ class App extends React.Component {
       <div className="weteach">
         <HomepageHeader></HomepageHeader>
         {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
-        <TInfo></TInfo>
+        <MuiThemeProvider>
+          <TInfo></TInfo>
+        </MuiThemeProvider>
         <SiteFooter></SiteFooter>
         <ul id="beian">
           <li> &copy;&nbsp;WeTeach</li>

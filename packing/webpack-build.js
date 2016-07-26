@@ -27,10 +27,11 @@ module.exports = {
 	module: {
 		loaders: [
 			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
+			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015"] }, exclude: /node_modules/ },
 			{ test: /\.coffee$/, loader: "coffee", exclude: /node_modules/ },
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss!less") },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss") },
-			{ test: /\.json/, loader: "json" },
+			{ test: /\.json$/, loader: "json", exclude: /node_modules/ },
 			{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
 			{ test: /\.woff(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff',  name: fontName} },
 			{ test: /\.woff2(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff2',  name: fontName} },

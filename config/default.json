@@ -1,0 +1,9 @@
+{
+  "env": "dev",
+  "version": "0.0.1",
+  "useCdn": false,
+  "cdn": "",
+  "devHost": "http://api.weteach.test",
+  "productionHost": "",
+  "apiVersion": "/v1/"
+}
