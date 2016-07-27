@@ -2,7 +2,6 @@
 
 import React from 'react';
 import ReactDom from 'react-dom';
-//import Test from './components/Test.jsx';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import Index from './components/index/Index';
@@ -16,6 +15,7 @@ import TSignIn from './teacher-components/TSignIn';
 import TSignUp from './teacher-components/TSignUp';
 import ActivateEmail from './teacher-components/ActivateEmail';
 import TInfo from './teacher-components/TInfo';
+import THomepage from './teacher-components/THomepage';
 import FacebookLogin from 'react-facebook-login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -35,7 +35,7 @@ class App extends React.Component {
         <HomepageHeader></HomepageHeader>
         {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
         <MuiThemeProvider>
-          <TInfo></TInfo>
+          <THomepage></THomepage>
         </MuiThemeProvider>
         <SiteFooter></SiteFooter>
         <ul id="beian">
