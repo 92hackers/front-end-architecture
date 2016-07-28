@@ -35,7 +35,7 @@ class App extends React.Component {
         <HomepageHeader></HomepageHeader>
         {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
         <MuiThemeProvider>
-          <THomepage></THomepage>
+          <TInfo></TInfo>
         </MuiThemeProvider>
         <SiteFooter></SiteFooter>
         <ul id="beian">

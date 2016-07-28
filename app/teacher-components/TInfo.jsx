@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import {Typeahead} from 'react-typeahead';
 import reqwest from 'reqwest';
+import AvatarUpload from '../utilities/AvatarUpload';
 // import config from 'config';
 // import apis from '../network/api';
 
@@ -27,7 +28,8 @@ class TInfo extends React.Component {
       cityInputDisabled: true,
       eduDialogOpen: false,
       eduList: 0,
-      eduListItems: []
+      eduListItems: [],
+      profilePictureSrc: ""
     };
   }
 
@@ -182,6 +184,29 @@ class TInfo extends React.Component {
     });
   }
 
+  profilePictureSelect (e) {
+    e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      console.log(e.dataTransfer);
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      console.log(e.target);
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({
+         profilePictureSrc: reader.result
+      }, () => {
+        this.refs.avatarUpload.handleOpen();        //  open the dialog.
+      });
+    };
+    reader.readAsDataURL(files[0]);
+
+  }
+
   render () {
     const style = {
       width: "100%"
@@ -240,6 +265,17 @@ class TInfo extends React.Component {
       display: this.state.eduList ? "table" : "none"
     };
 
+    const uploadPictureStyle = {
+      cursor: 'pointer',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      left: 0,
+      width: '100%',
+      opacity: 0
+    };
+
     return (
       <div className="t-info">
         <h1 className="t-info-caption text-center">Please complete your personal information</h1>
@@ -251,6 +287,15 @@ class TInfo extends React.Component {
             <RadioButton value="male" label="Male" style={styles.radioButton}/>
             <RadioButton value="female" label="Female" style={styles.radioButton}/>
           </RadioButtonGroup>
+          <div id="container">
+            <a id="pickfiles" href="javascript:;">[Select files]</a>
+            <a id="uploadfiles" href="javascript:;" onClick={this.upload.bind(this)}>[Upload files]</a>
+          </div>
+          <br/>
+          <FlatButton id="upload-profile-picture" label="Upload profile picture" labelPosition="before" style={{width: "100%"}}>
+              <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
+          </FlatButton>
+          <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc}></AvatarUpload>
           <br/>
           <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadCityList.bind(this)} customClasses={country}></Typeahead>
           <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={city}></Typeahead>
@@ -316,8 +361,79 @@ class TInfo extends React.Component {
     )
   }
 
+  upload (e) {
+    this.uploader.start();
+    console.log("started.");
+  }
+
   componentDidMount () {
     var self = this;
+
+    reqwest({
+      url: "/upload-to-qiniu",
+      method: "get",
+      type: "json",
+      headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
+    })
+    .then((resp) => {
+      var token = resp.uptoken;
+      self.uploader = Qiniu.uploader({
+        runtimes: 'html5,flash,html4',
+        browse_button : 'pickfiles', // you can pass in id...
+        container: "container",
+        uptoken: token,
+        unique_names: true,
+        domain: 'oawkdrros.bkt.clouddn.com',
+        max_file_size: '100mb',
+        max_retries: 3,
+        chunk_size: '4mb',
+        auto_start: false,
+        init: {
+          'FilesAdded': function(up, files) {
+            plupload.each(files, function(file) {
+              console.log("file added.");
+            });
+          },
+          'BeforeUpload': function(up, file) {
+            // 每个文件上传前，处理相关的事情
+          },
+          'UploadProgress': function(up, file) {
+            // 每个文件上传时，处理相关的事情
+          },
+          'FileUploaded': function(up, file, info) {
+            // 每个文件上传成功后，处理相关的事情
+            // 其中info是文件上传成功后，服务端返回的json，形式如：
+            // {
+            //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+            //    "key": "gogopher.jpg"
+            //  }
+            // 查看简单反馈
+            // var domain = up.getOption('domain');
+            // var res = parseJSON(info);
+            // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
+          },
+          'Error': function(up, err, errTip) {
+            //上传出错时，处理相关的事情
+          },
+          'UploadComplete': function() {
+            //队列文件处理完毕后，处理相关的事情
+          },
+          'Key': function(up, file) {
+            // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+            // 该配置必须要在unique_names: false，save_key: false时才生效
+
+            var key = "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-" + "avatar.png";
+            // do something with key here
+            return key
+          }
+        }
+      });
+      self.uploader.init();
+      console.log(self.uploader);
+    })
+    .fail((err) => {
+      console.log("upload error.");
+    })
 
     var countryRequest =  reqwest({
       url: "http://api.weteach.test/v1/loc/country",
