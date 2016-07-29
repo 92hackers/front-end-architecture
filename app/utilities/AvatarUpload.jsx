@@ -29,12 +29,29 @@ class AvatarUpload extends React.Component {
   }
 
   uploadToServer (e) {
+    var self = this;
     e.preventDefault();
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
       console.log("error crop.");
       return;
     } else {
       let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL();
+
+      reqwest({
+        url: "/upload-to-qiniu",
+        method: "post",
+        type: "application/x-www-form-urlencoded",
+        data: { img: cropResult }
+      })
+      .then((resp) => {
+        var result = JSON.parse(resp.response);
+        console.log(result.data);
+        console.log(self.props);
+        self.props.setAvatarUrl(result.data);       // pass url to parent component.
+      })
+      .fail((err) => {
+        console.log(err);
+      })
     }
     this.handleClose();
   }

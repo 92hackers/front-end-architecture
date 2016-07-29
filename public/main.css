@@ -281,10 +281,19 @@ form {
   margin-top: 20px;
   color: rgba(0, 0, 0, 0.298039);
 }
-#t-edu-form-wrap {
+.t-edu-form-wrap {
   width: 256px;
   margin: 0 auto;
 }
 #add-education {
   margin-top: 20px !important;
+}
+.t-avatar img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+.t-info-caption {
+  margin-top: 100px;
+  margin-bottom: 100px;
 }

@@ -25,8 +25,14 @@
 		<link rel="stylesheet" href="/css/cropper.css">
 		<script type="text/javascript" src="/css/plupload.full.min.js"></script>
 		<script type="text/javascript" src="/css/qiniu.min.js"></script>
+		<script>
+			// function checkLeave(){
+			// 	event.returnValue="确定离开当前页面吗？";
+			// 	// 在编辑个人资料的时候，当他离开页面的时候，提示他内容还没有保存，是否需要保存之后再退出。
+			// }
+		</script>
 	</head>
-	<body>
+	<body onbeforeunload="checkLeave()">
 		<div id="app"></div>
 		<script type="text/javascript" src="/js/main.js"></script>
 	</body>

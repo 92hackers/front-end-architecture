@@ -13,6 +13,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {Typeahead} from 'react-typeahead';
 import reqwest from 'reqwest';
 import AvatarUpload from '../utilities/AvatarUpload';
+import TAvatar from './TAvatar';
 // import config from 'config';
 // import apis from '../network/api';
 
@@ -29,7 +30,11 @@ class TInfo extends React.Component {
       eduDialogOpen: false,
       eduList: 0,
       eduListItems: [],
-      profilePictureSrc: ""
+      profilePictureSrc: "",
+      avatarUrl: "",
+      eduExpSelected: "",
+      eduExpSelectedIndex: "",
+      eduExpSelectedDialogOpen: false
     };
   }
 
@@ -48,6 +53,7 @@ class TInfo extends React.Component {
 
     var nationality = document.getElementsByClassName("nationality")[0].value;
     var gender = document.querySelector('input[name="gender"]:checked').value;
+    var avatar = this.state.avatarUrl;
     var country = document.getElementsByClassName("country")[0].value;
     var city = document.getElementsByClassName("city")[0].value;
     var teachExperience = document.getElementById("teach-experience").innerText.trim();
@@ -87,9 +93,11 @@ class TInfo extends React.Component {
 
     var data = {
       gender: gender === "male" ? 1 : 0,
+      avatar: avatar,
       nationality: countryCode,
       "residence_n": country,
       "residence_c": city,
+      eduexp: eduExperienceList,
       "experience": experience,
       "tel_code": nationCode,
       "tel_num": phoneNum,
@@ -117,27 +125,39 @@ class TInfo extends React.Component {
   }
 
   addEducation (e) {
+    e.preventDefault();
     var temp = this.state.eduListItems;
+    var tempEduList = this.state.eduList;
     var getValue = (ele) => {
       return document.getElementById(ele).value;
     }
-    var startDate = getValue("t-edu-start-date");
-    var endDate = getValue("t-edu-end-date");
+    var startYear = getValue("t-edu-start-year");
+    var endYear = getValue("t-edu-end-year");
     var school = getValue("t-edu-school");
     var major = getValue("t-edu-major");
     var degree = getValue("t-edu-degree");
-    temp.push({
-      startDate: startDate,
-      endDate: endDate,
-      school: school,
-      major: major,
-      degree: degree
-    });
-    this.setState({
-      eduListItems: temp,
-      eduDialogOpen: false,
-      eduList: 1
-    });
+
+
+    if (!!startYear && !!endYear && !!school && !!major && !!degree) {
+      let data = {
+        timefrom: startYear,
+        timeto: endYear,
+        institution: school,
+        major: major,
+        degree: degree
+      };
+
+      temp.push(data);
+      tempEduList++;
+      this.setState({
+        eduListItems: temp,
+        eduDialogOpen: false,
+        eduList: tempEduList
+      });
+    } else {
+      //  notification.
+      alert("please complete all fields.");
+    }
   }
 
   loadCityList (e) {
@@ -178,6 +198,18 @@ class TInfo extends React.Component {
     });
   }
 
+  handleUpdateDiaOpen (e) {
+    this.setState({
+      eduExpSelectedDialogOpen: true
+    });
+  }
+
+  handleUpdateDiaClose (e) {
+    this.setState({
+      eduExpSelectedDialogOpen: false
+    });
+  }
+
   handleDialogClose (e) {
     this.setState({
       eduDialogOpen: false
@@ -204,6 +236,79 @@ class TInfo extends React.Component {
       });
     };
     reader.readAsDataURL(files[0]);
+
+  }
+
+  setAvatarUrl (url) {
+    this.setState({
+      avatarUrl: url
+    });
+  }
+
+  showFullDetail (index) {
+    if (!!index && !!this.state.eduListItems) {
+      let expData = this.state.eduListItems[index[0]];
+
+      this.setState({
+        eduExpSelectedIndex: index[0],
+        eduExpSelected: expData
+      }, () => {
+        this.handleUpdateDiaOpen();
+      });
+
+    }
+  }
+
+  handleEduExpDel (e) {
+    e.preventDefault();
+
+    var tempEduList = this.state.eduList;
+
+    tempEduList--;
+
+    this.handleUpdateDiaClose();
+
+    var tmp = this.state.eduListItems;
+
+    tmp.splice(this.state.eduExpSelectedIndex, 1);
+
+    this.setState({
+      eduListItems: tmp,
+      eduList: tempEduList
+    });
+
+  }
+
+  handleEduUpdate (e) {
+    e.preventDefault();
+    this.handleUpdateDiaClose();
+
+    var tmp = this.state.eduListItems;
+    var updateIndex = this.state.eduExpSelectedIndex;
+
+    var getValue = (ele) => {
+      return document.getElementById(ele).value;
+    };
+
+    var startYear = getValue("t-edu-start-year-m");
+    var endYear = getValue("t-edu-end-year-m");
+    var school = getValue("t-edu-school-m");
+    var major = getValue("t-edu-major-m");
+    var degree = getValue("t-edu-degree-m");
+
+    var data = {
+        timefrom: startYear,
+        timeto: endYear,
+        institution: school,
+        major: major,
+        degree: degree
+    };
+
+    tmp[updateIndex] = data;
+
+    this.setState({
+        eduListItems: tmp
+    });
 
   }
 
@@ -249,9 +354,29 @@ class TInfo extends React.Component {
       />,
       <FlatButton
         id="submitEdu"
-        label="Submit"
+        label="Add"
         primary={true}
         onTouchTap={this.addEducation.bind(this)}
+      />
+    ];
+
+    const updateActions = [
+      <FlatButton
+        label="Delete"
+        default={true}
+        onTouchTap={this.handleEduExpDel.bind(this)}
+        style={{ float: "left" }}
+      />,
+      <FlatButton
+        label="Cancel"
+        default={true}
+        onTouchTap={this.handleUpdateDiaClose.bind(this)}
+      />,
+      <FlatButton
+        id="submitEdu"
+        label="Update"
+        primary={true}
+        onTouchTap={this.handleEduUpdate.bind(this)}
       />
     ];
 
@@ -287,15 +412,13 @@ class TInfo extends React.Component {
             <RadioButton value="male" label="Male" style={styles.radioButton}/>
             <RadioButton value="female" label="Female" style={styles.radioButton}/>
           </RadioButtonGroup>
-          <div id="container">
-            <a id="pickfiles" href="javascript:;">[Select files]</a>
-            <a id="uploadfiles" href="javascript:;" onClick={this.upload.bind(this)}>[Upload files]</a>
-          </div>
+          <br/>
+          <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
           <br/>
           <FlatButton id="upload-profile-picture" label="Upload profile picture" labelPosition="before" style={{width: "100%"}}>
               <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
           </FlatButton>
-          <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc}></AvatarUpload>
+          <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           <br/>
           <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadCityList.bind(this)} customClasses={country}></Typeahead>
           <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={city}></Typeahead>
@@ -309,20 +432,20 @@ class TInfo extends React.Component {
           <TextField id="nation-code" floatingLabelText="code" style={phoneStyle.code}></TextField><TextField id="phone-num" floatingLabelText="Phone number" style={phoneStyle.phone}></TextField>
           <br/>
           <p id="education-experience-caption">Education experience</p>
-          <Table style={eduTableStyle}>
+          <Table style={eduTableStyle} onRowSelection={this.showFullDetail.bind(this)}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
                 <TableHeaderColumn>Degree</TableHeaderColumn>
                 <TableHeaderColumn>School</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody displayRowCheckbox={false}>
+            <TableBody displayRowCheckbox={false} showRowHover={true}>
                 {
                   this.state.eduListItems.map((item, index) => {
                     return (
-                      <TableRow key={index}>
+                      <TableRow key={index} data-index={index} hoverable={true} style={{cursor: "pointer"}}>
                         <TableRowColumn>{item.degree}</TableRowColumn>
-                        <TableRowColumn>{item.school}</TableRowColumn>
+                        <TableRowColumn>{item.institution}</TableRowColumn>
                       </TableRow>
                     )
                   })
@@ -330,15 +453,30 @@ class TInfo extends React.Component {
             </TableBody>
           </Table>
           <FlatButton id="add-education" type="button" label="Add" style={style} onTouchTap={this.handleDialogOpen.bind(this)}></FlatButton>
-          <Dialog title="Add your education experience." actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
-            <div id="t-edu-form-wrap">
-              <DatePicker id="t-edu-start-date" hintText="Start date" autoOk={true}></DatePicker>
-              <DatePicker id="t-edu-end-date" hintText="End date" autoOk={true}></DatePicker>
+          <Dialog title="Add your education experience" actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
+            <div className="t-edu-form-wrap">
+              <TextField id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
+              <br/>
+              <TextField id="t-edu-end-year" floatingLabelText="End Year"></TextField>
+              <br/>
               <TextField id="t-edu-school" type="text" floatingLabelText="School"></TextField>
               <br/>
               <TextField id="t-edu-major" type="text" floatingLabelText="Major"></TextField>
               <br/>
               <TextField id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
+            </div>
+          </Dialog>
+          <Dialog title="Modify your education experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
+            <div className="t-edu-form-wrap">
+              <TextField id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
+              <br/>
+              <TextField id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
+              <br/>
+              <TextField id="t-edu-school-m" defaultValue={this.state.eduExpSelected.institution} type="text" floatingLabelText="School"></TextField>
+              <br/>
+              <TextField id="t-edu-major-m" defaultValue={this.state.eduExpSelected.major} type="text" floatingLabelText="Major"></TextField>
+              <br/>
+              <TextField id="t-edu-degree-m" defaultValue={this.state.eduExpSelected.degree} type="text" floatingLabelText="Degree"></TextField>
             </div>
           </Dialog>
           <br/>
@@ -368,72 +506,6 @@ class TInfo extends React.Component {
 
   componentDidMount () {
     var self = this;
-
-    reqwest({
-      url: "/upload-to-qiniu",
-      method: "get",
-      type: "json",
-      headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
-    })
-    .then((resp) => {
-      var token = resp.uptoken;
-      self.uploader = Qiniu.uploader({
-        runtimes: 'html5,flash,html4',
-        browse_button : 'pickfiles', // you can pass in id...
-        container: "container",
-        uptoken: token,
-        unique_names: true,
-        domain: 'oawkdrros.bkt.clouddn.com',
-        max_file_size: '100mb',
-        max_retries: 3,
-        chunk_size: '4mb',
-        auto_start: false,
-        init: {
-          'FilesAdded': function(up, files) {
-            plupload.each(files, function(file) {
-              console.log("file added.");
-            });
-          },
-          'BeforeUpload': function(up, file) {
-            // 每个文件上传前，处理相关的事情
-          },
-          'UploadProgress': function(up, file) {
-            // 每个文件上传时，处理相关的事情
-          },
-          'FileUploaded': function(up, file, info) {
-            // 每个文件上传成功后，处理相关的事情
-            // 其中info是文件上传成功后，服务端返回的json，形式如：
-            // {
-            //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
-            //    "key": "gogopher.jpg"
-            //  }
-            // 查看简单反馈
-            // var domain = up.getOption('domain');
-            // var res = parseJSON(info);
-            // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
-          },
-          'Error': function(up, err, errTip) {
-            //上传出错时，处理相关的事情
-          },
-          'UploadComplete': function() {
-            //队列文件处理完毕后，处理相关的事情
-          },
-          'Key': function(up, file) {
-            // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-            // 该配置必须要在unique_names: false，save_key: false时才生效
-
-            var key = "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-" + "avatar.png";
-            // do something with key here
-            return key
-          }
-        }
-      });
-      self.uploader.init();
-      console.log(self.uploader);
-    })
-    .fail((err) => {
-      console.log("upload error.");
-    })
 
     var countryRequest =  reqwest({
       url: "http://api.weteach.test/v1/loc/country",

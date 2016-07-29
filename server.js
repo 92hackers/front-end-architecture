@@ -6,14 +6,15 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var qiniu = require("qiniu");
 var app = express();
+var Async = require("async");
 
 qiniu.conf.ACCESS_KEY = 'VzTkJ8dE6yMTDgXqZkdnnXBjtU8eXS8DN3kQZl0w';
 qiniu.conf.SECRET_KEY = 'XcoEaRHUPW0XMhXpF73xtPRh9BRL1y3aeg94OD9u';
 
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ limit: "5mb" }));
+app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
+app.use(bodyParser.json({ limit: "1000mb" }));
 app.use("/js", express.static(__dirname + "/build/js"));
 app.use("/css", express.static(__dirname + "/public"));
 
@@ -38,15 +39,38 @@ app.use("/upload-to-qiniu", (req, res) => {
 	var bucket = 'com-weteach-avatar';
 	// var key = req.headers.authorization + "-avatar.png";
 
+	// var wrappedQiniuIo = Async.wrapSync(qiniu.io, ["put"]);
+	// console.log(wrappedQiniuIo());
+
 	function uptoken(bucket) {
 		var putPolicy = new qiniu.rs.PutPolicy(bucket);
 		return putPolicy.token();
 	}
 	var token = uptoken(bucket);
 
-	res.json({
-		"uptoken": token
-	});
+	function uploadImgBuf (avatarBuf, callback) {
+		var extra = new qiniu.io.PutExtra();
+		extra.mimeType = "image/png";
+		return qiniu.io.put(token, "", avatarBuf, extra, (err, ret) => {
+			if (!err) {
+				console.log(ret.key);
+				var url = qiniu.rs.makeBaseUrl("http://oawkdrros.bkt.clouddn.com", ret.key);
+				res.json({
+					err: 0,
+					data: url
+				});
+			} else {
+				console.log(err);
+			}
+		});
+		// return wrappedQiniuIo.put(token, "", avatarbuf, extra);
+	}
+
+	var avatarbuf = req.body.img;
+
+	var buf = new Buffer(avatarbuf.replace(/^data:image\/\w+;base64,/, ""), "base64");
+
+	uploadImgBuf(buf);
 });
 
 app.get("/child_info", (req, res) => {
