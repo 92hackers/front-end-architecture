@@ -16,8 +16,9 @@ qiniu.conf.SECRET_KEY = 'XcoEaRHUPW0XMhXpF73xtPRh9BRL1y3aeg94OD9u';
 app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 app.use(bodyParser.json({ limit: "1000mb" }));
 app.use("/js", express.static(__dirname + "/build/js"));
-app.use("/css", express.static(__dirname + "/public"));
-
+app.use("/", express.static(__dirname + "/build/css"));
+app.use("/imgs", express.static(__dirname + "/app/imgs"));
+app.use("/fonts", express.static(__dirname + "/build/fonts"));
 app.set("env", "development");
 
 app.get("/", (req, res) => {

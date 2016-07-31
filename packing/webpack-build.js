@@ -10,19 +10,22 @@ var path = require("path");
 var imageName = "images/[name].[ext]";
 var fontName = "fonts/[name].[ext]";
 
-var mainJsx = path.join(__dirname, "..", "app/main");
-var mainStyle = path.join(__dirname, "..", "app/styles");
+var rootDir = path.join(__dirname, "..");
+
+var main = path.join(rootDir, "app/entry");
+
+var outputPath = path.join(rootDir, "build/");
 
 module.exports = {
 	// entry: [mainJsx, mainStyle],
-	entry: mainJsx,
+    entry: main,
 	output: {
-		path: "build/",
+        path: outputPath,
 		//filename: "js/[name].[chunkhash:8].js"
 		filename: "js/[name].js"
 	},
 	resolve: {
-		extensions: ["", ".js", ".coffee", ".jsx", ".less"]
+		extensions: ["", ".js", ".coffee", ".jsx", ".less", "css"]
 	},
 	module: {
 		loaders: [
@@ -32,7 +35,15 @@ module.exports = {
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss!less") },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss") },
 			{ test: /\.json$/, loader: "json", exclude: /node_modules/ },
-			{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
+			//{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [
+                    'file?hash=sha512&digest=hex&name=imageName',
+                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+
+                ]
+            },
 			{ test: /\.woff(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff',  name: fontName} },
 			{ test: /\.woff2(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff2',  name: fontName} },
 			{ test: /\.ttf(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: "application/octet-stream",  name: fontName} },
