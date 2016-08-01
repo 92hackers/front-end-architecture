@@ -1,4 +1,4 @@
-
+//import config from 'config';
 import React from 'react';
 import ReactDom from 'react-dom';
 import SiteHeader from './components/SiteHeader';

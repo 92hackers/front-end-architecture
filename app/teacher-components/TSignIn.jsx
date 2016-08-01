@@ -1,15 +1,23 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 import reqwest from 'reqwest';
 
 class TSignIn extends React.Component {
 
   constructor (props) {
     super (props);
+    this.state = {
+      open: false,
+      notification: ""
+    };
   }
 
   handleSubmit(e) {
+
+    var self = this;
+    var notification = "";
 
     let event = e || e.event;
     if (event.preventDefault) {
@@ -21,6 +29,25 @@ class TSignIn extends React.Component {
     var email = document.getElementById("t-email").value;
     var password = document.getElementById("t-password").value;
 
+    if (!email.length) {
+      notification = "please input your email address";
+    } else if (!password.length) {
+      notification = "please input your password";
+    } else if (password.length < 6) {
+      notification = "password should be more than 6 characters";
+    } else if (password.length > 20) {
+      notification = "password should be less than 20 characters";
+    }
+
+    if (!!notification.length) {
+      self.setState({
+        notification: notification
+      }, () => {
+        self.handleTouchTap();
+      });
+      return;
+    }
+
     var signinRequest = reqwest({
       url: "http://api.weteach.test/v1/user/login",
       method: "post",
@@ -31,13 +58,37 @@ class TSignIn extends React.Component {
       }
     })
     .then((resp) => {
-      console.log(resp);
+      if (resp.success) {
+        console.log(resp);
+      } else {
+        self.setState({
+          notification: "email address or password error"
+        }, () => {
+          self.handleTouchTap();
+        });
+      }
     })
     .fail((err) => {
-      console.log("error");
+      self.setState({
+        notification: "something wrong, please try again later."
+      }, () => {
+        self.handleTouchTap();
+      });
     });
 
   }
+
+  handleTouchTap () {
+    this.setState({
+      open: true
+    });
+  };
+
+  handleRequestClose () {
+    this.setState({
+      open: false
+    });
+  };
 
 
   render () {
@@ -54,11 +105,17 @@ class TSignIn extends React.Component {
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit} style={style}></FlatButton>
+          <FlatButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></FlatButton>
           <FlatButton label="sign in with facebook" style={style}></FlatButton>
           <FlatButton label="sign in with google" style={style}></FlatButton>
           <FlatButton label="sign in with twitter" style={style}></FlatButton>
         </form>
+        <Snackbar
+          open={this.state.open}
+          message={this.state.notification}
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose.bind(this)}
+        />
       </div>
     )
   }

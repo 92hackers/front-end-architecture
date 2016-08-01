@@ -34,7 +34,7 @@ module.exports = {
 			{ test: /\.coffee$/, loader: "coffee", exclude: /node_modules/ },
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss!less") },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss") },
-			{ test: /\.json$/, loader: "json", exclude: /node_modules/ },
+			{ test: /\.json$/, loader: "json"},
 			//{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,

@@ -17,6 +17,7 @@ class TSignUp extends React.Component {
   handleSubmit (e) {
 
     var self = this;
+    var errorMessage = "";
 
     let event = e || e.event;
     if (event.preventDefault) {
@@ -31,9 +32,23 @@ class TSignUp extends React.Component {
     var passwordValue = document.getElementById("t-password").value;
     var rePasswordValue = document.getElementById("t-re-password").value;
 
-    if (passwordValue !== rePasswordValue) {
+    if (!firstName.length) {
+      errorMessage = "please input your firstname";
+    } else if (!lastName.length) {
+      errorMessage = "please input your lastname";
+    } else if (!emailValue.length) {
+      errorMessage = "please input your email address";
+    } else if (passwordValue !== rePasswordValue) {
+      errorMessage = "please input correct password!";
+    } else if (passwordValue.length < 6) {
+      errorMessage = "password should be more than 6 characters!";
+    } else if (passwordValue.length > 20) {
+      errorMessage = "password should be less than 20 characters!";
+    }
+
+    if (!!errorMessage.length) {
       this.setState({
-        notification: "please input correct password!"
+        notification: errorMessage
       }, () => {
         this.handleTouchTap();
       });
@@ -44,23 +59,38 @@ class TSignUp extends React.Component {
       firstname: firstName,
       lastname: lastName,
       email: emailValue,
-      password: passwordValue
+      password: passwordValue,
+      reflink: document.referrer
     };
 
     var signUpRequest = reqwest({
-      url: "http://api.weteach.test/v1/user/signup",
+      url: "http://api.weteach.test/v1/user/signup?code=3e48c40aa059fd26952d91349103c984",
       method: "POST",
       type: "json",
       data: data
     })
     .then((resp) => {
-      console.log(resp);
+      if (resp.success) {
+        console.log(resp);
+      } else {
+        if (!!resp.data.email) {
+          self.setState({
+            notification: "this email address has already been registered"
+          }, () => {
+            self.handleTouchTap();
+          });
+          return;
+        }
+      }
     })
     .fail((err) => {
-      console.log(err);
-      console.log("error");
+      self.setState({
+        notification: "sign up error! try again later."
+      }, () => {
+        self.handleTouchTap();
+      });
+      return;
     })
-
     console.log(data);
   }
 

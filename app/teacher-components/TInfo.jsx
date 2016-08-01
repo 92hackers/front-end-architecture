@@ -10,6 +10,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import Snackbar from 'material-ui/Snackbar';
 import {Typeahead} from 'react-typeahead';
 import reqwest from 'reqwest';
 import AvatarUpload from '../utilities/AvatarUpload';
@@ -26,6 +27,7 @@ class TInfo extends React.Component {
       cityList: [],
       countriesList: [],
       timezoneList: [],
+      defaultTimezone: "",
       cityInputDisabled: true,
       eduDialogOpen: false,
       eduList: 0,
@@ -33,6 +35,8 @@ class TInfo extends React.Component {
       profilePictureSrc: "",
       avatarUrl: "",
       eduExpSelected: "",
+      notification: "",
+      notificationOpen: false,
       eduExpSelectedIndex: "",
       eduExpSelectedDialogOpen: false
     };
@@ -44,6 +48,9 @@ class TInfo extends React.Component {
 
   handleSubmit (e) {
 
+    var self = this;
+    var notification = "";
+
     let event = e || e.event;
     if (event.preventDefault) {
       event.preventDefault();
@@ -51,11 +58,14 @@ class TInfo extends React.Component {
       event.cancelBubble();
     }
 
+    var checkedElem = document.querySelector('input[name="gender"]:checked');
+
     var nationality = document.getElementsByClassName("nationality")[0].value;
-    var gender = document.querySelector('input[name="gender"]:checked').value;
+    var gender = checkedElem ? checkedElem.value : "";
     var avatar = this.state.avatarUrl;
     var country = document.getElementsByClassName("country")[0].value;
     var city = document.getElementsByClassName("city")[0].value;
+    var timezone = document.getElementsByClassName("timezone")[0].value || this.state.defaultTimezone;
     var teachExperience = document.getElementById("teach-experience").innerText.trim();
     var nationCode = document.getElementById("nation-code").value;
     var phoneNum = document.getElementById("phone-num").value;
@@ -64,6 +74,41 @@ class TInfo extends React.Component {
     var teachStyle = document.getElementById("teach-style").value;
     var whyATeacher = document.getElementById("why-a-teacher").value;
     var addition = document.getElementById("addition").value;
+
+    if (!nationality.length) {
+        notification = "please input your nationality";
+    } else if (!gender.length) {
+        notification = "please select your gender";
+    } else if (!avatar.length) {
+        notification = "please upload your profile picture";
+    } else if (!country.length) {
+        notification = "please input to select your location country";
+    } else if (!city.length) {
+        notification = "please input to select your location city";
+    } else if (!teachExperience.length) {
+        notification = "please select your teaching experience";
+    } else if (!nationCode.length) {
+        notification = "please input your country code, so we can contact you.";
+    } else if (!phoneNum.length) {
+        notification = "please input your phone number, so we can contact you.";
+    } else if (!eduExperienceList.length) {
+        notification = "please input your education experience.";
+    } else if (!selfIntro.length) {
+        notification = "please input your self introduction.";
+    } else if (!teachStyle.length) {
+        notification = "please input your teaching style.";
+    } else if (!whyATeacher.length) {
+        notification = "please input your reason to be a teacher";
+    }
+
+    if (!!notification.length) {
+        this.setState({
+            notification: notification
+        }, () => {
+            this.handleNotificationOpen();
+        });
+        return ;
+    }
 
     var experience = 0;
 
@@ -117,9 +162,15 @@ class TInfo extends React.Component {
       headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
     })
     .then((resp) => {
-      console.log(resp);
+        if (resp.success) {
+            console.log(resp);
+        } else {
+            console.log("data post error.");
+            console.log(resp);
+        }
     })
     .fail((err) => {
+      console.log("data post error.");
       console.log(err);
     })
   }
@@ -155,8 +206,11 @@ class TInfo extends React.Component {
         eduList: tempEduList
       });
     } else {
-      //  notification.
-      alert("please complete all fields.");
+        this.setState({
+            notification: "please complete all fields."
+        }, () => {
+            this.handleNotificationOpen();
+        });
     }
   }
 
@@ -221,10 +275,8 @@ class TInfo extends React.Component {
 
     let files;
     if (e.dataTransfer) {
-      console.log(e.dataTransfer);
       files = e.dataTransfer.files;
     } else if (e.target) {
-      console.log(e.target);
       files = e.target.files;
     }
     const reader = new FileReader();
@@ -408,7 +460,7 @@ class TInfo extends React.Component {
           <Typeahead options={countriesList} maxVisible={5} placeholder="Your Nationality" customClasses={nationality}></Typeahead>
           <br/>
           <p id="gender-caption">Gender</p>
-          <RadioButtonGroup name="gender" defaultSelected="male" style={styles.RadioButtonGroup}>
+          <RadioButtonGroup name="gender" style={styles.RadioButtonGroup}>
             <RadioButton value="male" label="Male" style={styles.radioButton}/>
             <RadioButton value="female" label="Female" style={styles.radioButton}/>
           </RadioButtonGroup>
@@ -422,6 +474,7 @@ class TInfo extends React.Component {
           <br/>
           <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadCityList.bind(this)} customClasses={country}></Typeahead>
           <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={city}></Typeahead>
+          <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} customClasses={{input: "timezone"}}></Typeahead>
           <br/>
           <SelectField id="teach-experience" value={this.state.value} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching experience">
             <MenuItem value={1} primaryText="More than 15 years" />
@@ -495,13 +548,26 @@ class TInfo extends React.Component {
           <br/>
           <FlatButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></FlatButton>
         </form>
+        <Snackbar
+          open={this.state.notificationOpen}
+          message={this.state.notification}
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose.bind(this)}
+        />
       </div>
     )
   }
 
-  upload (e) {
-    this.uploader.start();
-    console.log("started.");
+  handleRequestClose () {
+      this.setState({
+          notificationOpen: false
+      });
+  }
+
+  handleNotificationOpen () {
+      this.setState({
+          notificationOpen: true
+      });
   }
 
   componentDidMount () {
@@ -526,8 +592,6 @@ class TInfo extends React.Component {
       console.log("数据请求错误");
     });
 
-    console.log(countryRequest);
-
     var timezoneRequest = reqwest({
       url: "http://api.weteach.test/v1/loc/timezone",
       method: "get",
@@ -536,9 +600,29 @@ class TInfo extends React.Component {
     })
     .then((resp) => {
       console.log(resp);
+
       if (resp.success) {
+        var defaultTimezone = "";
+        var timezoneListData = resp.data;
+
+        var timezoneList = timezoneListData.map((timezone) => {
+            return timezone["en_name"];
+        });
+
+        var localDate = new Date();
+        var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
+        var regExpTimezone = localTimezone.replace("+", "\\+");
+
+        for (let i = 0; i < timezoneList.length; i++) {
+            if (timezoneList[i].search(new RegExp(regExpTimezone)) !== -1) {
+                defaultTimezone = timezoneList[i];
+                break;
+            }
+        }
+
         self.setState({
-          timezoneList: resp.data
+            timezoneList: timezoneList,
+            defaultTimezone: defaultTimezone
         });
       }
     })
@@ -551,6 +635,7 @@ class TInfo extends React.Component {
   componentWillUnmount () {
     countryRequest.abort();
     timezoneRequest.abort();
+    cityListRequest.abort();
   }
 
   // cityList  data  request.
