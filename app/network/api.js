@@ -1,54 +1,77 @@
 // send request.
+//  created by Chen yuan.
+
+//var reqwest = require('reqwest');
 
 import reqwest from 'reqwest';
-import config from 'config';
 
-var host = config.env === "dev" ? config.devHost : config.productionHost;
-var apiVersion = config.apiVersion;
+var host = "";
+var apiVersion = "/v1/";
 
-var apis = {
-  TSignUp: {
-    api: "user/signup/",
-    method: "post"
-  },        // 教师注册
-  TSignIn: {
-    api: "user/login/",
-    method: "post"
-  },
-  TProfile: {
-    api: "user/profile/",
-    method: "get"
-  },
-  TCountryList: {
-    api: "loc/country/",
-    method: "get"
-  },
-  TCityList: {
-    api: "loc/city/",
-    queryParam: true,            // loc/city/country_code.
-    method: "get"
-  },
-  TTimezone: {
-    api: "loc/timezone/",
-    method: "get"
-  }
-};
+var host = "http://api.weteach.test";
+
+var apis = [
+    {
+        name: "TSignUp",
+        options: {
+            api: "user/signup",
+            method: "post"
+        }
+    },
+    {
+        name: "TSignIn",
+        options: {
+            api: "user/login",
+            method: "post"
+        }
+    },
+    {
+        name: "TProfile",
+        options: {
+            api: "user/profile",
+            method: "get"
+        }
+    },
+    {
+        name: "TCountryList",
+        options: {
+            api: "loc/country",
+            method: "get"
+        }
+    },
+    {
+        name: "TCityList",
+        options: {
+            api: "loc/city",
+            queryParam: true,            // loc/city/country_code.
+            method: "get"
+        }
+    },
+    {
+        name: "TTimezone",
+        options: {
+            api: "loc/timezone",
+            method: "get"
+        }
+    }
+];
 
 apis.forEach((item, index) => {
-  exports.item = (data, header, queryParam, successCall, failCall) => {
-    var queryParam = item.queryParam ? queryParam : "";
-    reqwest({
-      url: host + apiVersion + item.api + queryParam,
-      method: item.method,
-      type: "json",
-      headers: header,
-      data: data
-    })
-    .then((resp) => {
-      successCall(resp);
-    })
-    .fail((err) => {
-      failCall(err);
-    })
+  exports[item.name] = (data, header, queryParam, successCall, failCall) => {
+      var options = item.options;
+      var queryParam = options.queryParam ? "/" + queryParam : "";
+      return reqwest({
+          url: host + apiVersion + options.api + queryParam,
+          method: options.method,
+          type: "json",
+          headers: header,
+          data: data
+      })
+      .then((resp) => {
+          successCall(resp);
+      })
+      .fail((err) => {
+          failCall(err);
+      })
   };
 });

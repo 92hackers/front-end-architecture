@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
-import reqwest from 'reqwest';
+import apis from '../network/api';
 
 class TSignIn extends React.Component {
 
@@ -48,16 +48,13 @@ class TSignIn extends React.Component {
       return;
     }
 
-    var signinRequest = reqwest({
-      url: "http://api.weteach.test/v1/user/login",
-      method: "post",
-      type: "json",
-      data: {
-        email: email,
-        password: password
-      }
-    })
-    .then((resp) => {
+    var signinRequest = apis.TSignIn({
+      email: email,
+      password: password
+    },
+    {},
+    "",
+    (resp) => {
       if (resp.success) {
         console.log(resp);
       } else {
@@ -67,15 +64,35 @@ class TSignIn extends React.Component {
           self.handleTouchTap();
         });
       }
-    })
-    .fail((err) => {
+    },
+    (err) => {
       self.setState({
         notification: "something wrong, please try again later."
       }, () => {
         self.handleTouchTap();
       });
-    });
+    }
+    );
 
+    /*
+     var signinRequest = reqwest({
+     url: "http://api.weteach.test/v1/user/login",
+     method: "post",
+     type: "json",
+     data: {
+     email: email,
+     password: password
+     }
+     })
+     .then((resp) => {
+     if (resp.success) {
+     console.log(resp);
+     } else {
+     }
+     })
+     .fail((err) => {
+     });
+     */
   }
 
   handleTouchTap () {

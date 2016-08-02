@@ -1,4 +1,3 @@
-//import config from 'config';
 import React from 'react';
 import ReactDom from 'react-dom';
 import SiteHeader from './components/SiteHeader';
@@ -24,26 +23,26 @@ injectTapEventPlugin();
 
 class App extends React.Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
     }
 
-  render () {
-    return (
-      <div className="weteach">
-        <HomepageHeader></HomepageHeader>
-        {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
-        <MuiThemeProvider>
-          <TInfo></TInfo>
-        </MuiThemeProvider>
-        <SiteFooter></SiteFooter>
-        <ul id="beian">
-          <li> &copy;&nbsp;WeTeach</li>
-          <li>沪ICP备 1111111</li>
-        </ul>
-      </div>
-    )
-  }
+    render () {
+        return (
+            <div className="weteach">
+                <HomepageHeader></HomepageHeader>
+                {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
+                <MuiThemeProvider>
+                    <TSignIn></TSignIn>
+                </MuiThemeProvider>
+                <SiteFooter></SiteFooter>
+                <ul id="beian">
+                    <li> &copy;&nbsp;WeTeach</li>
+                    <li>沪ICP备 1111111</li>
+                </ul>
+            </div>
+        )
+    }
 }
 
 ReactDom.render(<App />, document.getElementById("app"));

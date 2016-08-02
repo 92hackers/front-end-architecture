@@ -12,11 +12,9 @@ import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Snackbar from 'material-ui/Snackbar';
 import {Typeahead} from 'react-typeahead';
-import reqwest from 'reqwest';
 import AvatarUpload from '../utilities/AvatarUpload';
 import TAvatar from './TAvatar';
-// import config from 'config';
-// import apis from '../network/api';
+import apis from '../network/api';
 
 class TInfo extends React.Component {
 
@@ -27,6 +25,7 @@ class TInfo extends React.Component {
       cityList: [],
       countriesList: [],
       timezoneList: [],
+      rawTimezoneData: [],
       defaultTimezone: "",
       cityInputDisabled: true,
       eduDialogOpen: false,
@@ -92,13 +91,23 @@ class TInfo extends React.Component {
     } else if (!phoneNum.length) {
         notification = "please input your phone number, so we can contact you.";
     } else if (!eduExperienceList.length) {
-        notification = "please input your education experience.";
+        notification = "please add at least one education experience.";
     } else if (!selfIntro.length) {
         notification = "please input your self introduction.";
     } else if (!teachStyle.length) {
         notification = "please input your teaching style.";
     } else if (!whyATeacher.length) {
         notification = "please input your reason to be a teacher";
+    }
+
+    var timezoneData = this.state.rawTimezoneData;
+    var timezoneId = "";
+
+    for (let i = 0; i < timezoneData.length; i++) {
+        if (timezoneData[i]["en_name"] === timezone) {
+            timezoneId = timezoneData[i].id;
+            break;
+        }
     }
 
     if (!!notification.length) {
@@ -127,6 +136,7 @@ class TInfo extends React.Component {
     }
 
     var countryCode = "";
+    var locationCountryId = "";
     var countryList = this.state.countriesList;
 
     for (let i = 0; i < countryList.length; i++) {
@@ -136,12 +146,30 @@ class TInfo extends React.Component {
       }
     }
 
+    for (let i = 0; i < countryList.length; i++) {
+        if (countryList[i].cname === country) {
+            locationCountryId = countryList[i].id;
+            break;
+        }
+    }
+
+    var cityId = "";
+    var cityList = this.state.cityList;
+
+    for (let i = 0; i < cityList.length; i++) {
+        if (cityList[i]["en_name"] === city) {
+            cityId = cityList[i].id
+            break;
+        }
+    }
+
     var data = {
       gender: gender === "male" ? 1 : 0,
       avatar: avatar,
       nationality: countryCode,
-      "residence_n": country,
-      "residence_c": city,
+      "residence_n": locationCountryId,
+      "residence_c": cityId,               //  city id.
+      "timezone": timezoneId,            //  timezone id.
       eduexp: eduExperienceList,
       "experience": experience,
       "tel_code": nationCode,
@@ -154,25 +182,41 @@ class TInfo extends React.Component {
 
     console.log(data);
 
-    var postInfoRequest = reqwest({
-      url: "http://api.weteach.test/v1/user/profile",
-      method: "post",
-      data: data,
-      crossOrigin: true,
-      headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
-    })
-    .then((resp) => {
-        if (resp.success) {
-            console.log(resp);
-        } else {
-            console.log("data post error.");
-            console.log(resp);
+    var postInfoRequest = apis.TProfile(data,
+        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        "",
+        (resp) => {
+            if (resp.success) {
+                console.log(resp);
+            } else {
+                alert("data post error, try again later.");
+            }
+        },
+        (err) => {
+            alert("network error, try agarin later.");
         }
-    })
-    .fail((err) => {
-      console.log("data post error.");
-      console.log(err);
-    })
+    );
+
+    /*
+     var postInfoRequest = reqwest({
+     url: "http://api.weteach.test/v1/user/profile",
+     method: "post",
+     data: data,
+     crossOrigin: true,
+     })
+     .then((resp) => {
+     if (resp.success) {
+     console.log(resp);
+     } else {
+     console.log("data post error.");
+     console.log(resp);
+     }
+     })
+     .fail((err) => {
+     console.log("data post error.");
+     console.log(err);
+     })
+     */
   }
 
   addEducation (e) {
@@ -225,25 +269,42 @@ class TInfo extends React.Component {
         break;
       }
     }
-    console.log(countryCode);
-    var cityListRequest = reqwest({
-      url: "http://api.weteach.test/v1/loc/city/" + countryCode,
-      method: "get",
-      crossOrigin: true,
-      headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
-    })
-    .then((resp) => {
-      if (resp.success) {
-        console.log(resp.data);
-        self.setState({
-          cityList: resp.data,
-          cityInputDisabled: false
-        });
-      }
-    })
-    .fail((err) => {
-      console.log("data request error.");
-    })
+    var cityListRequest = apis.TCityList("",
+        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        countryCode,
+        (resp) => {
+            if (resp.success) {
+                console.log(resp.data);
+                self.setState({
+                    cityList: resp.data,
+                    cityInputDisabled: false
+                });
+            }
+        },
+        (err) => {
+            console.log("city data request error.");
+        }
+    );
+
+    /*
+     var cityListRequest = reqwest({
+     url: "http://api.weteach.test/v1/loc/city/" + countryCode,
+     method: "get",
+     crossOrigin: true,
+     })
+     .then((resp) => {
+     if (resp.success) {
+     console.log(resp.data);
+     self.setState({
+     cityList: resp.data,
+     cityInputDisabled: false
+     });
+     }
+     })
+     .fail((err) => {
+     console.log("data request error.");
+     })
+     */
   }
 
   handleDialogOpen (e) {
@@ -573,63 +634,94 @@ class TInfo extends React.Component {
   componentDidMount () {
     var self = this;
 
-    var countryRequest =  reqwest({
-      url: "http://api.weteach.test/v1/loc/country",
-      method: "get",
-      crossOrigin: true,
-      headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
-    })
-    .then((resp) => {
-      console.log(resp);
-      if (resp.success) {
-        self.setState({
-          countriesList: resp.data
-        });
-      }
-    })
-    .fail((err,msg) => {
-      console.log(err);
-      console.log("数据请求错误");
-    });
-
-    var timezoneRequest = reqwest({
-      url: "http://api.weteach.test/v1/loc/timezone",
-      method: "get",
-      crossOrigin: true,
-      headers: { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"}
-    })
-    .then((resp) => {
-      console.log(resp);
-
-      if (resp.success) {
-        var defaultTimezone = "";
-        var timezoneListData = resp.data;
-
-        var timezoneList = timezoneListData.map((timezone) => {
-            return timezone["en_name"];
-        });
-
-        var localDate = new Date();
-        var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
-        var regExpTimezone = localTimezone.replace("+", "\\+");
-
-        for (let i = 0; i < timezoneList.length; i++) {
-            if (timezoneList[i].search(new RegExp(regExpTimezone)) !== -1) {
-                defaultTimezone = timezoneList[i];
-                break;
+    var countryRequest = apis.TCountryList("",
+        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        "",
+        (resp) => {
+            if (resp.success) {
+                self.setState({
+                    countriesList: resp.data
+                });
             }
+        },
+        (err) => {
+            console.log("data fetching error.");
         }
+    );
 
-        self.setState({
-            timezoneList: timezoneList,
-            defaultTimezone: defaultTimezone
-        });
-      }
-    })
-    .fail((err, msg) => {
-      console.log(err);
-      console.log("timezone data request error.");
-    });
+    /*
+     var countryRequest =  reqwest({
+     url: "http://api.weteach.test/v1/loc/country",
+     method: "get",
+     crossOrigin: true,
+
+     })
+     .then((resp) => {
+     console.log(resp);
+     if (resp.success) {
+     self.setState({
+     countriesList: resp.data
+     });
+     }
+     })
+     .fail((err,msg) => {
+     console.log(err);
+     console.log("数据请求错误");
+     });
+     */
+
+    var timezoneRequest = apis.TTimezone("",
+        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        "",
+        (resp) => {
+            console.log(resp);
+            if (resp.success) {
+                var defaultTimezone = "";
+                var timezoneListData = resp.data;
+
+                var timezoneList = timezoneListData.map((timezone) => {
+                    return timezone["en_name"];
+
+                });
+
+                var localDate = new Date();
+                var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
+                var regExpTimezone = localTimezone.replace("+", "\\+");
+
+                for (let i = 0; i < timezoneList.length; i++) {
+                    if (timezoneList[i].search(new RegExp(regExpTimezone)) !== -1) {
+                        defaultTimezone = timezoneList[i];
+                        break;
+                    }
+                }
+
+                self.setState({
+                    rawTimezoneData: timezoneListData,
+                    timezoneList: timezoneList,
+                    defaultTimezone: defaultTimezone
+                });
+            }
+        },
+        (err) => {
+            console.log("err");
+            console.log("timezone data request error.");
+        }
+    )
+    /*
+     var timezoneRequest = reqwest({
+     url: "http://api.weteach.test/v1/loc/timezone",
+     method: "get",
+     crossOrigin: true,
+     })
+     .then((resp) => {
+     console.log(resp);
+
+     })
+     .fail((err, msg) => {
+     console.log(err);
+     console.log("timezone data request error.");
+     });
+     */
   }
 
   componentWillUnmount () {
@@ -638,7 +730,6 @@ class TInfo extends React.Component {
     cityListRequest.abort();
   }
 
-  // cityList  data  request.
 }
 
 export default TInfo;

@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
-import reqwest from 'reqwest';
+import apis from '../network/api';
 
 class TSignUp extends React.Component {
 
@@ -63,34 +63,44 @@ class TSignUp extends React.Component {
       reflink: document.referrer
     };
 
-    var signUpRequest = reqwest({
-      url: "http://api.weteach.test/v1/user/signup?code=3e48c40aa059fd26952d91349103c984",
-      method: "POST",
-      type: "json",
-      data: data
-    })
-    .then((resp) => {
-      if (resp.success) {
-        console.log(resp);
-      } else {
-        if (!!resp.data.email) {
-          self.setState({
-            notification: "this email address has already been registered"
-          }, () => {
-            self.handleTouchTap();
-          });
-          return;
+    var signUpRequest = apis.TSignUp(data,
+      {},
+      "",
+      (resp) => {
+        if (resp.success) {
+          console.log(resp);
+        } else {
+          if (!!resp.data.email) {
+            self.setState({
+              notification: "this email address has already been registered"
+            }, () => {
+              self.handleTouchTap();
+            });
+            return;
+          }
         }
       }
-    })
-    .fail((err) => {
-      self.setState({
-        notification: "sign up error! try again later."
-      }, () => {
-        self.handleTouchTap();
-      });
-      return;
-    })
+    )
+
+    /*
+     var signUpRequest = reqwest({
+     url: "http://api.weteach.test/v1/user/signup?code=3e48c40aa059fd26952d91349103c984",
+     method: "POST",
+     type: "json",
+     data: data
+     })
+     .then((resp) => {
+     })
+     .fail((err) => {
+     self.setState({
+     notification: "sign up error! try again later."
+     }, () => {
+     self.handleTouchTap();
+     });
+     return;
+     })
+     */
+
     console.log(data);
   }
 
@@ -113,7 +123,7 @@ class TSignUp extends React.Component {
 
     return (
       <div className="t-sign-up">
-        <form action="/t-sign-up">
+        <form>
           <TextField id="t-first-name" type="text" floatingLabelText="First Name"></TextField>
           <br/>
           <TextField id="t-last-name" type="text" floatingLabelText="Last Name"></TextField>

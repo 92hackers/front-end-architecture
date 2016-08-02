@@ -10,7 +10,6 @@ class AvatarUpload extends React.Component {
 
   constructor (props) {
     super (props);
-    this.host = "http://oawkdrros.bkt.clouddn.com/";
     this.state = {
       open: false
     };
