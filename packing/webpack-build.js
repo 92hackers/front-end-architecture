@@ -32,8 +32,8 @@ module.exports = {
 			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
 			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015"] }, exclude: /node_modules/ },
 			{ test: /\.coffee$/, loader: "coffee", exclude: /node_modules/ },
-			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss!less") },
-			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css!postcss") },
+			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style", "css!postcss!less") },
+			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style", "css!postcss") },
 			{ test: /\.json$/, loader: "json"},
 			//{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
             {

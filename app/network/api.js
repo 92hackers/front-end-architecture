@@ -26,31 +26,46 @@ var apis = [
         }
     },
     {
-        name: "TProfile",
+        name: "TGetProfile",
         options: {
             api: "user/profile",
             method: "get"
         }
     },
     {
+        name: "TUpdateProfile",
+        options: {
+            api: "user/profile",
+            method: "post"
+        }
+    },
+    {
         name: "TCountryList",
         options: {
-            api: "loc/country",
+            api: "geo/country",
+            method: "get"
+        }
+    },
+    {
+        name: "TRegionList",
+        options: {
+            api: "geo/region",
+            queryParam: true,
             method: "get"
         }
     },
     {
         name: "TCityList",
         options: {
-            api: "loc/city",
-            queryParam: true,            // loc/city/country_code.
+            api: "geo/city",
+            queryParam: true,            // geo/city/country_code.
             method: "get"
         }
     },
     {
         name: "TTimezone",
         options: {
-            api: "loc/timezone",
+            api: "geo/timezone",
             method: "get"
         }
     }

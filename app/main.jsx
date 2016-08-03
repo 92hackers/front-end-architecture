@@ -16,6 +16,10 @@ import TInfo from './teacher-components/TInfo';
 import THomepage from './teacher-components/THomepage';
 import FacebookLogin from 'react-facebook-login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Day from './utilities/Day';
+import Week from './utilities/Week';
+import Date from './utilities/Date';
+import CoursesPanel from './teacher-components/CoursesPanel';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -30,10 +34,10 @@ class App extends React.Component {
     render () {
         return (
             <div className="weteach">
-                <HomepageHeader></HomepageHeader>
                 {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
+                <HomepageHeader></HomepageHeader>
                 <MuiThemeProvider>
-                    <TSignIn></TSignIn>
+                    <CoursesPanel></CoursesPanel>
                 </MuiThemeProvider>
                 <SiteFooter></SiteFooter>
                 <ul id="beian">

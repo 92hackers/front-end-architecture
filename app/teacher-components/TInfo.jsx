@@ -1,5 +1,4 @@
 // complete teacher info.
-
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
@@ -22,12 +21,14 @@ class TInfo extends React.Component {
     super (props);
     this.state = {
       value: null,
-      cityList: [],
       countriesList: [],
+      regionList: [],
+      cityList: [],
       timezoneList: [],
       rawTimezoneData: [],
       defaultTimezone: "",
       cityInputDisabled: true,
+      regionInputDisabled: true,
       eduDialogOpen: false,
       eduList: 0,
       eduListItems: [],
@@ -63,6 +64,7 @@ class TInfo extends React.Component {
     var gender = checkedElem ? checkedElem.value : "";
     var avatar = this.state.avatarUrl;
     var country = document.getElementsByClassName("country")[0].value;
+    var region = document.getElementsByClassName("region")[0].value;
     var city = document.getElementsByClassName("city")[0].value;
     var timezone = document.getElementsByClassName("timezone")[0].value || this.state.defaultTimezone;
     var teachExperience = document.getElementById("teach-experience").innerText.trim();
@@ -82,6 +84,8 @@ class TInfo extends React.Component {
         notification = "please upload your profile picture";
     } else if (!country.length) {
         notification = "please input to select your location country";
+    } else if (!region.length) {
+        notification = "please input to select your location region";
     } else if (!city.length) {
         notification = "please input to select your location city";
     } else if (!teachExperience.length) {
@@ -140,15 +144,25 @@ class TInfo extends React.Component {
     var countryList = this.state.countriesList;
 
     for (let i = 0; i < countryList.length; i++) {
-      if (countryList[i].cname === nationality) {
+      if (countryList[i].name === nationality) {
         countryCode = countryList[i].id;
         break;
       }
     }
 
     for (let i = 0; i < countryList.length; i++) {
-        if (countryList[i].cname === country) {
+        if (countryList[i].name === country) {
             locationCountryId = countryList[i].id;
+            break;
+        }
+    }
+
+    var regionId = "";
+    var regionList = this.state.regionList;
+
+    for (let i = 0; i < regionList.length; i++) {
+        if (regionList[i].name === region) {
+            regionId = regionList[i].id;
             break;
         }
     }
@@ -157,8 +171,8 @@ class TInfo extends React.Component {
     var cityList = this.state.cityList;
 
     for (let i = 0; i < cityList.length; i++) {
-        if (cityList[i]["en_name"] === city) {
-            cityId = cityList[i].id
+        if (cityList[i].name === city) {
+            cityId = cityList[i].id;
             break;
         }
     }
@@ -168,6 +182,7 @@ class TInfo extends React.Component {
       avatar: avatar,
       nationality: countryCode,
       "residence_n": locationCountryId,
+      "residence_p": regionId,
       "residence_c": cityId,               //  city id.
       "timezone": timezoneId,            //  timezone id.
       eduexp: eduExperienceList,
@@ -182,17 +197,19 @@ class TInfo extends React.Component {
 
     console.log(data);
 
-    var postInfoRequest = apis.TProfile(data,
+    var postInfoRequest = apis.TUpdateProfile(data,
         { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
         "",
         (resp) => {
             if (resp.success) {
                 console.log(resp);
             } else {
+                console.log(resp);
                 alert("data post error, try again later.");
             }
         },
         (err) => {
+            console.log(err);
             alert("network error, try agarin later.");
         }
     );
@@ -259,30 +276,65 @@ class TInfo extends React.Component {
   }
 
   loadCityList (e) {
+      var self = this;
+      var region = document.getElementsByClassName("region")[0].value;
+      var regionId = "";
+      var regionList = self.state.regionList;
+
+      for (let i = 0; i < regionList.length; i++) {
+          if (regionList[i].name === region) {
+              regionId = regionList[i].id;
+              break;
+          }
+      }
+
+      var cityListRequest = apis.TCityList("",
+          { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+          regionId,
+          (resp) => {
+              if (resp.success) {
+                  console.log(resp);
+                  self.setState({
+                      cityList: resp.data,
+                      cityInputDisabled: false
+                  });
+              } else {
+                  console.log("data fetching error.");
+              }
+          },
+          (err) => {
+              console.log("data fetching error.");
+          }
+      )
+  }
+
+  loadRegionList (e) {
     var self = this;
     var country = document.getElementsByClassName("country")[0].value;
     var countryCode = "";
     var countryList = self.state.countriesList;
     for (let i = 0; i < countryList.length; i++) {
-      if (countryList[i].cname === country) {
+      if (countryList[i].name === country) {
         countryCode = countryList[i].id;
         break;
       }
     }
-    var cityListRequest = apis.TCityList("",
+    var regionListRequest = apis.TRegionList("",
         { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
         countryCode,
         (resp) => {
             if (resp.success) {
                 console.log(resp.data);
                 self.setState({
-                    cityList: resp.data,
-                    cityInputDisabled: false
+                    regionList: resp.data,
+                    regionInputDisabled: false
                 });
+            } else {
+                console.log("data fetching error.");
             }
         },
         (err) => {
-            console.log("city data request error.");
+            console.log("region data request error.");
         }
     );
 
@@ -426,12 +478,17 @@ class TInfo extends React.Component {
   }
 
   render () {
-    const style = {
-      width: "100%"
-    };
 
     const countriesList = this.state.countriesList.map((country) => {
-      return country.cname;
+      return country.name;
+    });
+
+    const cityList = this.state.cityList.map((city) => {
+      return city.name;
+    });
+
+    const regionList = this.state.regionList.map((region) => {
+        return region.name;
     });
 
     const styles = {
@@ -455,9 +512,6 @@ class TInfo extends React.Component {
       }
     };
 
-    const cityList = this.state.cityList.map((city) => {
-      return city["en_name"];
-    });
 
     const actions = [
       <FlatButton
@@ -493,11 +547,7 @@ class TInfo extends React.Component {
       />
     ];
 
-    const nationality = { input: "nationality" };
-
-    const country = { input: "country" };
-
-    const city = { input: "city" };
+    const menuItemStyle = { cursor: "pointer" };
 
     const eduTableStyle = {
       display: this.state.eduList ? "table" : "none"
@@ -517,8 +567,8 @@ class TInfo extends React.Component {
     return (
       <div className="t-info">
         <h1 className="t-info-caption text-center">Please complete your personal information</h1>
-        <form action="/t-info" className="t-info-form">
-          <Typeahead options={countriesList} maxVisible={5} placeholder="Your Nationality" customClasses={nationality}></Typeahead>
+        <form className="t-info-form">
+          <Typeahead options={countriesList} maxVisible={5} placeholder="Your Nationality" customClasses={{input: "nationality"}}></Typeahead>
           <br/>
           <p id="gender-caption">Gender</p>
           <RadioButtonGroup name="gender" style={styles.RadioButtonGroup}>
@@ -533,14 +583,15 @@ class TInfo extends React.Component {
           </FlatButton>
           <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           <br/>
-          <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadCityList.bind(this)} customClasses={country}></Typeahead>
-          <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={city}></Typeahead>
+          <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadRegionList.bind(this)} customClasses={{input: "country"}}></Typeahead>
+          <Typeahead options={regionList} maxVisible={5} placeholder="Location region" disabled={this.state.regionInputDisabled} onOptionSelected={this.loadCityList.bind(this)} customClasses={{input: "region"}}></Typeahead>
+          <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={{input: "city"}}></Typeahead>
           <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} customClasses={{input: "timezone"}}></Typeahead>
           <br/>
           <SelectField id="teach-experience" value={this.state.value} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching experience">
-            <MenuItem value={1} primaryText="More than 15 years" />
-            <MenuItem value={2} primaryText="Between 5 to 15 years" />
-            <MenuItem value={3} primaryText="Less than 5 years" />
+            <MenuItem style={menuItemStyle} value={1} primaryText="More than 15 years" />
+            <MenuItem style={menuItemStyle} value={2} primaryText="Between 5 to 15 years" />
+            <MenuItem style={menuItemStyle} value={3} primaryText="Less than 5 years" />
           </SelectField>
           <br/>
           <TextField id="nation-code" floatingLabelText="code" style={phoneStyle.code}></TextField><TextField id="phone-num" floatingLabelText="Phone number" style={phoneStyle.phone}></TextField>
@@ -566,7 +617,7 @@ class TInfo extends React.Component {
                 }
             </TableBody>
           </Table>
-          <FlatButton id="add-education" type="button" label="Add" style={style} onTouchTap={this.handleDialogOpen.bind(this)}></FlatButton>
+          <FlatButton id="add-education" type="button" label="Add" style={{width: "100%"}} onTouchTap={this.handleDialogOpen.bind(this)}></FlatButton>
           <Dialog title="Add your education experience" actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
             <div className="t-edu-form-wrap">
               <TextField id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
@@ -603,11 +654,11 @@ class TInfo extends React.Component {
           <TextField id="addition" multiLine={true} rows={5} type="textarea" floatingLabelText="Addition"></TextField>
           <br/>
           <br/>
-          <FlatButton type="button" label="Video interview time" style={style}></FlatButton>
+          <FlatButton type="button" label="Video interview time" style={{width: "100%"}}></FlatButton>
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></FlatButton>
+          <FlatButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></FlatButton>
         </form>
         <Snackbar
           open={this.state.notificationOpen}
@@ -639,6 +690,7 @@ class TInfo extends React.Component {
         "",
         (resp) => {
             if (resp.success) {
+                console.log(resp);
                 self.setState({
                     countriesList: resp.data
                 });
@@ -681,7 +733,6 @@ class TInfo extends React.Component {
 
                 var timezoneList = timezoneListData.map((timezone) => {
                     return timezone["en_name"];
-
                 });
 
                 var localDate = new Date();
