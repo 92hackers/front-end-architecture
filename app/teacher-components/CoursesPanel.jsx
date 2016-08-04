@@ -20,7 +20,7 @@ class CoursesPanel extends React.Component {
         </div>
         </div>
         <div className="col-9">
-          <Tabs>
+          <Tabs initialSelectedIndex={1}>
             <Tab label="Day">
               <Day></Day>
             </Tab>

@@ -1,9 +1,10 @@
 .one-week {
   position: relative;
-  width: 80%;
-  margin: 0 auto;
+  padding-top: 30px;
+  padding-left: 50px;
   .week-title {
     font-size: 36px;
+    margin-left: -35px;
     .week-month {
       font-weight: 300;
     }
@@ -12,14 +13,24 @@
       margin-left: 10px;
     }
   }
+  .table-wrap {
+    width: 100%;
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom: 1px solid #ddd;
+  }
   .time-labels {
     position: absolute;
     margin-top: 47px;
+    left: -20px;
+    height: 500px;
+    overflow-y: hidden;
+    overflow-x: hidden;
     li {
-      height: 48px;
+      height: 50px;
       width: 60px;
       position: relative;
-      left: -70px;
       text-align: right;
       white-space: nowrap;
       .label {

@@ -1,11 +1,19 @@
 .day-picker {
   margin-top: 30px;
+  #day-time-box {
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block;
+    width: 100%;
+  }
   .day-title-wrap {
-    margin-left: 25%;
+    margin-left: 15px;
     margin-bottom: 30px;
     .day-title {
-      .day-month, .day-date {
-        font-weight: 400;
+      font-size: 36px;
+      .day-month, .day-date, .day-dot {
+        font-weight: 300;
       }
       .day-date {
         margin-left: 10px;
@@ -22,6 +30,7 @@
   .time-point {
     .time-tag {
       height: 50px;
+      width: 65px;
       .inner-time-value {
         position: absolute;
         top: -10px;
@@ -30,6 +39,7 @@
       }
     }
     .time-line {
+      width: 90%;
       height: 50px;
       border-top: 1px solid #ddd;
     }

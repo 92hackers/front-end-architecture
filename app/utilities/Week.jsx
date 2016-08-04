@@ -83,7 +83,7 @@ class Week extends React.Component {
           <span className="week-month">{month}</span>
           <span className="week-year">{year}</span>
         </h1>
-        <ul className="time-labels">
+        <ul className="time-labels" onScroll={this.labelScroll.bind(this)}>
         {
           times.map((item, index) => {
             return (
@@ -92,7 +92,7 @@ class Week extends React.Component {
           })
         }
         </ul>
-        <Table selectable={false} multiSelectable={false} className="table">
+        <Table selectable={false} multiSelectable={false}>
           <TableHeader displaySelectAll={false}
             adjustForCheckbox={false}>
             <TableRow>
@@ -105,26 +105,48 @@ class Week extends React.Component {
               <TableHeaderColumn style={tableWeekdayStyles}>Sat <span className="week-date">{currentWeekDays[6]}</span></TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={false} showRowHover={false} style={{position: "relative"}}>
+        </Table>
+        <div className="table-wrap" onScroll={this.tableScroll.bind(this)}>
+          <Table selectable={false} multiSelectable={false} className="table">
+            <TableBody displayRowCheckbox={false} showRowHover={false} style={{position: "relative"}}>
             {
               toRenderTableColums.map((item, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableRowColumn></TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
-                    <TableRowColumn></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
+                  <TableRowColumn style={{height: 50}}></TableRowColumn>
                   </TableRow>
                 )
               })
             }
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+        </div>
       </div>
     )
+  }
+
+  tableScroll (e) {
+
+    var timeLables = document.getElementsByClassName("time-labels")[0];
+    var tableWrap = document.getElementsByClassName("table-wrap")[0];
+
+    timeLables.scrollTop = tableWrap.scrollTop;
+
+  }
+
+  labelScroll (e) {
+
+    var timeLables = document.getElementsByClassName("time-labels")[0];
+    var tableWrap = document.getElementsByClassName("table-wrap")[0];
+
+    tableWrap.scrollTop = timeLables.scrollTop;
+
   }
 
   componentDidMount () {
@@ -133,10 +155,9 @@ class Week extends React.Component {
     var today = new Date();
 
     var dateElems = document.getElementsByClassName("week-date");
-    console.log(dateElems);
 
     for (let i = 0; i < dateElems.length; i++) {
-      if (dateElems[i].innerText.trim() === today.getDay().toString()) {
+      if (dateElems[i].innerHTML.trim() === today.getDay().toString()) {
         dateElems[i].style.lineHeight = "30px";
         dateElems[i].style.borderRadius = "50%";
         dateElems[i].style.backgroundColor = "rgb(252, 61, 57)";
@@ -145,6 +166,11 @@ class Week extends React.Component {
         dateElems[i].style.width = "30px";
       }
     }
+
+    var tableWrap = document.getElementsByClassName("table-wrap")[0];
+
+    tableWrap.scrollTop = 17.5 * 100;
+
   }
 }
 
