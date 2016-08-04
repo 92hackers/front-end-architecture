@@ -6,6 +6,12 @@ class Week extends React.Component {
 
   constructor (props) {
     super (props);
+    this.timesData = [
+      "12 AM", "12:30 AM", "1 AM", "1:30 AM", "2 AM", "2:30 AM", "3 AM", "3:30 AM", "4 AM", "4:30 AM", "5 AM", "5:30 AM", "6 AM", "6:30 AM", "7 AM", "7:30 AM",
+      "8 AM", "8:30 AM", "9 AM", "9:30 AM", "10 AM", "10:30 AM", "11 AM", "11:30 AM", "12:00 AM", "12:30 AM", "1 PM", "1:30 PM", "2 PM", "2:30 PM", "3 PM", "3:30 PM", "4 PM", "4:30 PM",
+      "5 PM", "5:30 PM", "6 PM", "6:30 PM", "7 PM", "7:30 PM", "8 PM", "8:30 PM", "9 PM", "9:30 PM", "10 PM", "10:30 PM", "11 PM", "11:30 PM", "12 AM"
+    ];
+    this.weekDays = [];
   }
 
   render () {
@@ -14,6 +20,7 @@ class Week extends React.Component {
       "8 AM", "", "9 AM", "", "10 AM", "", "11 AM", "", "noon", "", "1 PM", "", "2 PM", "", "3 PM", "", "4 PM", "",
       "5 PM", "", "6 PM", "", "7 PM", "", "8 PM", "", "9 PM", "", "10 PM", "", "11 PM", "", "12 AM"
     ];
+
 
     const toRenderTableColums = [
       "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM",
@@ -49,11 +56,11 @@ class Week extends React.Component {
     const oneDayMilSeconds = 1000 * 60 * 60 * 24;
 
     var prevNDate = (n) => {
-      return new Date(today.getTime() - n * oneDayMilSeconds).getDate();
+      return new Date(today.getTime() - n * oneDayMilSeconds);
     };
 
     var postNDate = (n) => {
-      return new Date(today.getTime() + n * oneDayMilSeconds).getDate();
+      return new Date(today.getTime() + n * oneDayMilSeconds);
     }
 
     var currentDay = today.getDay();
@@ -61,22 +68,25 @@ class Week extends React.Component {
 
     currentWeekDays[currentDay] = today.getDate();
 
+    this.weekDays[currentDay] = today.toDateString();
+
     while (index > 0) {
       index--;
-      currentWeekDays[index] = prevNDate(currentDay - index);
+      this.weekDays[index] = prevNDate(currentDay - index).toDateString();
+      currentWeekDays[index] = prevNDate(currentDay - index).getDate();
     }
 
     index = currentDay;
 
     while (index < 6) {
       index++;
-      currentWeekDays[index] = postNDate(index - currentDay);
+      this.weekDays[index] = postNDate(index - currentDay).toDateString();
+      currentWeekDays[index] = postNDate(index - currentDay).getDate();
     }
 
     const month = months[today.getMonth()];
     const year = today.getFullYear();
 
-    console.log(currentWeekDays);
     return (
       <div className="one-week">
         <h1 className="week-title">
@@ -107,12 +117,12 @@ class Week extends React.Component {
           </TableHeader>
         </Table>
         <div className="table-wrap" onScroll={this.tableScroll.bind(this)}>
-          <Table selectable={false} multiSelectable={false} className="table">
+          <Table onCellClick={this.cellClick.bind(this)} selectable={false} multiSelectable={false} className="table">
             <TableBody displayRowCheckbox={false} showRowHover={false} style={{position: "relative"}}>
             {
               toRenderTableColums.map((item, index) => {
                 return (
-                  <TableRow key={index}>
+                  <TableRow key={index} hoverable={true}>
                   <TableRowColumn style={{height: 50}}></TableRowColumn>
                   <TableRowColumn style={{height: 50}}></TableRowColumn>
                   <TableRowColumn style={{height: 50}}></TableRowColumn>
@@ -129,6 +139,26 @@ class Week extends React.Component {
         </div>
       </div>
     )
+  }
+
+  cellClick (rowNumber, columnId, e) {
+
+    var target = e.currentTarget;
+
+    if (!target.dataset.clicked) {
+      target.style.backgroundColor = "#ddd";
+      target.dataset.clicked = "clicked";
+    } else {
+      target.style.backgroundColor = "#fff";
+      target.dataset.clicked = "";
+    }
+
+    var weekIndex = columnId - 1;
+
+    var date = this.weekDays[weekIndex];
+    var time = this.timesData[rowNumber];
+
+    console.log(date, time);
   }
 
   tableScroll (e) {
