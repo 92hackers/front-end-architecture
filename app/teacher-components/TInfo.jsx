@@ -38,7 +38,11 @@ class TInfo extends React.Component {
       notification: "",
       notificationOpen: false,
       eduExpSelectedIndex: "",
-      eduExpSelectedDialogOpen: false
+      eduExpSelectedDialogOpen: false,
+      dateValue: 0,
+      availableDate: ["2016 / 09 / 01", "2016 / 09 / 02", "2016 / 09 / 03"],   // fetch available data from server.
+      timeValue: 0,
+      availableTime: ["6 AM", "7 AM", "8:30 AM", "9:30 AM", "10 AM", "12 PM"]
     };
   }
 
@@ -654,7 +658,24 @@ class TInfo extends React.Component {
           <TextField id="addition" multiLine={true} rows={5} type="textarea" floatingLabelText="Addition"></TextField>
           <br/>
           <br/>
-          <FlatButton type="button" label="Video interview time" style={{width: "100%"}}></FlatButton>
+          <br/>
+          <p className="book-the-view" style={{color: "#ccc"}}>Booking the online Interview</p>
+          <br/>
+          <SelectField value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
+              {
+                  this.state.availableDate.map((item, index) => {
+                      return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+                  })
+              }
+          </SelectField>
+          <br/>
+          <SelectField value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
+              {
+                  this.state.availableTime.map((item, index) => {
+                      return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+                  })
+              }
+          </SelectField>
           <br/>
           <br/>
           <br/>
@@ -668,6 +689,18 @@ class TInfo extends React.Component {
         />
       </div>
     )
+  }
+
+  bookTheViewDateChange (e, index, value) {
+      this.setState({
+          dateValue: value
+      });
+  }
+
+  bookTheViewTimeChange (e, index, value) {
+      this.setState({
+          timeValue: value
+      });
   }
 
   handleRequestClose () {
@@ -700,27 +733,6 @@ class TInfo extends React.Component {
             console.log("data fetching error.");
         }
     );
-
-    /*
-     var countryRequest =  reqwest({
-     url: "http://api.weteach.test/v1/loc/country",
-     method: "get",
-     crossOrigin: true,
-
-     })
-     .then((resp) => {
-     console.log(resp);
-     if (resp.success) {
-     self.setState({
-     countriesList: resp.data
-     });
-     }
-     })
-     .fail((err,msg) => {
-     console.log(err);
-     console.log("数据请求错误");
-     });
-     */
 
     var timezoneRequest = apis.TTimezone("",
         { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
@@ -758,21 +770,6 @@ class TInfo extends React.Component {
             console.log("timezone data request error.");
         }
     )
-    /*
-     var timezoneRequest = reqwest({
-     url: "http://api.weteach.test/v1/loc/timezone",
-     method: "get",
-     crossOrigin: true,
-     })
-     .then((resp) => {
-     console.log(resp);
-
-     })
-     .fail((err, msg) => {
-     console.log(err);
-     console.log("timezone data request error.");
-     });
-     */
   }
 
   componentWillUnmount () {
