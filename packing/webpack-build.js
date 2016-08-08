@@ -14,7 +14,10 @@ var rootDir = path.join(__dirname, "..");
 
 var main = path.join(rootDir, "app/entry");
 
+var localTestEntry = path.join(rootDir, 'local-test/index');
+
 var outputPath = path.join(rootDir, "build/");
+
 
 module.exports = {
 	// entry: [mainJsx, mainStyle],
@@ -53,8 +56,7 @@ module.exports = {
 	},
 	plugins: [
 		new ExtractTextPlugin("css/[name].css"),
-		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify("development") }})
-		//new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify("development") }}),
 	],
 	postcss: () => {
 		autoPrefixer({ browsers: ["last 2 versions", "> 1%"] })

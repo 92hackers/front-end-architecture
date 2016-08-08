@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import { Router, Route, browserHistory } from 'react-router';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import Index from './components/index/Index';
@@ -16,8 +17,7 @@ import TInfo from './teacher-components/TInfo';
 import THomepage from './teacher-components/THomepage';
 import FacebookLogin from 'react-facebook-login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Day from './utilities/Day';
-import Week from './utilities/Week';
+import NotFound from './utilities/NotFound';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -32,18 +32,28 @@ class App extends React.Component {
     render () {
         return (
             <div className="weteach">
-                {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
-                <MuiThemeProvider>
-                    <THomepage></THomepage>
-                </MuiThemeProvider>
-                <SiteFooter></SiteFooter>
-                <ul id="beian">
-                    <li> &copy;&nbsp;WeTeach</li>
-                    <li>沪ICP备 1111111</li>
-                </ul>
+              {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
+              <SiteHeader></SiteHeader>
+              <MuiThemeProvider>
+                {this.props.children}
+              </MuiThemeProvider>
+              <SiteFooter></SiteFooter>
+              <ul id="beian">
+                <li> &copy;&nbsp;WeTeach</li>
+                <li>沪ICP备 1111111</li>
+              </ul>
             </div>
         )
     }
 }
 
-ReactDom.render(<App />, document.getElementById("app"));
+ReactDom.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <Route path="/sign-up" component={TSignUp}></Route>
+      <Route path="/sign-in" component={TSignIn}></Route>
+      <Route path="*" component={NotFound}></Route>
+      <Route path="/teacher-homepage" component={THomepage}></Route>
+    </Route>
+  </Router>
+  ), document.getElementById("app"));

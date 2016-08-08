@@ -1,6 +1,7 @@
 // site Header.
 
 import React from 'react';
+import {Link} from 'react-router';
 
 
 class SiteHeader extends React.Component {
@@ -21,10 +22,10 @@ class SiteHeader extends React.Component {
             <a href="javascript:;">免费试听课</a>
           </li>
           <li className="button-wrap">
-            <a href="/sign_in" className="sign-in button">登录</a>
+            <Link to={`/sign-in`} className="sign-in button">Sign in</Link>
           </li>
           <li className="button-wrap">
-            <a href="/sign_up" className="sign-up button">注册</a>
+            <Link to={`/sign-up`} className="sign-up button">Sign up</Link>
           </li>
         </ul>
       </header>

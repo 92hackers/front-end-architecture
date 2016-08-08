@@ -38,12 +38,12 @@ class Week extends React.Component {
       color: "#333"
     };
 
-    var tableWeekdayStyles = {
-      textAlign: "center",
-      fontSize: "18px",
-      fontWeight: 100,
-      color: "#ccc"
-    };
+    // var tableWeekdayStyles = {
+    //   textAlign: "center",
+    //   fontSize: "18px",
+    //   fontWeight: 100
+    //   // color: "#ccc"
+    // };
 
     const months = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
@@ -94,46 +94,46 @@ class Week extends React.Component {
           <span className="week-year">{year}</span>
         </h1>
         <ul className="time-labels" onScroll={this.labelScroll.bind(this)}>
-        {
-          times.map((item, index) => {
-            return (
-              <li key={index}><span className="label">{item}</span></li>
-            )
-          })
-        }
+          {
+            times.map((item, index) => {
+              return (
+                <li key={index}><span className="label">{item}</span></li>
+              )
+            })
+          }
         </ul>
         <Table selectable={false} multiSelectable={false}>
           <TableHeader displaySelectAll={false}
             adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn style={tableWeekdayStyles}>Sun <span className="week-date">{currentWeekDays[0]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Sun <span className="week-date">{currentWeekDays[0]}</span></TableHeaderColumn>
               <TableHeaderColumn style={tableHeaderStyles}>Mon <span className="week-date">{currentWeekDays[1]}</span></TableHeaderColumn>
               <TableHeaderColumn style={tableHeaderStyles}>Tue <span className="week-date">{currentWeekDays[2]}</span></TableHeaderColumn>
               <TableHeaderColumn style={tableHeaderStyles}>Wed <span className="week-date">{currentWeekDays[3]}</span></TableHeaderColumn>
               <TableHeaderColumn style={tableHeaderStyles}>Thu <span className="week-date">{currentWeekDays[4]}</span></TableHeaderColumn>
               <TableHeaderColumn style={tableHeaderStyles}>Fri <span className="week-date">{currentWeekDays[5]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableWeekdayStyles}>Sat <span className="week-date">{currentWeekDays[6]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Sat <span className="week-date">{currentWeekDays[6]}</span></TableHeaderColumn>
             </TableRow>
           </TableHeader>
         </Table>
         <div className="table-wrap" onScroll={this.tableScroll.bind(this)}>
           <Table onCellClick={this.cellClick.bind(this)} selectable={false} multiSelectable={false} className="table">
             <TableBody displayRowCheckbox={false} showRowHover={false} style={{position: "relative"}}>
-            {
-              toRenderTableColums.map((item, index) => {
-                return (
-                  <TableRow key={index} hoverable={true}>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  <TableRowColumn style={{height: 50}}></TableRowColumn>
-                  </TableRow>
-                )
-              })
-            }
+              {
+                toRenderTableColums.map((item, index) => {
+                  return (
+                    <TableRow key={index} hoverable={true}>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                      <TableRowColumn style={{height: 50}}></TableRowColumn>
+                    </TableRow>
+                  )
+                })
+              }
             </TableBody>
           </Table>
         </div>

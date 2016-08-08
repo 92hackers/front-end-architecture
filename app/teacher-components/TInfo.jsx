@@ -583,7 +583,7 @@ class TInfo extends React.Component {
           <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
           <br/>
           <FlatButton id="upload-profile-picture" label="Upload profile picture" labelPosition="before" style={{width: "100%"}}>
-              <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
+            <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
           </FlatButton>
           <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           <br/>
@@ -609,16 +609,16 @@ class TInfo extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
-                {
-                  this.state.eduListItems.map((item, index) => {
-                    return (
-                      <TableRow key={index} data-index={index} hoverable={true} style={{cursor: "pointer"}}>
-                        <TableRowColumn>{item.degree}</TableRowColumn>
-                        <TableRowColumn>{item.institution}</TableRowColumn>
-                      </TableRow>
-                    )
-                  })
-                }
+              {
+                this.state.eduListItems.map((item, index) => {
+                  return (
+                    <TableRow key={index} data-index={index} hoverable={true} style={{cursor: "pointer"}}>
+                      <TableRowColumn>{item.degree}</TableRowColumn>
+                      <TableRowColumn>{item.institution}</TableRowColumn>
+                    </TableRow>
+                  )
+                })
+              }
             </TableBody>
           </Table>
           <FlatButton id="add-education" type="button" label="Add" style={{width: "100%"}} onTouchTap={this.handleDialogOpen.bind(this)}></FlatButton>
@@ -662,19 +662,19 @@ class TInfo extends React.Component {
           <p className="book-the-view" style={{color: "#ccc"}}>Booking the online Interview</p>
           <br/>
           <SelectField value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
-              {
-                  this.state.availableDate.map((item, index) => {
-                      return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
-                  })
-              }
+            {
+              this.state.availableDate.map((item, index) => {
+                return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+              })
+            }
           </SelectField>
           <br/>
           <SelectField value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
-              {
-                  this.state.availableTime.map((item, index) => {
-                      return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
-                  })
-              }
+            {
+              this.state.availableTime.map((item, index) => {
+                return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+              })
+            }
           </SelectField>
           <br/>
           <br/>

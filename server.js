@@ -1,5 +1,4 @@
 // server to static files.
-
 var fs = require("fs");
 var path = require("path");
 var express = require("express");
@@ -7,11 +6,6 @@ var bodyParser = require("body-parser");
 var qiniu = require("qiniu");
 var app = express();
 var Async = require("async");
-
-qiniu.conf.ACCESS_KEY = 'VzTkJ8dE6yMTDgXqZkdnnXBjtU8eXS8DN3kQZl0w';
-qiniu.conf.SECRET_KEY = 'XcoEaRHUPW0XMhXpF73xtPRh9BRL1y3aeg94OD9u';
-
-
 
 app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 app.use(bodyParser.json({ limit: "1000mb" }));
@@ -25,17 +19,12 @@ app.get("/", (req, res) => {
 	return res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/sign_in", (req, res) => {
- // add sign in code here.
- return res.sendFile(__dirname + "/index.html");
-});
-
-app.get("/sign_up", (req, res) => {
-  // sign up code here.
- return res.sendFile(__dirname + "/index.html");
-});
 
 app.use("/upload-to-qiniu", (req, res) => {
+
+	qiniu.conf.ACCESS_KEY = 'VzTkJ8dE6yMTDgXqZkdnnXBjtU8eXS8DN3kQZl0w';
+	qiniu.conf.SECRET_KEY = 'XcoEaRHUPW0XMhXpF73xtPRh9BRL1y3aeg94OD9u';
+
 
 	var bucket = 'com-weteach-avatar';
 	// var key = req.headers.authorization + "-avatar.png";
@@ -72,19 +61,6 @@ app.use("/upload-to-qiniu", (req, res) => {
 	var buf = new Buffer(avatarbuf.replace(/^data:image\/\w+;base64,/, ""), "base64");
 
 	uploadImgBuf(buf);
-});
-
-app.get("/child_info", (req, res) => {
-  return res.sendFile(__dirname + "/index.html");
-})
-
-app.post("/child_info", (req, res) => {
-  //  child info creat here.
-  res.end("post data successfully");
-});
-
-app.get("/parent_home", (req, res) => {
-  return res.sendFile(__dirname + "/index.html");
 });
 
 var port = process.env.PORT || 3000;

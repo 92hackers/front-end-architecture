@@ -43,23 +43,23 @@ class Day extends React.Component {
           </div>
         </div>
         <ul id="day-time-box">
-        {
-          times.map((time, index) => {
-            let data = "";
-            let regExp = /:30/;
-            if (regExp.test(time)) {
-              data = "";
-            } else {
-              data = time;
-            }
-            return (
-              <li key={index} className="time-point row">
-                <div className="time-tag col-3"><span className="inner-time-value">{data}</span></div>
-                <div data-time={time} className="time-line col-9"></div>
-              </li>
-            )
-          })
-        }
+          {
+            times.map((time, index) => {
+              let data = "";
+              let regExp = /:30/;
+              if (regExp.test(time)) {
+                data = "";
+              } else {
+                data = time;
+              }
+              return (
+                <li key={index} className="time-point row">
+                  <div className="time-tag col-3"><span className="inner-time-value">{data}</span></div>
+                  <div data-time={time} className="time-line col-9"></div>
+                </li>
+              )
+            })
+          }
         </ul>
       </section>
     )
