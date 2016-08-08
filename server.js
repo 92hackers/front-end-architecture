@@ -5,7 +5,6 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var qiniu = require("qiniu");
 var app = express();
-var Async = require("async");
 
 app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 app.use(bodyParser.json({ limit: "1000mb" }));

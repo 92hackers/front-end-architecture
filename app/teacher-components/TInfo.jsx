@@ -40,9 +40,11 @@ class TInfo extends React.Component {
       eduExpSelectedIndex: "",
       eduExpSelectedDialogOpen: false,
       dateValue: 0,
-      availableDate: ["2016 / 09 / 01", "2016 / 09 / 02", "2016 / 09 / 03"],   // fetch available data from server.
+      availableDate: [],   // fetch available data from server.
       timeValue: 0,
-      availableTime: ["6 AM", "7 AM", "8:30 AM", "9:30 AM", "10 AM", "12 PM"]
+      allAvailableTime: [],
+      availableTime: [],
+      timeToIdMapping: []
     };
   }
 
@@ -79,6 +81,7 @@ class TInfo extends React.Component {
     var teachStyle = document.getElementById("teach-style").value;
     var whyATeacher = document.getElementById("why-a-teacher").value;
     var addition = document.getElementById("addition").value;
+    var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
     if (!nationality.length) {
         notification = "please input your nationality";
@@ -181,6 +184,15 @@ class TInfo extends React.Component {
         }
     }
 
+    var interviewId = "";
+    var timeToIdMapping = this.state.timeToIdMapping;
+
+    for (let i = 0; i < timeToIdMapping.length; i++) {
+      if (timeToIdMapping[i].period === interviewPeriod) {
+        interviewId = timeToIdMapping[i].id;
+      }
+    }
+
     var data = {
       gender: gender === "male" ? 1 : 0,
       avatar: avatar,
@@ -196,7 +208,8 @@ class TInfo extends React.Component {
       intro: selfIntro,
       style: teachStyle,
       whyteach: whyATeacher,
-      additional: addition
+      additional: addition,
+      "inter_time": interviewId         // interview id.
     };
 
     console.log(data);
@@ -292,7 +305,7 @@ class TInfo extends React.Component {
           }
       }
 
-      var cityListRequest = apis.TCityList("",
+      self.cityListRequest = apis.TCityList("",
           { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
           regionId,
           (resp) => {
@@ -590,7 +603,7 @@ class TInfo extends React.Component {
           <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadRegionList.bind(this)} customClasses={{input: "country"}}></Typeahead>
           <Typeahead options={regionList} maxVisible={5} placeholder="Location region" disabled={this.state.regionInputDisabled} onOptionSelected={this.loadCityList.bind(this)} customClasses={{input: "region"}}></Typeahead>
           <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={{input: "city"}}></Typeahead>
-          <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} customClasses={{input: "timezone"}}></Typeahead>
+          <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} onOptionSelected={this.changeTimezone.bind(this)} customClasses={{input: "timezone"}}></Typeahead>
           <br/>
           <SelectField id="teach-experience" value={this.state.value} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching experience">
             <MenuItem style={menuItemStyle} value={1} primaryText="More than 15 years" />
@@ -669,10 +682,10 @@ class TInfo extends React.Component {
             }
           </SelectField>
           <br/>
-          <SelectField value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
+          <SelectField id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
             {
               this.state.availableTime.map((item, index) => {
-                return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+                return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item.period}></MenuItem>;
               })
             }
           </SelectField>
@@ -691,10 +704,17 @@ class TInfo extends React.Component {
     )
   }
 
+  changeTimezone (value) {
+    var regExpTimezone = value.replace("+", "\\+");
+    this.fetchInterviewData(regExpTimezone);
+  }
+
   bookTheViewDateChange (e, index, value) {
-      this.setState({
-          dateValue: value
-      });
+    this.setState({
+      dateValue: value,
+      timeValue: 0,
+      availableTime: this.state.allAvailableTime[index]
+    });
   }
 
   bookTheViewTimeChange (e, index, value) {
@@ -718,7 +738,7 @@ class TInfo extends React.Component {
   componentDidMount () {
     var self = this;
 
-    var countryRequest = apis.TCountryList("",
+    self.countryRequest = apis.TCountryList("",
         { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
         "",
         (resp) => {
@@ -734,7 +754,7 @@ class TInfo extends React.Component {
         }
     );
 
-    var timezoneRequest = apis.TTimezone("",
+    self.timezoneRequest = apis.TTimezone("",
         { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
         "",
         (resp) => {
@@ -750,19 +770,73 @@ class TInfo extends React.Component {
                 var localDate = new Date();
                 var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
                 var regExpTimezone = localTimezone.replace("+", "\\+");
+                // var defaultTimezoneId = "";
 
                 for (let i = 0; i < timezoneList.length; i++) {
-                    if (timezoneList[i].search(new RegExp(regExpTimezone)) !== -1) {
-                        defaultTimezone = timezoneList[i];
-                        break;
-                    }
+                  if (timezoneList[i].search(new RegExp(regExpTimezone)) !== -1) {
+                    defaultTimezone = timezoneList[i];
+                    break;
+                  }
                 }
+
+
+                // var interviewDateTimeRequest = apis.TInterview("",
+                //   { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+                //   defaultTimezoneId,
+                //   (resp) => {
+                //     if (resp.success) {
+                //       console.log(resp.data);
+                //       var data = resp.data;
+                //       var interviewTime = data["timetable"].map((date, index) => {
+                //         return {
+                //           date: date["inter_date"],
+                //           timeList: date["inter_time"].map((time,index) => {
+                //             return {
+                //               id: time.id,
+                //               period: time.period
+                //             };
+                //           })
+                //         };
+                //       });
+                //       var date = [];
+                //       var time = [];
+                //       var timeToIdMapping = [];
+                //       for (let i = 0; i < interviewTime.length; i++) {
+                //         date.push(interviewTime[i].date);
+                //         time.push(interviewTime[i].timeList);
+                //       }
+                //
+                //       for (let j = 0; j < time.length; j++) {
+                //         for (let k = 0; k < time[j].length; k++) {
+                //           timeToIdMapping.push({
+                //             id: time[j][k].id,
+                //             period: time[j][k].period
+                //           });
+                //         }
+                //       }
+                //
+                //       self.setState({
+                //         availableDate: date,
+                //         allAvailableTime: time,
+                //         timeToIdMapping: timeToIdMapping,
+                //         availableTime: time[0]
+                //       });
+                //     } else {
+                //       console.log("fetch interview time data error.");
+                //     }
+                //   },
+                //   (err) => {
+                //     console.log("interview request error.");
+                //     console.log(err);
+                //   }
+                // )
 
                 self.setState({
                     rawTimezoneData: timezoneListData,
                     timezoneList: timezoneList,
                     defaultTimezone: defaultTimezone
                 });
+                self.fetchInterviewData(regExpTimezone);
             }
         },
         (err) => {
@@ -772,12 +846,79 @@ class TInfo extends React.Component {
     )
   }
 
-  componentWillUnmount () {
-    countryRequest.abort();
-    timezoneRequest.abort();
-    cityListRequest.abort();
-  }
+  fetchInterviewData (timezoneStr) {
+    var self = this;
+    var timezoneListData = this.state.rawTimezoneData;
+    var defaultTimezoneId = "";
 
+    console.log(new RegExp(timezoneStr));
+    for (let j = 0; j < timezoneListData.length; j++) {
+      if (timezoneListData[j]["en_name"].search(new RegExp(timezoneStr)) !== -1) {
+        defaultTimezoneId = timezoneListData[j].id;
+        break;
+      }
+    }
+
+    this.interviewDateTimeRequest = apis.TInterview("",
+    { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-" },
+    defaultTimezoneId,
+    (resp) => {
+      if (resp.success) {
+        console.log(resp.data);
+        var data = resp.data;
+        var interviewTime = data["timetable"].map((date, index) => {
+          return {
+            date: date["inter_date"],
+            timeList: date["inter_time"].map((time,index) => {
+              return {
+                id: time.id,
+                period: time.period
+              };
+            })
+          };
+        });
+        var date = [];
+        var time = [];
+        var timeToIdMapping = [];
+        for (let i = 0; i < interviewTime.length; i++) {
+          date.push(interviewTime[i].date);
+          time.push(interviewTime[i].timeList);
+        }
+
+        for (let j = 0; j < time.length; j++) {
+          for (let k = 0; k < time[j].length; k++) {
+            timeToIdMapping.push({
+              id: time[j][k].id,
+              period: time[j][k].period
+            });
+          }
+        }
+
+        self.setState({
+          availableDate: date,
+          allAvailableTime: time,
+          timeToIdMapping: timeToIdMapping,
+          availableTime: time[0]
+        });
+      } else {
+        console.log("fetch interview time data error.");
+      }
+    },
+    (err) => {
+      console.log("interview request error.");
+      console.log(err);
+    }
+  )
+
+  console.log(this.interviewDateTimeRequest);
+}
+
+  componentWillUnmount () {
+    // console.log(this.countryRequest.request);
+    // this.countryRequest.request.abort();
+    // this.timezoneRequest.request.abort();
+    // this.cityListRequest.request.abort();
+  }
 }
 
 export default TInfo;

@@ -30,6 +30,7 @@ class App extends React.Component {
     }
 
     render () {
+        console.log(this.props.children);
         return (
             <div className="weteach">
               {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
@@ -52,8 +53,9 @@ ReactDom.render((
     <Route path="/" component={App}>
       <Route path="/sign-up" component={TSignUp}></Route>
       <Route path="/sign-in" component={TSignIn}></Route>
-      <Route path="*" component={NotFound}></Route>
       <Route path="/teacher-homepage" component={THomepage}></Route>
+      <Route path="/complete-profile" component={TInfo}></Route>
+      <Route path="*" component={NotFound}></Route>
     </Route>
   </Router>
   ), document.getElementById("app"));

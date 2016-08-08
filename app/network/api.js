@@ -1,8 +1,6 @@
 // send request.
 //  created by Chen yuan.
 
-//var reqwest = require('reqwest');
-
 import reqwest from 'reqwest';
 
 var host = "";
@@ -79,19 +77,8 @@ var apis = [
   }
 ];
 
-var userToken = "";
-
-exports.setUserToken = (token) => {
-  userToken = token;
-}
-
-exports.getUserToken = ()  => {
-  return userToken;
-}
-
-
 apis.forEach((item, index) => {
-  exports[item.name] = (data, queryParam, successCall, failCall) => {
+  exports[item.name] = (data, header, queryParam, successCall, failCall) => {
     var options = item.options;
     var queryParam = options.queryParam ? "/" + queryParam : "";
     return reqwest({

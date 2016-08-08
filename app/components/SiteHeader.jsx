@@ -13,7 +13,7 @@ class SiteHeader extends React.Component {
   render () {
     return (
       <header className="site-header clearfix">
-        <span className="brand"><img src="" alt="site logo" className="logo"/></span>
+        <span className="brand"><Link to={`/`}>homepage</Link></span>
         <ul className="header-item-right">
           <li>
             <a href="javascript:;">微信服务号</a>
@@ -26,6 +26,9 @@ class SiteHeader extends React.Component {
           </li>
           <li className="button-wrap">
             <Link to={`/sign-up`} className="sign-up button">Sign up</Link>
+          </li>
+          <li className="button-wrap">
+            <Link to={`/complete-profile`} className="button">Profile</Link>
           </li>
         </ul>
       </header>

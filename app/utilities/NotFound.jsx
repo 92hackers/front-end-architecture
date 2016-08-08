@@ -9,11 +9,12 @@ class NotFound extends React.Component {
   render () {
 
     const styles = {
-      paddingTop: "200px"
+      paddingTop: "200px",
+      paddingBottom: "200px"
     };
 
     return (
-      <section className="site-not-fount">
+      <section style={styles} className="site-not-found">
         <h1 className="text-center">Page you are viewing is not found.</h1>
       </section>
     )
