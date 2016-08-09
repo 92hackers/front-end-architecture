@@ -3,9 +3,11 @@ var fs = require("fs");
 var path = require("path");
 var express = require("express");
 var bodyParser = require("body-parser");
+var compression = require("compression");
 var qiniu = require("qiniu");
 var app = express();
 
+app.use(compression());
 app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 app.use(bodyParser.json({ limit: "1000mb" }));
 app.use("/js", express.static(__dirname + "/build/js"));
@@ -14,7 +16,7 @@ app.use("/imgs", express.static(__dirname + "/app/imgs"));
 app.use("/fonts", express.static(__dirname + "/build/fonts"));
 app.set("env", "development");
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
 	return res.sendFile(__dirname + "/index.html");
 });
 

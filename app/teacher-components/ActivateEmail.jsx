@@ -1,38 +1,79 @@
 //  a page tells user to activate the account.
-
 import React from 'react';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import api from '../network/api';
 
-class ActivateEmail extends React.Component {
+class ActivateEmailClass extends React.Component {
 
   constructor (props) {
     super (props);
   }
 
-  handleSubmit (e) {
-    // something to go.
+  handleChangeClick (e) {
+
+    e.preventDefault();
+
+    var token = this.props.token;
+    console.log(token);
+
+    if (!!token) {
+      browserHistory.push("/input-new-email");        // check state to judge if the user logged in.
+    } else {
+      browserHistory.push("/sign-in?action=changeEmailAddress");
+    }
   }
 
+  handleResendClick (e) {
+    e.preventDefault();
+
+    var token = this.props.token;
+    console.log(this.props);
+    console.log(token);
+
+    if (!!token) {
+      api.TNewEmail("",
+      {"Authorization": token},
+      "",
+      (resp) => {
+        if (resp.success) {
+          alert("a new email has already send to your registered email address");
+        } else {
+          alert(resp.data.error);
+        }
+      },
+      (err) => {
+        console.log(err);
+        alert("server error, try again later.");
+      }
+    )
+  } else {
+    browserHistory.push("/sign-in?action=resendEmail");
+  }
+
+}
+
   render () {
-
-    var style = {
-      width: "100%"
-    };
-
     return (
       <div className="t-activate-email">
-        <p>We have already sended an email to your registered email address,</p>
+        <p><i className="fa fa-check-circle"></i> We have already sended an email to your registered email address,</p>
         <p>Please check your email for the verification link.</p>
-        <p>Or</p>
-        <p>Something wrong! Please fill in another email address, and we will try it again!</p>
-        <form action="/re-email">
-          <TextField type="email" floatingLabelText="email address"></TextField>
-          <FlatButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit} style={style}></FlatButton>
-        </form>
+        <p>Didn't receive the email yet?</p>
+        <div>You can: <RaisedButton label="Resend the email" onClick={this.handleResendClick.bind(this)}></RaisedButton> or <RaisedButton label="Change the email address" onClick={this.handleChangeClick.bind(this)}></RaisedButton></div>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.addToken.token
+  }
+}
+
+const ActivateEmail = connect(
+  mapStateToProps
+)(ActivateEmailClass);
 
 export default ActivateEmail;

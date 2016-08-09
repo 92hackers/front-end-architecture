@@ -705,7 +705,7 @@ class TInfo extends React.Component {
   }
 
   changeTimezone (value) {
-    var regExpTimezone = value.replace("+", "\\+");
+    var regExpTimezone = value.replace("+", "\\+").replace("(", "\\(").replace(")", "\\)");
     this.fetchInterviewData(regExpTimezone);
   }
 
@@ -910,7 +910,6 @@ class TInfo extends React.Component {
     }
   )
 
-  console.log(this.interviewDateTimeRequest);
 }
 
   componentWillUnmount () {

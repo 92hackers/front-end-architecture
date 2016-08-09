@@ -74,6 +74,28 @@ var apis = [
       queryParam: true,             //   user/interview/{timezone_id}
       method: "get"
     }
+  },
+  {
+    name: "TNewEmail",
+    options: {
+      api: "user/active",
+      method: "post"
+    }
+  },
+  {
+    name: "TReqReset",
+    options: {
+      api: "user/reqreset",
+      method: "post"
+    }
+  },
+  {
+    name: "TEmailActivate",
+    options: {
+      api: "user/active",
+      queryParam: true,           //  plus active code behind it.
+      method: "get"
+    }
   }
 ];
 

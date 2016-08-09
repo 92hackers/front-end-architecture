@@ -1,10 +1,14 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import apis from '../network/api';
+import { connect } from 'react-redux';
+import addToken from '../actions/addToken';
+import api from '../network/api';
 
-class TSignIn extends React.Component {
+class TSignInClass extends React.Component {
 
   constructor (props) {
     super (props);
@@ -14,10 +18,15 @@ class TSignIn extends React.Component {
     };
   }
 
+  componentDidMount () {
+    console.log(this.props);
+  }
+
   handleSubmit(e) {
 
     var self = this;
     var notification = "";
+
 
     let event = e || e.event;
     if (event.preventDefault) {
@@ -56,7 +65,39 @@ class TSignIn extends React.Component {
     "",
     (resp) => {
       if (resp.success) {
-        console.log(resp);
+        switch (resp.data.status) {
+          case 1 :
+            var queryParam = self.props.location.query.action;
+            var token = "Bearer " + resp.data.token;
+            if (queryParam === "resendEmail") {
+              api.TNewEmail("",
+              {"Authorization": token},
+              "",
+              (resp) => {
+                if (resp.success) {
+                  alert("a new email has already send to your registered email address");
+                } else {
+                  alert(resp.data.error);
+                }
+              },
+              (err) => {
+                console.log(err);
+                alert("server error, try again later.");
+              }
+            )
+          } else if (!queryParam) {
+              browserHistory.push("/active-email");
+            }
+            break;
+          case 2 :
+            browserHistory.push("/complete-profile");
+            break;
+          default :
+            browserHistory.push("/teacher-homepage");
+        }
+        if (!!resp.data.token) {
+          this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
+        }
       } else {
         self.setState({
           notification: "email address or password error"
@@ -73,26 +114,6 @@ class TSignIn extends React.Component {
       });
     }
     );
-
-    /*
-     var signinRequest = reqwest({
-     url: "http://api.weteach.test/v1/user/login",
-     method: "post",
-     type: "json",
-     data: {
-     email: email,
-     password: password
-     }
-     })
-     .then((resp) => {
-     if (resp.success) {
-     console.log(resp);
-     } else {
-     }
-     })
-     .fail((err) => {
-     });
-     */
   }
 
   handleTouchTap () {
@@ -126,6 +147,7 @@ class TSignIn extends React.Component {
           <FlatButton label="sign in with facebook" style={style}></FlatButton>
           <FlatButton label="sign in with google" style={style}></FlatButton>
           <FlatButton label="sign in with twitter" style={style}></FlatButton>
+          <FlatButton label="forget password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></FlatButton>
         </form>
         <Snackbar
           open={this.state.open}
@@ -136,6 +158,13 @@ class TSignIn extends React.Component {
       </div>
     )
   }
+
+  handleForgetPassword (e) {
+    e.preventDefault();
+    browserHistory.push("/forget-password");
+  }
 }
+
+var TSignIn = connect()(TSignInClass);
 
 export default TSignIn;

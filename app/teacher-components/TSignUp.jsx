@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
@@ -68,7 +69,8 @@ class TSignUp extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          console.log(resp);
+          console.log(resp.data);
+          browserHistory.push("/active-email");         //  jump to  Active your email notification page.
         } else {
           if (!!resp.data.email) {
             self.setState({
@@ -81,25 +83,6 @@ class TSignUp extends React.Component {
         }
       }
     )
-
-    /*
-     var signUpRequest = reqwest({
-     url: "http://api.weteach.test/v1/user/signup?code=3e48c40aa059fd26952d91349103c984",
-     method: "POST",
-     type: "json",
-     data: data
-     })
-     .then((resp) => {
-     })
-     .fail((err) => {
-     self.setState({
-     notification: "sign up error! try again later."
-     }, () => {
-     self.handleTouchTap();
-     });
-     return;
-     })
-     */
 
     console.log(data);
   }
@@ -148,5 +131,15 @@ class TSignUp extends React.Component {
     )
   }
 }
+
+// const mapStateToProps = (state) => {
+//   return {
+//     token: state.addToken.token
+//   }
+// }
+//
+// const TSignUp = connect(
+//   mapStateToProps
+// )(TSignUpClass);
 
 export default TSignUp;

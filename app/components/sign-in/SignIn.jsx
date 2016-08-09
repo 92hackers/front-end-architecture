@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
@@ -10,7 +9,7 @@ class SignIn extends React.Component {
   }
 
   handleSubmit (e) {
-    // sign in logic.
+    // sign in logic.k
   }
 
   render () {

@@ -15,13 +15,24 @@ import TSignUp from './teacher-components/TSignUp';
 import ActivateEmail from './teacher-components/ActivateEmail';
 import TInfo from './teacher-components/TInfo';
 import THomepage from './teacher-components/THomepage';
+// import StepToSignUp from './teacher-components/StepToSignUp';
 import FacebookLogin from 'react-facebook-login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import NotFound from './utilities/NotFound';
+import InputNewEmail from './teacher-components/InputNewEmail';
+import ForgetPassword from './teacher-components/ForgetPassword';
+import TInputNewPassword from './teacher-components/TInputNewPassword';
+import { Provider } from 'react-redux';
+import {createStore} from 'redux';
+import reducers from './reducers';
+
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
+
+
+let store = createStore(reducers);
 
 class App extends React.Component {
 
@@ -30,32 +41,37 @@ class App extends React.Component {
     }
 
     render () {
-        console.log(this.props.children);
-        return (
-            <div className="weteach">
-              {/*<FacebookLogin appId="267768116929978" autoLoad={true} fields="name,email,picture"></FacebookLogin>*/}
-              <SiteHeader></SiteHeader>
-              <MuiThemeProvider>
-                {this.props.children}
-              </MuiThemeProvider>
-              <SiteFooter></SiteFooter>
-              <ul id="beian">
-                <li> &copy;&nbsp;WeTeach</li>
-                <li>沪ICP备 1111111</li>
-              </ul>
-            </div>
-        )
+      return (
+        <div className="weteach">
+          {/* <FacebookLogin appId="169495646797915" autoLoad={true} fields="name,email,picture"></FacebookLogin> */}
+          <SiteHeader></SiteHeader>
+          <MuiThemeProvider>
+            {this.props.children}
+          </MuiThemeProvider>
+          <SiteFooter></SiteFooter>
+          <ul id="beian">
+            <li> &copy;&nbsp;WeTeach</li>
+            <li>沪ICP备 1111111</li>
+          </ul>
+        </div>
+      )
     }
 }
 
 ReactDom.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <Route path="/sign-up" component={TSignUp}></Route>
-      <Route path="/sign-in" component={TSignIn}></Route>
-      <Route path="/teacher-homepage" component={THomepage}></Route>
-      <Route path="/complete-profile" component={TInfo}></Route>
-      <Route path="*" component={NotFound}></Route>
-    </Route>
-  </Router>
-  ), document.getElementById("app"));
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route path="/" component={App}>
+        <Route path="/sign-up" component={TSignUp}></Route>
+        <Route path="/sign-in" component={TSignIn}></Route>
+        <Route path="/teacher-homepage" component={THomepage}></Route>
+        <Route path="/complete-profile" component={TInfo}></Route>
+        <Route path="/active-email" name="activeEmail" component={ActivateEmail}></Route>
+        <Route path="/input-new-email" component={InputNewEmail}></Route>
+        <Route path="/forget-password" component={ForgetPassword}></Route>
+        <Route path="/input-new-password" component={TInputNewPassword}></Route>
+        <Route path="*" component={NotFound}></Route>
+      </Route>
+    </Router>
+  </Provider>
+), document.getElementById("app"));
