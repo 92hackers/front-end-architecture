@@ -499,9 +499,9 @@ class TInfoClass extends React.Component {
 
   componentWillMount () {
 
-    // if (!this.props.token) {
-    //   browserHistory.push("/sign-in");
-    // }
+    if (!this.props.token) {
+      browserHistory.push("/sign-in");
+    }
 
   }
 
@@ -749,9 +749,9 @@ class TInfoClass extends React.Component {
   componentDidMount () {
     var self = this;
 
-    // if (!this.props.token) {
-    //   return;
-    // }
+    if (!this.props.token) {
+      return;
+    }
 
     self.countryRequest = apis.TCountryList("",
         { "Authorization": self.props.token},

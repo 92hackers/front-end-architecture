@@ -56,7 +56,7 @@ module.exports = {
 	},
   plugins: process.env.NODE_ENV === 'production' ? [
 		new ExtractTextPlugin("css/[name].css"),
-		// new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify("development") }}),
+		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify(process.env.NODE_ENV) }}),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
