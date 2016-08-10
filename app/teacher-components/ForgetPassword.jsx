@@ -15,7 +15,8 @@ class ForgetPassword extends React.Component {
     var email = document.getElementById("forget-password-email-box").value;
 
     if (!!email.length) {
-      api.TReqReset(email, "", "",
+      console.log(email);
+      api.TReqReset({email: email}, "", "",
       (resp) => {
         if (resp.success) {
           alert("we have already send an email to your email box, you can click the link in it to input your new password");

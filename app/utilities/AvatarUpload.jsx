@@ -34,6 +34,8 @@ class AvatarUpload extends React.Component {
       console.log("error crop.");
       return;
     } else {
+      console.log(this.refs.cropper);
+      console.log(this.refs.cropper.getCroppedCanvas());
       let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL();
 
       reqwest({
@@ -64,7 +66,6 @@ class AvatarUpload extends React.Component {
         onTouchTap={this.handleClose.bind(this)}
       />,
       <FlatButton
-        id="submitEdu"
         label="Set new profile picture"
         primary={true}
         onTouchTap={this.uploadToServer.bind(this)}

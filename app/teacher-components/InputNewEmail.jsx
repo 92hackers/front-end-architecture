@@ -21,8 +21,12 @@ class InputNewEmailClass extends React.Component {
 
     var email = document.getElementById("email-address").value;
 
+
     if (!!email.length) {
-      api.TNewEmail(email,
+      var data = {
+        email: email
+      };
+      api.TNewEmail(data,
         {"Authorization": this.props.token},
         "",
         (resp) => {

@@ -1,51 +1,76 @@
 // teacher's homepage.
 
 import React from 'react';
-import {Tabs, Tab} from 'material-ui/Tabs';
-import Day from '../utilities/Day';
-import Week from '../utilities/Week';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import apis from '../network/api';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
-class THomepage extends React.Component {
+
+
+class WaitForInterview extends React.Component {
+
+  constructor (props) {
+    super (props);
+  }
+
+  render () {
+    return (
+      <div className="wait-for-interview text-center">
+        <h1 style={{marginBottom: "40px", color: "#999"}}>Your interview scheduled on: </h1>
+        <h2 className="interview-time">{this.props.interviewTime}</h2>
+      </div>
+    )
+  }
+}
+
+
+class THomepageClass extends React.Component {
 
   constructor (props) {
     super (props);
     this.state = {
       profile: {
-        additional: "nice to meet you.",
-        avatar: "http://oawkdrros.bkt.clouddn.com/FhojT9HisVwUQyJF9C1O7Z-KXvWZ",
-        eduexp: [
-          {
-            degree: "bachelor",
-            institution: "usst",
-            major: "CS",
-            timefrom: "1992",
-            timeto: "1994"
-          }
-        ],
-        email: "cy476571@gmail.com",
-        experience: "more than 15 years",
-        firstname: "Jacky",
-        lastname: "chen",
-        gender: "female",
-        intro: "i well be good english teacher.",
-        nationality: "Australia",
-        "residence_c": "China",
-        "residence_n": "Guiyang",
-        "residence_p": "Guizhou",
-        status: 1,
-        style: "happy, kind, easy-going",
-        "tel_code": "86",
-        "tel_num": "15221455061",
-        timezone: "111",
-        whyteach: "just love it."
+        email: "",
+        status: 0,
+        interview: "",
+        "timezone_name": "",
+        nation: "",
+        country: "",
+        region: "",
+        city: "",
+        nationality: "",
+        timezone: "",
+        "timezone_offset": "",
+        experience: "",
+        eduexp: [],
+        "residence_n": "",
+        "residence_p": "",
+        "residence_c": "",
+        "firstname": "",
+        lastname: "",
+        gender: 0,
+        "tel_code": "",
+        "tel_num": "",
+        avatar: "",
+        intro: "",
+        style: "",
+        whyteach: "",
+        additional: ""
       }
     };
+  }
+
+  componentWillMount () {
+
+    if (!this.props.token) {
+      browserHistory.push("/sign-in");
+    }
+
   }
 
   render () {
@@ -63,33 +88,56 @@ class THomepage extends React.Component {
 
     var genderIcon = "";
 
-    genderIcon = profile.gender === "female" ? <i className="fa fa-venus"></i> : <i className="fa fa-mars"></i>;
+    //map gender to number: 0--female,   1--male.
+
+    genderIcon = profile.gender === 0 ? <i className="fa fa-venus"></i> : <i className="fa fa-mars"></i>;
+
+    var teachingExperience = "";
+
+    switch (profile.experience) {
+      case 3 :
+      teachingExperience = "More than 15 years";
+      break;
+      case 2 :
+      teachingExperience = "Between 5 to 15 years";
+      break;
+      case 1 :
+      teachingExperience = "Less than 5 years";
+      break;
+    }
+
+    var DashboardComponent = "";
+    if (profile.status === 3 || profile.status === 5) {
+      DashboardComponent = <WaitForInterview interviewTime={profile.interview}></WaitForInterview>;
+    } else if (profile.staus === 10) {
+      DashboardComponent = <h1 className="text-center">Congratulations! you passed interview, now, you can schedule courses for little children.</h1>
+    }
 
     return (
       <div className="t-homepage">
-        <header className="t-homepage-header">
+        {/* <header className="t-homepage-header">
           <div className="container">
-            <div className="row">
-              <AppBar
-              title="WeTeach"
-              style={appbarStyles}
-              iconElementRight={
-                <IconMenu
-                iconButtonElement={
-                  <IconButton><MoreVertIcon /></IconButton>
-                }
-                targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                <MenuItem style={menuItemStyles} primaryText="Settings" />
-                <MenuItem style={menuItemStyles} primaryText="Help" />
-                <MenuItem style={menuItemStyles} primaryText="Sign out" />
-                </IconMenu>
-              }
-              />
-            </div>
+          <div className="row">
+          <AppBar
+          title="WeTeach"
+          style={appbarStyles}
+          iconElementRight={
+          <IconMenu
+          iconButtonElement={
+          <IconButton><MoreVertIcon /></IconButton>
+          }
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          >
+          <MenuItem style={menuItemStyles} primaryText="Settings" />
+          <MenuItem style={menuItemStyles} primaryText="Help" />
+          <MenuItem style={menuItemStyles} primaryText="Sign out" />
+          </IconMenu>
+          }
+          />
           </div>
-        </header>
+          </div>
+        </header> */}
         <main className="container">
           <div className="row">
             <div className="col-3">
@@ -97,25 +145,18 @@ class THomepage extends React.Component {
                 <img src={profile.avatar} alt="profile avatar"/>
               </div>
               <div className="name-gender">
-              <h2 className="profile-name">{profile.firstname} {profile.lastname} <span className="gender-icon">{genderIcon}</span></h2>
+                <h2 className="profile-name">{profile.firstname} {profile.lastname} <span className="gender-icon">{genderIcon}</span></h2>
               </div>
               <hr/>
               <ul className="profile-data">
-                <li><span className="profile-icon"><i className="fa fa-globe"></i></span><span className="nationality">{profile["nationality"]}</span></li>
-                <li><span className="profile-icon"><i className="fa fa-map-marker"></i></span><span className="location-country">{profile["residence_c"]}</span></li>
-                <li><span className="profile-icon"><i className="fa fa-envelope-o"></i></span><span className="email">{profile.email}</span></li>
-                <li><span className="profile-icon"><i className="fa fa-pencil"></i></span><span className="teaching-experience">{profile.experience}</span></li>
+                <li><span className="profile-icon"><i className="fa fa-globe"></i></span><span className="profile-meta-data">{profile["nation"]}</span></li>
+                <li><span className="profile-icon"><i className="fa fa-map-marker"></i></span><span className="profile-meta-data">{profile["country"]}</span></li>
+                <li><span className="profile-icon"><i className="fa fa-envelope-o"></i></span><span className="profile-meta-data">{profile.email}</span></li>
+                <li><span className="profile-icon"><i className="fa fa-pencil"></i></span><span className="profile-meta-data">{teachingExperience}</span></li>
               </ul>
             </div>
             <div className="col-9">
-              <Tabs initialSelectedIndex={1}>
-                <Tab label="Day">
-                  <Day></Day>
-                </Tab>
-                <Tab label="Week">
-                  <Week></Week>
-                </Tab>
-              </Tabs>
+              {DashboardComponent}
             </div>
           </div>
         </main>
@@ -126,29 +167,42 @@ class THomepage extends React.Component {
   componentDidMount () {
     var self = this;
 
+    if (!this.props.token) {
+      return;
+    }
+
     var profileRequest = apis.TGetProfile("",
-    { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-" },
+    { "Authorization": self.props.token },
     "",
     (resp) => {
-      console.log(resp)
       if (resp.success) {
         self.setState({
-          // profile: resp.data
+          profile: resp.data
         });
       } else {
         console.log("get data error.");
       }
     },
     (err) => {
-      console.log("get data error.");
+      console.log("network is busy, please try again later");
     }
   );
 }
 
-componentWillUnmount () {
-  profileRequest.abort();
-}
+  componentWillUnmount () {
+    // profileRequest.abort();
+  }
 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.addToken.token
+  }
+}
+
+const THomepage = connect(
+  mapStateToProps
+)(THomepageClass);
 
 export default THomepage;

@@ -14,8 +14,10 @@ import {Typeahead} from 'react-typeahead';
 import AvatarUpload from '../utilities/AvatarUpload';
 import TAvatar from './TAvatar';
 import apis from '../network/api';
+import {browserHistory} from 'react-router';
+import {connect} from 'react-redux';
 
-class TInfo extends React.Component {
+class TInfoClass extends React.Component {
 
   constructor (props) {
     super (props);
@@ -215,11 +217,12 @@ class TInfo extends React.Component {
     console.log(data);
 
     var postInfoRequest = apis.TUpdateProfile(data,
-        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        { "Authorization": self.props.token},
         "",
         (resp) => {
             if (resp.success) {
                 console.log(resp);
+                browserHistory.push("/teacher-homepage");
             } else {
                 console.log(resp);
                 alert("data post error, try again later.");
@@ -306,7 +309,7 @@ class TInfo extends React.Component {
       }
 
       self.cityListRequest = apis.TCityList("",
-          { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+          { "Authorization": self.props.token},
           regionId,
           (resp) => {
               if (resp.success) {
@@ -337,7 +340,7 @@ class TInfo extends React.Component {
       }
     }
     var regionListRequest = apis.TRegionList("",
-        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        { "Authorization": self.props.token},
         countryCode,
         (resp) => {
             if (resp.success) {
@@ -491,6 +494,14 @@ class TInfo extends React.Component {
     this.setState({
         eduListItems: tmp
     });
+
+  }
+
+  componentWillMount () {
+
+    // if (!this.props.token) {
+    //   browserHistory.push("/sign-in");
+    // }
 
   }
 
@@ -738,8 +749,12 @@ class TInfo extends React.Component {
   componentDidMount () {
     var self = this;
 
+    // if (!this.props.token) {
+    //   return;
+    // }
+
     self.countryRequest = apis.TCountryList("",
-        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        { "Authorization": self.props.token},
         "",
         (resp) => {
             if (resp.success) {
@@ -755,7 +770,7 @@ class TInfo extends React.Component {
     );
 
     self.timezoneRequest = apis.TTimezone("",
-        { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
+        { "Authorization": self.props.token},
         "",
         (resp) => {
             console.log(resp);
@@ -860,7 +875,7 @@ class TInfo extends React.Component {
     }
 
     this.interviewDateTimeRequest = apis.TInterview("",
-    { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-" },
+    { "Authorization": self.props.token },
     defaultTimezoneId,
     (resp) => {
       if (resp.success) {
@@ -919,5 +934,15 @@ class TInfo extends React.Component {
     // this.cityListRequest.request.abort();
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.addToken.token
+  }
+}
+
+const TInfo = connect(
+  mapStateToProps
+)(TInfoClass);
 
 export default TInfo;

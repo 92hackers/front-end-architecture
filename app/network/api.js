@@ -96,6 +96,13 @@ var apis = [
       queryParam: true,           //  plus active code behind it.
       method: "get"
     }
+  },
+  {
+    name: "TReset",
+    options: {
+      api: "user/reset",
+      method: "post"
+    }
   }
 ];
 

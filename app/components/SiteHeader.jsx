@@ -16,12 +16,6 @@ class SiteHeader extends React.Component {
         <div className="container">
           <span className="brand"><Link to={`/`}>homepage</Link></span>
           <ul className="header-item-right">
-            <li>
-              <a href="javascript:;">微信服务号</a>
-            </li>
-            <li>
-              <a href="javascript:;">免费试听课</a>
-            </li>
             <li className="button-wrap">
               <Link to={`/sign-in`} className="sign-in button">Sign in</Link>
             </li>

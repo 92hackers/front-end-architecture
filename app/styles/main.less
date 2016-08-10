@@ -147,6 +147,8 @@ body {
 .header-item-right {
   float: right;
   display: inline-block;
+  padding-top: 13px;
+  padding-bottom: 13px;
 }
 
 .header-item-right {
@@ -157,6 +159,10 @@ body {
       color: #fff;
       padding: 20px;
       display: inline-block;
+      &:hover {
+        color: @teacher_base;
+        background-color: #fff;
+      }
     }
   }
 }
@@ -322,4 +328,23 @@ form {
 .t-activate-email .fa-check-circle {
   font-size: 50px;
   color: @teacher_base;
+}
+.verify-your-email {
+  h1 {
+    height: 70px;
+  }
+  .fa-check-circle {
+    font-size: 50px;
+    color: @teacher_base;
+    margin-right: 10px;
+  }
+}
+.t-homepage {
+  .profile-data {
+    .profile-meta-data {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }

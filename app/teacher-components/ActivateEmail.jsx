@@ -55,12 +55,18 @@ class ActivateEmailClass extends React.Component {
 }
 
   render () {
+
+    const buttonStyles = {
+      marginLeft: "10px",
+      marginRight: "10px",
+    };
+
     return (
       <div className="t-activate-email">
         <p><i className="fa fa-check-circle"></i> We have already sended an email to your registered email address,</p>
         <p>Please check your email for the verification link.</p>
-        <p>Didn't receive the email yet?</p>
-        <div>You can: <RaisedButton label="Resend the email" onClick={this.handleResendClick.bind(this)}></RaisedButton> or <RaisedButton label="Change the email address" onClick={this.handleChangeClick.bind(this)}></RaisedButton></div>
+        <p style={{marginTop: "50px"}}>Didn't receive the email yet?</p>
+        <div style={{marginTop: "20px"}}>You can: <RaisedButton style={buttonStyles} label="Resend the email" onClick={this.handleResendClick.bind(this)}></RaisedButton> or <RaisedButton style={buttonStyles} label="Change the email address" onClick={this.handleChangeClick.bind(this)}></RaisedButton></div>
       </div>
     )
   }

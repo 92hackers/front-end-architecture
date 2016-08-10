@@ -19,43 +19,53 @@ class TInputNewPassword extends React.Component {
     e.preventDefault();
 
     var self = this;
-    var password = document.getElementsByClassName("new-password")[0].value;
-    var rePassword = document.getElementsByClassName("confirm-password")[0].value;
+    var password = document.getElementById("new-password").value;
+    var rePassword = document.getElementById("confirm-password").value;
 
-    var token = this.location.query.token;
+    var resetToken = this.props.location.query.token;
 
      // TODO: get reset password token from url.
 
-    if (password === rePassword) {
-      api.TReqReset(password, "", "",
-      (resp) => {
-        if (resp.success) {
-          self.setState({
-            notification: "reset password successfully! wait to reload."
-          }, () => {
-            self.refs.notification.handleNotificationOpen();
-          });
-          var timeId = setTimeout(() => {
-            clearTimeout(timeId);
-            browserHistory.push("/sign-in");
-          }, 4100);
-        } else {
-          alert("some wrong, please try again later.");
-        }
-      },
-      (err) => {
-        console.log(err);
-        alert("network is busy, please try again later.");
-      }
-    );
+     if (!!password || !!rePassword) {
 
-    } else {
-      self.setState({
-        notification: "please input correct passwords"
-      }, () => {
-        self.refs.notification.handleNotificationOpen();
-      });
-    }
+       if (password === rePassword) {
+
+         let data = {
+           token: resetToken,
+           password: password
+         };
+
+         api.TReset(data, "", "",
+         (resp) => {
+           if (resp.success) {
+             self.setState({
+               notification: "reset password successfully! wait to reload."
+             }, () => {
+               self.refs.notification.handleNotificationOpen();
+             });
+             var timeId = setTimeout(() => {
+               clearTimeout(timeId);
+               browserHistory.push("/sign-in");
+             }, 4100);
+           } else {
+             alert("some wrong, please try again later.");
+           }
+         },
+         (err) => {
+           console.log(err);
+           alert("network is busy, please try again later.");
+         }
+       );
+     } else {
+       self.setState({
+         notification: "please input correct passwords"
+       }, () => {
+         self.refs.notification.handleNotificationOpen();
+       });
+     }
+   } else {
+       alert("please input your new password");
+     }
 
   }
 
@@ -63,9 +73,9 @@ class TInputNewPassword extends React.Component {
     return (
       <div className="t-input-new-password">
         <form>
-          <TextField className="new-password" type="password" floatingLabelText="new password"></TextField>
-          <TextField className="confirm-password" type="password" floatingLabelText="confirm password"></TextField>
-          <FlatButton floatingLabelText="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></FlatButton>
+          <TextField id="new-password" type="password" floatingLabelText="new password"></TextField>
+          <TextField id="confirm-password" type="password" floatingLabelText="confirm password"></TextField>
+          <FlatButton label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></FlatButton>
         </form>
         <Notification message={this.state.notification} ref="notification"></Notification>
       </div>

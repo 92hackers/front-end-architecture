@@ -22,6 +22,7 @@ import NotFound from './utilities/NotFound';
 import InputNewEmail from './teacher-components/InputNewEmail';
 import ForgetPassword from './teacher-components/ForgetPassword';
 import TInputNewPassword from './teacher-components/TInputNewPassword';
+import VerifyYourEmail from './teacher-components/VerifyYourEmail';
 import { Provider } from 'react-redux';
 import {createStore} from 'redux';
 import reducers from './reducers';
@@ -69,7 +70,8 @@ ReactDom.render((
         <Route path="/active-email" name="activeEmail" component={ActivateEmail}></Route>
         <Route path="/input-new-email" component={InputNewEmail}></Route>
         <Route path="/forget-password" component={ForgetPassword}></Route>
-        <Route path="/input-new-password" component={TInputNewPassword}></Route>
+        <Route path="/reset-password" component={TInputNewPassword}></Route>
+        <Route path="/activate-your-account" component={VerifyYourEmail}></Route>
         <Route path="*" component={NotFound}></Route>
       </Route>
     </Router>

@@ -1,4 +1,5 @@
 // server to static files.
+
 var fs = require("fs");
 var path = require("path");
 var express = require("express");
@@ -15,10 +16,6 @@ app.use("/", express.static(__dirname + "/build/css"));
 app.use("/imgs", express.static(__dirname + "/app/imgs"));
 app.use("/fonts", express.static(__dirname + "/build/fonts"));
 app.set("env", "development");
-
-app.get("*", (req, res) => {
-	return res.sendFile(__dirname + "/index.html");
-});
 
 
 app.use("/upload-to-qiniu", (req, res) => {
@@ -44,7 +41,6 @@ app.use("/upload-to-qiniu", (req, res) => {
 		extra.mimeType = "image/png";
 		return qiniu.io.put(token, "", avatarBuf, extra, (err, ret) => {
 			if (!err) {
-				console.log(ret.key);
 				var url = qiniu.rs.makeBaseUrl("http://oawkdrros.bkt.clouddn.com", ret.key);
 				res.json({
 					err: 0,
@@ -63,6 +59,12 @@ app.use("/upload-to-qiniu", (req, res) => {
 
 	uploadImgBuf(buf);
 });
+
+
+app.get("*", (req, res) => {
+	return res.sendFile(__dirname + "/index.html");
+});
+
 
 var port = process.env.PORT || 3000;
 

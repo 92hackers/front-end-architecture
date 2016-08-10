@@ -19,7 +19,7 @@ class TSignInClass extends React.Component {
   }
 
   componentDidMount () {
-    console.log(this.props);
+    // some initial information.
   }
 
   handleSubmit(e) {
@@ -65,6 +65,10 @@ class TSignInClass extends React.Component {
     "",
     (resp) => {
       if (resp.success) {
+        if (!!resp.data.token) {
+          this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
+        }
+        console.log(resp.data.token);
         switch (resp.data.status) {
           case 1 :
             var queryParam = self.props.location.query.action;
@@ -94,9 +98,6 @@ class TSignInClass extends React.Component {
             break;
           default :
             browserHistory.push("/teacher-homepage");
-        }
-        if (!!resp.data.token) {
-          this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
         }
       } else {
         self.setState({

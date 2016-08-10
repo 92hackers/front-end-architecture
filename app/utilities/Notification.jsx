@@ -1,6 +1,7 @@
 /*
   props:
-    message
+    message,
+    duration.
   you could use this.refs.notification.handleNotificationOpen  to handle open the Snackbar.
 */
 
@@ -33,7 +34,7 @@ class Notification extends React.Component {
       <Snackbar
         open={this.state.open}
         message={this.props.message}
-        autoHideDuration={4000}
+        autoHideDuration={this.props.duration || 4000}
         onRequestClose={this.handleRequestClose.bind(this)}
       />
     )
