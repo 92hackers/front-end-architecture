@@ -15,7 +15,7 @@ class NotFound extends React.Component {
 
     return (
       <section style={styles} className="site-not-found">
-        <h1 className="text-center">Page you are viewing is not found.</h1>
+        <h1 className="text-center">Page you are going to view is not found.</h1>
       </section>
     )
   }

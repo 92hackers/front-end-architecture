@@ -544,11 +544,13 @@ class TInfoClass extends React.Component {
 
     const actions = [
       <RaisedButton
+        className="dialog-button"
         label="Cancel"
         default={true}
         onTouchTap={this.handleDialogClose.bind(this)}
       />,
       <RaisedButton
+        className="dialog-button"
         id="submitEdu"
         label="Add"
         primary={true}
@@ -558,17 +560,20 @@ class TInfoClass extends React.Component {
 
     const updateActions = [
       <RaisedButton
+        className="dialog-button"
         label="Delete"
         default={true}
         onTouchTap={this.handleEduExpDel.bind(this)}
         style={{ float: "left" }}
       />,
       <RaisedButton
+        className="dialog-button"
         label="Cancel"
         default={true}
         onTouchTap={this.handleUpdateDiaClose.bind(this)}
       />,
       <RaisedButton
+        className="dialog-button"
         id="submitEdu"
         label="Update"
         primary={true}
@@ -595,7 +600,7 @@ class TInfoClass extends React.Component {
 
     return (
       <div className="t-info">
-        <h1 className="t-info-caption text-center">Please complete your personal information</h1>
+        <h1 className="t-info-caption text-center">Please complete your personal profile</h1>
         <form className="t-info-form">
           <Typeahead options={countriesList} maxVisible={5} placeholder="Your Nationality" customClasses={{input: "nationality"}}></Typeahead>
           <br/>
@@ -607,25 +612,25 @@ class TInfoClass extends React.Component {
           <br/>
           <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
           <br/>
-          <RaisedButton id="upload-profile-picture" label="Upload profile picture" labelPosition="before" style={{width: "100%"}}>
+          <RaisedButton id="upload-profile-picture" label="Upload Profile Picture" labelPosition="before" style={{width: "100%"}}>
             <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
           </RaisedButton>
           <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           <br/>
-          <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadRegionList.bind(this)} customClasses={{input: "country"}}></Typeahead>
-          <Typeahead options={regionList} maxVisible={5} placeholder="Location region" disabled={this.state.regionInputDisabled} onOptionSelected={this.loadCityList.bind(this)} customClasses={{input: "region"}}></Typeahead>
-          <Typeahead options={cityList} maxVisible={5} placeholder="Location city" disabled={this.state.cityInputDisabled} customClasses={{input: "city"}}></Typeahead>
+          <Typeahead options={countriesList} maxVisible={5} placeholder="Location Country" onOptionSelected={this.loadRegionList.bind(this)} customClasses={{input: "country"}}></Typeahead>
+          <Typeahead options={regionList} maxVisible={5} placeholder="Location Region" disabled={this.state.regionInputDisabled} onOptionSelected={this.loadCityList.bind(this)} customClasses={{input: "region"}}></Typeahead>
+          <Typeahead options={cityList} maxVisible={5} placeholder="Location City" disabled={this.state.cityInputDisabled} customClasses={{input: "city"}}></Typeahead>
           <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} onOptionSelected={this.changeTimezone.bind(this)} customClasses={{input: "timezone"}}></Typeahead>
           <br/>
-          <SelectField id="teach-experience" value={this.state.value} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching experience">
+          <SelectField id="teach-experience" value={this.state.value} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
             <MenuItem style={menuItemStyle} value={1} primaryText="More than 15 years" />
             <MenuItem style={menuItemStyle} value={2} primaryText="Between 5 to 15 years" />
             <MenuItem style={menuItemStyle} value={3} primaryText="Less than 5 years" />
           </SelectField>
           <br/>
-          <TextField id="nation-code" floatingLabelText="code" style={phoneStyle.code}></TextField><TextField id="phone-num" floatingLabelText="Phone number" style={phoneStyle.phone}></TextField>
+          <TextField id="nation-code" floatingLabelText="Code" style={phoneStyle.code}></TextField><TextField id="phone-num" floatingLabelText="Phone Number" style={phoneStyle.phone}></TextField>
           <br/>
-          <p id="education-experience-caption">Education experience</p>
+          <p id="education-experience-caption">Education Background</p>
           <Table style={eduTableStyle} onRowSelection={this.showFullDetail.bind(this)}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
@@ -646,8 +651,8 @@ class TInfoClass extends React.Component {
               }
             </TableBody>
           </Table>
-          <RaisedButton id="add-education" type="button" label="Add" style={{width: "100%"}} onTouchTap={this.handleDialogOpen.bind(this)}></RaisedButton>
-          <Dialog title="Add your education experience" actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
+          <RaisedButton id="add-education" type="button" label="Add" style={{width: "100%", marginTop: "20px"}} onTouchTap={this.handleDialogOpen.bind(this)}></RaisedButton>
+          <Dialog title="Add Your Education Experience" actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
             <div className="t-edu-form-wrap">
               <TextField id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
               <br/>
@@ -660,7 +665,7 @@ class TInfoClass extends React.Component {
               <TextField id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
             </div>
           </Dialog>
-          <Dialog title="Modify your education experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
+          <Dialog title="Modify Your Education Experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
             <div className="t-edu-form-wrap">
               <TextField id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
               <br/>
@@ -674,17 +679,17 @@ class TInfoClass extends React.Component {
             </div>
           </Dialog>
           <br/>
-          <TextField id="self-intro" multiLine={true} rows={5} type="textarea" floatingLabelText="Self introduction"></TextField>
+          <TextField id="self-intro" multiLine={true} rows={5} type="textarea" floatingLabelText="Personal Introduction"></TextField>
           <br/>
-          <TextField id="teach-style" multiLine={true} rows={5} type="textarea" floatingLabelText="Teaching style"></TextField>
+          <TextField id="teach-style" multiLine={true} rows={5} type="textarea" floatingLabelText="Teaching Style"></TextField>
           <br/>
-          <TextField id="why-a-teacher" multiLine={true} rows={5} type="textarea" floatingLabelText="Why you want to be a teacher?"></TextField>
+          <TextField id="why-a-teacher" multiLine={true} rows={5} type="textarea" floatingLabelText="Why do you want to be a WeTeach Teacher?"></TextField>
           <br/>
-          <TextField id="addition" multiLine={true} rows={5} type="textarea" floatingLabelText="Addition"></TextField>
+          <TextField id="addition" multiLine={true} rows={5} type="textarea" floatingLabelText="Additional Remarks"></TextField>
           <br/>
           <br/>
           <br/>
-          <p className="book-the-view" style={{color: "#ccc"}}>Booking the online Interview</p>
+          <p className="book-the-view" style={{color: "#ccc"}}>Schedule Video Interview</p>
           <br/>
           <SelectField value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
             {
@@ -704,7 +709,7 @@ class TInfoClass extends React.Component {
           <br/>
           <br/>
           <br/>
-          <RaisedButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></RaisedButton>
+          <RaisedButton type="submit" label="Save" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></RaisedButton>
         </form>
         <Snackbar
           open={this.state.notificationOpen}

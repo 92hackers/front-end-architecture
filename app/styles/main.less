@@ -311,9 +311,6 @@ form {
   width: 256px;
   margin: 0 auto;
 }
-#add-education {
-  margin-top: 20px !important;
-}
 .t-avatar img {
   width: 100%;
   max-width: 100%;
@@ -363,4 +360,9 @@ form {
 }
 .forget-password {
   .teacher-sign-in();
+}
+.dialog-button {
+  & + & {
+    margin-left: 20px;
+  }
 }
