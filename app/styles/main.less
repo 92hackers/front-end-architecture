@@ -136,6 +136,7 @@ body {
 }
 
 .site-header {
+  .appbar-box-shadow();
   position: fixed;
   top: 0;
   left: 0;
@@ -143,6 +144,32 @@ body {
   z-index: 1000;
   width: 100%;
   background-color: @teacher_base;
+  .header-item {
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+    &:hover {
+      .nav-border-line {
+        display: inline-block;;
+      }
+    }
+    & + .header-item {
+      margin-left: 20px;
+    }
+    .nav-border-line {
+      display: none;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      border-bottom: 2px solid #fff;
+    }
+    a {
+      display: inline-block;
+      padding: 20px 0;
+      color: #fff;
+    }
+  }
 }
 
 .header-item-right {
@@ -365,4 +392,7 @@ form {
   & + & {
     margin-left: 20px;
   }
+}
+.weteach-index {
+  .teacher-sign-in();
 }

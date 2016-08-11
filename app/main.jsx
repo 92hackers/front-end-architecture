@@ -6,7 +6,7 @@ import SiteFooter from './components/SiteFooter';
 import Index from './components/index/Index';
 import SignUp from './components/sign-up/SignUp';
 import ChildInfo from './components/sign-up/ChildInfo';
-import SignInUpHeader from './components/SignInUpHeader';
+// import SignInUpHeader from './components/SignInUpHeader';
 import HomepageHeader from './components/parent-homepage/HomepageHeader';
 import Homepage from './components/parent-homepage/Homepage';
 import SignIn from './components/sign-in/SignIn';
@@ -26,6 +26,7 @@ import VerifyYourEmail from './teacher-components/VerifyYourEmail';
 import { Provider } from 'react-redux';
 import {createStore} from 'redux';
 import reducers from './reducers';
+import TIndex from './teacher-components/TIndex';
 
 
 // tap event plugin initialization.
@@ -42,17 +43,26 @@ class App extends React.Component {
     }
 
     render () {
+
+      var userToken = store.getState().addToken.token;
+      var isUserLoggedIn = false;
+      console.log(userToken);
+
+      isUserLoggedIn = userToken ? true : false;
+
       return (
-        <div className="weteach">
+        <div className="weteach-root">
           {/* <FacebookLogin appId="169495646797915" autoLoad={true} fields="name,email,picture"></FacebookLogin> */}
-          <SiteHeader></SiteHeader>
           <MuiThemeProvider>
-            {this.props.children}
+            <SiteHeader isUserLoggedIn={isUserLoggedIn}></SiteHeader>
+          </MuiThemeProvider>
+          <MuiThemeProvider>
+            {this.props.children || <TIndex></TIndex>}
           </MuiThemeProvider>
           <SiteFooter></SiteFooter>
         </div>
       )
-    }
+      }
 }
 
 ReactDom.render((

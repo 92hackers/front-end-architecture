@@ -9,7 +9,9 @@ class TIndex extends React.Component {
 
   render () {
     return (
-
+      <div className="weteach-index text-center">
+        <h1>Welcome to weteach!</h1>
+      </div>
     )
   }
 }
