@@ -5,7 +5,7 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -417,7 +417,8 @@ class TInfoClass extends React.Component {
       this.setState({
          profilePictureSrc: reader.result
       }, () => {
-        this.refs.avatarUpload.handleOpen();        //  open the dialog.
+        console.log("handleOpen");
+        this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
       });
     };
     reader.readAsDataURL(files[0]);
@@ -499,9 +500,9 @@ class TInfoClass extends React.Component {
 
   componentWillMount () {
 
-    if (!this.props.token) {
-      browserHistory.push("/sign-in");
-    }
+    // if (!this.props.token) {
+    //   browserHistory.push("/sign-in");
+    // }
 
   }
 
@@ -542,12 +543,12 @@ class TInfoClass extends React.Component {
 
 
     const actions = [
-      <FlatButton
+      <RaisedButton
         label="Cancel"
         default={true}
         onTouchTap={this.handleDialogClose.bind(this)}
       />,
-      <FlatButton
+      <RaisedButton
         id="submitEdu"
         label="Add"
         primary={true}
@@ -556,18 +557,18 @@ class TInfoClass extends React.Component {
     ];
 
     const updateActions = [
-      <FlatButton
+      <RaisedButton
         label="Delete"
         default={true}
         onTouchTap={this.handleEduExpDel.bind(this)}
         style={{ float: "left" }}
       />,
-      <FlatButton
+      <RaisedButton
         label="Cancel"
         default={true}
         onTouchTap={this.handleUpdateDiaClose.bind(this)}
       />,
-      <FlatButton
+      <RaisedButton
         id="submitEdu"
         label="Update"
         primary={true}
@@ -606,9 +607,9 @@ class TInfoClass extends React.Component {
           <br/>
           <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
           <br/>
-          <FlatButton id="upload-profile-picture" label="Upload profile picture" labelPosition="before" style={{width: "100%"}}>
+          <RaisedButton id="upload-profile-picture" label="Upload profile picture" labelPosition="before" style={{width: "100%"}}>
             <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
-          </FlatButton>
+          </RaisedButton>
           <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           <br/>
           <Typeahead options={countriesList} maxVisible={5} placeholder="Location country" onOptionSelected={this.loadRegionList.bind(this)} customClasses={{input: "country"}}></Typeahead>
@@ -645,7 +646,7 @@ class TInfoClass extends React.Component {
               }
             </TableBody>
           </Table>
-          <FlatButton id="add-education" type="button" label="Add" style={{width: "100%"}} onTouchTap={this.handleDialogOpen.bind(this)}></FlatButton>
+          <RaisedButton id="add-education" type="button" label="Add" style={{width: "100%"}} onTouchTap={this.handleDialogOpen.bind(this)}></RaisedButton>
           <Dialog title="Add your education experience" actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
             <div className="t-edu-form-wrap">
               <TextField id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
@@ -703,7 +704,7 @@ class TInfoClass extends React.Component {
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></FlatButton>
+          <RaisedButton type="submit" label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></RaisedButton>
         </form>
         <Snackbar
           open={this.state.notificationOpen}
@@ -749,9 +750,9 @@ class TInfoClass extends React.Component {
   componentDidMount () {
     var self = this;
 
-    if (!this.props.token) {
-      return;
-    }
+    // if (!this.props.token) {
+    //   return;
+    // }
 
     self.countryRequest = apis.TCountryList("",
         { "Authorization": self.props.token},
@@ -941,8 +942,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const TInfo = connect(
-  mapStateToProps
-)(TInfoClass);
+const TInfo = connect(mapStateToProps)(TInfoClass);
 
 export default TInfo;

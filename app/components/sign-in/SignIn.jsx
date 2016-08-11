@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class SignIn extends React.Component {
 
@@ -26,8 +26,8 @@ class SignIn extends React.Component {
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="登录" primary={true} style={style}></FlatButton>
-          <FlatButton onClick={this.wechatLogin} primary={true} style={style}>微信登录</FlatButton>
+          <RaisedButton type="submit" label="登录" primary={true} style={style}></RaisedButton>
+          <RaisedButton onClick={this.wechatLogin} primary={true} style={style}>微信登录</RaisedButton>
         </form>
       </section>
     )

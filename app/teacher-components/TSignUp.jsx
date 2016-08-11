@@ -1,7 +1,7 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import apis from '../network/api';
 
@@ -107,19 +107,19 @@ class TSignUp extends React.Component {
     return (
       <div className="t-sign-up">
         <form>
-          <TextField id="t-first-name" type="text" floatingLabelText="First Name"></TextField>
+          <div className="clearfix">
+            <TextField className="left" style={{width: "40%"}} id="t-first-name" type="text" floatingLabelText="First Name"></TextField>
+            <TextField className="right" style={{width: "40%"}} id="t-last-name" type="text" floatingLabelText="Last Name"></TextField>
+          </div>
+          <TextField id="t-email" type="email" floatingLabelText="Email Address"></TextField>
           <br/>
-          <TextField id="t-last-name" type="text" floatingLabelText="Last Name"></TextField>
+          <TextField id="t-password" type="password" floatingLabelText="Password"></TextField>
           <br/>
-          <TextField id="t-email" type="email" floatingLabelText="email address"></TextField>
-          <br/>
-          <TextField id="t-password" type="password" floatingLabelText="password"></TextField>
-          <br/>
-          <TextField id="t-re-password" type="password" floatingLabelText="repeat password"></TextField>
+          <TextField id="t-re-password" type="password" floatingLabelText="Confirm Password"></TextField>
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="Sign Up" primary={true} style={style} onClick={this.handleSubmit.bind(this)}></FlatButton>
+          <RaisedButton type="submit" label="Sign up" primary={true} style={style} onClick={this.handleSubmit.bind(this)}></RaisedButton>
         </form>
         <Snackbar
           open={this.state.open}
@@ -131,15 +131,5 @@ class TSignUp extends React.Component {
     )
   }
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     token: state.addToken.token
-//   }
-// }
-//
-// const TSignUp = connect(
-//   mapStateToProps
-// )(TSignUpClass);
 
 export default TSignUp;

@@ -103,6 +103,13 @@ var apis = [
       api: "user/reset",
       method: "post"
     }
+  },
+  {
+    name: "FileUploadToken",          //  need  authorization.
+    options: {
+      api: "file/token",
+      method: "get"
+    }
   }
 ];
 

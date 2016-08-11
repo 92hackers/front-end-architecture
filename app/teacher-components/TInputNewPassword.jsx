@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import Notification from '../utilities/Notification';
 import api from '../network/api';
@@ -75,7 +75,7 @@ class TInputNewPassword extends React.Component {
         <form>
           <TextField id="new-password" type="password" floatingLabelText="new password"></TextField>
           <TextField id="confirm-password" type="password" floatingLabelText="confirm password"></TextField>
-          <FlatButton label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></FlatButton>
+          <RaisedButton label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></RaisedButton>
         </form>
         <Notification message={this.state.notification} ref="notification"></Notification>
       </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import DatePicker from 'material-ui/DatePicker';
 
@@ -47,7 +47,7 @@ class ChildInfo extends React.Component {
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="提交" className="submit-form" primary={true} onClick={this.handleSubmit}></FlatButton>
+          <RaisedButton type="submit" label="提交" className="submit-form" primary={true} onClick={this.handleSubmit}></RaisedButton>
         </form>
       </div>
     )

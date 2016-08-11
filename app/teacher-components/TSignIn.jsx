@@ -1,7 +1,8 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
 import Snackbar from 'material-ui/Snackbar';
 import apis from '../network/api';
 import { connect } from 'react-redux';
@@ -132,23 +133,24 @@ class TSignInClass extends React.Component {
 
   render () {
     var style = {
-      width: "100%"
+      width: "100%",
+      marginBottom: "10px"
     };
 
     return (
       <div className="teacher-sign-in">
         <form action="/teacher-sign-in" method="post" className="sign-in-form">
-          <TextField id="t-email" type="email" floatingLabelText="email address"></TextField>
+          <TextField id="t-email" type="email" floatingLabelText="Email Address"></TextField>
           <br/>
-          <TextField id="t-password" type="password" floatingLabelText="password"></TextField>
+          <TextField id="t-password" type="password" floatingLabelText="Password"></TextField>
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></FlatButton>
-          <FlatButton label="sign in with facebook" style={style}></FlatButton>
-          <FlatButton label="sign in with google" style={style}></FlatButton>
-          <FlatButton label="sign in with twitter" style={style}></FlatButton>
-          <FlatButton label="forget password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></FlatButton>
+          <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></RaisedButton>
+          <RaisedButton label="Forget your password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></RaisedButton>
+          <RaisedButton icon={<FontIcon className="fa fa-facebook-official"></FontIcon>} label="Sign in with Facebook" style={style}></RaisedButton>
+          <RaisedButton icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>
+          <RaisedButton icon={<FontIcon className="fa fa-linkedin"></FontIcon>} label="Sign in with Linkedin" style={style}></RaisedButton>
         </form>
         <Snackbar
           open={this.state.open}

@@ -13,13 +13,12 @@ class SiteFooter extends React.Component {
     return (
       <footer>
         <ul className="footer-items">
-          <li className="item"><Link to="/about">关于我们</Link></li>
-          <li className="item"><Link to="/contact">联系我们</Link></li>
-          <li className="item"><Link to="/join">加入我们</Link></li>
-          <li className="item"><Link to="/business">商业合作</Link></li>
-          <li className="item"><Link to="/questions">常见问题</Link></li>
+          <li className="item"><Link to="/about">About Us</Link></li>
+          <li className="item"><a href="mailto:teacher@weteach.info">Contact Us</a></li>
+          <li className="item"><Link to="/join">Join Us</Link></li>
+          <li className="item"><Link to="/business">Business</Link></li>
+          <li className="item"><Link to="/questions">Help</Link></li>
         </ul>
-        <a href="http://teacher.weteach.info" id="teach-in-weteach">Teach in Weteach</a>
       </footer>
     )
   }

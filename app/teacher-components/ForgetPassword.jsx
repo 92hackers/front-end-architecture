@@ -37,10 +37,13 @@ class ForgetPassword extends React.Component {
   render () {
     return (
       <div className="forget-password">
-        <EmailInputBox id="forget-password-email-box" handle={this.handleSubmit.bind(this)}></EmailInputBox>
+        <h1 className="text-center">Enter your email address</h1>
+        <h1 className="text-center">and we will send you a link to reset your password</h1>
+        <EmailInputBox submitText="Send password reset email" id="forget-password-email-box" handle={this.handleSubmit.bind(this)}></EmailInputBox>
       </div>
     )
   }
+
 }
 
 export default ForgetPassword;

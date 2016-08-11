@@ -2,7 +2,7 @@
 
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class SignUp extends React.Component {
 
@@ -20,7 +20,7 @@ class SignUp extends React.Component {
         <form action="/submit-form">
           <TextField floatingLabelText="手机号码" type="text"></TextField>
           <br/>
-          <FlatButton label="获取验证码" id="captcha"></FlatButton>
+          <RaisedButton label="获取验证码" id="captcha"></RaisedButton>
           <br/>
           <TextField floatingLabelText="验证码" type="text"></TextField>
           <br/>
@@ -30,7 +30,7 @@ class SignUp extends React.Component {
           <br/>
           <br/>
           <br/>
-          <FlatButton type="submit" label="注册" className="submit-form" primary={true} onClick={this.handleSubmit}></FlatButton>
+          <RaisedButton type="submit" label="注册" className="submit-form" primary={true} onClick={this.handleSubmit}></RaisedButton>
         </form>
       </section>
     )

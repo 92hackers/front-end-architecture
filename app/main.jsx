@@ -51,8 +51,7 @@ class App extends React.Component {
           </MuiThemeProvider>
           <SiteFooter></SiteFooter>
           <ul id="beian">
-            <li> &copy;&nbsp;WeTeach</li>
-            <li>沪ICP备 1111111</li>
+            <li> &copy;&nbsp;2016 WeTeach. All Rights Reserved</li>
           </ul>
         </div>
       )

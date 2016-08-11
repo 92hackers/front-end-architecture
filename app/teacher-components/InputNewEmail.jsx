@@ -49,7 +49,7 @@ class InputNewEmailClass extends React.Component {
   render () {
     return (
       <div className="input-new-email">
-        <EmailInputBox id="email-address" handle={this.handleSubmit.bind(this)}></EmailInputBox>
+        <EmailInputBox submitText="Send activation email" id="email-address" handle={this.handleSubmit.bind(this)}></EmailInputBox>
       </div>
     )
   }

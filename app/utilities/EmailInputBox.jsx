@@ -7,7 +7,7 @@
 
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 
 class EmailInputBox extends React.Component {
@@ -19,8 +19,10 @@ class EmailInputBox extends React.Component {
   render () {
     return (
       <form>
-        <TextField id={this.props.id} type="email" floatingLabelText="email address"></TextField>
-        <FlatButton type="submit" label="Submit" primary={true} onClick={this.props.handle} style={{width: "100%"}}></FlatButton>
+        <TextField id={this.props.id} type="email" floatingLabelText="Enter your email address"></TextField>
+        <br/>
+        <br/>
+        <RaisedButton type="submit" label={this.props.submitText} primary={true} onClick={this.props.handle} style={{width: "100%"}}></RaisedButton>
       </form>
     )
   }
