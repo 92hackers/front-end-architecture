@@ -50,9 +50,6 @@ class App extends React.Component {
             {this.props.children}
           </MuiThemeProvider>
           <SiteFooter></SiteFooter>
-          <ul id="beian">
-            <li> &copy;&nbsp;2016 WeTeach. All Rights Reserved</li>
-          </ul>
         </div>
       )
     }
