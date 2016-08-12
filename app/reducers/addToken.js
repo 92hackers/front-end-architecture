@@ -4,6 +4,10 @@ const addToken = (state = {}, action) => {
       return {
         token: action.token
       }
+    case 'REMOVE_TOKEN':
+      return {
+        token: ""
+      }
     default:
       return state
   }

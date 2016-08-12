@@ -2,19 +2,24 @@
 
 import React from 'react';
 import {Link} from 'react-router';
-// import FontIcon from 'material-ui/FontIcon';
+import {browserHistory} from 'react-router';
 import {List, ListItem} from 'material-ui/List';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import { connect } from 'react-redux';
+import removeToken from '../actions/removeToken.js';
+import dashboardDisplay from '../actions/dashboardDisplay.js';
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 
-
-class SiteHeader extends React.Component {
+class SiteHeaderClass extends React.Component {
 
   constructor (props) {
     super (props);
     this.state = {
-      open: false
+      open: false,
+      inviteDialogOpen: false
     };
   }
 
@@ -35,15 +40,56 @@ class SiteHeader extends React.Component {
 
   handleInvite (e) {
     e.preventDefault();
+    this.handleInviteDialogOpen();
   }
 
   handleSignOut (e) {
     e.preventDefault();
+    this.props.dispatch(removeToken());
+    browserHistory.push("/");
+  }
+
+  handleInviteDialogClose () {
+    this.setState({
+      inviteDialogOpen: false
+    });
+  }
+
+  handleInviteDialogOpen () {
+    this.setState({
+      inviteDialogOpen: true
+    });
+  }
+
+  handleProfileClick (e) {
+    e.preventDefault();
+    this.handleRequestClose();
+    browserHistory.push("/teacher-homepage");
+  }
+
+  handleSettingClick (e) {
+    e.preventDefault();
+    this.handleRequestClose();
+    this.props.dispatch(dashboardDisplay("setting"));
+  }
+
+  handleScheduleClick (e) {
+    e.preventDefault();
+    this.handleRequestClose();
+    this.props.dispatch(dashboardDisplay("schedule"));
   }
 
   render () {
 
     var isUserLoggedIn = this.props.isUserLoggedIn;
+
+    var inviteActions = [
+      <RaisedButton
+        label="OK"
+        primary={true}
+        onTouchTap={this.handleInviteDialogClose.bind(this)}
+      ></RaisedButton>
+    ];
 
     var dynamicComponent = "";
 
@@ -61,20 +107,30 @@ class SiteHeader extends React.Component {
               onRequestClose={this.handleRequestClose.bind(this)}
             >
               <List>
-                <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleRequestClose.bind(this)} />
-                <ListItem primaryText="Setting" leftIcon={<i className="fa fa-cogs"></i>} onTouchTap={this.handleRequestClose.bind(this)} />
-                <ListItem primaryText="Schedule" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleRequestClose.bind(this)} />
+                <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleProfileClick.bind(this)} />
+                <ListItem primaryText="Setting" leftIcon={<i className="fa fa-cogs"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
+                <ListItem primaryText="Schedule" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleScheduleClick.bind(this)} />
               </List>
             </Popover>
           </li>
-          <li className="header-item">
+          {/* <li className="header-item">
             <a href="javascript:;" onTouchTap={this.handleInvite.bind(this)}><i className="fa fa-user-plus"></i> Invite Friend</a>
             <span className="nav-border-line"></span>
-          </li>
+            TODO:   inviting friend not ready to first version.
+          </li> */}
           <li className="header-item">
             <a href="javascript:;" className="sign-out" onTouchTap={this.handleSignOut.bind(this)}><i className="fa fa-sign-out"></i> Sign out</a>
             <span className="nav-border-line"></span>
           </li>
+          <Dialog
+            title="Invite your friends to WeTeach"
+            actions={inviteActions}
+            modal={false}
+            open={this.state.inviteDialogOpen}
+            onRequestClose={this.handleInviteDialogClose.bind(this)}
+          >
+            your invite code is:  YAWEFAWEFAWEFAE999AWEF
+          </Dialog>
         </ul>
       );
     } else {
@@ -100,5 +156,7 @@ class SiteHeader extends React.Component {
     )
   }
 };
+
+var SiteHeader = connect()(SiteHeaderClass);
 
 export default SiteHeader;

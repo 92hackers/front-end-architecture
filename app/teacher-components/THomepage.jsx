@@ -5,11 +5,65 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import apis from '../network/api';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
+
+class SettingComp extends React.Component {
+
+  constructor (props) {
+    super (props);
+  }
+
+  handleSubmit (e) {
+    e.preventDefault();
+
+    var oldPassword = document.getElementById("old-password").value;
+    var newPassword = document.getElementById("new-password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
+
+    // if ()
+
+//   TODO: submit data to server to validate password.
+  }
+
+  render () {
+    return (
+      <section className="setting-dashboard dashboard">
+        <h1 className="text-center">Change Password</h1>
+        <form>
+          <TextField floatingLabelText="Old Password" id="old-password" type="password"></TextField>
+          <TextField floatingLabelText="New Password" id="new-password" type="password"></TextField>
+          <TextField floatingLabelText="Confirm Password" id="confirm-password" type="password"></TextField>
+          <br/>
+          <br/>
+          <RaisedButton onTouchTap={this.handleSubmit.bind(this)} label="Submit" primary={true} style={{width: "100%"}}></RaisedButton>
+        </form>
+      </section>
+    )
+  }
+}
+
+class ScheduleComp extends React.Component {
+
+  constructor (props) {
+    super (props);
+  }
+
+  // 稍等片刻   再上线。
+
+  render () {
+    return (
+      <section className="schedule-dashboard dashboard">
+        <h1 className="text-center">Upcoming!</h1>
+      </section>
+    )
+  }
+}
 
 
 class WaitForInterview extends React.Component {
@@ -107,10 +161,26 @@ class THomepageClass extends React.Component {
     }
 
     var DashboardComponent = "";
-    if (profile.status === 3 || profile.status === 5) {
-      DashboardComponent = <WaitForInterview interviewTime={profile.interview}></WaitForInterview>;
-    } else if (profile.staus === 10) {
-      DashboardComponent = <h1 className="text-center">Congratulations! you passed interview, now, you can schedule courses for little children.</h1>
+
+    var dynamicDashboardComp = this.props.dashboardComponent;
+
+    switch (profile.status) {
+      case 3:
+      case 5:
+        DashboardComponent = <WaitForInterview interviewTime={profile.interview}></WaitForInterview>;
+        break;
+      case 10:
+        switch (dynamicDashboardComp) {
+          case "setting":
+            DashboardComponent = <SettingComp></SettingComp>;
+            break;
+          case "schedule":
+            DashboardComponent = <ScheduleComp></ScheduleComp>;
+            break;
+          default:
+            DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
+        }
+        break;
     }
 
     return (
@@ -197,7 +267,8 @@ class THomepageClass extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.addToken.token
+    token: state.addToken.token,
+    dashboardComponent: state.dashboardDisplay.component
   }
 }
 

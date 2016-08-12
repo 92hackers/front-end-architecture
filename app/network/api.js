@@ -6,7 +6,7 @@ import reqwest from 'reqwest';
 var host = "";
 var apiVersion = "/v1/";
 
-var host = "http://api.weteach.test";
+var host = "http://api.yiyouabc.com";
 
 var apis = [
   {

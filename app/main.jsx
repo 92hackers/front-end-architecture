@@ -44,9 +44,10 @@ class App extends React.Component {
 
     render () {
 
+      console.log(store.getState());
+
       var userToken = store.getState().addToken.token;
       var isUserLoggedIn = false;
-      console.log(userToken);
 
       isUserLoggedIn = userToken ? true : false;
 
