@@ -2,8 +2,8 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
 import apis from '../network/api';
+import Notification from '../utilities/Notification';
 
 class TSignUp extends React.Component {
 
@@ -15,17 +15,22 @@ class TSignUp extends React.Component {
     };
   }
 
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
   handleSubmit (e) {
 
     var self = this;
     var errorMessage = "";
 
-    let event = e || e.event;
-    if (event.preventDefault) {
-      event.preventDefault();
-    } else if (event.cancelBubble) {
-      event.cancelBubble();
-    }
+    e.preventDefault();
 
     var firstName = document.getElementById("t-first-name").value;
     var lastName = document.getElementById("t-last-name").value;
@@ -34,25 +39,21 @@ class TSignUp extends React.Component {
     var rePasswordValue = document.getElementById("t-re-password").value;
 
     if (!firstName.length) {
-      errorMessage = "please input your firstname";
+      errorMessage = "Please Input Your Firstname";
     } else if (!lastName.length) {
-      errorMessage = "please input your lastname";
+      errorMessage = "Please Input Your Lastname";
     } else if (!emailValue.length) {
-      errorMessage = "please input your email address";
+      errorMessage = "Please Input Your Email Address";
     } else if (passwordValue !== rePasswordValue) {
-      errorMessage = "please input correct password!";
+      errorMessage = "Please Input Correct Password!";
     } else if (passwordValue.length < 6) {
-      errorMessage = "password should be more than 6 characters!";
+      errorMessage = "Password Should Be More Than 6 Characters!";
     } else if (passwordValue.length > 20) {
-      errorMessage = "password should be less than 20 characters!";
+      errorMessage = "Password Should Be Less Than 20 Characters!";
     }
 
     if (!!errorMessage.length) {
-      this.setState({
-        notification: errorMessage
-      }, () => {
-        this.handleTouchTap();
-      });
+      this.notify(errorMessage);
       return;
     }
 
@@ -69,35 +70,20 @@ class TSignUp extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          console.log(resp.data);
           browserHistory.push("/active-email");         //  jump to  Active your email notification page.
         } else {
           if (!!resp.data.email) {
-            self.setState({
-              notification: "this email address has already been registered"
-            }, () => {
-              self.handleTouchTap();
-            });
+            self.notify("This Email Address Has Already Been Registered");
             return;
           }
         }
+      },
+      (err) => {
+        self.notify("Network Is Busy, Please Try Again Later.");
       }
     )
-
     console.log(data);
   }
-
-  handleTouchTap (e) {
-    this.setState({
-      open: true,
-    });
-  };
-
-  handleRequestClose (e) {
-    this.setState({
-      open: false,
-    });
-  };
 
   render () {
     let style = {
@@ -121,12 +107,7 @@ class TSignUp extends React.Component {
           <br/>
           <RaisedButton type="submit" label="Sign up" primary={true} style={style} onClick={this.handleSubmit.bind(this)}></RaisedButton>
         </form>
-        <Snackbar
-          open={this.state.open}
-          message={this.state.notification}
-          autoHideDuration={4000}
-          onRequestClose={this.handleRequestClose.bind(this)}
-        />
+        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }

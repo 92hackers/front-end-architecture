@@ -14,6 +14,16 @@ class TInputNewPassword extends React.Component {
     };
   }
 
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
   handleSubmit (e) {
 
     e.preventDefault();
@@ -23,8 +33,6 @@ class TInputNewPassword extends React.Component {
     var rePassword = document.getElementById("confirm-password").value;
 
     var resetToken = this.props.location.query.token;
-
-     // TODO: get reset password token from url.
 
      if (!!password || !!rePassword) {
 
@@ -38,35 +46,25 @@ class TInputNewPassword extends React.Component {
          api.TReset(data, "", "",
          (resp) => {
            if (resp.success) {
-             self.setState({
-               notification: "reset password successfully! wait to reload."
-             }, () => {
-               self.refs.notification.handleNotificationOpen();
-             });
+             self.notify("Reset Password Successfully! Wait To Refresh");
              var timeId = setTimeout(() => {
                clearTimeout(timeId);
                browserHistory.push("/sign-in");
              }, 4100);
            } else {
-             alert("some wrong, please try again later.");
+             self.notify("Something Wrong, Please Try Again Later");
            }
          },
          (err) => {
-           console.log(err);
-           alert("network is busy, please try again later.");
+           self.notify("Network Is Busy, Please Try Again Later");
          }
        );
      } else {
-       self.setState({
-         notification: "please input correct passwords"
-       }, () => {
-         self.refs.notification.handleNotificationOpen();
-       });
+       self.notify("Please Input Correct Passwords");
      }
    } else {
-       alert("please input your new password");
-     }
-
+     self.notify("Please Input Your New Password");
+    }
   }
 
   render () {

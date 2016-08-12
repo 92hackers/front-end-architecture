@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import Snackbar from 'material-ui/Snackbar';
+import Notification from '../utilities/Notification';
 import {Typeahead} from 'react-typeahead';
 import AvatarUpload from '../utilities/AvatarUpload';
 import TAvatar from './TAvatar';
@@ -50,6 +50,16 @@ class TInfoClass extends React.Component {
     };
   }
 
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
   handleChange (e, index, value) {
     this.setState({value});
   }
@@ -86,31 +96,31 @@ class TInfoClass extends React.Component {
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
     if (!nationality.length) {
-        notification = "please input your nationality";
+        notification = "Please Input Your Nationality";
     } else if (!gender.length) {
-        notification = "please select your gender";
+        notification = "Please Select Your Gender";
     } else if (!avatar.length) {
-        notification = "please upload your profile picture";
+        notification = "Please Upload Your Profile Picture";
     } else if (!country.length) {
-        notification = "please input to select your location country";
+        notification = "Please Input To Select Your Location Country";
     } else if (!region.length) {
-        notification = "please input to select your location region";
+        notification = "Please Input To Select Your Location Region";
     } else if (!city.length) {
-        notification = "please input to select your location city";
+        notification = "Please Input To Select Your Location City";
     } else if (!teachExperience.length) {
-        notification = "please select your teaching experience";
+        notification = "Please Select Your Teaching Experience";
     } else if (!nationCode.length) {
-        notification = "please input your country code, so we can contact you.";
+        notification = "Please Input Your Country Code, So We Can Contact You.";
     } else if (!phoneNum.length) {
-        notification = "please input your phone number, so we can contact you.";
+        notification = "Please Input Your Phone Number, So We Can Contact You.";
     } else if (!eduExperienceList.length) {
-        notification = "please add at least one education experience.";
+        notification = "Please Add At Least One Education Experience.";
     } else if (!selfIntro.length) {
-        notification = "please input your self introduction.";
+        notification = "Please Input Your Self Introduction.";
     } else if (!teachStyle.length) {
-        notification = "please input your teaching style.";
+        notification = "Please Input Your Teaching Style.";
     } else if (!whyATeacher.length) {
-        notification = "please input your reason to be a teacher";
+        notification = "Please Input Your Reason To Be A Teacher";
     }
 
     var timezoneData = this.state.rawTimezoneData;
@@ -124,12 +134,8 @@ class TInfoClass extends React.Component {
     }
 
     if (!!notification.length) {
-        this.setState({
-            notification: notification
-        }, () => {
-            this.handleNotificationOpen();
-        });
-        return ;
+      this.notify(notification);
+      return ;
     }
 
     var experience = 0;
@@ -221,39 +227,16 @@ class TInfoClass extends React.Component {
         "",
         (resp) => {
             if (resp.success) {
-                console.log(resp);
-                browserHistory.push("/teacher-homepage");
+              browserHistory.push("/teacher-homepage");
             } else {
-                console.log(resp);
-                alert("data post error, try again later.");
+              self.notify("Data Post Error, Please Try Again Later");
             }
         },
         (err) => {
-            console.log(err);
-            alert("network error, try agarin later.");
+          self.notify("Network Is Busy, Please Try Again Later");
         }
     );
 
-    /*
-     var postInfoRequest = reqwest({
-     url: "http://api.weteach.test/v1/user/profile",
-     method: "post",
-     data: data,
-     crossOrigin: true,
-     })
-     .then((resp) => {
-     if (resp.success) {
-     console.log(resp);
-     } else {
-     console.log("data post error.");
-     console.log(resp);
-     }
-     })
-     .fail((err) => {
-     console.log("data post error.");
-     console.log(err);
-     })
-     */
   }
 
   addEducation (e) {
@@ -287,11 +270,7 @@ class TInfoClass extends React.Component {
         eduList: tempEduList
       });
     } else {
-        this.setState({
-            notification: "please complete all fields."
-        }, () => {
-            this.handleNotificationOpen();
-        });
+      this.notify("Please Complete All Fields");
     }
   }
 
@@ -313,17 +292,16 @@ class TInfoClass extends React.Component {
           regionId,
           (resp) => {
               if (resp.success) {
-                  console.log(resp);
                   self.setState({
                       cityList: resp.data,
                       cityInputDisabled: false
                   });
               } else {
-                  console.log("data fetching error.");
+                self.notify("Data Fetching Error, Please Try Again Later");
               }
           },
           (err) => {
-              console.log("data fetching error.");
+            self.notify("Network Is Busy, Please Try Again Later");
           }
       )
   }
@@ -344,39 +322,19 @@ class TInfoClass extends React.Component {
         countryCode,
         (resp) => {
             if (resp.success) {
-                console.log(resp.data);
                 self.setState({
                     regionList: resp.data,
                     regionInputDisabled: false
                 });
             } else {
-                console.log("data fetching error.");
+              self.notify("Data Fetching Error.");
             }
         },
         (err) => {
-            console.log("region data request error.");
+          self.notify("Network Is Busy, Please Try Again Later");
         }
     );
 
-    /*
-     var cityListRequest = reqwest({
-     url: "http://api.weteach.test/v1/loc/city/" + countryCode,
-     method: "get",
-     crossOrigin: true,
-     })
-     .then((resp) => {
-     if (resp.success) {
-     console.log(resp.data);
-     self.setState({
-     cityList: resp.data,
-     cityInputDisabled: false
-     });
-     }
-     })
-     .fail((err) => {
-     console.log("data request error.");
-     })
-     */
   }
 
   handleDialogOpen (e) {
@@ -417,7 +375,6 @@ class TInfoClass extends React.Component {
       this.setState({
          profilePictureSrc: reader.result
       }, () => {
-        console.log("handleOpen");
         this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
       });
     };
@@ -711,12 +668,7 @@ class TInfoClass extends React.Component {
           <br/>
           <RaisedButton type="submit" label="Save" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></RaisedButton>
         </form>
-        <Snackbar
-          open={this.state.notificationOpen}
-          message={this.state.notification}
-          autoHideDuration={4000}
-          onRequestClose={this.handleRequestClose.bind(this)}
-        />
+        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }
@@ -735,21 +687,9 @@ class TInfoClass extends React.Component {
   }
 
   bookTheViewTimeChange (e, index, value) {
-      this.setState({
-          timeValue: value
-      });
-  }
-
-  handleRequestClose () {
-      this.setState({
-          notificationOpen: false
-      });
-  }
-
-  handleNotificationOpen () {
-      this.setState({
-          notificationOpen: true
-      });
+    this.setState({
+      timeValue: value
+    });
   }
 
   componentDidMount () {
@@ -763,15 +703,14 @@ class TInfoClass extends React.Component {
         { "Authorization": self.props.token},
         "",
         (resp) => {
-            if (resp.success) {
-                console.log(resp);
-                self.setState({
-                    countriesList: resp.data
-                });
-            }
+          if (resp.success) {
+            self.setState({
+              countriesList: resp.data
+            });
+          }
         },
         (err) => {
-            console.log("data fetching error.");
+          console.log("data fetching error.");
         }
     );
 
@@ -800,58 +739,6 @@ class TInfoClass extends React.Component {
                   }
                 }
 
-
-                // var interviewDateTimeRequest = apis.TInterview("",
-                //   { "Authorization": "Bearer nNlVSA9i3eSYxCP5uf9jO72zMmfDnsF-"},
-                //   defaultTimezoneId,
-                //   (resp) => {
-                //     if (resp.success) {
-                //       console.log(resp.data);
-                //       var data = resp.data;
-                //       var interviewTime = data["timetable"].map((date, index) => {
-                //         return {
-                //           date: date["inter_date"],
-                //           timeList: date["inter_time"].map((time,index) => {
-                //             return {
-                //               id: time.id,
-                //               period: time.period
-                //             };
-                //           })
-                //         };
-                //       });
-                //       var date = [];
-                //       var time = [];
-                //       var timeToIdMapping = [];
-                //       for (let i = 0; i < interviewTime.length; i++) {
-                //         date.push(interviewTime[i].date);
-                //         time.push(interviewTime[i].timeList);
-                //       }
-                //
-                //       for (let j = 0; j < time.length; j++) {
-                //         for (let k = 0; k < time[j].length; k++) {
-                //           timeToIdMapping.push({
-                //             id: time[j][k].id,
-                //             period: time[j][k].period
-                //           });
-                //         }
-                //       }
-                //
-                //       self.setState({
-                //         availableDate: date,
-                //         allAvailableTime: time,
-                //         timeToIdMapping: timeToIdMapping,
-                //         availableTime: time[0]
-                //       });
-                //     } else {
-                //       console.log("fetch interview time data error.");
-                //     }
-                //   },
-                //   (err) => {
-                //     console.log("interview request error.");
-                //     console.log(err);
-                //   }
-                // )
-
                 self.setState({
                     rawTimezoneData: timezoneListData,
                     timezoneList: timezoneList,
@@ -872,7 +759,6 @@ class TInfoClass extends React.Component {
     var timezoneListData = this.state.rawTimezoneData;
     var defaultTimezoneId = "";
 
-    console.log(new RegExp(timezoneStr));
     for (let j = 0; j < timezoneListData.length; j++) {
       if (timezoneListData[j]["en_name"].search(new RegExp(timezoneStr)) !== -1) {
         defaultTimezoneId = timezoneListData[j].id;
@@ -885,7 +771,6 @@ class TInfoClass extends React.Component {
     defaultTimezoneId,
     (resp) => {
       if (resp.success) {
-        console.log(resp.data);
         var data = resp.data;
         var interviewTime = data["timetable"].map((date, index) => {
           return {

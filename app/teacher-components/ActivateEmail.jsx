@@ -4,11 +4,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import api from '../network/api';
+import Notification from '../utilities/Notification';
 
 class ActivateEmailClass extends React.Component {
 
   constructor (props) {
     super (props);
+    this.state = {
+      notification: ""
+    };
   }
 
   handleChangeClick (e) {
@@ -16,7 +20,6 @@ class ActivateEmailClass extends React.Component {
     e.preventDefault();
 
     var token = this.props.token;
-    console.log(token);
 
     if (!!token) {
       browserHistory.push("/input-new-email");        // check state to judge if the user logged in.
@@ -25,12 +28,21 @@ class ActivateEmailClass extends React.Component {
     }
   }
 
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
   handleResendClick (e) {
     e.preventDefault();
 
+    var self = this;
     var token = this.props.token;
-    console.log(this.props);
-    console.log(token);
 
     if (!!token) {
       api.TNewEmail("",
@@ -38,14 +50,14 @@ class ActivateEmailClass extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          alert("a new email has already send to your registered email address");
+          self.notify("A New Email Has Already Been Sent To Your Registered Email Address");
         } else {
-          alert(resp.data.error);
+          self.notify(resp.data.error);
         }
       },
       (err) => {
         console.log(err);
-        alert("server error, try again later.");
+        self.notify("Network Is Busy, Please Try Again Later.");
       }
     )
   } else {
@@ -67,6 +79,7 @@ class ActivateEmailClass extends React.Component {
         <p>Please check your email for the verification link.</p>
         <p style={{marginTop: "50px"}}>Didn't receive the email yet?</p>
         <div style={{marginTop: "20px"}}>You can: <RaisedButton style={buttonStyles} label="Resend the email" onClick={this.handleResendClick.bind(this)}></RaisedButton> or <RaisedButton style={buttonStyles} label="Change the email address" onClick={this.handleChangeClick.bind(this)}></RaisedButton></div>
+        <Notification message={this.state.notification} ref="notification"></Notification>
       </div>
     )
   }

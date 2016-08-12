@@ -3,11 +3,15 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import api from '../network/api';
 import EmailInputBox from '../utilities/EmailInputBox';
+import Notification from '../utilities/Notification';
 
 class InputNewEmailClass extends React.Component {
 
   constructor (props) {
     super (props);
+    this.state = {
+      notification: ""
+    };
   }
 
   componentWillMount () {
@@ -16,11 +20,21 @@ class InputNewEmailClass extends React.Component {
     }
   }
 
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
   handleSubmit (e) {
     e.preventDefault();
 
+    var self = this;
     var email = document.getElementById("email-address").value;
-
 
     if (!!email.length) {
       var data = {
@@ -33,16 +47,15 @@ class InputNewEmailClass extends React.Component {
           if (resp.success) {
             browserHistory.push("/active-email");
           } else {
-            alert(resp.data.error);
+            self.notify("Something Wrong, Please Try Again Later.");
           }
         },
         (err) => {
-          console.log(err);
-          alert("server error, try again later.");
+          self.notify("Network Is Busy, Please Try Again Later.");
         }
     )
     } else {
-      alert("please input your email address");
+      self.notify("Please Input Your Email Address");
     }
   }
 
@@ -50,6 +63,7 @@ class InputNewEmailClass extends React.Component {
     return (
       <div className="input-new-email">
         <EmailInputBox submitText="Send activation email" id="email-address" handle={this.handleSubmit.bind(this)}></EmailInputBox>
+        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }

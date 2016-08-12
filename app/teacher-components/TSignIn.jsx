@@ -3,8 +3,7 @@ import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import Snackbar from 'material-ui/Snackbar';
-import apis from '../network/api';
+import Notification from '../utilities/Notification';
 import { connect } from 'react-redux';
 import addToken from '../actions/addToken';
 import api from '../network/api';
@@ -19,46 +18,41 @@ class TSignInClass extends React.Component {
     };
   }
 
-  componentDidMount () {
-    // some initial information.
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
   }
 
   handleSubmit(e) {
+    e.preventDefault();
 
     var self = this;
     var notification = "";
-
-
-    let event = e || e.event;
-    if (event.preventDefault) {
-      event.preventDefault();
-    } else if (event.cancelBubble) {
-      event.cancelBubble();
-    }
 
     var email = document.getElementById("t-email").value;
     var password = document.getElementById("t-password").value;
 
     if (!email.length) {
-      notification = "please input your email address";
+      notification = "Please Input Your Email Address";
     } else if (!password.length) {
-      notification = "please input your password";
+      notification = "Please Input Your Password";
     } else if (password.length < 6) {
-      notification = "password should be more than 6 characters";
+      notification = "Password Should Be More Than 6 Characters";
     } else if (password.length > 20) {
-      notification = "password should be less than 20 characters";
+      notification = "Password Should Be Less Than 20 Characters";
     }
 
     if (!!notification.length) {
-      self.setState({
-        notification: notification
-      }, () => {
-        self.handleTouchTap();
-      });
+      self.notify(notification);
       return;
     }
 
-    var signinRequest = apis.TSignIn({
+    var signinRequest = api.TSignIn({
       email: email,
       password: password
     },
@@ -80,14 +74,13 @@ class TSignInClass extends React.Component {
               "",
               (resp) => {
                 if (resp.success) {
-                  alert("a new email has already send to your registered email address");
+                  self.notify("A New Email Has Aleady Send To Your Registered Email Address");
                 } else {
-                  alert(resp.data.error);
+                  self.notify(resp.data.error);
                 }
               },
               (err) => {
-                console.log(err);
-                alert("server error, try again later.");
+                self.notify("Network Is Busy, Try Again Later");
               }
             )
           } else if (!queryParam) {
@@ -101,35 +94,14 @@ class TSignInClass extends React.Component {
             browserHistory.push("/teacher-homepage");
         }
       } else {
-        self.setState({
-          notification: "email address or password error"
-        }, () => {
-          self.handleTouchTap();
-        });
+        self.notify("Email Address Or Password Error");
       }
     },
     (err) => {
-      self.setState({
-        notification: "something wrong, please try again later."
-      }, () => {
-        self.handleTouchTap();
-      });
+      self.notify("Something Wrong, Please Try Again Later");
     }
     );
   }
-
-  handleTouchTap () {
-    this.setState({
-      open: true
-    });
-  };
-
-  handleRequestClose () {
-    this.setState({
-      open: false
-    });
-  };
-
 
   render () {
     var style = {
@@ -152,12 +124,7 @@ class TSignInClass extends React.Component {
           <RaisedButton icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>
           <RaisedButton icon={<FontIcon className="fa fa-linkedin"></FontIcon>} label="Sign in with Linkedin" style={style}></RaisedButton>
         </form>
-        <Snackbar
-          open={this.state.open}
-          message={this.state.notification}
-          autoHideDuration={4000}
-          onRequestClose={this.handleRequestClose.bind(this)}
-        />
+        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }
@@ -166,6 +133,7 @@ class TSignInClass extends React.Component {
     e.preventDefault();
     browserHistory.push("/forget-password");
   }
+
 }
 
 var TSignIn = connect()(TSignInClass);

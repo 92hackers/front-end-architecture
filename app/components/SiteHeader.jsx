@@ -122,15 +122,15 @@ class SiteHeaderClass extends React.Component {
             <a href="javascript:;" className="sign-out" onTouchTap={this.handleSignOut.bind(this)}><i className="fa fa-sign-out"></i> Sign out</a>
             <span className="nav-border-line"></span>
           </li>
-          <Dialog
+          {/* <Dialog     TODO
             title="Invite your friends to WeTeach"
             actions={inviteActions}
             modal={false}
             open={this.state.inviteDialogOpen}
             onRequestClose={this.handleInviteDialogClose.bind(this)}
-          >
+            >
             your invite code is:  YAWEFAWEFAWEFAE999AWEF
-          </Dialog>
+          </Dialog> */}
         </ul>
       );
     } else {
