@@ -1,12 +1,13 @@
 // global avatar upload
 import React from 'react';
 import Cropper from 'react-cropper';
-import reqwest from 'reqwest';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import {connect} from 'react-redux';
+import api from '../network/api';
 
 
-class AvatarUpload extends React.Component {
+class AvatarUploadClass extends React.Component {
 
   constructor (props) {
     super (props);
@@ -29,30 +30,28 @@ class AvatarUpload extends React.Component {
 
   uploadToServer (e) {
     var self = this;
+    var token = this.props.token;
     e.preventDefault();
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
-      console.log("error crop.");
       return;
     } else {
-      console.log(this.refs.cropper);
-      console.log(this.refs.cropper.getCroppedCanvas());
       let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL();
 
-      reqwest({
-        url: "/upload-to-qiniu",
-        method: "post",
-        type: "application/x-www-form-urlencoded",
-        data: { img: cropResult }
-      })
-      .then((resp) => {
-        var result = JSON.parse(resp.response);
-        console.log(result.data);
-        console.log(self.props);
-        self.props.setAvatarUrl(result.data);       // pass url to parent component.
-      })
-      .fail((err) => {
-        console.log(err);
-      })
+      api.FileUpload({ filedata: cropResult},
+        { "Authorization": token },
+        "",
+        (resp) => {
+          if (resp.success) {
+            self.props.setAvatarUrl(resp.data.imgurl);
+          } else {
+            console.log("upload picture failed.");
+          }
+        },
+        (err) => {
+          console.log("network is Busy, please try again later.");
+          console.log(err);
+        }
+      );
     }
     this.handleClose();
   }
@@ -60,12 +59,14 @@ class AvatarUpload extends React.Component {
   render () {
 
     const actions = [
-      <FlatButton
+      <RaisedButton
+        className="dialog-button"
         label="Cancel"
         default={true}
         onTouchTap={this.handleClose.bind(this)}
       />,
-      <FlatButton
+      <RaisedButton
+        className="dialog-button"
         label="Set new profile picture"
         primary={true}
         onTouchTap={this.uploadToServer.bind(this)}
@@ -102,6 +103,15 @@ class AvatarUpload extends React.Component {
       </div>
     )
   }
+
 }
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.addToken.token
+  }
+}
+
+const AvatarUpload = connect( mapStateToProps, null, null, { withRef: true } )(AvatarUploadClass);
 
 export default AvatarUpload;

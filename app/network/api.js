@@ -110,6 +110,13 @@ var apis = [
       api: "file/token",
       method: "get"
     }
+  },
+  {
+    name: "FileUpload",               //  need  authorization
+    options: {
+      api: "file/upload",
+      method: "post"
+    }
   }
 ];
 
