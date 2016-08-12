@@ -22,7 +22,7 @@ class TInfoClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      value: null,
+      teachExpValue: null,
       countriesList: [],
       regionList: [],
       cityList: [],
@@ -457,9 +457,9 @@ class TInfoClass extends React.Component {
 
   componentWillMount () {
 
-    // if (!this.props.token) {
-    //   browserHistory.push("/sign-in");
-    // }
+    if (!this.props.token) {
+      browserHistory.push("/sign-in");
+    }
 
   }
 
@@ -555,6 +555,8 @@ class TInfoClass extends React.Component {
       opacity: 0
     };
 
+    console.log(this.state.teachExpValue);
+
     return (
       <div className="t-info">
         <h1 className="t-info-caption text-center">Please complete your personal profile</h1>
@@ -579,7 +581,7 @@ class TInfoClass extends React.Component {
           <Typeahead options={cityList} maxVisible={5} placeholder="Location City" disabled={this.state.cityInputDisabled} customClasses={{input: "city"}}></Typeahead>
           <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} onOptionSelected={this.changeTimezone.bind(this)} customClasses={{input: "timezone"}}></Typeahead>
           <br/>
-          <SelectField id="teach-experience" value={this.state.value} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
+          <SelectField id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
             <MenuItem style={menuItemStyle} value={1} primaryText="More than 15 years" />
             <MenuItem style={menuItemStyle} value={2} primaryText="Between 5 to 15 years" />
             <MenuItem style={menuItemStyle} value={3} primaryText="Less than 5 years" />
@@ -695,9 +697,9 @@ class TInfoClass extends React.Component {
   componentDidMount () {
     var self = this;
 
-    // if (!this.props.token) {
-    //   return;
-    // }
+    if (!this.props.token) {
+      return;
+    }
 
     self.countryRequest = apis.TCountryList("",
         { "Authorization": self.props.token},

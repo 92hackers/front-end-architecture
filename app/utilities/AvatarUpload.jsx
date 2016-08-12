@@ -35,7 +35,7 @@ class AvatarUploadClass extends React.Component {
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
       return;
     } else {
-      let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL();
+      let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL("image/jpeg", 0.5);
 
       api.FileUpload({ filedata: cropResult},
         { "Authorization": token },
