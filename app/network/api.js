@@ -117,6 +117,13 @@ var apis = [
       api: "file/upload",
       method: "post"
     }
+  },
+  {
+    name: "ChangePassword",           //  need  authorization.
+    options: {
+      api: "user/uppw",
+      method: "post"
+    }
   }
 ];
 

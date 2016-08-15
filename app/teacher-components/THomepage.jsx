@@ -8,27 +8,80 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import apis from '../network/api';
+import Notification from '../utilities/Notification';
+import api from '../network/api';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import removeToken from '../actions/removeToken';
+import dashboardDisplay from '../actions/dashboardDisplay';
 
 
 class SettingComp extends React.Component {
 
   constructor (props) {
     super (props);
+    this.state = {
+      notification: ""
+    };
+  }
+
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
   }
 
   handleSubmit (e) {
     e.preventDefault();
 
+    var self = this;
     var oldPassword = document.getElementById("old-password").value;
     var newPassword = document.getElementById("new-password").value;
     var confirmPassword = document.getElementById("confirm-password").value;
 
-    // if ()
+    var warning = "";
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      warning = "Please Input Correct Password";
+    } else if (oldPassword.length < 6 || newPassword.length < 6 || confirmPassword.length < 6) {
+      warning = "Password must be more than 6 words.";
+    } else if (newPassword !== confirmPassword) {
+      warning = "You Must Input Consistent Passwords";
+    }
 
-//   TODO: submit data to server to validate password.
+    if (!!warning) {
+      this.notify(warning);
+    }
+
+    var data = {
+      "o_pass": oldPassword,
+      "n_pass": newPassword,
+      "rn_pass": confirmPassword
+    };
+
+    api.ChangePassword(data,
+      { "Authorization": this.props.token},
+      "",
+      (resp) => {
+        if (resp.success) {
+          self.notify("Change Password Successfully!");
+          var timeId = setTimeout(() => {
+            clearTimeout(timeId);
+            self.props.dispatch(removeToken());
+            self.props.dispatch(dashboardDisplay(""));
+            browserHistory.push("/sign-in");
+          }, 4100);
+        } else {
+          self.notify("Please input Correct Passwords");
+        }
+      },
+      (err) => {
+        self.notify("Network Is Busy, Please Try Again Later.");
+      }
+    );
   }
 
   render () {
@@ -43,6 +96,7 @@ class SettingComp extends React.Component {
           <br/>
           <RaisedButton onTouchTap={this.handleSubmit.bind(this)} label="Submit" primary={true} style={{width: "100%"}}></RaisedButton>
         </form>
+        <Notification ref="notification" message={this.state.notification}></Notification>
       </section>
     )
   }
@@ -138,6 +192,8 @@ class THomepageClass extends React.Component {
       cursor: "pointer"
     };
 
+    console.log(this.props);
+
     const profile = this.state.profile;
 
     var genderIcon = "";
@@ -172,10 +228,10 @@ class THomepageClass extends React.Component {
       case 10:
         switch (dynamicDashboardComp) {
           case "setting":
-            DashboardComponent = <SettingComp></SettingComp>;
+            DashboardComponent = <SettingComp token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
             break;
           case "schedule":
-            DashboardComponent = <ScheduleComp></ScheduleComp>;
+            DashboardComponent = <ScheduleComp token={this.props.token} dispatch={this.props.dispatch}></ScheduleComp>;
             break;
           default:
             DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
@@ -241,7 +297,7 @@ class THomepageClass extends React.Component {
       return;
     }
 
-    var profileRequest = apis.TGetProfile("",
+    var profileRequest = api.TGetProfile("",
     { "Authorization": self.props.token },
     "",
     (resp) => {
@@ -250,7 +306,7 @@ class THomepageClass extends React.Component {
           profile: resp.data
         });
       } else {
-        console.log("get data error.");
+        console.log("get profile data error.");
       }
     },
     (err) => {

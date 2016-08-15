@@ -18,6 +18,9 @@ import THomepage from './teacher-components/THomepage';
 // import StepToSignUp from './teacher-components/StepToSignUp';
 import FacebookLogin from 'react-facebook-login';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {blue500} from 'material-ui/styles/colors';
 import NotFound from './utilities/NotFound';
 import InputNewEmail from './teacher-components/InputNewEmail';
 import ForgetPassword from './teacher-components/ForgetPassword';
@@ -33,8 +36,18 @@ import TIndex from './teacher-components/TIndex';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-
 let store = createStore(reducers);
+
+console.log(blue500);
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primaryColor: blue500,
+    primary1Color: blue500,
+    primary2Color: blue500,
+    primary3Color: blue500,
+  }
+});
 
 class App extends React.Component {
 
@@ -54,10 +67,10 @@ class App extends React.Component {
       return (
         <div className="weteach-root">
           {/* <FacebookLogin appId="169495646797915" autoLoad={true} fields="name,email,picture"></FacebookLogin> */}
-          <MuiThemeProvider>
+          <MuiThemeProvider muiTheme={muiTheme}>
             <SiteHeader isUserLoggedIn={isUserLoggedIn}></SiteHeader>
           </MuiThemeProvider>
-          <MuiThemeProvider>
+          <MuiThemeProvider muiTheme={muiTheme}>
             {this.props.children || <TIndex></TIndex>}
           </MuiThemeProvider>
           <SiteFooter></SiteFooter>

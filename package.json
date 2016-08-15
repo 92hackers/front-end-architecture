@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm test",
     "init": "./init.sh",
-    "build": "gulp build",
+    "dev": "gulp dev",
+    "build": "git pull && gulp build",
     "start": "node server.js"
   },
   "repository": {
@@ -43,6 +44,7 @@
     "postcss-loader": "^0.9.1",
     "redux-devtools": "^3.3.1",
     "run-sequence": "^1.2.2",
+    "static-site-generator-webpack-plugin": "^2.1.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
