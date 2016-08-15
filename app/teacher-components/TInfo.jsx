@@ -834,10 +834,10 @@ class TInfoClass extends React.Component {
         }
 
         self.setState({
-          availableDate: date,
-          allAvailableTime: time,
-          timeToIdMapping: timeToIdMapping,
-          availableTime: time[0]
+          availableDate: date || [],
+          allAvailableTime: time || [],
+          timeToIdMapping: timeToIdMapping || [],
+          availableTime: time[0] || []
         });
       } else {
         console.log("fetch interview time data error.");

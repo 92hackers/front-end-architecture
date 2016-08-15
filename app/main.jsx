@@ -79,7 +79,7 @@ class App extends React.Component {
 
 ReactDom.render((
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
       <Route path="/" component={App}>
         <Route path="/sign-up" component={TSignUp}></Route>
         <Route path="/sign-in" component={TSignIn}></Route>
