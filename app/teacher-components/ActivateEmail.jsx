@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import api from '../network/api';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
 
 class ActivateEmailClass extends React.Component {
 

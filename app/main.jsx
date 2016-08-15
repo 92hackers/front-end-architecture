@@ -21,7 +21,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {blue500} from 'material-ui/styles/colors';
-import NotFound from './utilities/NotFound';
+import NotFound from './universal/NotFound';
 import InputNewEmail from './teacher-components/InputNewEmail';
 import ForgetPassword from './teacher-components/ForgetPassword';
 import TInputNewPassword from './teacher-components/TInputNewPassword';

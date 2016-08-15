@@ -2,7 +2,7 @@ import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import {browserHistory} from 'react-router';
 import api from '../network/api';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
 
 
 class VerifyYourEmail extends React.Component {

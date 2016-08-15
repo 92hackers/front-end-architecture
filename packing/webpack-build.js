@@ -2,7 +2,6 @@ var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var autoPrefixer = require("autoprefixer");
 var path = require("path");
-var StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
 
 //var imageName = "images/[name].[hash:8].[ext]";
 //var fontName = "fonts/[name].[hash:8].[ext]";

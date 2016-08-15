@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
 import api from '../network/api';
 
 class TInputNewPassword extends React.Component {

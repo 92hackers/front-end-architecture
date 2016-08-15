@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import apis from '../network/api';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
 
 class TSignUp extends React.Component {
 

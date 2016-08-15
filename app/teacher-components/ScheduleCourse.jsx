@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import Day from '../utilities/Day';
-import Week from '../utilities/Week';
+import Day from '../universal/Day';
+import Week from '../universal/Week';
 
 class ScheduleCourse extends React.Component {
 

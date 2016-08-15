@@ -1,8 +1,8 @@
 
 import React from 'react';
-import EmailInputBox from '../utilities/EmailInputBox';
+import EmailInputBox from '../universal/EmailInputBox';
 import api from '../network/api';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
 
 class ForgetPassword extends React.Component {
 

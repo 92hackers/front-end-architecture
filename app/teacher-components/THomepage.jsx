@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
 import api from '../network/api';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
@@ -191,8 +191,6 @@ class THomepageClass extends React.Component {
     const menuItemStyles = {
       cursor: "pointer"
     };
-
-    console.log(this.props);
 
     const profile = this.state.profile;
 

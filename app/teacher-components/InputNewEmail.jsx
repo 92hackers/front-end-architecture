@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import api from '../network/api';
-import EmailInputBox from '../utilities/EmailInputBox';
-import Notification from '../utilities/Notification';
+import EmailInputBox from '../universal/EmailInputBox';
+import Notification from '../universal/Notification';
 
 class InputNewEmailClass extends React.Component {
 
