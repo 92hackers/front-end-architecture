@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import apis from '../network/api';
 import Notification from '../universal/Notification';
+import formValidate from 'validate-js';
 
 class TSignUp extends React.Component {
 
@@ -27,10 +28,10 @@ class TSignUp extends React.Component {
 
   handleSubmit (e) {
 
+    e.preventDefault();
+
     var self = this;
     var errorMessage = "";
-
-    e.preventDefault();
 
     var firstName = document.getElementById("t-first-name").value;
     var lastName = document.getElementById("t-last-name").value;
@@ -38,19 +39,34 @@ class TSignUp extends React.Component {
     var passwordValue = document.getElementById("t-password").value;
     var rePasswordValue = document.getElementById("t-re-password").value;
 
-    if (!firstName.length) {
-      errorMessage = "Please Input Your Firstname";
-    } else if (!lastName.length) {
-      errorMessage = "Please Input Your Lastname";
-    } else if (!emailValue.length) {
-      errorMessage = "Please Input Your Email Address";
-    } else if (passwordValue !== rePasswordValue) {
-      errorMessage = "Please Input Correct Password!";
-    } else if (passwordValue.length < 6) {
-      errorMessage = "Password Should Be More Than 6 Characters!";
-    } else if (passwordValue.length > 20) {
-      errorMessage = "Password Should Be Less Than 20 Characters!";
-    }
+    var validator = new formValidate(document.getElementById("t-sign-up-form"), [
+      {
+        name: 'FirstName',
+        rules: "required|min_length[2]|max_length[30]"
+      },
+      {
+        name: "LastName",
+        rules: "required|min_length[2]|max_length[30]"
+      },
+      {
+        name: "Email",
+        rules: "required|valid_email"
+      },
+      {
+        name: "Password",
+        rules: "required|min_length[6]|max_length[30]"
+      },
+      {
+        name: "Confirm-Password",
+        rules: "required|matches[Password]"
+      }
+    ], (errors) => {
+      if (errors.length > 0) {
+        errorMessage = errors[0].message;
+      }
+    });
+
+    validator._validateForm();
 
     if (!!errorMessage.length) {
       this.notify(errorMessage);
@@ -92,16 +108,16 @@ class TSignUp extends React.Component {
 
     return (
       <div className="t-sign-up">
-        <form>
+        <form id="t-sign-up-form">
           <div className="clearfix">
-            <TextField className="left" style={{width: "40%"}} id="t-first-name" type="text" floatingLabelText="First Name"></TextField>
-            <TextField className="right" style={{width: "40%"}} id="t-last-name" type="text" floatingLabelText="Last Name"></TextField>
+            <TextField name="FirstName" className="left" style={{width: "40%"}} id="t-first-name" type="text" floatingLabelText="First Name"></TextField>
+            <TextField name="LastName" className="right" style={{width: "40%"}} id="t-last-name" type="text" floatingLabelText="Last Name"></TextField>
           </div>
-          <TextField id="t-email" type="email" floatingLabelText="Email Address"></TextField>
+          <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
           <br/>
-          <TextField id="t-password" type="password" floatingLabelText="Password"></TextField>
+          <TextField name="Password" id="t-password" type="password" floatingLabelText="Password"></TextField>
           <br/>
-          <TextField id="t-re-password" type="password" floatingLabelText="Confirm Password"></TextField>
+          <TextField name="Confirm-Password" id="t-re-password" type="password" floatingLabelText="Confirm Password"></TextField>
           <br/>
           <br/>
           <br/>

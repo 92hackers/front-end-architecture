@@ -29,33 +29,6 @@ class TSignInClass extends React.Component {
     }
   }
 
-  componentDidMount () {
-
-    this.validator = new formValidate(document.getElementsByClassName("sign-in-form"), [
-      {
-        name: "t-email",
-        rules: "valid_email"
-      },
-      {
-        name: "t-password",
-        rules: "required|min_length[6]|max_length[20]"
-      }
-    ], (errors) => {
-      if (errors.length > 0) {
-        console.log(errors);
-      }
-    });
-
-    console.log(this.validator);
-  }
-
-  handleTestSubmit(e) {
-    // e.preventDefault();
-
-    console.log(this.validator);
-
-  }
-
   handleSubmit(e) {
     e.preventDefault();
 
@@ -65,15 +38,22 @@ class TSignInClass extends React.Component {
     var email = document.getElementById("t-email").value;
     var password = document.getElementById("t-password").value;
 
-    if (!email.length) {
-      notification = "Please Input Your Email Address";
-    } else if (!password.length) {
-      notification = "Please Input Your Password";
-    } else if (password.length < 6) {
-      notification = "Password Should Be More Than 6 Characters";
-    } else if (password.length > 20) {
-      notification = "Password Should Be Less Than 20 Characters";
-    }
+    var validator = new formValidate(document.getElementsByClassName("sign-in-form")[0], [
+      {
+        name: "Email",
+        rules: "required|valid_email"
+      },
+      {
+        name: "Password",
+        rules: "required|min_length[6]|max_length[30]"
+      }
+    ], (errors) => {
+      if (errors.length > 0) {
+        notification = errors[0].message;
+      }
+    });
+
+    validator._validateForm();
 
     if (!!notification.length) {
       self.notify(notification);
@@ -143,14 +123,14 @@ class TSignInClass extends React.Component {
 
     return (
       <div className="teacher-sign-in">
-        <form action="/teacher-sign-in" method="post" className="sign-in-form">
-          <TextField name="t-email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
+        <form className="sign-in-form">
+          <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
           <br/>
-          <TextField name="t-password" id="t-password" type="password" floatingLabelText="Password"></TextField>
+          <TextField name="Password" id="t-password" type="password" floatingLabelText="Password"></TextField>
           <br/>
           <br/>
           <br/>
-          <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleTestSubmit.bind(this)} style={style}></RaisedButton>
+          <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} label="Forget your password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-facebook-official"></FontIcon>} label="Sign in with Facebook" style={style}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>

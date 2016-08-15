@@ -1,5 +1,9 @@
 // complete teacher info.
 import React from 'react';
+import {browserHistory} from 'react-router';
+import {connect} from 'react-redux';
+import {Typeahead} from 'react-typeahead';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import DatePicker from 'material-ui/DatePicker';
@@ -9,13 +13,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 import Notification from '../universal/Notification';
-import {Typeahead} from 'react-typeahead';
 import AvatarUpload from '../universal/AvatarUpload';
 import TAvatar from './TAvatar';
+
 import apis from '../network/api';
-import {browserHistory} from 'react-router';
-import {connect} from 'react-redux';
 
 class TInfoClass extends React.Component {
 
@@ -23,26 +26,31 @@ class TInfoClass extends React.Component {
     super (props);
     this.state = {
       teachExpValue: null,
+
       countriesList: [],
       regionList: [],
       cityList: [],
       timezoneList: [],
       rawTimezoneData: [],
       defaultTimezone: "",
+
       cityInputDisabled: true,
       regionInputDisabled: true,
+
       eduDialogOpen: false,
       eduList: 0,
       eduListItems: [],
-      profilePictureSrc: "",
-      avatarUrl: "",
       eduExpSelected: "",
-      notification: "",
-      notificationOpen: false,
       eduExpSelectedIndex: "",
       eduExpSelectedDialogOpen: false,
+
+      profilePictureSrc: "",
+      avatarUrl: "",
+
+      notification: "",
+
       dateValue: 0,
-      availableDate: [],   // fetch available data from server.
+      availableDate: [],
       timeValue: 0,
       allAvailableTime: [],
       availableTime: [],
@@ -123,14 +131,24 @@ class TInfoClass extends React.Component {
         notification = "Please Input Your Reason To Be A Teacher";
     }
 
+    if (selfIntro.length > 300) {
+      notification = "Personal Introduction Should Be Less Than 300 Characters";
+    } else if (teachStyle.length > 300) {
+      notification = "Teaching Style Should Be Less Than 300 Characters";
+    } else if (whyATeacher.length > 300) {
+      notification = "Your Reason To Be A Teacher Should Be Less Than 300 Characters";
+    } else if (addition.length > 300) {
+      notification = "Your Addition Should Be Less Than 300 Characters";
+    }
+
     var timezoneData = this.state.rawTimezoneData;
     var timezoneId = "";
 
     for (let i = 0; i < timezoneData.length; i++) {
-        if (timezoneData[i]["en_name"] === timezone) {
-            timezoneId = timezoneData[i].id;
-            break;
-        }
+      if (timezoneData[i]["en_name"] === timezone) {
+        timezoneId = timezoneData[i].id;
+        break;
+      }
     }
 
     if (!!notification.length) {
@@ -241,11 +259,14 @@ class TInfoClass extends React.Component {
 
   addEducation (e) {
     e.preventDefault();
+    var notification = "";
     var temp = this.state.eduListItems;
     var tempEduList = this.state.eduList;
+
     var getValue = (ele) => {
       return document.getElementById(ele).value;
     }
+
     var startYear = getValue("t-edu-start-year");
     var endYear = getValue("t-edu-end-year");
     var school = getValue("t-edu-school");
@@ -254,6 +275,16 @@ class TInfoClass extends React.Component {
 
 
     if (!!startYear && !!endYear && !!school && !!major && !!degree) {
+
+      if (startYear.length !== 4 || endYear.length !== 4) {
+        notification = "Year should be exactly 4 characters.";
+      }
+
+      if (!!notification.length) {
+        this.notify(notification);
+        return ;
+      }
+
       let data = {
         timefrom: startYear,
         timeto: endYear,
@@ -613,10 +644,10 @@ class TInfoClass extends React.Component {
           <RaisedButton id="add-education" type="button" label="Add" style={{width: "100%", marginTop: "20px"}} onTouchTap={this.handleDialogOpen.bind(this)}></RaisedButton>
           <Dialog title="Add Your Education Experience" actions={actions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleDialogClose.bind(this)}>
             <div className="t-edu-form-wrap">
-              <TextField id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
-              <br/>
-              <TextField id="t-edu-end-year" floatingLabelText="End Year"></TextField>
-              <br/>
+              <div className="clearfix">
+                <TextField className="left" style={{width: "40%"}} id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
+                <TextField className="right" style={{width: "40%"}} id="t-edu-end-year" floatingLabelText="End Year"></TextField>
+              </div>
               <TextField id="t-edu-school" type="text" floatingLabelText="School"></TextField>
               <br/>
               <TextField id="t-edu-major" type="text" floatingLabelText="Major"></TextField>
@@ -626,10 +657,10 @@ class TInfoClass extends React.Component {
           </Dialog>
           <Dialog title="Modify Your Education Experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
             <div className="t-edu-form-wrap">
-              <TextField id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
-              <br/>
-              <TextField id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
-              <br/>
+              <div className="clearfix">
+                <TextField className="left" style={{width: "40%"}} id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
+                <TextField className="right" style={{width: "40%"}} id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
+              </div>
               <TextField id="t-edu-school-m" defaultValue={this.state.eduExpSelected.institution} type="text" floatingLabelText="School"></TextField>
               <br/>
               <TextField id="t-edu-major-m" defaultValue={this.state.eduExpSelected.major} type="text" floatingLabelText="Major"></TextField>

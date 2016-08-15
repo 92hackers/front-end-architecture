@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router';
 import api from '../network/api';
 import EmailInputBox from '../universal/EmailInputBox';
 import Notification from '../universal/Notification';
+import formValidate from 'validate-js';
 
 class InputNewEmailClass extends React.Component {
 
@@ -34,29 +35,45 @@ class InputNewEmailClass extends React.Component {
     e.preventDefault();
 
     var self = this;
+    var notification = '';
     var email = document.getElementById("email-address").value;
 
-    if (!!email.length) {
-      var data = {
-        email: email
-      };
-      api.TNewEmail(data,
-        {"Authorization": this.props.token},
-        "",
-        (resp) => {
-          if (resp.success) {
-            browserHistory.push("/active-email");
-          } else {
-            self.notify("Something Wrong, Please Try Again Later.");
-          }
-        },
-        (err) => {
-          self.notify("Network Is Busy, Please Try Again Later.");
-        }
-    )
-    } else {
-      self.notify("Please Input Your Email Address");
+    var validator = new formValidate(document.forms[0], [
+      {
+        name: "Email",
+        rules: "required|valid_email"
+      }
+    ], (errors) => {
+      if (errors.length > 0) {
+        notification = errors[0].message;
+      }
+    });
+
+    validator._validateForm();
+
+    if (!!notification.length) {
+      self.notify(notification);
+      return;
     }
+
+    var data = {
+      email: email
+    };
+
+    api.TNewEmail(data,
+      {"Authorization": this.props.token},
+      "",
+      (resp) => {
+        if (resp.success) {
+          browserHistory.push("/active-email");
+        } else {
+          self.notify("Something Wrong, Please Try Again Later.");
+        }
+      },
+      (err) => {
+        self.notify("Network Is Busy, Please Try Again Later.");
+      }
+    )
   }
 
   render () {

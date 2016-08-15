@@ -1,44 +1,44 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
+import FacebookLogin from 'react-facebook-login';
+import { Provider } from 'react-redux';
+import {createStore} from 'redux';
+import reducers from './reducers';
+
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
-import Index from './components/index/Index';
-import SignUp from './components/sign-up/SignUp';
-import ChildInfo from './components/sign-up/ChildInfo';
-// import SignInUpHeader from './components/SignInUpHeader';
-import HomepageHeader from './components/parent-homepage/HomepageHeader';
-import Homepage from './components/parent-homepage/Homepage';
-import SignIn from './components/sign-in/SignIn';
+// import Index from './components/index/Index';
+// import SignUp from './components/sign-up/SignUp';
+// import ChildInfo from './components/sign-up/ChildInfo';
+// import HomepageHeader from './components/parent-homepage/HomepageHeader';
+// import Homepage from './components/parent-homepage/Homepage';
+// import SignIn from './components/sign-in/SignIn';
+
 import TSignIn from './teacher-components/TSignIn';
 import TSignUp from './teacher-components/TSignUp';
 import ActivateEmail from './teacher-components/ActivateEmail';
 import TInfo from './teacher-components/TInfo';
 import THomepage from './teacher-components/THomepage';
-// import StepToSignUp from './teacher-components/StepToSignUp';
-import FacebookLogin from 'react-facebook-login';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {blue500} from 'material-ui/styles/colors';
-import NotFound from './universal/NotFound';
 import InputNewEmail from './teacher-components/InputNewEmail';
 import ForgetPassword from './teacher-components/ForgetPassword';
 import TInputNewPassword from './teacher-components/TInputNewPassword';
 import VerifyYourEmail from './teacher-components/VerifyYourEmail';
-import { Provider } from 'react-redux';
-import {createStore} from 'redux';
-import reducers from './reducers';
 import TIndex from './teacher-components/TIndex';
+// import StepToSignUp from './teacher-components/StepToSignUp';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {blue500} from 'material-ui/styles/colors';
+
+import NotFound from './universal/NotFound';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 let store = createStore(reducers);
-
-console.log(blue500);
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -56,8 +56,6 @@ class App extends React.Component {
     }
 
     render () {
-
-      console.log(store.getState());
 
       var userToken = store.getState().addToken.token;
       var isUserLoggedIn = false;

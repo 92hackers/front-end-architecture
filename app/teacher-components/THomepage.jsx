@@ -266,7 +266,7 @@ class THomepageClass extends React.Component {
           <div className="row">
             <div className="col-3">
               <div className="avatar-profile">
-                <img src={profile.avatar} alt="profile avatar"/>
+                <img src={profile.avatar ? profile.avatar : "/imgs/teacher-avatar.png"} alt="profile avatar"/>
               </div>
               <div className="name-gender">
                 <h2 className="profile-name">{profile.firstname} {profile.lastname} <span className="gender-icon">{genderIcon}</span></h2>

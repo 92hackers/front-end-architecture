@@ -7,7 +7,7 @@
     "test": "npm test",
     "init": "./init.sh",
     "dev": "gulp dev",
-    "build": "git pull && gulp build",
+    "build": "git pull && npm install && gulp build",
     "start": "node server.js"
   },
   "repository": {
