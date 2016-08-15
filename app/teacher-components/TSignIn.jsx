@@ -3,7 +3,8 @@ import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import Notification from '../utilities/Notification';
+import Notification from '../universal/Notification';
+import formValidate from 'validate-js';
 import { connect } from 'react-redux';
 import addToken from '../actions/addToken';
 import api from '../network/api';
@@ -26,6 +27,33 @@ class TSignInClass extends React.Component {
         this.refs.notification.handleNotificationOpen();
       });
     }
+  }
+
+  componentDidMount () {
+
+    this.validator = new formValidate(document.getElementsByClassName("sign-in-form"), [
+      {
+        name: "t-email",
+        rules: "valid_email"
+      },
+      {
+        name: "t-password",
+        rules: "required|min_length[6]|max_length[20]"
+      }
+    ], (errors) => {
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+    });
+
+    console.log(this.validator);
+  }
+
+  handleTestSubmit(e) {
+    // e.preventDefault();
+
+    console.log(this.validator);
+
   }
 
   handleSubmit(e) {
@@ -116,13 +144,13 @@ class TSignInClass extends React.Component {
     return (
       <div className="teacher-sign-in">
         <form action="/teacher-sign-in" method="post" className="sign-in-form">
-          <TextField id="t-email" type="email" floatingLabelText="Email Address"></TextField>
+          <TextField name="t-email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
           <br/>
-          <TextField id="t-password" type="password" floatingLabelText="Password"></TextField>
+          <TextField name="t-password" id="t-password" type="password" floatingLabelText="Password"></TextField>
           <br/>
           <br/>
           <br/>
-          <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></RaisedButton>
+          <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleTestSubmit.bind(this)} style={style}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} label="Forget your password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-facebook-official"></FontIcon>} label="Sign in with Facebook" style={style}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>
