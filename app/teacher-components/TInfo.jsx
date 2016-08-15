@@ -69,7 +69,9 @@ class TInfoClass extends React.Component {
   }
 
   handleChange (e, index, value) {
-    this.setState({value});
+    this.setState({
+      teachExpValue: value
+    });
   }
 
   handleSubmit (e) {
@@ -237,8 +239,6 @@ class TInfoClass extends React.Component {
       additional: addition,
       "inter_time": interviewId         // interview id.
     };
-
-    console.log(data);
 
     var postInfoRequest = apis.TUpdateProfile(data,
         { "Authorization": self.props.token},
@@ -586,8 +586,6 @@ class TInfoClass extends React.Component {
       opacity: 0
     };
 
-    console.log(this.state.teachExpValue);
-
     return (
       <div className="t-info">
         <h1 className="t-info-caption text-center">Please complete your personal profile</h1>
@@ -751,7 +749,6 @@ class TInfoClass extends React.Component {
         { "Authorization": self.props.token},
         "",
         (resp) => {
-            console.log(resp);
             if (resp.success) {
                 var defaultTimezone = "";
                 var timezoneListData = resp.data;
@@ -781,7 +778,6 @@ class TInfoClass extends React.Component {
             }
         },
         (err) => {
-            console.log("err");
             console.log("timezone data request error.");
         }
     )
@@ -845,7 +841,6 @@ class TInfoClass extends React.Component {
     },
     (err) => {
       console.log("interview request error.");
-      console.log(err);
     }
   )
 
