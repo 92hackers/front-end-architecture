@@ -25,7 +25,7 @@ class TInfoClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      teachExpValue: null,
+      teachExpValue: 1,
 
       countriesList: [],
       regionList: [],
@@ -611,9 +611,9 @@ class TInfoClass extends React.Component {
           <Typeahead options={this.state.timezoneList} maxVisible={5} placeholder={this.state.defaultTimezone} onOptionSelected={this.changeTimezone.bind(this)} customClasses={{input: "timezone"}}></Typeahead>
           <br/>
           <SelectField id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
-            <MenuItem style={menuItemStyle} value={1} primaryText="More than 15 years" />
+            <MenuItem style={menuItemStyle} value={1} primaryText="Less than 5 years" />
             <MenuItem style={menuItemStyle} value={2} primaryText="Between 5 to 15 years" />
-            <MenuItem style={menuItemStyle} value={3} primaryText="Less than 5 years" />
+            <MenuItem style={menuItemStyle} value={3} primaryText="More than 15 years" />
           </SelectField>
           <br/>
           <TextField id="nation-code" floatingLabelText="Code" style={phoneStyle.code}></TextField><TextField id="phone-num" floatingLabelText="Phone Number" style={phoneStyle.phone}></TextField>

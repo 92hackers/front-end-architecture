@@ -71,7 +71,6 @@ class TSignInClass extends React.Component {
         if (!!resp.data.token) {
           this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
         }
-        console.log(resp.data.token);
         switch (resp.data.status) {
           case 1 :
             var queryParam = self.props.location.query.action;
