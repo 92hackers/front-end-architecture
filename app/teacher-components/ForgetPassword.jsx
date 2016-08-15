@@ -41,7 +41,6 @@ class ForgetPassword extends React.Component {
         notification = errors[0].message;
       }
     });
-
     validator._validateForm();
 
     if (!!notification.length) {

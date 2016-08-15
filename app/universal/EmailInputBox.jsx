@@ -19,7 +19,7 @@ class EmailInputBox extends React.Component {
   render () {
     return (
       <form>
-        <TextField id={this.props.id} type="email" floatingLabelText="Enter your email address"></TextField>
+        <TextField name="Email" id={this.props.id} type="email" floatingLabelText="Enter your email address"></TextField>
         <br/>
         <br/>
         <RaisedButton type="submit" label={this.props.submitText} primary={true} onClick={this.props.handle} style={{width: "100%"}}></RaisedButton>

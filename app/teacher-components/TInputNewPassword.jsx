@@ -1,10 +1,11 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
+import formValidate from 'validate-js';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {browserHistory} from 'react-router';
-import Notification from '../universal/Notification';
 import api from '../network/api';
-import formValidate from 'validate-js';
+import Notification from '../universal/Notification';
 
 class TInputNewPassword extends React.Component {
 
