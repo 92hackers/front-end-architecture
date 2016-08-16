@@ -10,7 +10,7 @@ class TAvatar extends React.Component {
   render () {
     return (
       <div className="t-avatar" style={{width: "100%", height: "auto"}}>
-        <img src={this.props.avatarUrl ? this.props.avatarUrl : "/imgs/teacher-avatar.png"} alt="teacher avatar"/>
+        <img src={this.props.avatarUrl ? this.props.avatarUrl : "/images/teacher-avatar.png"} alt="teacher avatar"/>
       </div>
     )
   }

@@ -17,16 +17,11 @@ var localTestEntry = path.join(rootDir, 'local-test/index');
 
 var outputPath = path.join(rootDir, "build/");
 
-const paths = [
-    "/hello/",
-    "/world/"
-];
-
 module.exports = {
 	// entry: [mainJsx, mainStyle],
   entry: main,
 	output: {
-        path: outputPath,
+    path: outputPath,
 		//filename: "js/[name].[chunkhash:8].js"
 		filename: "js/[name].js"
 	},
@@ -41,20 +36,22 @@ module.exports = {
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style", "css!postcss!less") },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style", "css!postcss") },
 			{ test: /\.json$/, loader: "json"},
-			//{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=imageName',
-          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-
-        ]
-      },
-			{ test: /\.woff(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff',  name: fontName} },
-			{ test: /\.woff2(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff2',  name: fontName} },
-			{ test: /\.ttf(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: "application/octet-stream",  name: fontName} },
-			{ test: /\.eot(\?\S*)?$/,  loader: "url",  query: {limit: 100,  name: fontName} },
-			{ test: /\.svg(\?\S*)?$/,  loader: "url",  query: {limit: 10000,  mimetype: "image/svg+xml",  name: fontName} },
+			{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff", query: {limit: 1000, name: fontName} },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader", query: {limit: 1000, name: fontName} }
+      // {
+      //   test: /\.(jpe?g|png|gif|svg)$/i,
+      //   loaders: [
+      //     'file?hash=sha512&digest=hex&name=imageName',
+      //     'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+      //
+      //   ]
+      // },
+			// { test: /\.woff(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff',  name: fontName} },
+			// { test: /\.woff2(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff2',  name: fontName} },
+			// { test: /\.ttf(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: "application/octet-stream",  name: fontName} },
+			// { test: /\.eot(\?\S*)?$/,  loader: "url",  query: {limit: 100,  name: fontName} },
+			// { test: /\.svg(\?\S*)?$/,  loader: "url",  query: {limit: 10000,  mimetype: "image/svg+xml",  name: fontName} },
 		]
 	},
   plugins: process.env.NODE_ENV === 'production' ? [

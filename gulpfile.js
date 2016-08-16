@@ -5,13 +5,23 @@ var gulpUtil = require("gulp-util");
 var config = require("config");
 var webpack = require("webpack");
 var runSequence = require("run-sequence");
-
+var gulpif = require('gulp-if');
+var sprity = require('sprity');
 
 var env = process.env.NODE_ENV;
 
 gulp.task("clean", () => {
     console.log("haha");
 	del(["build"]);
+});
+
+gulp.task('sprites', function () {
+  return sprity.src({
+    src: './app/sprites-source/*.{png,jpg}',
+    style: './sprite.css',
+    cssPath: "/images"        //   url path in css file.
+  })
+  .pipe(gulpif('*.png', gulp.dest('./app/sprites/images/'), gulp.dest('./app/sprites/css/')))
 });
 
 gulp.task("webpack-dev", () => {
@@ -26,7 +36,7 @@ gulp.task("webpack-dev", () => {
     },
     compress: true
   };
-  
+
   var devServer = new webpackDevServer(webpack(webpackDev), webpackServerOptions);
 
   devServer.listen(config.devPort, "localhost", (err) => {
@@ -60,7 +70,7 @@ gulp.task("dev", () => {
 });
 
 gulp.task("build", () => {
-	runSequence("clean", "webpack-build", "html", (err) => {
+	runSequence("clean", "sprites", "webpack-build", "html", (err) => {
 		if (err) {
 			console.log(err);
 		} else {
