@@ -19,6 +19,7 @@ gulp.task('sprites', function () {
   return sprity.src({
     src: './app/sprites-source/*.{png,jpg}',
     style: './sprite.css',
+    margin: 0,
     cssPath: "/images"        //   url path in css file.
   })
   .pipe(gulpif('*.png', gulp.dest('./app/sprites/images/'), gulp.dest('./app/sprites/css/')))
@@ -70,7 +71,7 @@ gulp.task("dev", () => {
 });
 
 gulp.task("build", () => {
-	runSequence("clean", "sprites", "webpack-build", "html", (err) => {
+	runSequence("clean", "webpack-build", "html", (err) => {
 		if (err) {
 			console.log(err);
 		} else {

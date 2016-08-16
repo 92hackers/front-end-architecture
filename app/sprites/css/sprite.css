@@ -3,73 +3,103 @@
   background-image: url('/images/sprite.png');
 }
 
-.icon-down {
+.icon-left-arrow {
   background-position: -0px -0px;
-  width: 74px;
-  height: 74px;
+  width: 62px;
+  height: 62px;
+}
+.icon-down {
+  background-position: -0px -62px;
+  width: 66px;
+  height: 66px;
 }
 .icon-Blue-button {
-  background-position: -0px -74px;
-  width: 368px;
-  height: 102px;
-}
-.icon-Fun {
-  background-position: -0px -176px;
-  width: 108px;
-  height: 108px;
+  background-position: -0px -128px;
+  width: 360px;
+  height: 94px;
 }
 .icon-Leisure {
-  background-position: -0px -284px;
-  width: 108px;
-  height: 108px;
-}
-.icon-Niubi {
-  background-position: -0px -392px;
-  width: 108px;
-  height: 108px;
+  background-position: -0px -222px;
+  width: 100px;
+  height: 100px;
 }
 .icon-technology {
-  background-position: -0px -500px;
-  width: 108px;
-  height: 108px;
+  background-position: -0px -322px;
+  width: 100px;
+  height: 100px;
+}
+.icon-suitcase {
+  background-position: -0px -422px;
+  width: 100px;
+  height: 100px;
+}
+.icon-Professional- {
+  background-position: -0px -522px;
+  width: 100px;
+  height: 100px;
+}
+.icon-shen-qing {
+  background-position: -0px -622px;
+  width: 100px;
+  height: 100px;
 }
 .icon-money {
-  background-position: -0px -608px;
-  width: 108px;
-  height: 108px;
-}
-.icon-Community {
-  background-position: -0px -716px;
-  width: 108px;
-  height: 108px;
-}
-.icon-doubt {
-  background-position: -0px -824px;
-  width: 108px;
-  height: 108px;
+  background-position: -0px -722px;
+  width: 100px;
+  height: 100px;
 }
 .icon-time {
-  background-position: -0px -932px;
-  width: 108px;
-  height: 108px;
+  background-position: -0px -822px;
+  width: 100px;
+  height: 100px;
+}
+.icon-Community {
+  background-position: -0px -922px;
+  width: 100px;
+  height: 100px;
+}
+.icon-Fun {
+  background-position: -0px -1022px;
+  width: 100px;
+  height: 100px;
+}
+.icon-doubt {
+  background-position: -0px -1122px;
+  width: 100px;
+  height: 100px;
 }
 .icon-Paul-Clutterbuck {
-  background-position: -0px -1040px;
-  width: 192px;
-  height: 192px;
+  background-position: -0px -1222px;
+  width: 184px;
+  height: 184px;
 }
 .icon-Patty-Harte {
-  background-position: -0px -1232px;
-  width: 192px;
-  height: 192px;
+  background-position: -0px -1406px;
+  width: 184px;
+  height: 184px;
+}
+.icon-computer {
+  background-position: -0px -1590px;
+  width: 200px;
+  height: 200px;
+}
+.icon-people {
+  background-position: -0px -1790px;
+  width: 200px;
+  height: 200px;
+}
+.icon-book {
+  background-position: -0px -1990px;
+  width: 200px;
+  height: 200px;
 }
 .icon-dialogue {
-  background-position: -0px -1424px;
-  width: 1032px;
-  height: 220px;
+  background-position: -0px -2190px;
+  width: 1024px;
+  height: 212px;
 }
 .icon-image {
-  background-position: -0px -1644px;
-  width: 1928px;
-  height: 1088px;
+  background-position: -0px -2402px;
+  width: 1920px;
+  height: 1080px;
 }

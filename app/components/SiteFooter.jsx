@@ -12,11 +12,17 @@ class SiteFooter extends React.Component {
     return (
       <footer className="container" style={{textAlign: "right"}}>
         <ul className="footer-items">
-          <li className="item"><a href="mailto:teacher@weteach.info">Contact us</a></li>
-          <li className="item">
-            <a target="_blank" href="https://www.facebook.com/WeTeach.YiYou">
-              <i className="fa fa-facebook-official"></i>
-            </a>
+          <li className="contact-item">
+            <i className="fa fa-user"></i>
+            <a href="mailto:teacher@weteach.info">Contact us</a>
+          </li>
+          <li className="contact-item">
+            <i className="fa fa-facebook-official"></i>
+            <a href="https://www.facebook.com/WeTeach.YiYou">Facebook Page</a>
+          </li>
+          <li className="contact-item">
+            <i className="fa fa-linkedin-square"></i>
+            <a href="http://www.linkedin.com/company/10665592">LinkedIn</a>
           </li>
         </ul>
         <ul id="beian">

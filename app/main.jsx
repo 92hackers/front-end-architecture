@@ -25,6 +25,8 @@ import ForgetPassword from './teacher-components/ForgetPassword';
 import TInputNewPassword from './teacher-components/TInputNewPassword';
 import VerifyYourEmail from './teacher-components/VerifyYourEmail';
 import TIndex from './teacher-components/TIndex';
+import TAboutSchool from './teacher-components/TAboutSchool';
+import TAboutJob from './teacher-components/TAboutJob';
 // import StepToSignUp from './teacher-components/StepToSignUp';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -90,6 +92,8 @@ ReactDom.render((
         <Route path="/forget-password" component={ForgetPassword}></Route>
         <Route path="/reset-password" component={TInputNewPassword}></Route>
         <Route path="/activate-your-account" component={VerifyYourEmail}></Route>
+        <Route path="/about-job" component={TAboutJob}></Route>
+        <Route path="/about-school" component={TAboutSchool}></Route>
         <Route path="*" component={NotFound}></Route>
       </Route>
     </Router>
