@@ -57,6 +57,7 @@ class App extends React.Component {
         super(props);
     }
 
+
     render () {
 
       var userToken = store.getState().addToken.token;
@@ -76,8 +77,9 @@ class App extends React.Component {
           <SiteFooter></SiteFooter>
         </div>
       )
-      }
-}
+    }
+
+  }
 
 ReactDom.render((
   <Provider store={store}>

@@ -16,11 +16,37 @@ class TIndex extends React.Component {
     browserHistory.push("/sign-up");
   }
 
+  handleSignIn (e) {
+    e.preventDefault();
+    browserHistory.push("/sign-in");
+  }
+
   componentDidMount () {
-    var viewHeight = screen.availHeight;
+
+    var viewHeight = window.innerHeight;
+
     this.setState({
       viewHeight: viewHeight
     });
+
+    window.scrollTo(0,0);
+
+    var header = document.getElementsByClassName("site-header")[0];
+
+    header.style.display = "none";
+
+    var body = document.body;
+
+    body.style.paddingTop = "0";
+
+    window.onscroll = (e) => {
+      if (window.scrollY > viewHeight) {
+        header.style.display = "block";
+      } else {
+        header.style.display = "none";
+      }
+    };
+
   }
 
   aboutSchool (e) {
@@ -34,10 +60,10 @@ class TIndex extends React.Component {
   }
 
   render () {
-    var viewHeight = this.state.viewHeight - 60;
+    var viewHeight = this.state.viewHeight;
 
     var labelStyle = {
-      fontSize: 30
+      fontSize: 30,
     };
 
     var startStyle = {
@@ -46,15 +72,19 @@ class TIndex extends React.Component {
     };
 
     var aboutSchool = {
+      fontSize: 30,
       width: 266,
       height: 70,
-      marginRight: 50
+      marginRight: 50,
+      borderRadius: 40
     };
 
     var aboutJob = {
+      fontSize: 30,
       width: 266,
       height: 70,
-      marginLeft: 50
+      marginLeft: 50,
+      borderRadius: 40
     };
 
     return (
@@ -62,12 +92,19 @@ class TIndex extends React.Component {
         <section className="bg-img" style={{height: viewHeight}}>
           <div className="mask">
             <div className="content">
+              <header className="container">
+                <span className="logo left">Weteach</span>
+                <div className="sign-buttons right">
+                  <a onClick={this.handleStart.bind(this)} href="javascript:;" id="sign-up">Sign Up</a>
+                  <a onClick={this.handleSignIn.bind(this)} href="javascript:;" id="sign-in">Sign In</a>
+                </div>
+              </header>
               <h1 className="title">WeTeach</h1>
               <h2 className="sub-title">Online English teaching as it should be!</h2>
-              <RaisedButton style={startStyle} labelStyle={labelStyle} label="Start" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
-              <div className="arrow-down"><i className="icon-arrow-down"></i></div>
+              <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
             </div>
           </div>
+          <div className="arrow-down"><i className="icon-arrow-down"></i></div>
         </section>
         <section className="introduction section-wrap">
           <h1 className="primary-color title">Introduction</h1>
@@ -137,7 +174,7 @@ class TIndex extends React.Component {
           <div className="section-wrap">
             <h1 className="title primary-color">WeTeach Video</h1>
             <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
-            <iframe src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FFe_4RJKmaho%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DFe_4RJKmaho%26feature%3Dyoutu.be&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FFe_4RJKmaho%2Fhqdefault.jpg&key=25afbca9c69b4d728fa90e96b92e6b33&type=text%2Fhtml&schema=youtube" frameBorder="0" width="1024" height="576"></iframe>
+            <iframe scrolling="no" allowfullscreen src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FFe_4RJKmaho%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DFe_4RJKmaho%26feature%3Dyoutu.be&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FFe_4RJKmaho%2Fhqdefault.jpg&key=25afbca9c69b4d728fa90e96b92e6b33&type=text%2Fhtml&schema=youtube" frameBorder="0" width="1024" height="576"></iframe>
           </div>
         </section>
         <section className="teachers-thoughts">
@@ -169,8 +206,8 @@ class TIndex extends React.Component {
             </ul>
           </div>
           <div className="buttons">
-            <RaisedButton labelStyle={labelStyle} style={aboutSchool} label="About School" primary={true} onClick={this.aboutSchool.bind(this)}></RaisedButton>
-            <RaisedButton labelStyle={labelStyle} style={aboutJob} label="About Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
+            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutSchool} label="About School" primary={true} onClick={this.aboutSchool.bind(this)}></RaisedButton>
+            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
           </div>
         </section>
         <section className="section-wrap contact-us">
@@ -181,6 +218,19 @@ class TIndex extends React.Component {
       </div>
     )
   }
+
+  componentWillUnmount () {
+
+    var header = document.getElementsByClassName("site-header")[0];
+
+    header.style.display = "block";
+
+    var body = document.body;
+
+    body.style.paddingTop = "60px";
+
+  }
+
 }
 
 export default TIndex;

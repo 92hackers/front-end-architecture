@@ -22,31 +22,69 @@
     background-size: cover;
     width: 100%;
     min-height: 500px;
+    .index-start-btn {
+      border-radius: 5px !important;
+      button {
+        border-radius: 5px !important;
+        div {
+          & > div {
+            border-radius: 5px !important;
+          }
+        }
+      }
+    }
     .content {
-      position: absolute;
-      top: 204px;
       color: #fff;
-      left: 50%;
-      transform: translate(-50%);
       .title {
         font-size: 48px;
-        margin-bottom: 36px;
+        margin-bottom: 10px;
       }
       .sub-title {
-        margin-bottom: 160px;
+        margin-bottom: 158px;
         font-size: 30px;
         font-weight: 100;
         white-space: nowrap;
       }
-      .arrow-down {
-        margin-top: 30px;
-        .icon-arrow-down {
-          background-image: url("/images/down.png");
-          background-repeat: no-repeat;
-          background-size: cover;
-          width: 64px;
-          height: 64px;
-          display: inline-block;
+    }
+    .icon-arrow-down {
+      background-image: url("/images/down-arrow.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 46px;
+      height: 46px;
+      display: inline-block;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    header {
+      height: 60px;
+      line-height: 60px;
+      margin-bottom: 68px;
+      .logo {
+        font-size: 24px;
+      }
+    }
+    .sign-buttons {
+      top: 12.5px;
+      right: 30px;
+      a {
+        color: #fff;
+        padding: 10px 26px;
+      }
+      #sign-up {
+        background-color: @teacher_base;
+        &:hover {
+          background-color: transparent;
+          border: 1px solid #fff;
+        }
+        border: 1px solid transparent;
+        border-radius: 4px;
+      }
+      #sign-in {
+        &:hover {
+          text-decoration: underline;
         }
       }
     }
@@ -133,6 +171,9 @@
           color: #fff;
           font-size: 18px;
           opacity: 0.9;
+          .card-desc {
+            font-weight: 200;
+          }
         }
         &:hover {
           .card-mask {
@@ -224,6 +265,18 @@
       font-weight: 200;
       &:last-child {
         margin-bottom: 100px;
+      }
+    }
+  }
+  .buttons {
+    .about-button {
+      button {
+        border-radius: 40px !important;
+        div {
+          & > div {
+            border-radius: 40px !important;
+          }
+        }
       }
     }
   }
