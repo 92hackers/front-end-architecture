@@ -17,7 +17,7 @@ class TAboutJob extends React.Component {
           </div>
         </section>
         <section className="container text-center">
-          <section className="inctoduction">
+          <section className="introduction">
             <h1 className="title">Job introduction</h1>
             <p>WeTeach connects teachers with Chinese primary school students to learn together online.</p>
             <p>Our current focus is on English reading comprehension, pronunciation and confidence building.</p>
@@ -35,23 +35,29 @@ class TAboutJob extends React.Component {
             {/* TODO: add  table here. */}
           </section>
           <section className="application">
-            <div className="step-apply">
-              <span className="icon-computer"></span>
-              <p>Apply Online</p>
+            <div className="icon">
+              <span className="icon-shen-qing"></span>
+              <h1 className="title">Application Process</h1>
             </div>
-            <div className="arrow">
-              <span className="icon-arrow-right"></span>
-            </div>
-            <div className="step-interview">
-              <span className="icon-people"></span>
-              <p>Interview</p>
-            </div>
-            <div className="arrow">
-              <span className="icon-arrow-right"></span>
-            </div>
-            <div className="step-teaching">
-              <span className="icon-book"></span>
-              <p>Start Teaching</p>
+            <div className="application-steps clearfix">
+              <div className="step-apply left">
+                <span className="icon-computer"></span>
+                <p>Apply Online</p>
+              </div>
+              <div className="arrow left">
+                <span className="icon-arrow-right"></span>
+              </div>
+              <div className="step-interview left">
+                <span className="icon-people"></span>
+                <p>Interview</p>
+              </div>
+              <div className="arrow left">
+                <span className="icon-arrow-right"></span>
+              </div>
+              <div className="step-teaching left">
+                <span className="icon-book"></span>
+                <p>Start Teaching</p>
+              </div>
             </div>
           </section>
           <section className="qualifications">
@@ -81,7 +87,7 @@ class TAboutJob extends React.Component {
             </ul>
           </section>
           <section className="slogan">
-            <h1 className="slogan-title">Learning for life. Friendships for life.</h1>
+            <h1 className="slogan-title">"Learning for life. Friendships for life."</h1>
           </section>
         </section>
       </section>

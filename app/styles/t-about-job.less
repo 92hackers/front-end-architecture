@@ -1,13 +1,166 @@
 .t-about-job {
+  h1.title, h1.main-title {
+    margin-top: 0;
+  }
+  .background {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  h1.title {
+    color: @teacher_base;
+    font-size: 28px;
+    margin-bottom: 46px;
+    margin-top: 20px;
+  }
+  h2.sub-title {
+    font-weight: 200;
+    font-size: 16px;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 200;
+  }
   .bg-img {
+    .background();
+    background-image: url("/images/image.png");
+    width: 100%;
+    height: 480px;
     .content {
+      text-align: center;
+      padding-top: 150px;
       .main-title {
         font-size: 48px;
+        color: #fff;
+        margin-bottom: 62px;
       }
       .main-sub-title {
         font-size: 24px;
-        font-weight: 200;
+        font-weight: 100;
+        color: #fff;
       }
+    }
+  }
+  .introduction {
+    padding-top: 80px;
+    padding-bottom: 120px;
+    h1.title {
+      margin-bottom: 46px;
+    }
+  }
+  .icon-bg {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+  }
+  .payment {
+    padding-bottom: 120px;
+    .icon-money {
+      background-image: url("/images/money.png");
+      .background();
+      .icon-bg();
+    }
+    h1.title {
+      margin-bottom: 24px;
+    }
+    h2.sub-title {
+      margin-bottom: 46px;
+    }
+    .payment-content {
+      width: 60%;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #eaf4fe;
+    }
+  }
+  .timezone {
+    padding-bottom: 120px;
+    .icon-time {
+      background-image: url("/images/time.png");
+      .background();
+      .icon-bg();
+    }
+  }
+  .application {
+    padding-bottom: 120px;
+    .icon-shen-qing {
+      background-image: url("/images/shen-qing.png");
+      .background();
+      .icon-bg();
+    }
+    .application-steps {
+      display: inline-block;
+    }
+    .appli-icon {
+      width: 200px;
+      height: 200px;
+      display: inline-block;
+    }
+    .icon-computer {
+      background-image: url("/images/computer.png");
+      .background();
+      .appli-icon();
+    }
+    .icon-people {
+      background-image: url("/images/people.png");
+      .background();
+      .appli-icon();
+    }
+    .icon-book {
+      background-image: url("/images/people.png");
+      .background();
+      .appli-icon();
+    }
+    .icon-arrow-right {
+      background-image: url("/images/left-arrow.png");
+      .background();
+      width: 62px;
+      height: 62px;
+      display: inline-block;
+      margin-top: 69px;
+      margin-left: 42px;
+      margin-right: 42px;
+    }
+    p {
+      color: @teacher_base;
+    }
+  }
+  .qualifications {
+    .icon-suitcase {
+      background-image: url("/images/suitcase.png");
+      .background();
+      .icon-bg();
+    }
+    padding-bottom: 120px;
+    ul {
+      display: inline-block;
+      text-align: left;
+      li {
+        line-height: 70px;
+        & + li {
+          margin-top: 40px;
+        }
+        .index {
+          text-align: center;
+          display: inline-block;
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          background-color: @teacher_base;
+          font-size: 28px;
+          color: #fff;
+          margin-right: 36px;
+        }
+        p {
+          display: inline-block;
+        }
+      }
+    }
+  }
+  section.slogan {
+    .slogan-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: @teacher_base;
     }
   }
 }
