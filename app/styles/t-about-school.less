@@ -2,13 +2,14 @@
   .background {
     background-size: cover;
     background-repeat: no-repeat;
+    display: inline-block;
   }
 
   h1.title {
     color: @teacher_base;
     font-size: 28px;
     margin-bottom: 46px;
-    margin-top: 20px;
+    // margin-top: 20px;
   }
   h2.sub-title {
     font-weight: 200;
@@ -100,8 +101,66 @@
     }
   }
   section.charity {
+    padding-bottom: 180px;
     .icon-charity {
-
+      .background();
+      background-image: url("/images/tom.png");
+      width: 1024px;
+      height: 576px;
+    }
+    .sub-title {
+      margin-bottom: 40px;
+    }
+  }
+  section.students-video {
+    padding-bottom: 180px;
+  }
+  section.activities {
+    padding-bottom: 280px;
+    .icons {
+      .icon-one {
+        .background();
+        background-image: url("/images/horse.png");
+        width: 468px;
+        height: 372px;
+        margin-bottom: 18px;
+      }
+      .icon-two {
+        .background();
+        background-image: url("/images/banner.png");
+        width: 654px;
+        height: 372px;
+        margin-bottom: 18px;
+        margin-left: 18px;
+      }
+      .icon-three {
+        .background();
+        background-image: url("/images/four-persons.png");
+        width: 368px;
+        height: 332px;
+      }
+      .icon-four {
+        .background();
+        background-image: url("/images/learning.png");
+        width: 368px;
+        height: 332px;
+        margin-left: 18px;
+      }
+      .icon-five {
+        .background();
+        background-image: url("/images/play.png");
+        width: 368px;
+        height: 332px;
+        margin-left: 18px;
+      }
+    }
+  }
+  section.slogan {
+    padding-bottom: 200px;
+    .slogan-title {
+      font-size: 36px;
+      font-weight: 500;
+      color: @teacher_base;
     }
   }
 }

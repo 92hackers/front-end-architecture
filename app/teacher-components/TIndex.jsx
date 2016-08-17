@@ -1,6 +1,8 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
+import IndexHeader from './IndexHeader';
+import toggleHeader from '../utilities/toggleHeader';
 
 class TIndex extends React.Component {
 
@@ -16,11 +18,6 @@ class TIndex extends React.Component {
     browserHistory.push("/sign-up");
   }
 
-  handleSignIn (e) {
-    e.preventDefault();
-    browserHistory.push("/sign-in");
-  }
-
   componentDidMount () {
 
     var viewHeight = window.innerHeight;
@@ -29,23 +26,7 @@ class TIndex extends React.Component {
       viewHeight: viewHeight
     });
 
-    window.scrollTo(0,0);
-
-    var header = document.getElementsByClassName("site-header")[0];
-
-    header.style.display = "none";
-
-    var body = document.body;
-
-    body.style.paddingTop = "0";
-
-    window.onscroll = (e) => {
-      if (window.scrollY > viewHeight) {
-        header.style.display = "block";
-      } else {
-        header.style.display = "none";
-      }
-    };
+    toggleHeader.set(viewHeight);
 
   }
 
@@ -92,13 +73,7 @@ class TIndex extends React.Component {
         <section className="bg-img" style={{height: viewHeight}}>
           <div className="mask">
             <div className="content">
-              <header className="container">
-                <span className="logo left">Weteach</span>
-                <div className="sign-buttons right">
-                  <a onClick={this.handleStart.bind(this)} href="javascript:;" id="sign-up">Sign Up</a>
-                  <a onClick={this.handleSignIn.bind(this)} href="javascript:;" id="sign-in">Sign In</a>
-                </div>
-              </header>
+              <IndexHeader></IndexHeader>
               <h1 className="title">WeTeach</h1>
               <h2 className="sub-title">Online English teaching as it should be!</h2>
               <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
@@ -174,7 +149,7 @@ class TIndex extends React.Component {
           <div className="section-wrap">
             <h1 className="title primary-color">WeTeach Video</h1>
             <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
-            <iframe scrolling="no" allowfullscreen src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FFe_4RJKmaho%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DFe_4RJKmaho%26feature%3Dyoutu.be&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FFe_4RJKmaho%2Fhqdefault.jpg&key=25afbca9c69b4d728fa90e96b92e6b33&type=text%2Fhtml&schema=youtube" frameBorder="0" width="1024" height="576"></iframe>
+            <iframe scrolling="no" allowFullScreen src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FFe_4RJKmaho%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DFe_4RJKmaho%26feature%3Dyoutu.be&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FFe_4RJKmaho%2Fhqdefault.jpg&key=25afbca9c69b4d728fa90e96b92e6b33&type=text%2Fhtml&schema=youtube" frameBorder="0" width="1024" height="576"></iframe>
           </div>
         </section>
         <section className="teachers-thoughts">
@@ -190,12 +165,12 @@ class TIndex extends React.Component {
                   </div>
                 </div>
                 <div className="left thoughts">
-                  <p className="icon-dialogue-left"><p className="thoughts-content">"It's such a privilege to join the children in their homes and to share much-loved stories with them. Their reactions as they see the pages are priceless and utterly enchanting. In teaching you are often giving out so much energy, after story time with WeTeach it is like getting that energy back again.”</p></p>
+                  <div className="icon-dialogue-left"><p className="thoughts-content">"It's such a privilege to join the children in their homes and to share much-loved stories with them. Their reactions as they see the pages are priceless and utterly enchanting. In teaching you are often giving out so much energy, after story time with WeTeach it is like getting that energy back again.”</p></div>
                 </div>
               </li>
               <li className="teacher-item clearfix">
                 <div className="left thoughts">
-                  <p className="icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></p>
+                  <div className="icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
                 </div>
                 <div className="left avatar">
                   <i className="icon-Paul-Clutterbuck"></i>
@@ -220,17 +195,8 @@ class TIndex extends React.Component {
   }
 
   componentWillUnmount () {
-
-    var header = document.getElementsByClassName("site-header")[0];
-
-    header.style.display = "block";
-
-    var body = document.body;
-
-    body.style.paddingTop = "60px";
-
+    toggleHeader.reset();
   }
-
 }
 
 export default TIndex;

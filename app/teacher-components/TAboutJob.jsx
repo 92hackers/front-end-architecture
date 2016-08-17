@@ -32,7 +32,10 @@ class TAboutJob extends React.Component {
           <section className="timezone">
             <span className="icon-time"></span>
             <h1 className="title">Time Zone Conversion</h1>
-            {/* TODO: add  table here. */}
+            <p className="table-caption">Peak Times (Daylight Saving Time)</p>
+            <div className="icon-winter"></div>
+            <p className="table-caption">Peak Times </p>
+            <div className="icon-summer"></div>
           </section>
           <section className="application">
             <div className="icon">

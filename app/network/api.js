@@ -38,6 +38,13 @@ var apis = [
     }
   },
   {
+    name: "TNationalityList",
+    options: {
+      api: "geo/nationality",
+      method: "get"
+    }
+  },
+  {
     name: "TCountryList",
     options: {
       api: "geo/country",

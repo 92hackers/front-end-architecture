@@ -18,7 +18,7 @@ import Notification from '../universal/Notification';
 import AvatarUpload from '../universal/AvatarUpload';
 import TAvatar from './TAvatar';
 
-import apis from '../network/api';
+import api from '../network/api';
 
 class TInfoClass extends React.Component {
 
@@ -27,6 +27,7 @@ class TInfoClass extends React.Component {
     this.state = {
       teachExpValue: 1,
 
+      nationalityList: [],
       countriesList: [],
       regionList: [],
       cityList: [],
@@ -177,39 +178,39 @@ class TInfoClass extends React.Component {
     var countryCode = "";
     var locationCountryId = "";
     var countryList = this.state.countriesList;
+    var nationalityList = this.state.nationalityList;
 
-    for (let i = 0; i < countryList.length; i++) {
-      if (countryList[i].name === nationality) {
-        countryCode = countryList[i].id;
-        break;
+    for (let i = 0; i < nationalityList.length; i++) {
+      if (nationalityList[i].name === nationality) {
+        countryCode = nationality[i].id;
       }
     }
 
     for (let i = 0; i < countryList.length; i++) {
-        if (countryList[i].name === country) {
-            locationCountryId = countryList[i].id;
-            break;
-        }
+      if (countryList[i].name === country) {
+        locationCountryId = countryList[i].id;
+        break;
+      }
     }
 
     var regionId = "";
     var regionList = this.state.regionList;
 
     for (let i = 0; i < regionList.length; i++) {
-        if (regionList[i].name === region) {
-            regionId = regionList[i].id;
-            break;
-        }
+      if (regionList[i].name === region) {
+        regionId = regionList[i].id;
+        break;
+      }
     }
 
     var cityId = "";
     var cityList = this.state.cityList;
 
     for (let i = 0; i < cityList.length; i++) {
-        if (cityList[i].name === city) {
-            cityId = cityList[i].id;
-            break;
-        }
+      if (cityList[i].name === city) {
+        cityId = cityList[i].id;
+        break;
+      }
     }
 
     var interviewId = "";
@@ -240,7 +241,7 @@ class TInfoClass extends React.Component {
       "inter_time": interviewId         // interview id.
     };
 
-    var postInfoRequest = apis.TUpdateProfile(data,
+    var postInfoRequest = api.TUpdateProfile(data,
         { "Authorization": self.props.token},
         "",
         (resp) => {
@@ -318,7 +319,7 @@ class TInfoClass extends React.Component {
           }
       }
 
-      self.cityListRequest = apis.TCityList("",
+      self.cityListRequest = api.TCityList("",
           { "Authorization": self.props.token},
           regionId,
           (resp) => {
@@ -348,7 +349,7 @@ class TInfoClass extends React.Component {
         break;
       }
     }
-    var regionListRequest = apis.TRegionList("",
+    var regionListRequest = api.TRegionList("",
         { "Authorization": self.props.token},
         countryCode,
         (resp) => {
@@ -500,6 +501,10 @@ class TInfoClass extends React.Component {
       return country.name;
     });
 
+    const nationalityList = this.state.nationalityList.map((nationality) => {
+      return nationality.name;
+    });
+
     const cityList = this.state.cityList.map((city) => {
       return city.name;
     });
@@ -590,7 +595,7 @@ class TInfoClass extends React.Component {
       <div className="t-info">
         <h1 className="t-info-caption text-center">Please complete your personal profile</h1>
         <form className="t-info-form">
-          <Typeahead options={countriesList} maxVisible={5} placeholder="Your Nationality" customClasses={{input: "nationality"}}></Typeahead>
+          <Typeahead options={nationalityList} maxVisible={5} placeholder="Your Nationality" customClasses={{input: "nationality"}}></Typeahead>
           <br/>
           <p id="gender-caption">Gender</p>
           <RadioButtonGroup name="gender" style={styles.RadioButtonGroup}>
@@ -730,8 +735,8 @@ class TInfoClass extends React.Component {
       return;
     }
 
-    self.countryRequest = apis.TCountryList("",
-        { "Authorization": self.props.token},
+    self.countryRequest = api.TCountryList("",
+        { "Authorization": self.props.token },
         "",
         (resp) => {
           if (resp.success) {
@@ -745,7 +750,22 @@ class TInfoClass extends React.Component {
         }
     );
 
-    self.timezoneRequest = apis.TTimezone("",
+    self.nationalityRequest = api.TNationalityList("",
+    { "Authorization": self.props.token },
+    "",
+    (resp) => {
+      if (resp.success) {
+        self.setState({
+          nationalityList: resp.data
+        });
+      }
+    },
+    (err) => {
+      console.log("data fetching error.");
+    }
+  );
+
+    self.timezoneRequest = api.TTimezone("",
         { "Authorization": self.props.token},
         "",
         (resp) => {
@@ -795,7 +815,7 @@ class TInfoClass extends React.Component {
       }
     }
 
-    this.interviewDateTimeRequest = apis.TInterview("",
+    this.interviewDateTimeRequest = api.TInterview("",
     { "Authorization": self.props.token },
     defaultTimezoneId,
     (resp) => {

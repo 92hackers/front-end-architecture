@@ -38,15 +38,22 @@ class TAboutSchool extends React.Component {
           </section>
           <section className="students-video">
             <h1 className="title">Students' Video</h1>
-            {/* student video. */}
+            <iframe width="1024" height="576" src="https://www.youtube.com/embed/-2wJlQ-uxl0" frameBorder="0" allowFullScreen></iframe>
           </section>
           <section className="activities">
             <h1 className="title">Offline Activities</h1>
             <p>We organise study tours to the Anglosphere so students can learn more about Western culture </p>
             <p>and meet their teachers in person. We also arrange for teachers to visit their students in China.</p>
-            <ul className="icons">
-
+            <ul className="icons clearfix">
+              <li className="icon-one left"></li>
+              <li className="icon-two left"></li>
+              <li className="icon-three left"></li>
+              <li className="icon-four left"></li>
+              <li className="icon-five left"></li>
             </ul>
+          </section>
+          <section className="slogan">
+            <p className="slogan-title">Felix saying thanks for all the help heather has given him.</p>
           </section>
         </section>
       </section>
