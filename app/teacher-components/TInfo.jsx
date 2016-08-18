@@ -672,13 +672,13 @@ class TInfoClass extends React.Component {
             </div>
           </Dialog>
           <br/>
-          <TextField id="self-intro" multiLine={true} rows={5} type="textarea" floatingLabelText="Personal Introduction"></TextField>
+          <TextField id="self-intro" multiLine={true} rows={5} rowsMax={10} type="textarea" floatingLabelText="What important qualities should an ESL teacher possess?"></TextField>
           <br/>
-          <TextField id="teach-style" multiLine={true} rows={5} type="textarea" floatingLabelText="Teaching Style"></TextField>
+          <TextField id="teach-style" multiLine={true} rows={5} rowsMax={10} type="textarea" floatingLabelText="Name 5 factors to consider when lesson planning."></TextField>
           <br/>
-          <TextField id="why-a-teacher" multiLine={true} rows={5} type="textarea" floatingLabelText="Why do you want to be a WeTeach Teacher?"></TextField>
+          <TextField id="why-a-teacher" multiLine={true} rows={5} rowsMax={10} type="textarea" floatingLabelText="How do you plan to keep young learners motivated and engaged in an online classroom setting."></TextField>
           <br/>
-          <TextField id="addition" multiLine={true} rows={5} type="textarea" floatingLabelText="Additional Remarks"></TextField>
+          <TextField id="addition" multiLine={true} rows={5} rowsMax={10} type="textarea" floatingLabelText="Is there any other useful information you'd like to provide about yourself? (optional)"></TextField>
           <br/>
           <br/>
           <br/>
