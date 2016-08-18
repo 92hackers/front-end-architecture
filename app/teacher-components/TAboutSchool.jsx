@@ -1,4 +1,6 @@
 import React from 'react';
+import IndexHeader from './IndexHeader';
+import toggleHeader from '../utilities/toggleHeader';
 
 class TAboutSchool extends React.Component {
 
@@ -11,6 +13,7 @@ class TAboutSchool extends React.Component {
       <section className="t-about-school text-center">
         <section className="bg-img">
           <div className="content">
+            <IndexHeader></IndexHeader>
             <h1 className="main-title">About School</h1>
             <h2 className="main-sub-title">Online English teaching as it should be.</h2>
           </div>
@@ -59,6 +62,15 @@ class TAboutSchool extends React.Component {
       </section>
     )
   }
+
+  componentDidMount () {
+    toggleHeader.set(540);
+  }
+
+  componentWillUnmount () {
+    toggleHeader.reset();
+  }
+
 }
 
 export default TAboutSchool;

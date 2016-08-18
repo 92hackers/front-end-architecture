@@ -22,6 +22,8 @@ class TIndex extends React.Component {
 
     var viewHeight = window.innerHeight;
 
+    viewHeight = viewHeight > 700 ? viewHeight : 700;
+
     this.setState({
       viewHeight: viewHeight
     });
@@ -40,12 +42,42 @@ class TIndex extends React.Component {
     browserHistory.push("/about-job");
   }
 
+  scrollDown (e) {
+    e.preventDefault();
+
+    var count = "";
+
+    var currentPosition = window.scrollY;
+    var target = window.innerHeight;
+
+    var y = currentPosition;
+
+    var diff = target + 1 - currentPosition;
+    var count = 0;
+
+    function easeInQuart (t) {
+      return t*t*t*t;
+    }
+
+    if (currentPosition < target) {
+      var timeId = setInterval(() => {
+        count++;
+        y = y + diff / 100;
+        window.scrollTo(0, y);
+        if (count === 100) {
+          clearInterval(timeId);
+        }
+      }, 1);
+    }
+
+  }
+
   render () {
     var viewHeight = this.state.viewHeight;
 
     var labelStyle = {
       fontSize: 30,
-    };
+    }
 
     var startStyle = {
       width: 240,
@@ -79,7 +111,7 @@ class TIndex extends React.Component {
               <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
             </div>
           </div>
-          <div className="arrow-down"><i className="icon-arrow-down"></i></div>
+          <div className="arrow-down"><i className="icon-arrow-down" onClick={this.scrollDown.bind(this)}></i></div>
         </section>
         <section className="introduction section-wrap">
           <h1 className="primary-color title">Introduction</h1>

@@ -205,8 +205,8 @@ class TSignUp extends React.Component {
         <p>At WeTeach, if you are a good teacher, there is no reason why you should be working for another company. Quite simply, you should only work for yourself. You should be able to set your own teaching rates, earn your own money and have complete control over your teaching schedule.</p>
         <h2>CONTACTING CUSTOMER SERVICE</h2>
         <p>If you wish to report a violation of Site Policies, have any questions or need assistance, please contact WeTeach Customer Service as follows:</p>
-        <p><b>Online Suppor:</b> <a href=" http://teacher.WeTeach.info" target="_blank"> http://teacher.WeTeach.info</a></p>
-        <p><b>Email: </b> teacher@WeTeach.info</p>
+        <p><b>Online Suppor:</b><a href="http://teacher.WeTeach.info" target="_blank"> http://teacher.weTeach.info</a></p>
+        <p><b>Email: </b><a href="mailto:teacher@WeTeach.info">teacher@WeTeach.info</a></p>
       </div>
     );
 

@@ -1,5 +1,7 @@
 
 import React from 'react';
+import IndexHeader from './IndexHeader';
+import toggleHeader from '../utilities/toggleHeader';
 
 class TAboutJob extends React.Component {
 
@@ -12,6 +14,7 @@ class TAboutJob extends React.Component {
       <section className="t-about-job">
         <section className="bg-img">
           <div className="content">
+            <IndexHeader></IndexHeader>
             <h1 className="main-title">About Job</h1>
             <h2 className="main-sub-title">Online English teaching as it should be.</h2>
           </div>
@@ -33,9 +36,9 @@ class TAboutJob extends React.Component {
             <span className="icon-time"></span>
             <h1 className="title">Time Zone Conversion</h1>
             <p className="table-caption">Peak Times (Daylight Saving Time)</p>
-            <div className="icon-winter"></div>
-            <p className="table-caption">Peak Times </p>
             <div className="icon-summer"></div>
+            <p className="table-caption">Peak Times </p>
+            <div className="icon-winter"></div>
           </section>
           <section className="application">
             <div className="icon">
@@ -96,6 +99,15 @@ class TAboutJob extends React.Component {
       </section>
     )
   }
+
+  componentDidMount () {
+    toggleHeader.set(540);
+  }
+
+  componentWillUnmount () {
+    toggleHeader.reset();
+  }
+
 }
 
 export default TAboutJob;
