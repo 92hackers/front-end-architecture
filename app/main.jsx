@@ -48,7 +48,8 @@ const muiTheme = getMuiTheme({
     primary1Color: blue500,
     primary2Color: blue500,
     primary3Color: blue500,
-  }
+  },
+  fontFamily: "Open Sans, sans-serif"
 });
 
 class App extends React.Component {
@@ -56,7 +57,6 @@ class App extends React.Component {
     constructor(props) {
         super(props);
     }
-
 
     render () {
 
