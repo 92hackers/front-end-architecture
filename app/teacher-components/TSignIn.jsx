@@ -1,11 +1,14 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
+import formValidate from 'validate-js';
+import { connect } from 'react-redux';
+import nprogress from 'nprogress';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
+
 import Notification from '../universal/Notification';
-import formValidate from 'validate-js';
-import { connect } from 'react-redux';
 import addToken from '../actions/addToken';
 import api from '../network/api';
 
@@ -60,6 +63,8 @@ class TSignInClass extends React.Component {
       return;
     }
 
+    nprogress.start();
+    console.log(nprogress);
     var signinRequest = api.TSignIn({
       email: email,
       password: password
@@ -67,6 +72,7 @@ class TSignInClass extends React.Component {
     {},
     "",
     (resp) => {
+      nprogress.done();
       if (resp.success) {
         if (!!resp.data.token) {
           this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
@@ -105,6 +111,7 @@ class TSignInClass extends React.Component {
       }
     },
     (err) => {
+      nprogress.done();
       self.notify("Something Wrong, Please Try Again Later");
     }
     );
