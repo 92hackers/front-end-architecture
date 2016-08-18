@@ -30,7 +30,7 @@
       .main-title {
         font-size: 48px;
         color: #fff;
-        margin-bottom: 62px;
+        margin-bottom: 20px;
       }
       .main-sub-title {
         font-size: 24px;
@@ -50,6 +50,8 @@
       .icon {
         display: inline-block;
         position: relative;
+        box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+        border-radius: 10px;
         & + .icon {
           margin-left: 20px;
         }
@@ -67,6 +69,7 @@
           color: #fff;
           background-color: @teacher_base;
           opacity: 0.9;
+          border-radius: 10px;
         }
         &:hover {
           .mask {
@@ -76,7 +79,7 @@
       }
       .icon-bg {
         width: 270px;
-        height: 371px;
+        height: 360px;
       }
       .icon-plant-tree {
         .icon-bg();
@@ -91,7 +94,7 @@
       .icon-love {
         .icon-bg();
         .background();
-        background-image: url("/images/love.jpg");
+        background-image: url("/images/love.png");
       }
       .icon-connect {
         .icon-bg();

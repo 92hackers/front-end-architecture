@@ -48,7 +48,7 @@ class TIndex extends React.Component {
     var count = "";
 
     var currentPosition = window.scrollY;
-    var target = window.innerHeight;
+    var target = this.state.viewHeight;
 
     var y = currentPosition;
 
@@ -181,7 +181,7 @@ class TIndex extends React.Component {
           <div className="section-wrap">
             <h1 className="title primary-color">WeTeach Video</h1>
             <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
-            <iframe scrolling="no" allowFullScreen src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FFe_4RJKmaho%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DFe_4RJKmaho%26feature%3Dyoutu.be&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FFe_4RJKmaho%2Fhqdefault.jpg&key=25afbca9c69b4d728fa90e96b92e6b33&type=text%2Fhtml&schema=youtube" frameBorder="0" width="1024" height="576"></iframe>
+            <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/Fe_4RJKmaho" frameBorder="0" allowFullScreen></iframe>
           </div>
         </section>
         <section className="teachers-thoughts">
