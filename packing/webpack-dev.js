@@ -2,14 +2,20 @@ var webpack = require("webpack");
 var config = require("config");
 var autoPrefixer = require("autoPrefixer");
 var path = require("path");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var imageName = "images/[name].[ext]";
-var fontName = "fonts/[name].[ext]";
+var fontName = "/fonts/[name].[ext]";
 
 var rootDir = path.join(__dirname, "..");
 var main = path.join(rootDir, "app/entry");
 var localTestEntry = path.join(rootDir, 'local-test/index');
 var outputPath = path.join(rootDir, "build/");
+
+var htmlOptions = {
+  template: path.join(rootDir, "app/template.html"),
+  hash: true
+};
 
 module.exports = {
   entry: main,
@@ -49,6 +55,7 @@ module.exports = {
 	},
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin(htmlOptions),
     new webpack.NoErrorsPlugin()
   ],
 	postcss: () => {

@@ -54,16 +54,12 @@ gulp.task("webpack-build", () => {
 		if (err)
 			throw new gulpUtil.PluginError("webpack", err);
 		gulpUtil.log("[webpack]", stats.toString())
+    console.log(stats.toJson().assetsByChunkName);
 	});
 });
 
-gulp.task("html", () => {
-	console.log("render html, here.");
-	// render html.
-});
-
 gulp.task("dev", () => {
-  runSequence("clean", "webpack-dev", "html", (err) => {
+  runSequence("clean", "webpack-dev", (err) => {
     if (err) {
       throw new gulpUtil.PluginError("gulp dev", err);
     }
@@ -71,7 +67,7 @@ gulp.task("dev", () => {
 });
 
 gulp.task("build", () => {
-	runSequence("clean", "webpack-build", "html", (err) => {
+	runSequence("clean", "webpack-build", (err) => {
 		if (err) {
 			console.log(err);
 		} else {

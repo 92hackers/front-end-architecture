@@ -27,7 +27,7 @@ import VerifyYourEmail from './teacher-components/VerifyYourEmail';
 import TIndex from './teacher-components/TIndex';
 import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
-// import StepToSignUp from './teacher-components/StepToSignUp';
+import StepToSignUp from './teacher-components/StepToSignUp';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -96,6 +96,7 @@ ReactDom.render((
         <Route path="/activate-your-account" component={VerifyYourEmail}></Route>
         <Route path="/about-job" component={TAboutJob}></Route>
         <Route path="/about-school" component={TAboutSchool}></Route>
+        <Route path="/step-to-sign-uo" component={StepToSignUp}></Route>
         <Route path="*" component={NotFound}></Route>
       </Route>
     </Router>

@@ -18,7 +18,7 @@ app.use("/fonts", express.static(__dirname + "/build/fonts"));
 app.set("env", process.env.NODE_ENV);
 
 app.get("*", (req, res) => {
-	return res.sendFile(__dirname + "/index.html");
+	return res.sendFile(__dirname + "/build/index.html");
 });
 
 var port = process.env.PORT || 3000;

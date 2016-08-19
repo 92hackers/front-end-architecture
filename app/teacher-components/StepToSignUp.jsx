@@ -19,13 +19,13 @@ class StepToSignUp extends React.Component {
           <div className="row">
             <Stepper activeStep={this.state.stepIndex}>
               <Step>
-                <StepLabel>Select campaign settings</StepLabel>
+                <StepLabel>Complete profile</StepLabel>
               </Step>
               <Step>
-                <StepLabel>Create an ad group</StepLabel>
+                <StepLabel>Teaching experience</StepLabel>
               </Step>
               <Step>
-                <StepLabel>Create an ad</StepLabel>
+                <StepLabel>Schedule interview</StepLabel>
               </Step>
             </Stepper>
           </div>
