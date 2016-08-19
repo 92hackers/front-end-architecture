@@ -3,103 +3,148 @@
   background-image: url('/images/sprite.png');
 }
 
-.icon-left-arrow {
+.icon-down-arrow {
   background-position: -0px -0px;
+  width: 46px;
+  height: 46px;
+}
+.icon-left-arrow {
+  background-position: -0px -46px;
   width: 62px;
   height: 62px;
 }
-.icon-down {
-  background-position: -0px -62px;
-  width: 66px;
-  height: 66px;
-}
-.icon-Blue-button {
-  background-position: -0px -128px;
-  width: 360px;
-  height: 94px;
-}
 .icon-Leisure {
-  background-position: -0px -222px;
-  width: 100px;
-  height: 100px;
-}
-.icon-technology {
-  background-position: -0px -322px;
-  width: 100px;
-  height: 100px;
-}
-.icon-suitcase {
-  background-position: -0px -422px;
-  width: 100px;
-  height: 100px;
-}
-.icon-Professional- {
-  background-position: -0px -522px;
-  width: 100px;
-  height: 100px;
-}
-.icon-shen-qing {
-  background-position: -0px -622px;
-  width: 100px;
-  height: 100px;
-}
-.icon-money {
-  background-position: -0px -722px;
+  background-position: -0px -108px;
   width: 100px;
   height: 100px;
 }
 .icon-time {
-  background-position: -0px -822px;
+  background-position: -0px -208px;
   width: 100px;
   height: 100px;
 }
-.icon-Community {
-  background-position: -0px -922px;
+.icon-technology {
+  background-position: -0px -308px;
   width: 100px;
   height: 100px;
 }
-.icon-Fun {
-  background-position: -0px -1022px;
+.icon-Professional- {
+  background-position: -0px -408px;
+  width: 100px;
+  height: 100px;
+}
+.icon-suitcase {
+  background-position: -0px -508px;
+  width: 100px;
+  height: 100px;
+}
+.icon-shen-qing {
+  background-position: -0px -608px;
+  width: 100px;
+  height: 100px;
+}
+.icon-money {
+  background-position: -0px -708px;
   width: 100px;
   height: 100px;
 }
 .icon-doubt {
-  background-position: -0px -1122px;
+  background-position: -0px -808px;
   width: 100px;
   height: 100px;
 }
+.icon-Community {
+  background-position: -0px -908px;
+  width: 100px;
+  height: 100px;
+}
+.icon-Fun {
+  background-position: -0px -1008px;
+  width: 100px;
+  height: 100px;
+}
+.icon-dialogue-right {
+  background-position: -0px -1108px;
+  width: 858px;
+  height: 178px;
+}
+.icon-dialogue-left {
+  background-position: -0px -1286px;
+  width: 858px;
+  height: 178px;
+}
 .icon-Paul-Clutterbuck {
-  background-position: -0px -1222px;
+  background-position: -0px -1464px;
   width: 184px;
   height: 184px;
 }
 .icon-Patty-Harte {
-  background-position: -0px -1406px;
+  background-position: -0px -1648px;
   width: 184px;
   height: 184px;
 }
 .icon-computer {
-  background-position: -0px -1590px;
+  background-position: -0px -1832px;
   width: 200px;
   height: 200px;
 }
 .icon-people {
-  background-position: -0px -1790px;
+  background-position: -0px -2032px;
   width: 200px;
   height: 200px;
 }
 .icon-book {
-  background-position: -0px -1990px;
+  background-position: -0px -2232px;
   width: 200px;
   height: 200px;
 }
-.icon-dialogue {
-  background-position: -0px -2190px;
-  width: 1024px;
-  height: 212px;
+.icon-four-persons {
+  background-position: -0px -2432px;
+  width: 369px;
+  height: 323px;
 }
-.icon-image {
-  background-position: -0px -2402px;
-  width: 1920px;
-  height: 1080px;
+.icon-play {
+  background-position: -0px -2755px;
+  width: 369px;
+  height: 323px;
+}
+.icon-learning {
+  background-position: -0px -3078px;
+  width: 369px;
+  height: 323px;
+}
+.icon-drink {
+  background-position: -0px -3401px;
+  width: 270px;
+  height: 360px;
+}
+.icon-connect {
+  background-position: -0px -3761px;
+  width: 270px;
+  height: 360px;
+}
+.icon-love {
+  background-position: -0px -4121px;
+  width: 270px;
+  height: 360px;
+}
+.icon-plant-tree {
+  background-position: -0px -4481px;
+  width: 270px;
+  height: 360px;
+}
+.icon-horse {
+  background-position: -0px -4841px;
+  width: 469px;
+  height: 373px;
+}
+.icon-banner {
+  background-position: -0px -5214px;
+  width: 655px;
+  height: 373px;
+}
+.icon-circle {
+  background-position: -0px -5587px;
+  width: 600px;
+  height: 600px;
 }

@@ -65,11 +65,11 @@ class TAboutSchool extends React.Component {
             <p>We organise study tours to the Anglosphere so students can learn more about Western culture </p>
             <p className="last-p">and meet their teachers in person. We also arrange for teachers to visit their students in China.</p>
             <ul className="icons clearfix">
-              <li className="icon-one left"></li>
-              <li className="icon-two left"></li>
-              <li className="icon-three left"></li>
-              <li className="icon-four left"></li>
-              <li className="icon-five left"></li>
+              <li className="icon-one icon icon-horse left"></li>
+              <li className="icon-two icon icon-banner left"></li>
+              <li className="icon-three icon icon-four-persons left"></li>
+              <li className="icon-four icon icon-learning left"></li>
+              <li className="icon-five icon icon-play left"></li>
             </ul>
           </section>
           <section className="slogan">

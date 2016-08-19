@@ -27,13 +27,13 @@ class TAboutJob extends React.Component {
             <p>Part of our proceeds goes to charities supporting rural education in China.</p>
           </section>
           <section className="payment">
-            <span className="icon-money"></span>
+            <span className="icon icon-money"></span>
             <h1 className="title">Payment</h1>
             <h2 className="sub-title">Set your own price for class!</h2>
             <p className="payment-content">Rates are set on a per class basis. Each class is 25 minutes long. The starting rate is US$7.50. Teachers can determine their own rate based on teaching experience, qualifications, and student demand.</p>
           </section>
           <section className="timezone">
-            <span className="icon-time"></span>
+            <span className="icon icon-time"></span>
             <h1 className="title">Time Zone Conversion</h1>
             <p className="table-caption">Peak Times (Daylight Saving Time)</p>
             <div className="icon-summer"></div>
@@ -41,33 +41,33 @@ class TAboutJob extends React.Component {
             <div className="icon-winter"></div>
           </section>
           <section className="application">
-            <div className="icon">
-              <span className="icon-shen-qing"></span>
+            <div className="icon-wrap">
+              <span className="icon icon-shen-qing"></span>
               <h1 className="title">Application Process</h1>
             </div>
             <div className="application-steps clearfix">
               <div className="step-apply left">
-                <span className="icon-computer"></span>
+                <span className="icon icon-computer"></span>
                 <p>Apply Online</p>
               </div>
               <div className="arrow left">
-                <span className="icon-arrow-right"></span>
+                <span className="icon icon-left-arrow"></span>
               </div>
               <div className="step-interview left">
-                <span className="icon-people"></span>
+                <span className="icon icon-people"></span>
                 <p>Interview</p>
               </div>
               <div className="arrow left">
-                <span className="icon-arrow-right"></span>
+                <span className="icon icon-left-arrow"></span>
               </div>
               <div className="step-teaching left">
-                <span className="icon-book"></span>
+                <span className="icon icon-book"></span>
                 <p>Start Teaching</p>
               </div>
             </div>
           </section>
           <section className="qualifications">
-            <div className="icon-wrap"><span className="icon-suitcase"></span></div>
+            <div className="icon-wrap"><span className="icon icon-suitcase"></span></div>
             <h1 className="title">Qualifications Required</h1>
             <ul>
               <li>

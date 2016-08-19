@@ -102,7 +102,7 @@ class TIndex extends React.Component {
 
     return (
       <div className="weteach-index text-center">
-        <section className="bg-img" style={{height: viewHeight}}>
+        <section className="bg-img icon icon-image" style={{height: viewHeight}}>
           <div className="mask">
             <div className="content">
               <IndexHeader></IndexHeader>
@@ -111,7 +111,7 @@ class TIndex extends React.Component {
               <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
             </div>
           </div>
-          <div className="arrow-down"><i className="icon-arrow-down" onClick={this.scrollDown.bind(this)}></i></div>
+          <div className="arrow-down"><i className="icon icon-down-arrow" onClick={this.scrollDown.bind(this)}></i></div>
         </section>
         <section className="introduction section-wrap">
           <h1 className="primary-color title">Introduction</h1>
@@ -190,24 +190,24 @@ class TIndex extends React.Component {
             <ul>
               <li className="teacher-item clearfix">
                 <div className="left avatar">
-                  <i className="icon-Patty-Harte"></i>
+                  <i className="icon icon-Patty-Harte"></i>
                   <div>
                     <p className="name">Patty Harte</p>
                     <p className="country">Surrey, England</p>
                   </div>
                 </div>
                 <div className="left thoughts">
-                  <div className="icon-dialogue-left"><p className="thoughts-content">"It's such a privilege to join the children in their homes and to share much-loved stories with them. Their reactions as they see the pages are priceless and utterly enchanting. In teaching you are often giving out so much energy, after story time with WeTeach it is like getting that energy back again.”</p></div>
+                  <div className="icon icon-dialogue-left"><p className="thoughts-content">"It's such a privilege to join the children in their homes and to share much-loved stories with them. Their reactions as they see the pages are priceless and utterly enchanting. In teaching you are often giving out so much energy, after story time with WeTeach it is like getting that energy back again.”</p></div>
                 </div>
               </li>
               <li className="teacher-item clearfix">
-                <div className="left thoughts">
-                  <div className="icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
-                </div>
-                <div className="left avatar">
-                  <i className="icon-Paul-Clutterbuck"></i>
+                <div className="right avatar">
+                  <i className="icon icon-Paul-Clutterbuck"></i>
                   <p className="name">Paul Clutterbuck</p>
                   <p className="country">Perth, Western Australia</p>
+                </div>
+                <div className="right thoughts">
+                  <div className="right icon icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
                 </div>
               </li>
             </ul>

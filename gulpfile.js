@@ -53,8 +53,9 @@ gulp.task("webpack-build", () => {
 	webpack(webpackBuild, (err, stats) => {
 		if (err)
 			throw new gulpUtil.PluginError("webpack", err);
-		gulpUtil.log("[webpack]", stats.toString())
-    console.log(stats.toJson().assetsByChunkName);
+    var assets = JSON.stringify(stats.toJson().assetsByChunkName);
+    fs.writeFileSync("build/assets.json",assets);
+		gulpUtil.log("[webpack]", stats.toString());
 	});
 });
 
@@ -67,7 +68,7 @@ gulp.task("dev", () => {
 });
 
 gulp.task("build", () => {
-	runSequence("clean", "webpack-build", (err) => {
+	runSequence("clean", "sprites", "webpack-build", (err) => {
 		if (err) {
 			console.log(err);
 		} else {

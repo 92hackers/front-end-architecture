@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 app.use(bodyParser.json({ limit: "1000mb" }));
 app.use("/js", express.static(__dirname + "/build/js"));
 app.use("/css", express.static(__dirname + "/build/css"));
-app.use("/images", express.static(__dirname + "/app/sprites-source"));
+app.use("/images", express.static(__dirname + "/build/images"));
 app.use("/fonts", express.static(__dirname + "/build/fonts"));
 app.set("env", process.env.NODE_ENV);
 
