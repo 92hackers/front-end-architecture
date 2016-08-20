@@ -61,11 +61,11 @@ module.exports = {
 	},
   plugins: process.env.NODE_ENV === 'production' ? [
 		new ExtractTextPlugin("css/[name].[hash:8].css"),
+    new HtmlWebpackPlugin(htmlOptions),
 		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify(process.env.NODE_ENV) }}),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
-    new HtmlWebpackPlugin()
+    new webpack.optimize.UglifyJsPlugin()
   ] : [
 		new ExtractTextPlugin("css/[name].[hash:8].css"),
     new HtmlWebpackPlugin(htmlOptions)
