@@ -1,8 +1,12 @@
 # WeTeach front-end code.
 yeah, title tells all.
 
-# build whole project, run command below on the production server.
-npm run build
+# Build on the server:
+Build whole project, run command ***npm run build*** on the server.
 
-# run command below to build whole project locally and pack all static files to a file named ***build.tar.gz***. Finally, upload it to the server.
-npm run deploy
+# Build on the local machine:
+### Firstly.
+export P=your project root directory,
+export S=production server IP address.
+### Then
+just run command ***npm run deploy***.

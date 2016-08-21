@@ -9,7 +9,7 @@
     "dev": "gulp dev",
     "build": "git pull && npm install && gulp build",
     "start": "node server.js",
-    "deploy": "NODE_ENV=production gulp build && tar -czvf build.tar.gz build"
+    "deploy": "NODE_ENV=production gulp build && tar -czvf build.tar.gz build && cd $P && scp build.tar.gz root@$S:/var/www/weteach.test/frontend/frontend-teachers/ && ssh -t root@$S 'cd /var/www/weteach.test/frontend/frontend-teachers/ && tar -zxvf build.tar.gz && exit ; bash'"
   },
   "repository": {
     "type": "git",
