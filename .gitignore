@@ -2,3 +2,4 @@
 /build/*
 /local-test/*
 *.log
+*.tar.gz
