@@ -29,8 +29,12 @@ gulp.task("webpack-dev", () => {
   var webpackDevServer = require("webpack-dev-server");
   var webpackDev = require("./packing/webpack-dev");
 
+  webpackDev.entry.unshift("webpack-dev-server/client?http://localhost:3001/");
+
   var webpackServerOptions = {
     publicPath: '/',
+    contentBase: '/',
+    historyApiFallback: false,
     hot: true,
     stats: {
       colos: true

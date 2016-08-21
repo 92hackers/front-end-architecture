@@ -63,6 +63,7 @@
     "compression": "^1.6.2",
     "config": "^1.21.0",
     "css-loader": "^0.23.1",
+    "css-sprite": "^0.9.9",
     "express": "^4.14.0",
     "font-awesome": "^4.6.3",
     "json-loader": "^0.5.4",

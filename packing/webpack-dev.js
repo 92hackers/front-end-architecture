@@ -3,6 +3,7 @@ var config = require("config");
 var autoPrefixer = require("autoPrefixer");
 var path = require("path");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var imageName = "images/[name].[ext]";
 var fontName = "/fonts/[name].[ext]";
@@ -18,13 +19,14 @@ var htmlOptions = {
 };
 
 module.exports = {
-  entry: main,
+  entry: [main],
   debug: true,
   devtool: 'eval-source-map',
   errorDetails: true,
   delay: 50,
 	output: {
-    path: outputPath,
+    path: "/",
+    publicPath: "http://localhost:3001/",
 		filename: "js/[name].js"
 	},
 	resolve: {
@@ -35,17 +37,19 @@ module.exports = {
 			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
 			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015"] }, exclude: /node_modules/ },
 			{ test: /\.coffee$/, loader: "coffee", exclude: /node_modules/ },
-			{ test: /\.less$/, loader: 'style!css?sourceMap!postcss!less?sourceMap' },
-			{ test: /\.css$/, loader: 'style!css?sourceMap!postcss' },
+			// { test: /\.less$/, loader: 'style!css?sourceMap!postcss!less?sourceMap' },
+			// { test: /\.css$/, loader: 'style!css?sourceMap!postcss' },
+			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style", "css!postcss!less") },
+			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style", "css!postcss") },
 			{ test: /\.json$/, loader: "json"},
-			//{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=imageName',
-          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-        ]
-      },
+			{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
+      // {
+      //   test: /\.(jpe?g|png|gif|svg)$/i,
+      //   loaders: [
+      //     'file?hash=sha512&digest=hex&name=imageName',
+      //     'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+      //   ]
+      // },
 			{ test: /\.woff(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff',  name: fontName} },
 			{ test: /\.woff2(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff2',  name: fontName} },
 			{ test: /\.ttf(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: "application/octet-stream",  name: fontName} },
@@ -54,6 +58,8 @@ module.exports = {
 		]
 	},
   plugins: [
+		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify(process.env.NODE_ENV) }}),
+		new ExtractTextPlugin("css/[name].css"),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin(htmlOptions),
     new webpack.NoErrorsPlugin()
