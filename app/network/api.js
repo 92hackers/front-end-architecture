@@ -38,6 +38,27 @@ var apis = [
     }
   },
   {
+    name: "TApplyStep1",
+    options: {
+      api: "apply/step1",
+      method: "post"
+    }
+  },
+  {
+    name: "TApplyStep2",
+    options: {
+      api: "apply/step2",
+      method: "post"
+    }
+  },
+  {
+    name: "TApplyStep3",
+    options: {
+      api: "apply/step3",
+      mehod: "post"
+    }
+  },
+  {
     name: "TNationalityList",
     options: {
       api: "geo/nationality",

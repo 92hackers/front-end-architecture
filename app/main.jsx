@@ -96,7 +96,7 @@ ReactDom.render((
         <Route path="/activate-your-account" component={VerifyYourEmail}></Route>
         <Route path="/about-job" component={TAboutJob}></Route>
         <Route path="/about-school" component={TAboutSchool}></Route>
-        <Route path="/step-to-sign-uo" component={StepToSignUp}></Route>
+        <Route path="/step-to-sign-up" component={StepToSignUp}></Route>
         <Route path="*" component={NotFound}></Route>
       </Route>
     </Router>

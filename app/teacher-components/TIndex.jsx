@@ -193,7 +193,7 @@ class TIndex extends React.Component {
                   <i className="icon icon-Patty-Harte"></i>
                   <div>
                     <p className="name">Patty Harte</p>
-                    <p className="country">Surrey, England</p>
+                    <p className="country">England</p>
                   </div>
                 </div>
                 <div className="left thoughts">
@@ -204,7 +204,7 @@ class TIndex extends React.Component {
                 <div className="right avatar">
                   <i className="icon icon-Paul-Clutterbuck"></i>
                   <p className="name">Paul Clutterbuck</p>
-                  <p className="country">Perth, Western Australia</p>
+                  <p className="country">Western Australia</p>
                 </div>
                 <div className="right thoughts">
                   <div className="right icon icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
