@@ -75,6 +75,7 @@ class TSignInClass extends React.Component {
       nprogress.done();
       if (resp.success) {
         if (!!resp.data.token) {
+          console.log(resp.data.token);
           this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
         }
         switch (resp.data.status) {

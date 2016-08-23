@@ -1,8 +1,8 @@
 .step-to-sign-up {
-  background-color: @shallow_base_color;
-  padding-bottom: 100px;
+  background-color: #e5f2fb;
+  padding-bottom: 50px;
   .icon-color {
-    color: #75c4ff;
+    color: @shallow_base_color;
     font-size: 24px;
   }
   h1,h2,h3,h4,h5,h6 {
@@ -22,6 +22,44 @@
         padding-top: 40px;
         padding-bottom: 100px;
         .basic-info {
+          .Dropdown-root {
+            display: inline-block;
+            vertical-align: middle;
+            .Dropdown-control {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          }
+          .nationality {
+            padding-top: 33px;
+            .Dropdown-root {
+              width: 301px;
+            }
+          }
+          .residence {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            .Dropdown-root {
+              width: 130px;
+              &:nth-child(8n+2) {
+                margin-right: 14px;
+              }
+              &:nth-child(8n+4) {
+                margin-left: 14px;
+                margin-right: 14px;
+              }
+              &:nth-child(8n+6) {
+                margin-left: 14px;
+              }
+            }
+          }
+          .timezone {
+            padding-top: 12px;
+            .Dropdown-root {
+              width: 301px;
+            }
+          }
           .icon-wrap {
             display: inline-block;
             margin-right: 14px;
@@ -33,6 +71,15 @@
             .fa {
               .icon-color();
               margin-top: 35px;
+            }
+          }
+          .dropdown-icon-wrap {
+            .icon-wrap();
+            height: 39px;
+            vertical-align: middle;
+            .fa {
+              .icon-color();
+              margin-top: 7.5px !important;
             }
           }
           .vertical-line {
@@ -76,8 +123,82 @@
             }
           }
         }
+        .teaching-experience {
+          width: 750px;
+          margin: 0 auto;
+          .select-years {
+            margin-bottom: 46px;
+            .title {
+              display: inline-block;
+              vertical-align: middle;
+              margin-top: 20px;
+              margin-right: 50px;
+              color: @shallow_base_color;
+            }
+          }
+          .words-item {
+            .caption {
+              margin-bottom: 20px;
+              .index, .title {
+                display: inline-block;
+              }
+              .index {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                border-radius: 50%;
+                background-color: @shallow_base_color;
+                color: #fff;
+                font-size: 18px;
+              }
+              .title {
+                margin-left: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                color: @shallow_base_color;
+              }
+            }
+            .input-box {
+              margin-left: 40px;
+            }
+          }
+        }
+        .schedule-interview {
+          text-align: center;
+          .wrap {
+            display: inline-block;
+            .title {
+              color: @shallow_base_color;
+            }
+            .input-box {
+              .input-item {
+                .interview-icon {
+                  display: inline-block;
+                  vertical-align: middle;
+                  margin-right: 15px;
+                  font-size: 20px;
+                  width: 20px;
+                  text-align: center;
+                  color: @shallow_base_color;
+                }
+              }
+            }
+            .successful-words {
+              padding-top: 50px;
+              p {
+                color: @teacher_base;
+                font-size: 20px;
+                line-height: 2;
+              }
+            }
+          }
+        }
         .btn-group {
           display: inline-block;
+        }
+        .two-buttons {
+          padding-top: 50px;
         }
       }
     }

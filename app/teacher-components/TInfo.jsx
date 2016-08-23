@@ -87,7 +87,6 @@ class TInfoClass extends React.Component {
     }
 
     var checkedElem = document.querySelector('input[name="gender"]:checked');
-
     var nationality = document.getElementsByClassName("nationality")[0].value;
     var gender = checkedElem ? checkedElem.value : "";
     var avatar = this.state.avatarUrl;
@@ -95,14 +94,18 @@ class TInfoClass extends React.Component {
     var region = document.getElementsByClassName("region")[0].value;
     var city = document.getElementsByClassName("city")[0].value;
     var timezone = document.getElementsByClassName("timezone")[0].value || this.state.defaultTimezone;
-    var teachExperience = document.getElementById("teach-experience").innerText.trim();
     var nationCode = document.getElementById("nation-code").value;
     var phoneNum = document.getElementById("phone-num").value;
     var eduExperienceList = this.state.eduListItems;
+
+
+    var teachExperience = document.getElementById("teach-experience").innerText.trim();
     var selfIntro = document.getElementById("self-intro").value;
     var teachStyle = document.getElementById("teach-style").value;
     var whyATeacher = document.getElementById("why-a-teacher").value;
     var addition = document.getElementById("addition").value;
+
+
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
     if (!nationality.length) {
@@ -222,6 +225,8 @@ class TInfoClass extends React.Component {
     }
 
     var data = {
+      firstname: 
+      lastname:
       gender: gender === "male" ? 1 : 0,
       avatar: avatar,
       nationality: countryCode,
@@ -230,9 +235,10 @@ class TInfoClass extends React.Component {
       "residence_c": cityId,               //  city id.
       "timezone": timezoneId,            //  timezone id.
       eduexp: eduExperienceList,
-      "experience": experience,
       "tel_code": nationCode,
       "tel_num": phoneNum,
+
+      "experience": experience,
       intro: selfIntro,
       style: teachStyle,
       whyteach: whyATeacher,

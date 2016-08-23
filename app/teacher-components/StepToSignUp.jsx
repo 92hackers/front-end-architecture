@@ -3,7 +3,6 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from 'react-redux';
-import {Typeahead} from 'react-typeahead';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,9 +10,11 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import SelectField from 'material-ui/SelectField';
+import Dropdown from 'react-dropdown';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 
 import api from '../network/api';
 import Notification from '../universal/Notification';
@@ -25,119 +26,306 @@ class BasicInfo extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      nationalityList: [
-        'china',
-        'russia',
-        'america',
-        'korea',
-        'japan',
-        'north korea',
-        'england'
-      ],
+      firstName: "",
+      lastName: "",
+      gender: "",
+      countryCode: "",
+      phoneNumber: "",
+
+      nationalityList: [],
       nationalityValue: null,
-      countryList: [
-        'china',
-        'russia',
-        'america',
-        'korea',
-        'japan',
-        'north korea',
-        'england'
-      ],
+      countryList: [],
       countryValue: null,
-      regionList: [
-        'shagnhai',
-        'guangdong',
-        'guizhou',
-        'jilin',
-        'xizang',
-        'xinjiang'
-      ],
+      regionList: [],
       regionValue: null,
-      cityList: [
-        'shanghai',
-        'guiyang',
-        'heilongjiang',
-        'shenzheng'
-      ],
+      cityList: [],
       cityValue: null,
-      timezoneList: [
-        'gmt+8:00 shanghai',
-        'gmt+0:00 gelinnizhi',
-        'gmt+8:00 shanghai',
-        'gmt+0:00 gelinnizhi',
-        'gmt+8:00 shanghai',
-        'gmt+0:00 gelinnizhi',
-        'gmt+8:00 shanghai',
-        'gmt+0:00 gelinnizhi',
-      ],
+      timezoneList: [],
       timezoneValue: null,
+
+      nationalityId: "",
+      countryId: "",
+      regionId: "",
+      cityId: "",
+      timezoneId: "",
 
       avatarUrl: "",
       profilePictureSrc: "",
 
-      eduList: [],
+      notification: "",
+
+      eduDialogOpen: false,
+      eduList: 0,
       eduListItems: [],
-      eduDialogOpen: false
+      eduExpSelected: "",
+      eduExpSelectedIndex: "",
+      eduExpSelectedDialogOpen: false,
+
     };
+    this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MTkzMDg5NiwibmJmIjoxNDcxOTMwODk2LCJqdGkiOjN9.ZtoeuqSE8Jyfs-QFbgKyrUu1zA0PiNct-D09CuSULYc";
   }
 
-  changeNationality (e, value) {
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
+  changeNationality (value) {
     this.setState({
-      nationalityValue: value
+      nationalityValue: value.label,
+      nationalityId: value.value
     });
   }
 
-  changeCity (e, value) {
+  changeCountry (value) {
+    var self = this;
     this.setState({
-      cityValue: value
+      countryValue: value.label,
+      countryId: value.value
     });
+
+    this.regionListRequest = api.TRegionList("",
+      { "Authorization": self.token },
+      value.value,
+      (resp) => {
+        if (resp.success) {
+
+          const regionList = resp.data.map((region) => {
+            return {
+              value: region.id,
+              label: region.name
+            };
+          });
+          self.setState({
+            regionList: regionList
+          });
+        } else {
+          console.log("error fetching");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
   }
 
-  changeCountry (e, value) {
+
+  changeRegion (value) {
+    var self = this;
     this.setState({
-      countryValue: value
+      regionValue: value.label,
+      regionId: value.value
     });
+
+    this.cityListRequest = api.TCityList("",
+      { "Authorization": self.token },
+      value.value,
+      (resp) => {
+        if (resp.success) {
+          const cityList = resp.data.map((city) => {
+            return {
+              value: city.id,
+              label: city.name
+            };
+          });
+          self.setState({
+            cityList: cityList
+          });
+        } else {
+          console.log("error fetching");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
   }
 
-  changeRegion (e, value) {
+  changeCity (value) {
+    var self = this;
+
     this.setState({
-      regionValue: value
+      cityValue: value.label,
+      cityId: value.value
     });
+
   }
 
-  changeTimezone (e, value) {
+  changeTimezone (value) {
     this.setState({
-      timezoneValue: value
+      timezoneValue: value,
+      timezoneId: value.value
     });
+    this.props.setTimezoneId(value.value);
   }
 
   profilePictureSelect (e) {
     e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.setState({
+        profilePictureSrc: reader.result
+      }, () => {
+        this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
+      });
+    };
+    reader.readAsDataURL(files[0]);
+
   }
 
-  setAvatarUrl () {
-
+  setAvatarUrl (url) {
+    this.setState({
+      avatarUrl: url
+    });
   }
 
-  showFullDetail () {
-    // TODO: show full detail.
+  showFullDetail (index) {
+    if (!!index && !!this.state.eduListItems) {
+      let expData = this.state.eduListItems[index[0]];
+
+      this.setState({
+        eduExpSelectedIndex: index[0],
+        eduExpSelected: expData
+      }, () => {
+        this.handleUpdateDiaOpen();
+      });
+
+    }
+  }
+
+  handleUpdateDiaOpen () {
+    this.setState({
+      eduExpSelectedDialogOpen: true
+    });
   }
 
   addEduExp (e) {
     e.preventDefault();
+
+    var notification = "";
+    var temp = this.state.eduListItems;
+    var tempEduList = this.state.eduList;
+
+    var getValue = (ele) => {
+      return document.getElementById(ele).value;
+    }
+
+    var startYear = getValue("t-edu-start-year");
+    var endYear = getValue("t-edu-end-year");
+    var school = getValue("t-edu-school");
+    var major = getValue("t-edu-major");
+    var degree = getValue("t-edu-degree");
+
+
+    if (!!startYear && !!endYear && !!school && !!major && !!degree) {
+
+      if (startYear.length !== 4 || endYear.length !== 4) {
+        notification = "Year should be exactly 4 characters.";
+      }
+
+      if (!!notification.length) {
+        this.notify(notification);
+        return ;
+      }
+
+      let data = {
+        timefrom: startYear,
+        timeto: endYear,
+        institution: school,
+        major: major,
+        degree: degree
+      };
+
+      temp.push(data);
+      tempEduList++;
+      this.setState({
+        eduListItems: temp,
+        eduDialogOpen: false,
+        eduList: tempEduList
+      });
+    } else {
+      this.notify("Please Complete All Fields");
+    }
+
+  }
+
+  handleEduDialogOpen () {
     this.setState({
       eduDialogOpen: true
     });
   }
 
-  addEducation () {
-
-  }
-
   handleEduDialogClose () {
     this.setState({
       eduDialogOpen: false
+    });
+  }
+
+  handleEduUpdate (e) {
+    e.preventDefault();
+    this.handleUpdateDiaClose();
+
+    var tmp = this.state.eduListItems;
+    var updateIndex = this.state.eduExpSelectedIndex;
+
+    var getValue = (ele) => {
+      return document.getElementById(ele).value;
+    };
+
+    var startYear = getValue("t-edu-start-year-m");
+    var endYear = getValue("t-edu-end-year-m");
+    var school = getValue("t-edu-school-m");
+    var major = getValue("t-edu-major-m");
+    var degree = getValue("t-edu-degree-m");
+
+    var data = {
+        timefrom: startYear,
+        timeto: endYear,
+        institution: school,
+        major: major,
+        degree: degree
+    };
+
+    tmp[updateIndex] = data;
+
+    this.setState({
+        eduListItems: tmp
+    });
+
+  }
+
+  handleEduExpDel (e) {
+    e.preventDefault();
+
+    var tempEduList = this.state.eduList;
+    tempEduList--;
+
+    this.handleUpdateDiaClose();
+    var tmp = this.state.eduListItems;
+    tmp.splice(this.state.eduExpSelectedIndex, 1);
+    this.setState({
+      eduListItems: tmp,
+      eduList: tempEduList
+    });
+  }
+
+  handleUpdateDiaClose (e) {
+    this.setState({
+      eduExpSelectedDialogOpen: false
     });
   }
 
@@ -169,8 +357,31 @@ class BasicInfo extends React.Component {
     };
 
     const eduTableStyle = {
-      display: this.state.eduList.length ? "table" : "none"
+      display: this.state.eduList ? "table" : "none"
     };
+
+    const updateActions = [
+      <RaisedButton
+        className="dialog-button"
+        label="Delete"
+        default={true}
+        onTouchTap={this.handleEduExpDel.bind(this)}
+        style={{ float: "left" }}
+      />,
+      <RaisedButton
+        className="dialog-button"
+        label="Cancel"
+        default={true}
+        onTouchTap={this.handleUpdateDiaClose.bind(this)}
+      />,
+      <RaisedButton
+        className="dialog-button"
+        id="submitEdu"
+        label="Update"
+        primary={true}
+        onTouchTap={this.handleEduUpdate.bind(this)}
+      />
+    ];
 
     const addEduExpActions = [
       <RaisedButton
@@ -184,9 +395,11 @@ class BasicInfo extends React.Component {
         id="submitEdu"
         label="Add"
         primary={true}
-        onTouchTap={this.addEducation.bind(this)}
+        onTouchTap={this.addEduExp.bind(this)}
       />
     ];
+
+    const defaultGender = this.state.gender || 'male';
 
     return (
       <div className="basic-info">
@@ -196,15 +409,15 @@ class BasicInfo extends React.Component {
               <li className="data-item">
                 <div className="name">
                   <div className="icon-wrap"><i className="fa fa-user"></i></div>
-                  <TextField name="FirstName" floatingLabelText="FirstName" style={{width: 130, marginRight: 20}}></TextField>
+                  <TextField defaultValue={this.state.firstName} name="FirstName" floatingLabelText="FirstName" style={{width: 130, marginRight: 20}}></TextField>
                   <i className="vertical-line"></i>
-                  <TextField name="LastName" floatingLabelText="LastName" style={{width: 130, marginLeft: 20}}></TextField>
+                  <TextField defaultValue={this.state.lastName} name="LastName" floatingLabelText="LastName" style={{width: 130, marginLeft: 20}}></TextField>
                 </div>
               </li>
               <li className="data-item">
                 <div className="gender">
                   <p id="gender-caption" className="primary-color">Gender</p>
-                  <RadioButtonGroup name="gender" style={styles.RadioButtonGroup}>
+                  <RadioButtonGroup defaultSelected={defaultGender} name="gender" style={styles.RadioButtonGroup}>
                     <RadioButton labelStyle={{color: "#999"}} value="male" label="Male" style={styles.radioButton}/>
                     <RadioButton labelStyle={{color: "#999"}} value="female" label="Female" style={styles.radioButton}/>
                   </RadioButtonGroup>
@@ -212,14 +425,8 @@ class BasicInfo extends React.Component {
               </li>
               <li className="data-item">
                 <div className="nationality">
-                  <div className="icon-wrap"><i className="fa fa-globe"></i></div>
-                  <SelectField style={{width: 300}} id="nationality" maxHeight={300} value={this.state.nationalityValue} onChange={this.changeNationality.bind(this)} floatingLabelText="Your Nationality">
-                    {
-                      this.state.nationalityList.map((nationality, index) => {
-                        return <MenuItem key={index} value={index} primaryText={nationality} style={{cursor: "pointer"}}></MenuItem>;
-                      })
-                    }
-                  </SelectField>
+                  <div className="dropdown-icon-wrap"><i className="fa fa-globe"></i></div>
+                  <Dropdown options={this.state.nationalityList} onChange={this.changeNationality.bind(this)} value={this.state.nationalityValue} placeholder="Your Nationality"></Dropdown>
                 </div>
               </li>
               <li className="data-item">
@@ -245,46 +452,22 @@ class BasicInfo extends React.Component {
         </div>
         <div className="residence-timezone clearfix">
           <div className="residence">
-            <div className="icon-wrap"><i className="fa fa-map-marker"></i></div>
-            <SelectField floatingLabelText="Country" maxHeight={300} id="residence-country" value={this.state.countryValue} onChange={this.changeCountry.bind(this)} style={{width: 130, marginRight: 20, verticalAlign: "middle", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap"}}>
-              {
-                this.state.countryList.map((country, index) => {
-                  return <MenuItem key={index} value={index} primaryText={country} style={{cursor: "pointer"}}></MenuItem>;
-                })
-              }
-            </SelectField>
-            <i className="vertical-line" style={{marginTop: 30}}></i>
-            <SelectField floatingLabelText="State/Region" maxHeight={300} id="residence-region" value={this.state.regionValue} onChange={this.changeRegion.bind(this)} style={{width: 130, marginLeft: 20, marginRight: 20, verticalAlign: "middle", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-              {
-                this.state.regionList.map((region, index) => {
-                  return <MenuItem key={index} value={index} primaryText={region} style={{cursor: "pointer"}}></MenuItem>;
-                })
-              }
-            </SelectField>
-            <i className="vertical-line" style={{marginTop: 30}}></i>
-            <SelectField floatingLabelText="City" maxHeight={300} id="residence-city" value={this.state.cityValue} onChange={this.changeCity.bind(this)} style={{width: 130, marginLeft: 20, verticalAlign: "middle", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap"}}>
-              {
-                this.state.cityList.map((city, index) => {
-                  return <MenuItem key={index} value={index} primaryText={city} style={{cursor: "pointer"}}></MenuItem>;
-                })
-              }
-            </SelectField>
+            <div className="dropdown-icon-wrap"><i className="fa fa-map-marker"></i></div>
+            <Dropdown options={this.state.countryList} onChange={this.changeCountry.bind(this)} value={this.state.countryValue} placeholder="Country"></Dropdown>
+            <i className="vertical-line"></i>
+            <Dropdown options={this.state.regionList} onChange={this.changeRegion.bind(this)} value={this.state.regionValue} placeholder="Region"></Dropdown>
+            <i className="vertical-line"></i>
+            <Dropdown options={this.state.cityList} onChange={this.changeCity.bind(this)} value={this.state.cityValue} placeholder="City"></Dropdown>
           </div>
           <div className="timezone">
-            <div className="icon-wrap"><i className="fa fa-clock-o"></i></div>
-            <SelectField floatingLabelText="TimeZone" maxHeight={300} id="timezone" value={this.state.timezoneValue} onChange={this.changeTimezone.bind(this)} style={{width: 300}}>
-              {
-                this.state.timezoneList.map((timezone, index) => {
-                  return <MenuItem key={index} value={index} primaryText={timezone} style={{cursor: "pointer"}}></MenuItem>;
-                })
-              }
-            </SelectField>
+            <div className="dropdown-icon-wrap"><i className="fa fa-clock-o"></i></div>
+            <Dropdown options={this.state.timezoneList} onChange={this.changeTimezone.bind(this)} value={this.state.timezoneValue} placeholder="Your TimeZone"></Dropdown>
           </div>
         </div>
         <div className="education-background">
           <div className="title">
             <h1 className="primary-color">Education Background</h1>
-            <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-graduation-cap"></i>} primary={true} onClick={this.addEduExp.bind(this)}></RaisedButton>
+            <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-graduation-cap"></i>} primary={true} onClick={this.handleEduDialogOpen.bind(this)}></RaisedButton>
             <Dialog title="Add Your Education Experience" actions={addEduExpActions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleEduDialogClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
@@ -298,6 +481,19 @@ class BasicInfo extends React.Component {
                 <TextField id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
               </div>
             </Dialog>
+            <Dialog title="Modify Your Education Experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
+              <div className="t-edu-form-wrap">
+                <div className="clearfix">
+                  <TextField className="left" style={{width: "40%"}} id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
+                  <TextField className="right" style={{width: "40%"}} id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
+                </div>
+                <TextField id="t-edu-school-m" defaultValue={this.state.eduExpSelected.institution} type="text" floatingLabelText="School"></TextField>
+                <br/>
+                <TextField id="t-edu-major-m" defaultValue={this.state.eduExpSelected.major} type="text" floatingLabelText="Major"></TextField>
+                <br/>
+                <TextField id="t-edu-degree-m" defaultValue={this.state.eduExpSelected.degree} type="text" floatingLabelText="Degree"></TextField>
+              </div>
+            </Dialog>
           </div>
           <Table style={eduTableStyle} onRowSelection={this.showFullDetail.bind(this)}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -305,8 +501,8 @@ class BasicInfo extends React.Component {
                 <TableHeaderColumn>Start Time</TableHeaderColumn>
                 <TableHeaderColumn>End Time</TableHeaderColumn>
                 <TableHeaderColumn>School</TableHeaderColumn>
-                <TableHeaderColumn>Degree</TableHeaderColumn>
                 <TableHeaderColumn>Major</TableHeaderColumn>
+                <TableHeaderColumn>Degree</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
@@ -314,18 +510,199 @@ class BasicInfo extends React.Component {
                 this.state.eduListItems.map((item, index) => {
                   return (
                     <TableRow key={index} data-index={index} hoverable={true} style={{cursor: "pointer"}}>
-                      <TableRowColumn>{item.degree}</TableRowColumn>
+                      <TableRowColumn>{item.timefrom}</TableRowColumn>
+                      <TableRowColumn>{item.timeto}</TableRowColumn>
                       <TableRowColumn>{item.institution}</TableRowColumn>
+                      <TableRowColumn>{item.major}</TableRowColumn>
+                      <TableRowColumn>{item.degree}</TableRowColumn>
                     </TableRow>
                   )
                 })
               }
             </TableBody>
           </Table>
+          <Notification ref="notification" message={this.state.notification}></Notification>
         </div>
       </div>
     )
   }
+
+  componentDidMount () {
+    var self = this;
+
+    this.profileRequest = api.TGetProfile("",
+      { "Authorization": self.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          let profile = resp.data;
+          self.setState({
+            firstName: profile.firstname,
+            lastName: profile.lastname
+          });
+        } else {
+          console.log("error fetching");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    this.nationalityRequest = api.TNationalityList("",
+      { "Authorization": self.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          const nationalityList = resp.data.map((nationality) => {
+            return {
+              value: nationality.id,
+              label: nationality.name
+            };
+          });
+          self.setState({
+            nationalityList: nationalityList
+          });
+        } else {
+          console.log("error fetching");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    this.countryListRequest = api.TCountryList("",
+      { "Authorization": self.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          const countryList = resp.data.map((country) => {
+            return {
+              value: country.id,
+              label: country.name
+            };
+          });
+          self.setState({
+            countryList: countryList
+          });
+        } else {
+          console.log("error fetching");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    this.timezoneListRequest = api.TTimezone("",
+      { "Authorization": self.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          const timezoneList = resp.data.map((timezone) => {
+            return {
+              value: timezone.id,
+              label: timezone["en_name"]
+            };
+          });
+
+          var localDate = new Date();
+          var defaultTimezone = "";
+          var defaultTimezoneId = "";
+          var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
+          var regExpTimezone = localTimezone.replace("+", "\\+");
+
+          for (let i = 0; i < timezoneList.length; i++) {
+            if (timezoneList[i].label.search(new RegExp(regExpTimezone)) !== -1) {
+              defaultTimezone = timezoneList[i].label;
+              defaultTimezoneId = timezoneList[i].value;
+              break;
+            }
+          }
+
+          console.log(defaultTimezoneId);
+          self.props.setTimezoneId(defaultTimezoneId);
+
+          self.setState({
+            timezoneList: timezoneList,
+            timezoneValue: defaultTimezone
+          });
+
+        } else {
+          console.log("error fetching");
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+  }
+
+  handleSubmit () {
+
+    var self = this;
+    var notification = "";
+
+    let firstName = document.querySelector("input[name='FirstName']");
+    let lastName = document.querySelector("input[name='LastName']");
+    let checkedElem = document.querySelector('input[name="gender"]:checked');
+    let nationality = this.state.nationalityId;
+    let gender = checkedElem ? checkedElem.value : "";
+    let avatar = this.state.avatarUrl;
+    let country = this.state.countryId;
+    let region = this.state.regionId;
+    let city = this.state.cityId;
+    let timezone = this.state.timezoneId;
+    let nationCode = document.querySelector("[name='country-code']").value;
+    let phoneNum = document.querySelector("[name='phone-number']").value;
+    let eduExperienceList = this.state.eduListItems;
+
+    if (!firstName.length) {
+      notification = "Please Input Your firstName";
+    } else if (!lastName.length) {
+      notification = "Please Input Your lastName";
+    } else if (!nationality.length) {
+        notification = "Please Input Your Nationality";
+    } else if (!gender.length) {
+        notification = "Please Select Your Gender";
+    } else if (!avatar.length) {
+        notification = "Please Upload Your Profile Picture";
+    } else if (!country.length) {
+        notification = "Please Select Your Location Country";
+    } else if (!region.length) {
+        notification = "Please Select Your Location Region";
+    } else if (!city.length) {
+        notification = "Please Select Your Location City";
+    } else if (!timezone.length) {
+      notification = "Please Select Your Location Timezone";
+    } else if (!nationCode.lenght) {
+      notification = "Please Input Your Country Code";
+    } else if (!phoneNum.length) {
+      notification = "Please Input Your Phone Number";
+    }
+
+    if (!!notification.length) {
+      self.notify(notification);
+      return;
+    }
+
+    var data = {
+      firstname: firstName,
+      lastname: lastName,
+      gender: gender === "male" ? 1 : 0,
+      avatar: avatar,
+      nationality: nationality,
+      "residence_n": country,
+      "residence_p": region,
+      "residence_c": city,
+      "timezone": timezone,
+      eduexp: eduExperienceList,
+      "tel_code": nationCode,
+      "tel_num": phoneNum
+    };
+    console.log(data);
 }
 
 class TeachingExperience extends React.Component {
@@ -333,8 +710,19 @@ class TeachingExperience extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
+      notification: "",
       teachExpValue: null
     };
+  }
+
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
   }
 
   handleChange (e, index) {
@@ -344,56 +732,106 @@ class TeachingExperience extends React.Component {
   }
 
   render () {
+
+    const textFieldStyle = {
+      width: "100%"
+    };
+
     return (
       <div className="teaching-experience">
         <div className="select-years">
           <span className="title">Teaching Experience</span>
-          <SelectField id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
-            <MenuItem style={{cursor: "pointer"}} value={1} primaryText="Less than 5 years" />
-            <MenuItem style={{cursor: "pointer"}} value={2} primaryText="Between 5 to 15 years" />
-            <MenuItem style={{cursor: "pointer"}} value={3} primaryText="More than 15 years" />
+          <SelectField style={{verticalAlign: "middle"}} id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
+            <MenuItem style={{cursor: "pointer"}} value={0} primaryText="Less than 5 years" />
+            <MenuItem style={{cursor: "pointer"}} value={1} primaryText="Between 5 to 15 years" />
+            <MenuItem style={{cursor: "pointer"}} value={2} primaryText="More than 15 years" />
           </SelectField>
         </div>
         <ul>
           <li className="words-item">
             <div className="caption">
               <span className="index">1</span>
-              <p className="title">What important qualities should an ESL teacher possess?</p>
+              <span className="title">What important qualities should an ESL teacher possess?</span>
             </div>
             <div className="input-box">
-              <TextField id="self-intro" multiLine={true} rows={5} rowsMax={10} type="textarea"></TextField>
+              <TextField style={textFieldStyle} id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea"></TextField>
             </div>
           </li>
           <li className="words-item">
             <div className="caption">
               <span className="index">2</span>
-              <p className="title">Name 5 factors to consider when lesson planning.</p>
+              <span className="title">Name 5 factors to consider when lesson planning.</span>
             </div>
             <div className="input-box">
-              <TextField id="teach-style" multiLine={true} rows={5} rowsMax={10} type="textarea"></TextField>
+              <TextField style={textFieldStyle} id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea"></TextField>
             </div>
           </li>
           <li className="words-item">
             <div className="caption">
               <span className="index">3</span>
-              <p className="title">How do you plan to keep young learners motivated and engaged in an online classroom setting?</p>
+              <span className="title">How do you plan to keep young learners motivated and engaged in an online classroom setting?</span>
             </div>
             <div className="input-box">
-              <TextField id="why-a-teacher" multiLine={true} rows={5} rowsMax={10} type="textarea"></TextField>
+              <TextField style={textFieldStyle} id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea"></TextField>
             </div>
           </li>
           <li className="words-item">
             <div className="caption">
               <span className="index">4</span>
-              <p className="title">Is there any other useful information you'd like to provide about yourself? (optional)</p>
+              <span className="title">Is there any other useful information you'd like to provide about yourself? (optional)</span>
             </div>
             <div className="input-box">
-              <TextField id="addition" multiLine={true} rows={5} rowsMax={10} type="textarea"></TextField>
+              <TextField style={textFieldStyle} id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea"></TextField>
             </div>
           </li>
         </ul>
+        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
+  }
+
+  handleSubmit () {
+    var self = this;
+    var notification = "";
+
+    let teachExperience = document.getElementById("teach-experience").innerText.trim();
+    let selfIntro = document.getElementById("self-intro").value;
+    let teachStyle = document.getElementById("teach-style").value;
+    let whyATeacher = document.getElementById("why-a-teacher").value;
+    let addition = document.getElementById("addition").value;
+
+    if (!teachExperience.length) {
+        notification = "Please Select Your Teaching Experience";
+    } else if (!selfIntro.length) {
+        notification = "Please Input Your Self Introduction.";
+    } else if (!teachStyle.length) {
+        notification = "Please Input Your Teaching Style.";
+    } else if (!whyATeacher.length) {
+        notification = "Please Input Your Reason To Be A Teacher";
+    }
+
+    if (selfIntro.length > 500) {
+      notification = "Personal Introduction Should Be Less Than 300 Characters";
+    } else if (teachStyle.length > 500) {
+      notification = "Teaching Style Should Be Less Than 300 Characters";
+    } else if (whyATeacher.length > 500) {
+      notification = "Your Reason To Be A Teacher Should Be Less Than 300 Characters";
+    }
+
+    if (!!notification.length) {
+      self.notify(notification);
+      return;
+    }
+
+    var data = {
+      experience: "",
+      intro: selfIntro,
+      style: teachStyle,
+      whyteach: whyATeacher,
+      additional: addition
+    };
+
+    console.log(data);
   }
 }
 
@@ -403,45 +841,143 @@ class ScheduleInterview extends React.Component {
     super (props);
     this.state = {
       dateValue: 0,
-      timeValue: 0
+      timeValue: 0,
+      availableDate: [],
+      availableTime: [],
+      allAvailableTime: [],
+      timeToIdMapping: []
+    };
+  }
+
+  bookTheViewDateChange (e, index, value) {
+    this.setState({
+      dateValue: value,
+      timeValue: 0,
+      availableTime: this.state.allAvailableTime[index]
+    });
+  }
+
+  bookTheViewTimeChange (e, index, value) {
+    this.setState({
+      timeValue: value
+    });
+  }
+
+  fetchInterviewData (TimezoneId) {
+    var self = this;
+
+    this.interviewDateTimeRequest = api.TInterview("",
+    { "Authorization": self.props.token },
+    TimezoneId,
+    (resp) => {
+      if (resp.success) {
+        var data = resp.data;
+        var interviewTime = data["timetable"].map((date, index) => {
+          return {
+            date: date["inter_date"],
+            timeList: date["inter_time"].map((time,index) => {
+              return {
+                id: time.id,
+                period: time.period
+              };
+            })
+          };
+        });
+        var date = [];
+        var time = [];
+        var timeToIdMapping = [];
+        for (let i = 0; i < interviewTime.length; i++) {
+          date.push(interviewTime[i].date);
+          time.push(interviewTime[i].timeList);
+        }
+
+        for (let j = 0; j < time.length; j++) {
+          for (let k = 0; k < time[j].length; k++) {
+            timeToIdMapping.push({
+              id: time[j][k].id,
+              period: time[j][k].period
+            });
+          }
+        }
+
+        self.setState({
+          availableDate: date || [],
+          allAvailableTime: time || [],
+          timeToIdMapping: timeToIdMapping || [],
+          availableTime: time[0] || []
+        });
+      } else {
+        console.log("fetch interview time data error.");
+      }
+    },
+    (err) => {
+      console.log("interview request error.");
     }
-  }
-
-  bookTheViewDateChange () {
-
-  }
-
-  bookTheViewTimeChange () {
-
-  }
+  )
+}
 
   render () {
     return (
       <div className="schedule-interview">
-        <h1>Schedule Video Interview</h1>
-        <div className="input-box">
-          <SelectField value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
-            {
-              this.state.availableDate.map((item, index) => {
-                return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
-              })
-            }
-          </SelectField>
-          <br/>
-          <SelectField id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
-            {
-              this.state.availableTime.map((item, index) => {
-                return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item.period}></MenuItem>;
-              })
-            }
-          </SelectField>
+        <div className="wrap">
+          <h1 className="title">Schedule Video Interview</h1>
+          <div className="input-box">
+            <div className="input-item">
+              <span className="interview-icon"><i className="fa fa-calendar"></i></span>
+              <SelectField style={{verticalAlign: "middle"}} value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
+                {
+                  this.state.availableDate.map((item, index) => {
+                    return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+                  })
+                }
+              </SelectField>
+            </div>
+            <br/>
+            <div className="input-item">
+              <span className="interview-icon"><i className="fa fa-clock-o"></i></span>
+              <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
+                {
+                  this.state.availableTime.map((item, index) => {
+                    return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item.period}></MenuItem>;
+                  })
+                }
+              </SelectField>
+            </div>
+          </div>
+          <div className="successful-words">
+            <p>Thanks for completing the Personal Details Form!</p>
+            <p>We will review the form within 24hrs and provide you with an interview invitation via email.</p>
+            <p>We look forward to speaking with you!</p>
+            <p>Regards, WeTeach Team</p>
+          </div>
         </div>
       </div>
     )
   }
+
+  handleSubmit () {
+    var self = this;
+    var interviewPeriod = document.getElementById("interview-time").innerText.trim();
+
+    var interviewId = "";
+    var timeToIdMapping = this.state.timeToIdMapping;
+
+    for (let i = 0; i < timeToIdMapping.length; i++) {
+      if (timeToIdMapping[i].period === interviewPeriod) {
+        interviewId = timeToIdMapping[i].id;
+      }
+    }
+
+    var data = {
+      "inter_time": interviewId
+    };
+
+    console.log(data);
+  }
+
 }
 
-class StepToSignUp extends React.Component {
+class StepToSignUpClass extends React.Component {
 
   constructor (props) {
     super (props);
@@ -458,6 +994,21 @@ class StepToSignUp extends React.Component {
       stepIndex: stepIndex + 1
     });
 
+    switch (stepIndex) {
+      case 0:
+        self.refs.basicInfo.handleSubmit();
+        break;
+      case 1:
+        self.refs.teachingExperience.handleSubmit();
+        break;
+      case 2:
+        self.refs.scheduleInterview.handleSubmit();
+        break;
+      default:
+        break;
+    }
+
+
   }
 
   handlePrev () {
@@ -472,16 +1023,22 @@ class StepToSignUp extends React.Component {
 
   }
 
+  setTimezoneId (id) {
+    console.log(id);
+    console.log(this.refs.scheduleInterview);
+    this.refs.scheduleInterview.fetchInterviewData(id);
+  }
+
   getContent (stepIndex) {
     switch (stepIndex) {
       case 0:
-      return <BasicInfo></BasicInfo>;
+        return <BasicInfo setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
       case 1:
-      return <TeachingExperience></TeachingExperience>;
+        return <TeachingExperience ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
-      return <ScheduleInterview></ScheduleInterview>;
+        return <ScheduleInterview timezoneId={this.state.timezoneId} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
-      return (<h1>some thing wrong.</h1>);
+        return (<h1>some thing wrong.</h1>);
     }
   }
 
@@ -512,10 +1069,10 @@ class StepToSignUp extends React.Component {
             <div className="step-content">
               <section className="content">
                 {this.getContent(this.state.stepIndex)}
-                <div className="text-center">
+                <div className="text-center two-buttons">
                   <div className="btn-group">
                     <FlatButton disabled={!this.state.stepIndex} label="back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
-                    <RaisedButton labelStyle={{fontSize: 24}} style={{width: 300, height: 50}} primary={true} label="Next" onTouchTap={this.handleNext.bind(this)} disabled={this.state.stepIndex === 2}></RaisedButton>
+                    <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Next" onTouchTap={this.handleNext.bind(this)} disabled={this.state.stepIndex === 2}></RaisedButton>
                   </div>
                 </div>
               </section>
@@ -525,6 +1082,18 @@ class StepToSignUp extends React.Component {
       </section>
     )
   }
+
+  componentDidMount () {
+
+  }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.addToken.token
+  }
+};
+
+const StepToSignUp = connect(mapStateToProps)(StepToSignUpClass);
 
 export default StepToSignUp;

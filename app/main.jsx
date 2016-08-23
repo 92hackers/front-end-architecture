@@ -18,7 +18,7 @@ import SiteFooter from './components/SiteFooter';
 import TSignIn from './teacher-components/TSignIn';
 import TSignUp from './teacher-components/TSignUp';
 import ActivateEmail from './teacher-components/ActivateEmail';
-import TInfo from './teacher-components/TInfo';
+// import TInfo from './teacher-components/TInfo';
 import THomepage from './teacher-components/THomepage';
 import InputNewEmail from './teacher-components/InputNewEmail';
 import ForgetPassword from './teacher-components/ForgetPassword';
@@ -88,7 +88,7 @@ ReactDom.render((
         <Route path="/sign-up" component={TSignUp}></Route>
         <Route path="/sign-in" component={TSignIn}></Route>
         <Route path="/teacher-homepage" component={THomepage}></Route>
-        <Route path="/complete-profile" component={TInfo}></Route>
+        {/* <Route path="/complete-profile" component={TInfo}></Route> */}
         <Route path="/active-email" name="activeEmail" component={ActivateEmail}></Route>
         <Route path="/input-new-email" component={InputNewEmail}></Route>
         <Route path="/forget-password" component={ForgetPassword}></Route>
