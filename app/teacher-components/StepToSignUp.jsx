@@ -90,61 +90,61 @@ class BasicInfo extends React.Component {
     });
 
     this.regionListRequest = api.TRegionList("",
-      { "Authorization": self.token },
-      value.value,
-      (resp) => {
-        if (resp.success) {
+    { "Authorization": self.token },
+    value.value,
+    (resp) => {
+      if (resp.success) {
 
-          const regionList = resp.data.map((region) => {
-            return {
-              value: region.id,
-              label: region.name
-            };
-          });
-          self.setState({
-            regionList: regionList
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
+        const regionList = resp.data.map((region) => {
+          return {
+            value: region.id,
+            label: region.name
+          };
+        });
+        self.setState({
+          regionList: regionList
+        });
+      } else {
+        console.log("error fetching");
       }
-    );
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 
   }
 
 
   changeRegion (value) {
-    var self = this;
-    this.setState({
-      regionValue: value.label,
-      regionId: value.value
-    });
+  var self = this;
+  this.setState({
+    regionValue: value.label,
+    regionId: value.value
+  });
 
-    this.cityListRequest = api.TCityList("",
-      { "Authorization": self.token },
-      value.value,
-      (resp) => {
-        if (resp.success) {
-          const cityList = resp.data.map((city) => {
-            return {
-              value: city.id,
-              label: city.name
-            };
-          });
-          self.setState({
-            cityList: cityList
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+  this.cityListRequest = api.TCityList("",
+  { "Authorization": self.token },
+  value.value,
+  (resp) => {
+    if (resp.success) {
+      const cityList = resp.data.map((city) => {
+        return {
+          value: city.id,
+          label: city.name
+        };
+      });
+      self.setState({
+        cityList: cityList
+      });
+    } else {
+      console.log("error fetching");
+    }
+  },
+  (err) => {
+    console.log(err);
+  }
+);
 
   }
 
@@ -233,8 +233,10 @@ class BasicInfo extends React.Component {
 
     if (!!startYear && !!endYear && !!school && !!major && !!degree) {
 
-      if (startYear.length !== 4 || endYear.length !== 4) {
-        notification = "Year should be exactly 4 characters.";
+      var regExp = /^[0-9]+$/;
+
+      if (startYear.length !== 4 || endYear.length !== 4 || !regExp.test(startYear) || !regExp.test(endYear)) {
+        notification = "Year should be exactly 4 numbers.";
       }
 
       if (!!notification.length) {
@@ -281,6 +283,8 @@ class BasicInfo extends React.Component {
 
     var tmp = this.state.eduListItems;
     var updateIndex = this.state.eduExpSelectedIndex;
+    var self = this;
+    var notification = "";
 
     var getValue = (ele) => {
       return document.getElementById(ele).value;
@@ -292,19 +296,36 @@ class BasicInfo extends React.Component {
     var major = getValue("t-edu-major-m");
     var degree = getValue("t-edu-degree-m");
 
-    var data = {
+    if (!!startYear && !!endYear && !!school && !!major && !!degree) {
+
+      var regExp = /^[0-9]+$/;
+
+      if (startYear.length !== 4 || endYear.length !== 4 || !regExp.test(startYear) || !regExp.test(endYear)) {
+        notification = "Year should be exactly 4 numbers.";
+      }
+
+      if (!!notification.length) {
+        this.notify(notification);
+        return ;
+      }
+
+      let data = {
         timefrom: startYear,
         timeto: endYear,
         institution: school,
         major: major,
         degree: degree
-    };
+      };
 
-    tmp[updateIndex] = data;
+      tmp[updateIndex] = data;
 
-    this.setState({
+      this.setState({
         eduListItems: tmp
-    });
+      });
+
+    } else {
+      this.notify("Please Complete All Fields.");
+    }
 
   }
 
@@ -468,6 +489,7 @@ class BasicInfo extends React.Component {
           <div className="title">
             <h1 className="primary-color">Education Background</h1>
             <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-graduation-cap"></i>} primary={true} onClick={this.handleEduDialogOpen.bind(this)}></RaisedButton>
+            <span className="education-background-tooltip" style={{display: this.state.eduList ? "inline-block" : "none"}}>Click The Item To Edit!</span>
             <Dialog title="Add Your Education Experience" actions={addEduExpActions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleEduDialogClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
@@ -531,112 +553,114 @@ class BasicInfo extends React.Component {
     var self = this;
 
     this.profileRequest = api.TGetProfile("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          let profile = resp.data;
-          self.setState({
-            firstName: profile.firstname,
-            lastName: profile.lastname
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
+    { "Authorization": self.token },
+    "",
+    (resp) => {
+      if (resp.success) {
+        let profile = resp.data;
+        console.log(profile);
+        self.setState({
+          firstName: profile.firstname,
+          lastName: profile.lastname
+        });
+      } else {
+        console.log("error fetching");
       }
-    );
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 
-    this.nationalityRequest = api.TNationalityList("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          const nationalityList = resp.data.map((nationality) => {
-            return {
-              value: nationality.id,
-              label: nationality.name
-            };
-          });
-          self.setState({
-            nationalityList: nationalityList
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
+  this.nationalityRequest = api.TNationalityList("",
+  { "Authorization": self.token },
+  "",
+  (resp) => {
+    if (resp.success) {
+      const nationalityList = resp.data.map((nationality) => {
+        return {
+          value: nationality.id,
+          label: nationality.name
+        };
+      });
+      self.setState({
+        nationalityList: nationalityList
+      });
+    } else {
+      console.log("error fetching");
+    }
+  },
+  (err) => {
+    console.log(err);
+  }
+  );
+
+  this.countryListRequest = api.TCountryList("",
+    { "Authorization": self.token },
+    "",
+    (resp) => {
+      if (resp.success) {
+        const countryList = resp.data.map((country) => {
+          return {
+            value: country.id,
+            label: country.name
+          };
+        });
+        self.setState({
+          countryList: countryList
+        });
+      } else {
+        console.log("error fetching");
       }
-    );
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 
-    this.countryListRequest = api.TCountryList("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          const countryList = resp.data.map((country) => {
-            return {
-              value: country.id,
-              label: country.name
-            };
-          });
-          self.setState({
-            countryList: countryList
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+  this.timezoneListRequest = api.TTimezone("",
+    { "Authorization": self.token },
+    "",
+    (resp) => {
+      if (resp.success) {
+        const timezoneList = resp.data.map((timezone) => {
+          return {
+            value: timezone.id,
+            label: timezone["en_name"]
+          };
+        });
 
-    this.timezoneListRequest = api.TTimezone("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          const timezoneList = resp.data.map((timezone) => {
-            return {
-              value: timezone.id,
-              label: timezone["en_name"]
-            };
-          });
+        var localDate = new Date();
+        var defaultTimezone = "";
+        var defaultTimezoneId = "";
+        var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
+        var regExpTimezone = localTimezone.replace("+", "\\+");
 
-          var localDate = new Date();
-          var defaultTimezone = "";
-          var defaultTimezoneId = "";
-          var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
-          var regExpTimezone = localTimezone.replace("+", "\\+");
-
-          for (let i = 0; i < timezoneList.length; i++) {
-            if (timezoneList[i].label.search(new RegExp(regExpTimezone)) !== -1) {
-              defaultTimezone = timezoneList[i].label;
-              defaultTimezoneId = timezoneList[i].value;
-              break;
-            }
+        for (let i = 0; i < timezoneList.length; i++) {
+          if (timezoneList[i].label.search(new RegExp(regExpTimezone)) !== -1) {
+            defaultTimezone = timezoneList[i].label;
+            defaultTimezoneId = timezoneList[i].value;
+            break;
           }
-
-          console.log(defaultTimezoneId);
-          self.props.setTimezoneId(defaultTimezoneId);
-
-          self.setState({
-            timezoneList: timezoneList,
-            timezoneValue: defaultTimezone
-          });
-
-        } else {
-          console.log("error fetching");
         }
-      },
-      (err) => {
-        console.log(err);
+
+        console.log(defaultTimezoneId);
+        self.props.setTimezoneId(defaultTimezoneId);
+
+        self.setState({
+          timezoneList: timezoneList,
+          timezoneValue: defaultTimezone,
+          timezoneId: defaultTimezoneId
+        });
+
+      } else {
+        console.log("error fetching");
       }
-    );
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 
   }
 
@@ -645,8 +669,8 @@ class BasicInfo extends React.Component {
     var self = this;
     var notification = "";
 
-    let firstName = document.querySelector("input[name='FirstName']");
-    let lastName = document.querySelector("input[name='LastName']");
+    let firstName = document.querySelector("input[name='FirstName']").value;
+    let lastName = document.querySelector("input[name='LastName']").value;
     let checkedElem = document.querySelector('input[name="gender"]:checked');
     let nationality = this.state.nationalityId;
     let gender = checkedElem ? checkedElem.value : "";
@@ -659,28 +683,32 @@ class BasicInfo extends React.Component {
     let phoneNum = document.querySelector("[name='phone-number']").value;
     let eduExperienceList = this.state.eduListItems;
 
+    let numericP = /^[0-9]+$/;
+
     if (!firstName.length) {
       notification = "Please Input Your firstName";
     } else if (!lastName.length) {
       notification = "Please Input Your lastName";
-    } else if (!nationality.length) {
-        notification = "Please Input Your Nationality";
+    } else if (!nationality) {
+      notification = "Please Select Your Nationality";
     } else if (!gender.length) {
-        notification = "Please Select Your Gender";
+      notification = "Please Select Your Gender";
     } else if (!avatar.length) {
-        notification = "Please Upload Your Profile Picture";
-    } else if (!country.length) {
-        notification = "Please Select Your Location Country";
-    } else if (!region.length) {
-        notification = "Please Select Your Location Region";
-    } else if (!city.length) {
-        notification = "Please Select Your Location City";
-    } else if (!timezone.length) {
+      notification = "Please Upload Your Profile Picture";
+    } else if (!country) {
+      notification = "Please Select Your Location Country";
+    } else if (!region) {
+      notification = "Please Select Your Location Region";
+    } else if (!timezone) {
       notification = "Please Select Your Location Timezone";
-    } else if (!nationCode.lenght) {
-      notification = "Please Input Your Country Code";
     } else if (!phoneNum.length) {
       notification = "Please Input Your Phone Number";
+    } else if (!eduExperienceList.length) {
+      notification = "Please Input At Lease One Education Experience";
+    } else if (!numericP.test(phoneNum)) {
+      notification = "Phone Number Should Be Numbers";
+    } else if (!!nationCode.length && numericP.test(nationCode)) {
+      notification = "Country Code Should Be Numbers";
     }
 
     if (!!notification.length) {
@@ -702,7 +730,21 @@ class BasicInfo extends React.Component {
       "tel_code": nationCode,
       "tel_num": phoneNum
     };
+
+    api.TApplyStep1(data,
+      {"Authorization": self.token},
+      "",
+      (resp) => {
+        console.log(resp);
+      },
+      (err) => {
+        console.log("upload data error.");
+      }
+    );
+
     console.log(data);
+    return true;
+  }
 }
 
 class TeachingExperience extends React.Component {
@@ -713,6 +755,7 @@ class TeachingExperience extends React.Component {
       notification: "",
       teachExpValue: null
     };
+    this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MTkzMDg5NiwibmJmIjoxNDcxOTMwODk2LCJqdGkiOjN9.ZtoeuqSE8Jyfs-QFbgKyrUu1zA0PiNct-D09CuSULYc";
   }
 
   notify (message) {
@@ -803,19 +846,19 @@ class TeachingExperience extends React.Component {
     if (!teachExperience.length) {
         notification = "Please Select Your Teaching Experience";
     } else if (!selfIntro.length) {
-        notification = "Please Input Your Self Introduction.";
+        notification = "Please Answer Question 1.";
     } else if (!teachStyle.length) {
-        notification = "Please Input Your Teaching Style.";
+        notification = "Please Answer Question 2.";
     } else if (!whyATeacher.length) {
-        notification = "Please Input Your Reason To Be A Teacher";
+        notification = "Please Answer Question 3.";
     }
 
     if (selfIntro.length > 500) {
-      notification = "Personal Introduction Should Be Less Than 300 Characters";
+      notification = "Question 1 Should Be Less Than 300 Characters";
     } else if (teachStyle.length > 500) {
-      notification = "Teaching Style Should Be Less Than 300 Characters";
+      notification = "Question 2 Should Be Less Than 300 Characters";
     } else if (whyATeacher.length > 500) {
-      notification = "Your Reason To Be A Teacher Should Be Less Than 300 Characters";
+      notification = "Question 3 Should Be Less Than 300 Characters";
     }
 
     if (!!notification.length) {
@@ -823,15 +866,43 @@ class TeachingExperience extends React.Component {
       return;
     }
 
+    var experience = 0;
+
+    switch (teachExperience) {
+      case "More than 15 years":
+        experience = 3;
+        break;
+      case "Between 5 to 15 years":
+        experience = 2;
+        break;
+      case "Less than 5 years":
+        experience = 1;
+        break;
+      default:
+        experience = 0;
+    }
+
     var data = {
-      experience: "",
+      experience: experience,
       intro: selfIntro,
       style: teachStyle,
       whyteach: whyATeacher,
       additional: addition
     };
 
+    api.TApplyStep2(data,
+      {"Authorization": self.token},
+      "",
+      (resp) => {
+        console.log(resp);
+      },
+      (err) => {
+        console.log("upload data error.");
+      }
+    );
+
     console.log(data);
+    return true;
   }
 }
 
@@ -847,6 +918,7 @@ class ScheduleInterview extends React.Component {
       allAvailableTime: [],
       timeToIdMapping: []
     };
+    this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MTkzMDg5NiwibmJmIjoxNDcxOTMwODk2LCJqdGkiOjN9.ZtoeuqSE8Jyfs-QFbgKyrUu1zA0PiNct-D09CuSULYc";
   }
 
   bookTheViewDateChange (e, index, value) {
@@ -866,8 +938,10 @@ class ScheduleInterview extends React.Component {
   fetchInterviewData (TimezoneId) {
     var self = this;
 
+    var token = self.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MTkzMDg5NiwibmJmIjoxNDcxOTMwODk2LCJqdGkiOjN9.ZtoeuqSE8Jyfs-QFbgKyrUu1zA0PiNct-D09CuSULYc";
+
     this.interviewDateTimeRequest = api.TInterview("",
-    { "Authorization": self.props.token },
+    { "Authorization": token },
     TimezoneId,
     (resp) => {
       if (resp.success) {
@@ -927,7 +1001,7 @@ class ScheduleInterview extends React.Component {
               <SelectField style={{verticalAlign: "middle"}} value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
                 {
                   this.state.availableDate.map((item, index) => {
-                    return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item}></MenuItem>;
+                    return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
                   })
                 }
               </SelectField>
@@ -938,21 +1012,20 @@ class ScheduleInterview extends React.Component {
               <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
                 {
                   this.state.availableTime.map((item, index) => {
-                    return <MenuItem style={menuItemStyle} value={index} key={index} primaryText={item.period}></MenuItem>;
+                    return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item.period}></MenuItem>;
                   })
                 }
               </SelectField>
             </div>
           </div>
-          <div className="successful-words">
-            <p>Thanks for completing the Personal Details Form!</p>
-            <p>We will review the form within 24hrs and provide you with an interview invitation via email.</p>
-            <p>We look forward to speaking with you!</p>
-            <p>Regards, WeTeach Team</p>
-          </div>
         </div>
       </div>
     )
+  }
+
+  componentDidMount () {
+    console.log(this.props.timezoneId);
+    this.fetchInterviewData(this.props.timezoneId);
   }
 
   handleSubmit () {
@@ -968,9 +1041,21 @@ class ScheduleInterview extends React.Component {
       }
     }
 
+    interviewId = 11;
     var data = {
       "inter_time": interviewId
     };
+
+    api.TApplyStep3(data,
+      {"Authorization": self.token},
+      "",
+      (resp) => {
+        console.log(resp);
+      },
+      (err) => {
+        console.log("data upload error.");
+      }
+    );
 
     console.log(data);
   }
@@ -982,32 +1067,36 @@ class StepToSignUpClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      stepIndex: 0
+      stepIndex: 0,
+      timezoneId: "",
+      confirmDialogueOpen: false,
+      isFinished: false
     };
   }
 
   handleNext () {
     var self = this;
+    var result = "";
     const {stepIndex} = this.state;
 
-    this.setState({
-      stepIndex: stepIndex + 1
-    });
+    console.log(stepIndex);
 
     switch (stepIndex) {
       case 0:
-        self.refs.basicInfo.handleSubmit();
+        result = self.refs.basicInfo.handleSubmit();
         break;
       case 1:
-        self.refs.teachingExperience.handleSubmit();
-        break;
-      case 2:
-        self.refs.scheduleInterview.handleSubmit();
+        result = self.refs.teachingExperience.handleSubmit();
         break;
       default:
         break;
     }
 
+    if (!!result) {
+      this.setState({
+        stepIndex: stepIndex + 1
+      });
+    }
 
   }
 
@@ -1024,9 +1113,10 @@ class StepToSignUpClass extends React.Component {
   }
 
   setTimezoneId (id) {
-    console.log(id);
-    console.log(this.refs.scheduleInterview);
-    this.refs.scheduleInterview.fetchInterviewData(id);
+    console.log("set timezone id : ", id);
+    this.setState({
+      timezoneId: id
+    });
   }
 
   getContent (stepIndex) {
@@ -1042,6 +1132,47 @@ class StepToSignUpClass extends React.Component {
     }
   }
 
+  handleFinish () {
+    var self = this;
+
+    this.handleOpen();
+
+
+    // this.setState({
+    //   isFinished: true
+    // });
+
+  }
+
+  handleClose () {
+    this.setState({
+      confirmDialogueOpen: false
+    });
+  }
+
+  handleOpen () {
+    this.setState({
+      confirmDialogueOpen: true
+    });
+  }
+
+  handleNo () {
+    this.handleClose();
+  }
+
+  handleYes () {
+    // submit data.
+
+    const {stepIndex} = this.state;
+    this.refs.scheduleInterview.handleSubmit();
+    this.setState({
+      isFinished: true,
+      stepIndex: stepIndex + 1
+    });
+    this.handleClose();
+
+  }
+
   render () {
 
     const stepperStyle = {
@@ -1051,33 +1182,81 @@ class StepToSignUpClass extends React.Component {
       marginBottom: 60
     };
 
+    const rightButton = this.state.stepIndex !== 2 ? <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Next" onTouchTap={this.handleNext.bind(this)} disabled={this.state.stepIndex === 2}></RaisedButton> : <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Finish" onTouchTap={this.handleFinish.bind(this)}></RaisedButton>;
+
+    var content = this.state.isFinished ? (
+      <div className="successful-words">
+        <p>Thanks for completing the Personal Details Form!</p>
+        <p>We will review the form within 24hrs and provide you with an interview invitation via email.</p>
+        <p>We look forward to speaking with you!</p>
+        <p>Regards, WeTeach Team</p>
+      </div>
+    ) : (
+      <div>
+        {this.getContent(this.state.stepIndex)}
+        <div className="text-center two-buttons">
+          <div className="btn-group">
+            <FlatButton disabled={!this.state.stepIndex} label="back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
+            {rightButton}
+          </div>
+        </div>
+      </div>
+    );
+
+    const actions = [
+      <RaisedButton
+        className="dialog-button"
+        label="No"
+        default={true}
+        onTouchTap={this.handleNo.bind(this)}
+      />,
+      <RaisedButton
+        className="dialog-button"
+        label="Yes"
+        primary={true}
+        onTouchTap={this.handleYes.bind(this)}
+      />
+    ];
+
+    const stepLabelStyle = {
+      fontSize: 20,
+      color: '#2196f3'
+    };
+
+    // const stepLabelActiveStyle = {
+    // };
+
     return (
       <section className="step-to-sign-up">
         <div className="container">
           <div className="stepper-wrap">
             <Stepper style={stepperStyle} activeStep={this.state.stepIndex}>
               <Step>
-                <StepLabel>Complete profile</StepLabel>
+                <StepLabel className="step-label" style={stepLabelStyle}>Complete profile</StepLabel>
               </Step>
               <Step>
-                <StepLabel>Teaching experience</StepLabel>
+                <StepLabel className="step-label" style={stepLabelStyle}>Teaching experience</StepLabel>
               </Step>
               <Step>
-                <StepLabel>Schedule interview</StepLabel>
+                <StepLabel className="step-label" style={stepLabelStyle}>Schedule interview</StepLabel>
               </Step>
             </Stepper>
             <div className="step-content">
               <section className="content">
-                {this.getContent(this.state.stepIndex)}
-                <div className="text-center two-buttons">
-                  <div className="btn-group">
-                    <FlatButton disabled={!this.state.stepIndex} label="back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
-                    <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Next" onTouchTap={this.handleNext.bind(this)} disabled={this.state.stepIndex === 2}></RaisedButton>
-                  </div>
-                </div>
+                {content}
               </section>
             </div>
           </div>
+          <Dialog
+            title="A Little Tip!"
+            actions={actions}
+            modal={false}
+            open={this.state.confirmDialogueOpen}
+            onRequestClose={this.handleClose.bind(this)}
+          >
+            <h2 style={{marginBottom: 30}} className="confirm-words text-center">After Submitting, You Can Not Change anymore !</h2>
+            <h2 className="confirm-words text-center">Are Your Sure Your Want To Do That ?</h2>
+          </Dialog>
         </div>
       </section>
     )
@@ -1086,6 +1265,7 @@ class StepToSignUpClass extends React.Component {
   componentDidMount () {
 
   }
+
 }
 
 const mapStateToProps = (state) => {

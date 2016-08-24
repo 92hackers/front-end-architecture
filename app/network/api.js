@@ -55,7 +55,7 @@ var apis = [
     name: "TApplyStep3",
     options: {
       api: "apply/step3",
-      mehod: "post"
+      method: "post"
     }
   },
   {

@@ -12,6 +12,12 @@
     // width: 960px;
     margin: 0 auto;
     margin-top: 60px;
+    .step-label {
+      span {
+        padding-right: 0 !important;
+        margin-right: 8px !important;
+      }
+    }
     .step-content {
       // margin: 0 16px;
       padding-left: 74px;
@@ -120,6 +126,11 @@
                 vertical-align: middle;
                 margin-right: 20px;
               }
+              .education-background-tooltip {
+                color: #999;
+                line-height: 42px;
+                margin-left: 30px;
+              }
             }
           }
         }
@@ -170,6 +181,7 @@
             display: inline-block;
             .title {
               color: @shallow_base_color;
+              margin-bottom: 30px;
             }
             .input-box {
               .input-item {
@@ -184,14 +196,6 @@
                 }
               }
             }
-            .successful-words {
-              padding-top: 50px;
-              p {
-                color: @teacher_base;
-                font-size: 20px;
-                line-height: 2;
-              }
-            }
           }
         }
         .btn-group {
@@ -199,6 +203,15 @@
         }
         .two-buttons {
           padding-top: 50px;
+        }
+        .successful-words {
+          padding-top: 50px;
+          text-align: center;
+          p {
+            color: @teacher_base;
+            font-size: 20px;
+            line-height: 2;
+          }
         }
       }
     }

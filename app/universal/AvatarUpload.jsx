@@ -14,6 +14,7 @@ class AvatarUploadClass extends React.Component {
     this.state = {
       open: false
     };
+    this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MTkzMDg5NiwibmJmIjoxNDcxOTMwODk2LCJqdGkiOjN9.ZtoeuqSE8Jyfs-QFbgKyrUu1zA0PiNct-D09CuSULYc";
   }
 
   handleOpen (e)  {
@@ -30,7 +31,7 @@ class AvatarUploadClass extends React.Component {
 
   uploadToServer (e) {
     var self = this;
-    var token = this.props.token;
+    var token = this.token;
     e.preventDefault();
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
       return;
