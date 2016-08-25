@@ -64,7 +64,6 @@ class TSignInClass extends React.Component {
     }
 
     nprogress.start();
-    console.log(nprogress);
     var signinRequest = api.TSignIn({
       email: email,
       password: password
@@ -102,7 +101,7 @@ class TSignInClass extends React.Component {
             }
             break;
           case 2 :
-            browserHistory.push("/complete-profile");
+            browserHistory.push("/step-to-sign-up");
             break;
           default :
             browserHistory.push("/teacher-homepage");

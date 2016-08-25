@@ -11,7 +11,7 @@ class IndexHeader extends React.Component {
   render () {
     return (
       <header className="t-index-header container">
-        <Link className="logo left" to="/step-to-sign-up">WeTeach</Link>
+        <Link className="logo left" to="/">WeTeach</Link>
         <div className="sign-buttons right">
           <Link id="sign-up" to={`/sign-up`}>Sign Up</Link>
           <Link id="sign-in" to={`/sign-in`}>Sign In</Link>

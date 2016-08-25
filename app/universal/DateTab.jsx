@@ -2,13 +2,18 @@
 //
 
 import React from 'react';
-import InfiniteCalendar from 'react-infinite-calendar';
-import 'react-infinite-calendar/styles.css'; // Make sure to import the default stylesheet
+import { DateRange } from 'react-date-range';
+// import InfiniteCalendar from 'react-infinite-calendar';
+// import 'react-infinite-calendar/styles.css'; // Make sure to import the default stylesheet
 
 class DateTab extends React.Component {
 
   constructor (props) {
     super (props);
+  }
+
+  handleSelect (range) {
+    console.log(range);
   }
 
   render () {
@@ -21,23 +26,13 @@ class DateTab extends React.Component {
 
     return (
       <div className="date">
-        <InfiniteCalendar
-          width={"100%"}
-          height={600}
-          minDate={today}
-          maxDate={maxDate}
-          selectedDate={today}
-          keyboardSupport={true}
-          showTodayHelper={false}
-          onSelect={this.handleSelect.bind(this)}
-        />
+        <DateRange
+        >
+        </DateRange>
       </div>
     )
   }
 
-  handleSelect (moment, e) {
-    console.log(moment.format("ddd MMM DD YYYY"));
-  }
 }
 
 export default DateTab;
