@@ -68,6 +68,7 @@
     "font-awesome": "^4.6.3",
     "json-loader": "^0.5.4",
     "material-ui": "^0.15.4",
+    "multiple-date-picker-react": "^1.0.2",
     "normalize.css": "^4.2.0",
     "nprogress": "^0.2.0",
     "qiniu": "^6.1.11",

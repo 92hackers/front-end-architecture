@@ -2,7 +2,7 @@
 //
 
 import React from 'react';
-import { DateRange } from 'react-date-range';
+import { DateRange, defaultRanges } from 'react-date-range';
 // import InfiniteCalendar from 'react-infinite-calendar';
 // import 'react-infinite-calendar/styles.css'; // Make sure to import the default stylesheet
 
@@ -16,6 +16,10 @@ class DateTab extends React.Component {
     console.log(range);
   }
 
+  handleChange () {
+    console.log(arguments);
+  }
+
   render () {
 
     var today = new Date();
@@ -27,6 +31,11 @@ class DateTab extends React.Component {
     return (
       <div className="date">
         <DateRange
+          calendars={1}
+          ranges={"27/08/2016","28/08/2016"}
+          onInit={this.handleChange.bind(this)}
+          startDate="28/08/2016"
+          endDate="03/09/2016"
         >
         </DateRange>
       </div>

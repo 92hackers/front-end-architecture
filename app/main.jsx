@@ -28,6 +28,9 @@ import TIndex from './teacher-components/TIndex';
 import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
 import StepToSignUp from './teacher-components/StepToSignUp';
+import ScheduleCourse from './teacher-components/ScheduleCourse';
+import OneWeekTemplate from './universal/OneWeekTemplate';
+import DateTab from './universal/DateTab';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -97,6 +100,8 @@ ReactDom.render((
         <Route path="/about-job" component={TAboutJob}></Route>
         <Route path="/about-school" component={TAboutSchool}></Route>
         <Route path="/step-to-sign-up" component={StepToSignUp}></Route>
+        <Route path="/c" component={ScheduleCourse}></Route>
+        <Route path="/t" component={DateTab}></Route>
         <Route path="*" component={NotFound}></Route>
       </Route>
     </Router>

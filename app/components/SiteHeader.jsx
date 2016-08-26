@@ -149,7 +149,7 @@ class SiteHeaderClass extends React.Component {
     return (
       <header className="site-header">
         <div className="container">
-          <span className="brand"><Link to={`/`} style={{color: "#fff", fontSize: "20px"}}>WeTeach</Link></span>
+          <span className="brand"><Link to={`/t`} style={{color: "#fff", fontSize: "20px"}}>WeTeach</Link></span>
           {dynamicComponent}
         </div>
       </header>
