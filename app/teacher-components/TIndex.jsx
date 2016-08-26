@@ -210,6 +210,20 @@ class TIndex extends React.Component {
                   <div className="right icon icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
                 </div>
               </li>
+              <li className="teacher-item clearfix">
+                <div className="left avatar">
+                  <i className="icon icon-hallette"></i>
+                  <div>
+                    <p className="name">Peggy Hallett</p>
+                    <p className="country">Canada</p>
+                  </div>
+                </div>
+                <div className="left thoughts">
+                  <div className="icon icon-dialogue-left">
+                    <p className="thoughts-content">"I have found the WeTeach platform to be an excellent way to make a real connection with young learners. We start our time together with some chitchat and then dive into a book. The stories and adventures lead to plenty of language extensions and inference questions. Success and progress is apparent!"</p>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
           <div className="buttons">

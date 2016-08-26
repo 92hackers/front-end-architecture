@@ -77,6 +77,65 @@ class BasicInfo extends React.Component {
       let eduExp = [];
       if (!!profile.eduexp) {
         eduExp = profile.eduexp;
+        this.setState({
+          eduListItems: eduExp,
+          eduList: eduExp.length
+        });
+      }
+      if (profile.avatar) {
+        this.setState({
+          avatarUrl: profile.avatar,
+        });
+      }
+      if (profile.nation) {
+        this.setState({
+          nationalityValue: profile.nation
+        });
+      }
+      if (profile.country) {
+        this.setState({
+          countryValue: profile.country
+        });
+      }
+      if (profile.region) {
+        this.setState({
+          regionValue: profile.region
+        });
+      }
+      if (profile.city) {
+        this.setState({
+          cityValue: profile.city
+        });
+      }
+      if (profile["timezone_name"]) {
+        this.setState({
+          timezoneValue: profile["timezone_name"]
+        });
+      }
+      if (profile.nationality) {
+        this.setState({
+          nationalityId: profile.nationality
+        });
+      }
+      if (profile["residence_n"]) {
+        this.setState({
+          countryId: profile["residence_n"]
+        });
+      }
+      if (profile["residence_p"]) {
+        this.setState({
+          regionId: profile["residence_p"]
+        });
+      }
+      if (profile["residence_c"]) {
+        this.setState({
+          cityId: profile["residence_c"]
+        });
+      }
+      if (profile.timezone) {
+        this.setState({
+          timezoneId: profile.timezone
+        });
       }
 
       this.setState({
@@ -94,21 +153,7 @@ class BasicInfo extends React.Component {
           "tel_code":     profile["tel_code"],
           "tel_num":      profile["tel_num"]
         },
-        profile: profile,
-        gender: profile.gender === 1 ? "male" : "female",
-        avatarUrl: profile.avatar,
-        eduListItems: eduExp,
-        eduList: eduExp.length,
-        nationalityValue: profile.nation,
-        countryValue: profile.country,
-        regionValue: profile.region,
-        cityValue: profile.city,
-        timezoneValue: profile["timezone_name"],
-        nationalityId: profile.nationality,
-        countryId: profile["residence_n"],
-        regionId: profile["residence_p"],
-        cityId: profile["residence_c"],
-        timezoneId:profile.timezone
+        profile: profile
       });
 
     }
@@ -152,7 +197,11 @@ class BasicInfo extends React.Component {
           };
         });
         self.setState({
-          regionList: regionList
+          regionList: regionList,
+          regionValue: null,
+          regionId: "",
+          cityId: "",
+          cityValue: null
         });
       } else {
         console.log("error fetching");
@@ -167,34 +216,36 @@ class BasicInfo extends React.Component {
 
 
   changeRegion (value) {
-  var self = this;
-  this.setState({
-    regionValue: value.label,
-    regionId: value.value
-  });
+    var self = this;
+    this.setState({
+      regionValue: value.label,
+      regionId: value.value
+    });
 
-  this.cityListRequest = api.TCityList("",
-  { "Authorization": self.token },
-  value.value,
-  (resp) => {
-    if (resp.success) {
-      const cityList = resp.data.map((city) => {
-        return {
-          value: city.id,
-          label: city.name
-        };
-      });
-      self.setState({
-        cityList: cityList
-      });
-    } else {
-      console.log("error fetching");
+    this.cityListRequest = api.TCityList("",
+    { "Authorization": self.token },
+    value.value,
+    (resp) => {
+      if (resp.success) {
+        const cityList = resp.data.map((city) => {
+          return {
+            value: city.id,
+            label: city.name
+          };
+        });
+        self.setState({
+          cityList: cityList,
+          cityValue: null,
+          cityId: ""
+        });
+      } else {
+        console.log("error fetching");
+      }
+    },
+    (err) => {
+      console.log(err);
     }
-  },
-  (err) => {
-    console.log(err);
-  }
-);
+  );
 
   }
 
@@ -209,8 +260,9 @@ class BasicInfo extends React.Component {
   }
 
   changeTimezone (value) {
+    console.log(value.label);
     this.setState({
-      timezoneValue: value,
+      timezoneValue: value.label,
       timezoneId: value.value
     });
     this.props.setTimezoneId(value.value);
@@ -402,6 +454,7 @@ class BasicInfo extends React.Component {
 
   handleValueChange (e) {
     var profile = this.state.profile;
+
     profile[e.target.name] = e.target.value;
 
     this.setState({
@@ -479,9 +532,28 @@ class BasicInfo extends React.Component {
       />
     ];
 
-    var defaultGender = this.state.gender || 'male';
-
     var profile = this.state.profile;
+
+    var gender = profile.gender;
+    var defaultGender = "";
+
+    switch (gender) {
+      case 0:
+        defaultGender = "female";
+        break;
+      case "female":
+        defaultGender = "female";
+        break;
+      case 1:
+        defaultGender = "male";
+        break;
+      case "male":
+        defaultGender = "male";
+        break;
+      default:
+        defaultGender = "male";
+    }
+
     return (
       <div className="basic-info">
         <div className="meta-data-picture clearfix">
@@ -498,7 +570,7 @@ class BasicInfo extends React.Component {
               <li className="data-item">
                 <div className="gender">
                   <p id="gender-caption" className="primary-color">Gender</p>
-                  <RadioButtonGroup defaultSelected={defaultGender} name="gender" style={styles.RadioButtonGroup}>
+                  <RadioButtonGroup valueSelected={defaultGender} name="gender" style={styles.RadioButtonGroup} onChange={this.handleValueChange.bind(this)}>
                     <RadioButton labelStyle={{color: "#999"}} value="male" label="Male" style={styles.radioButton}/>
                     <RadioButton labelStyle={{color: "#999"}} value="female" label="Female" style={styles.radioButton}/>
                   </RadioButtonGroup>
@@ -513,9 +585,9 @@ class BasicInfo extends React.Component {
               <li className="data-item">
                 <div className="phone-num">
                   <div className="icon-wrap"><i className="fa fa-phone"></i></div>
-                  <TextField value={profile["tel_code"]} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <TextField value={profile["tel_code"] ? profile["tel_code"] : ""} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                   <i className="vertical-line"></i>
-                  <TextField value={profile["tel_num"]} name="tel_num" floatingLabelText="Phone Number" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <TextField value={profile["tel_num"] ? profile["tel_num"] : ""} name="tel_num" floatingLabelText="Phone Number" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                 </div>
               </li>
             </ul>
@@ -689,13 +761,17 @@ class BasicInfo extends React.Component {
             }
           }
 
-          self.props.setTimezoneId(defaultTimezoneId);
-
           self.setState({
             timezoneList: timezoneList,
-            timezoneValue: defaultTimezone,
-            timezoneId: defaultTimezoneId
           });
+
+          if (!!self.state.timezoneValue && !!self.state.timezoneId) {      //  如果已经设置了值，就不需要这里再设置值了。
+            self.props.setTimezoneId(defaultTimezoneId);
+            self.setState({
+              timezoneValue: defaultTimezone,
+              timezoneId: defaultTimezoneId
+            });
+          }
 
         } else {
           console.log("error fetching");
@@ -799,6 +875,7 @@ class TeachingExperience extends React.Component {
 
   constructor (props) {
     super (props);
+    console.log(this.props.teachExpValue);
     this.state = {
       notification: "",
       profile: this.props.profile || {},
@@ -906,7 +983,7 @@ class TeachingExperience extends React.Component {
               <span className="title">What important qualities should an ESL teacher possess?</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.intro} style={textFieldStyle} name="intro" id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField value={profile.intro ? profile.intro : ""} style={textFieldStyle} name="intro" id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -915,7 +992,7 @@ class TeachingExperience extends React.Component {
               <span className="title">Name 5 factors to consider when lesson planning.</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.style} style={textFieldStyle} name="style" id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField value={profile.style ? profile.style : ""} style={textFieldStyle} name="style" id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -924,7 +1001,7 @@ class TeachingExperience extends React.Component {
               <span className="title">How do you plan to keep young learners motivated and engaged in an online classroom setting?</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.whyteach} style={textFieldStyle} name="whyteach" id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField value={profile.whyteach ? profile.whyteach : ""} style={textFieldStyle} name="whyteach" id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -933,7 +1010,7 @@ class TeachingExperience extends React.Component {
               <span className="title">Is there any other useful information you'd like to provide about yourself? (optional)</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.additional} style={textFieldStyle} name="additional" id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField value={profile.additional ? profile.additional : ""} style={textFieldStyle} name="additional" id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
         </ul>
@@ -1231,7 +1308,6 @@ class StepToSignUpClass extends React.Component {
   }
 
   setTimezoneId (id) {
-    console.log("set timezone id : ", id);
     this.setState({
       timezoneId: id
     });
@@ -1270,11 +1346,6 @@ class StepToSignUpClass extends React.Component {
     var self = this;
 
     this.handleOpen();
-
-
-    // this.setState({
-    //   isFinished: true
-    // });
 
   }
 
@@ -1388,8 +1459,9 @@ class StepToSignUpClass extends React.Component {
             open={this.state.confirmDialogueOpen}
             onRequestClose={this.handleClose.bind(this)}
           >
-            <h2 style={{marginBottom: 30}} className="confirm-words text-center">After Submitting, You Can Not Change anymore !</h2>
-            <h2 className="confirm-words text-center">Are Your Sure Your Want To Do That ?</h2>
+            <h2 style={{marginBottom: 30}} className="confirm-words text-center">Please note:</h2>
+            <h2 style={{marginBottom: 30}} className="confirm-words text-center">Once you submit your application you will not be able to make any changes.</h2>
+            <h2 className="confirm-words text-center">Confirm Application!</h2>
           </Dialog>
         </div>
       </section>
@@ -1399,18 +1471,23 @@ class StepToSignUpClass extends React.Component {
   componentDidMount () {
     var self = this;
 
-    if (self.props.token) {
+    if (!self.props.token) {
       browserHistory.push("/sign-in");
       return;
     } else {
 
       this.profileRequest = api.TGetProfile("",
-        { "Authorization": self.token },
+        { "Authorization": self.props.token },
         "",
         (resp) => {
           if (resp.success) {
             let profile = resp.data;
             console.log(profile);
+            if (profile.timezone) {
+              self.setState({
+                timezoneId: profile.timezone
+              });
+            }
             self.setState({
               profile: profile
             });

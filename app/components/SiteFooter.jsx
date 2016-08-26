@@ -14,7 +14,7 @@ class SiteFooter extends React.Component {
         <ul className="footer-items">
           <li className="contact-item">
             <i className="fa fa-user"></i>
-            <a href="mailto:teacher@weteach.info" target="_blank">Contact us</a>
+            <a href="mailto:teacher@weteach.info" target="_blank">Contact Us</a>
           </li>
           <li className="contact-item">
             <i className="fa fa-facebook-official"></i>

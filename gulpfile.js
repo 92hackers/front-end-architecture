@@ -64,7 +64,7 @@ gulp.task("webpack-build", () => {
 });
 
 gulp.task("dev", () => {
-  runSequence("clean", "webpack-dev", (err) => {
+  runSequence("clean", "sprites", "webpack-dev", (err) => {
     if (err) {
       throw new gulpUtil.PluginError("gulp dev", err);
     }

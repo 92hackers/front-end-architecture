@@ -13,12 +13,12 @@
   width: 62px;
   height: 62px;
 }
-.icon-Leisure {
+.icon-doubt {
   background-position: -0px -108px;
   width: 100px;
   height: 100px;
 }
-.icon-time {
+.icon-Fun {
   background-position: -0px -208px;
   width: 100px;
   height: 100px;
@@ -28,123 +28,128 @@
   width: 100px;
   height: 100px;
 }
-.icon-Professional- {
+.icon-suitcase {
   background-position: -0px -408px;
   width: 100px;
   height: 100px;
 }
-.icon-suitcase {
+.icon-time {
   background-position: -0px -508px;
   width: 100px;
   height: 100px;
 }
-.icon-shen-qing {
+.icon-Community {
   background-position: -0px -608px;
   width: 100px;
   height: 100px;
 }
-.icon-money {
+.icon-shen-qing {
   background-position: -0px -708px;
   width: 100px;
   height: 100px;
 }
-.icon-doubt {
+.icon-Leisure {
   background-position: -0px -808px;
   width: 100px;
   height: 100px;
 }
-.icon-Community {
+.icon-Professional- {
   background-position: -0px -908px;
   width: 100px;
   height: 100px;
 }
-.icon-Fun {
+.icon-money {
   background-position: -0px -1008px;
   width: 100px;
   height: 100px;
 }
-.icon-dialogue-right {
+.icon-hallette {
   background-position: -0px -1108px;
+  width: 155px;
+  height: 155px;
+}
+.icon-dialogue-left {
+  background-position: -0px -1263px;
   width: 858px;
   height: 178px;
 }
-.icon-dialogue-left {
-  background-position: -0px -1286px;
+.icon-dialogue-right {
+  background-position: -0px -1441px;
   width: 858px;
   height: 178px;
 }
 .icon-Paul-Clutterbuck {
-  background-position: -0px -1464px;
+  background-position: -0px -1619px;
   width: 184px;
   height: 184px;
 }
 .icon-Patty-Harte {
-  background-position: -0px -1648px;
+  background-position: -0px -1803px;
   width: 184px;
   height: 184px;
 }
-.icon-computer {
-  background-position: -0px -1832px;
+.icon-people {
+  background-position: -0px -1987px;
   width: 200px;
   height: 200px;
 }
-.icon-people {
-  background-position: -0px -2032px;
+.icon-computer {
+  background-position: -0px -2187px;
   width: 200px;
   height: 200px;
 }
 .icon-book {
-  background-position: -0px -2232px;
+  background-position: -0px -2387px;
   width: 200px;
   height: 200px;
 }
-.icon-four-persons {
-  background-position: -0px -2432px;
+.icon-play {
+  background-position: -0px -2587px;
   width: 369px;
   height: 323px;
 }
-.icon-play {
-  background-position: -0px -2755px;
+.icon-four-persons {
+  background-position: -0px -2910px;
   width: 369px;
   height: 323px;
 }
 .icon-learning {
-  background-position: -0px -3078px;
+  background-position: -0px -3233px;
   width: 369px;
   height: 323px;
 }
-.icon-drink {
-  background-position: -0px -3401px;
+.icon-plant-tree {
+  background-position: -0px -3556px;
   width: 270px;
   height: 360px;
 }
 .icon-connect {
-  background-position: -0px -3761px;
+  background-position: -0px -3916px;
+  width: 270px;
+  height: 360px;
+}
+.icon-drink {
+  background-position: -0px -4276px;
   width: 270px;
   height: 360px;
 }
 .icon-love {
-  background-position: -0px -4121px;
-  width: 270px;
-  height: 360px;
-}
-.icon-plant-tree {
-  background-position: -0px -4481px;
+  background-position: -0px -4636px;
   width: 270px;
   height: 360px;
 }
 .icon-horse {
-  background-position: -0px -4841px;
+  background-position: -0px -4996px;
   width: 469px;
   height: 373px;
 }
 .icon-banner {
-  background-position: -0px -5214px;
+  background-position: -0px -5369px;
   width: 655px;
   height: 373px;
 }
 .icon-circle {
-  background-position: -0px -5587px;
+  background-position: -0px -5742px;
   width: 600px;
   height: 600px;
 }
