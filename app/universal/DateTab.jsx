@@ -1,10 +1,8 @@
 // use calendar component.
-//
 
 import React from 'react';
-import { DateRange, defaultRanges } from 'react-date-range';
-// import InfiniteCalendar from 'react-infinite-calendar';
-// import 'react-infinite-calendar/styles.css'; // Make sure to import the default stylesheet
+import MultipleDatePicker from './MultipleDatePicker';
+import moment from 'moment';
 
 class DateTab extends React.Component {
 
@@ -24,22 +22,55 @@ class DateTab extends React.Component {
 
     var today = new Date();
     var maxDate = new Date();
-    maxDate = new Date(maxDate.setMonth(today.getMonth() + 2));
-    // TODO:  maxDate :  the end date that a teacher can schedules his courses.
-    console.log(maxDate);
+
+    var myHighlightDays = [
+      {
+        day: moment("2016-08-29"),
+        // css: 'birthday', //a beautiful color for this special day
+        notSelectable: true,
+        selected: true,
+        title: 'My birthday today !!!'
+      },
+      {
+        day: moment("2016-08-30"),
+        notSelectable: true,
+        selected: true
+      },
+      {
+        day: moment("2016-08-31"),
+        notSelectable: true,
+        selected: true
+      },
+      {
+        day: moment("2016-09-01"),
+        selected: true
+      }
+    ];
 
     return (
       <div className="date">
-        <DateRange
-          calendars={1}
-          ranges={"27/08/2016","28/08/2016"}
-          onInit={this.handleChange.bind(this)}
-          startDate="28/08/2016"
-          endDate="03/09/2016"
-        >
-        </DateRange>
+        <MultipleDatePicker
+          highlightDays={myHighlightDays} //details below
+          // dayClick={this.dayClickCallback.bind(this)} //details below
+          // dayHover={this.dayHoverCallback.bind(this)} //details below
+          // changeMonth={this.monthChangeCallback.bind(this)} //details below
+          callbackContext={this} //context given to every callback
+        />
       </div>
     )
+
+  }
+
+  dayClickCallback () {
+
+  }
+
+  dayHoverCallback () {
+
+  }
+
+  monthChangeCallback () {
+
   }
 
 }

@@ -79,6 +79,12 @@ class SiteHeaderClass extends React.Component {
     this.props.dispatch(dashboardDisplay("schedule"));
   }
 
+  handleTemplateClick (e) {
+    e.preventDefault();
+    this.handleRequestClose();
+    this.props.dispatch(dashboardDisplay("template"))
+  }
+
   render () {
 
     var isUserLoggedIn = this.props.isUserLoggedIn;
@@ -110,6 +116,7 @@ class SiteHeaderClass extends React.Component {
                 <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleProfileClick.bind(this)} />
                 <ListItem primaryText="Settings" leftIcon={<i className="fa fa-cogs"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
                 <ListItem primaryText="Timetable" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleScheduleClick.bind(this)} />
+                <ListItem primaryText="Template" leftIcon={<i className="fa fa-newspaper-o"></i>} onTouchTap={this.handleTemplateClick.bind(this)}></ListItem>
               </List>
             </Popover>
           </li>

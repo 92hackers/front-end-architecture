@@ -6,6 +6,7 @@ import apis from '../network/api';
 import Notification from '../universal/Notification';
 import formValidate from 'validate-js';
 import Dialog from 'material-ui/Dialog';
+import nprogress from 'nprogress';
 
 class TSignUp extends React.Component {
 
@@ -85,10 +86,12 @@ class TSignUp extends React.Component {
       reflink: document.referrer
     };
 
+    nprogress.start();
     var signUpRequest = apis.TSignUp(data,
       {},
       "",
       (resp) => {
+        nprogress.done();
         if (resp.success) {
           browserHistory.push("/active-email");         //  jump to  Active your email notification page.
         } else {
@@ -99,6 +102,7 @@ class TSignUp extends React.Component {
         }
       },
       (err) => {
+        nprogress.done();
         self.notify("Network Is Busy, Please Try Again Later.");
       }
     )

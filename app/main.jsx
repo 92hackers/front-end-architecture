@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
+import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-router';
 import FacebookLogin from 'react-facebook-login';
 import { Provider } from 'react-redux';
 import {createStore} from 'redux';
 import reducers from './reducers';
+import { useScroll } from 'react-router-scroll';
 
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
@@ -84,14 +85,41 @@ class App extends React.Component {
 
   }
 
+  const scrollBehavior = (prevRouterProps, { routes }) => {
+
+    return [0,0];
+
+  };
+
+const routes = {
+  path: "/",
+  component: App,
+  childRoutes: [
+    { path: "sign-up", component: TSignUp },
+    { path: "sign-in", component: TSignIn },
+    { path: "teacher-homepage", component: THomepage },
+    { path: "active-email", component: ActivateEmail },
+    { path: "input-new-email", component: InputNewEmail },
+    { path: "forget-password", component: ForgetPassword },
+    { path: "reset-password", component: TInputNewPassword },
+    { path: "activate-your-account", component: VerifyYourEmail },
+    { path: "about-job", component: TAboutJob },
+    { path: "about-school", component: TAboutSchool },
+    { path: "step-to-sign-up", component: StepToSignUp },
+    { path: "c", component: ScheduleCourse },
+    { path: "t", component: OneWeekTemplate },
+    { path: "*", component: NotFound }
+  ]
+};
+
 ReactDom.render((
   <Provider store={store}>
-    <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
-      <Route path="/" component={App}>
+    <Router routes={routes} render={applyRouterMiddleware(useScroll(scrollBehavior))} history={browserHistory}>
+      {/* <Route path="/" component={App}>
         <Route path="/sign-up" component={TSignUp}></Route>
         <Route path="/sign-in" component={TSignIn}></Route>
         <Route path="/teacher-homepage" component={THomepage}></Route>
-        {/* <Route path="/complete-profile" component={TInfo}></Route> */}
+        <Route path="/complete-profile" component={TInfo}></Route>
         <Route path="/active-email" name="activeEmail" component={ActivateEmail}></Route>
         <Route path="/input-new-email" component={InputNewEmail}></Route>
         <Route path="/forget-password" component={ForgetPassword}></Route>
@@ -103,7 +131,7 @@ ReactDom.render((
         <Route path="/c" component={ScheduleCourse}></Route>
         <Route path="/t" component={DateTab}></Route>
         <Route path="*" component={NotFound}></Route>
-      </Route>
+      </Route> */}
     </Router>
   </Provider>
 ), document.getElementById("app"));

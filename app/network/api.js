@@ -3,9 +3,7 @@
 
 import reqwest from 'reqwest';
 
-var host = "";
 var apiVersion = "/v1/";
-
 var host = "http://api.yiyouabc.com";
 
 var apis = [
@@ -150,6 +148,27 @@ var apis = [
     name: "ChangePassword",           //  need  authorization.
     options: {
       api: "user/uppw",
+      method: "post"
+    }
+  },
+  {
+    name: "LessonTemplateInfo",       //  need  authorization.
+    options: {
+      api: "lesson/template",
+      method: "get"
+    }
+  },
+  {
+    name: "NewLessonTemplate",         //  need  authorization.
+    options: {
+      api: "lesson/template",
+      method: "post"
+    }
+  },
+  {
+    name: "NewLessonTimeTable",         //  need authorization.
+    options: {
+      api: "lesson/timetable",
       method: "post"
     }
   }

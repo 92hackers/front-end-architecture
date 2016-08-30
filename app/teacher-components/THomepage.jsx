@@ -14,7 +14,8 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import removeToken from '../actions/removeToken';
 import dashboardDisplay from '../actions/dashboardDisplay';
-
+import ScheduleCourse from './ScheduleCourse';
+import OneWeekTemplate from '../universal/OneWeekTemplate';
 
 class SettingComp extends React.Component {
 
@@ -108,12 +109,10 @@ class ScheduleComp extends React.Component {
     super (props);
   }
 
-  // 稍等片刻   再上线。
-
   render () {
     return (
       <section className="schedule-dashboard dashboard">
-        <h1 className="text-center">Upcoming!</h1>
+        <ScheduleCourse></ScheduleCourse>
       </section>
     )
   }
@@ -135,7 +134,6 @@ class WaitForInterview extends React.Component {
     )
   }
 }
-
 
 class THomepageClass extends React.Component {
 
@@ -230,6 +228,9 @@ class THomepageClass extends React.Component {
             break;
           case "schedule":
             DashboardComponent = <ScheduleComp token={this.props.token} dispatch={this.props.dispatch}></ScheduleComp>;
+            break;
+          case "template":
+            DashboardComponent = <OneWeekTemplate token={this.props.token} dispatch={this.props.dispatch}></OneWeekTemplate>;
             break;
           default:
             DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
