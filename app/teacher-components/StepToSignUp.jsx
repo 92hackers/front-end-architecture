@@ -983,7 +983,7 @@ class TeachingExperience extends React.Component {
               <span className="title">What important qualities should an ESL teacher possess?</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.intro ? profile.intro : ""} style={textFieldStyle} name="intro" id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField placeholder="500 Characters limited" value={profile.intro ? profile.intro : ""} style={textFieldStyle} name="intro" id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -992,7 +992,7 @@ class TeachingExperience extends React.Component {
               <span className="title">Name 5 factors to consider when lesson planning.</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.style ? profile.style : ""} style={textFieldStyle} name="style" id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField placeholder="500 Characters limited" value={profile.style ? profile.style : ""} style={textFieldStyle} name="style" id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -1001,7 +1001,7 @@ class TeachingExperience extends React.Component {
               <span className="title">How do you plan to keep young learners motivated and engaged in an online classroom setting?</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.whyteach ? profile.whyteach : ""} style={textFieldStyle} name="whyteach" id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField placeholder="500 Characters limited" value={profile.whyteach ? profile.whyteach : ""} style={textFieldStyle} name="whyteach" id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -1010,7 +1010,7 @@ class TeachingExperience extends React.Component {
               <span className="title">Is there any other useful information you'd like to provide about yourself? (optional)</span>
             </div>
             <div className="input-box">
-              <TextField value={profile.additional ? profile.additional : ""} style={textFieldStyle} name="additional" id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField placeholder="500 Characters limited" value={profile.additional ? profile.additional : ""} style={textFieldStyle} name="additional" id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
         </ul>
@@ -1040,11 +1040,11 @@ class TeachingExperience extends React.Component {
     }
 
     if (selfIntro.length > 500) {
-      notification = "Question 1 Should Be Less Than 300 Characters";
+      notification = "Question 1 Should Be Less Than 500 Characters";
     } else if (teachStyle.length > 500) {
-      notification = "Question 2 Should Be Less Than 300 Characters";
+      notification = "Question 2 Should Be Less Than 500 Characters";
     } else if (whyATeacher.length > 500) {
-      notification = "Question 3 Should Be Less Than 300 Characters";
+      notification = "Question 3 Should Be Less Than 500 Characters";
     }
 
     if (!!notification.length) {
@@ -1401,7 +1401,7 @@ class StepToSignUpClass extends React.Component {
         {this.getContent(this.state.stepIndex)}
         <div className="text-center two-buttons">
           <div className="btn-group">
-            <FlatButton disabled={!this.state.stepIndex} label="back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
+            <FlatButton disabled={!this.state.stepIndex} label="Back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
             {rightButton}
           </div>
         </div>

@@ -14,10 +14,10 @@ class ScheduleCourse extends React.Component {
       <section className="schedule-course">
         <Tabs initialSelectedIndex={0}>
           <Tab label="Week">
-            <Week></Week>
+            <Week token={this.props.token} tpl={this.props.tpl} weeklyTimetable={this.props.weeklyTimetable}></Week>
           </Tab>
           <Tab label="Date">
-            <DateTab></DateTab>
+            <DateTab monthlyTimetable={this.props.monthlyTimetable}></DateTab>
           </Tab>
         </Tabs>
       </section>

@@ -46,6 +46,7 @@ class SiteHeaderClass extends React.Component {
   handleSignOut (e) {
     e.preventDefault();
     this.props.dispatch(removeToken());
+    this.props.dispatch(dashboardDisplay(""));
     browserHistory.push("/");
   }
 

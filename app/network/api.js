@@ -166,10 +166,26 @@ var apis = [
     }
   },
   {
-    name: "NewLessonTimeTable",         //  need authorization.
+    name: "NewLessonTimeTable",         //  need authorization.     teacher schedule lessons.
     options: {
       api: "lesson/timetable",
       method: "post"
+    }
+  },
+  {
+    name: "WeeklyTimeTable",         //  authorization,   get weekly time table.
+    options: {
+      api: "lesson/weekly",
+      method: "get",
+      queryParam: true                //   need  date,  default today.
+    }
+  },
+  {
+    name: "MonthlyTimeTable",         // authorization,   get monthly time table.
+    options: {
+      api: "lesson/monthly",
+      method: "get",
+      queryParam: true                //   need  date,    default  today.
     }
   }
 ];
@@ -177,7 +193,7 @@ var apis = [
 apis.forEach((item, index) => {
   exports[item.name] = (data, header, queryParam, successCall, failCall) => {
     var options = item.options;
-    var queryParam = options.queryParam ? "/" + queryParam : "";
+    var queryParam = options.queryParam && !!queryParam ? "/" + queryParam : "";
     return reqwest({
       url: host + apiVersion + options.api + queryParam,
       method: options.method,

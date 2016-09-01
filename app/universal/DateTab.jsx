@@ -20,32 +20,20 @@ class DateTab extends React.Component {
 
   render () {
 
+    const monthlyTimetable = this.props.monthlyTimetable;
+    console.log(monthlyTimetable);
+
     var today = new Date();
     var maxDate = new Date();
 
-    var myHighlightDays = [
-      {
-        day: moment("2016-08-29"),
-        // css: 'birthday', //a beautiful color for this special day
+    var myHighlightDays = monthlyTimetable.timetable.map((item, index) => {
+      return {
+        day: moment(item.lessonDate),
         notSelectable: true,
         selected: true,
-        title: 'My birthday today !!!'
-      },
-      {
-        day: moment("2016-08-30"),
-        notSelectable: true,
-        selected: true
-      },
-      {
-        day: moment("2016-08-31"),
-        notSelectable: true,
-        selected: true
-      },
-      {
-        day: moment("2016-09-01"),
-        selected: true
+        title: item.lessonDate
       }
-    ];
+    });
 
     return (
       <div className="date">

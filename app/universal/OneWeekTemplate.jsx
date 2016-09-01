@@ -1,7 +1,6 @@
 
 import React from 'react';
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import api from "../network/api";
@@ -10,23 +9,25 @@ import dashboardDisplay from '../actions/dashboardDisplay';
 import nprogress from 'nprogress';
 
 
-class OneWeekTemplateClass extends React.Component {
+class OneWeekTemplate extends React.Component {
 
   constructor (props) {
     super(props);
+
+    var tpl = this.props.tpl;
+
     this.state = {
       open: false,
-      hasTemplate: false,
       notification: "",
-      existedTemplate: [],
+      existedTemplate: tpl.existedTemplate,
 
-      teacherTimezone: "",
-      studentTimezone: "",
-      timezoneOffset: "",
+      teacherTimezone: tpl.teacherTimezone,
+      studentTimezone: tpl.studentTimezone,
+      timezoneOffset: tpl.timezoneOffset,
       defaultScrollTop: "",
 
-      defaultStartTime: "",
-      defaultDuration: "",
+      defaultStartTime: tpl.defaultStartTime,
+      defaultDuration: tpl.defaultDuration,
 
       saveResultMessage: "",
       lessonsSelected: [],
@@ -42,11 +43,10 @@ class OneWeekTemplateClass extends React.Component {
       studentHours: [],
 
       displayTime: [],
-      displayTimezone: "",
+      displayTimezone: tpl.displayTimezone,
 
       toggled: false
     };
-    this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MjUyNjg4MiwibmJmIjoxNDcyNTI2ODgyLCJqdGkiOjJ9.08bYiYxsUmmzppEN5PhUAFPEF5mKCLMb9-b--N8b0P0";
   }
 
   notify (message) {
@@ -181,13 +181,13 @@ class OneWeekTemplateClass extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
-                      <TableRowColumn style={{height: 50, cursor: "pointer"}}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
                     </TableRow>
                   )
                 })
@@ -212,6 +212,21 @@ class OneWeekTemplateClass extends React.Component {
     )
   }
 
+  cellHover (r,c,e) {
+    var ele = r.target;
+    if (!ele.dataset.clicked) {
+      ele.style.backgroundColor = "#ddd";
+    }
+  }
+
+  cellLeave (r) {
+    var ele = r.target;
+    if (!ele.dataset.clicked) {
+      ele.style.backgroundColor = "#fff";
+    }
+  }
+
+
   scrollBack () {
 
     var tableWrap = document.getElementsByClassName("table-wrap")[0];
@@ -220,6 +235,7 @@ class OneWeekTemplateClass extends React.Component {
     var scrollY = this.state.defaultScrollTop;
     tableWrap.scrollTop = scrollY;
     timeLabel.scrollTop = scrollY;
+
   }
 
   handleSubmit () {
@@ -228,7 +244,7 @@ class OneWeekTemplateClass extends React.Component {
     var lessonsSelected = this.state.lessonsSelected;
 
     if (!lessonsSelected.length) {
-      self.notify("please click the time table cell to set your weekly template.");
+      self.notify("Please Click The Time Table Cell To Set Your Weekly Template.");
       return;
     }
 
@@ -236,9 +252,10 @@ class OneWeekTemplateClass extends React.Component {
       "tpl": lessonsSelected
     };
     console.log(data);
+
     nprogress.start();
     api.NewLessonTemplate(data,
-      { "Authorization": self.token },
+      { "Authorization": self.props.token },
       "",
       (resp) => {
         nprogress.done();
@@ -278,6 +295,30 @@ class OneWeekTemplateClass extends React.Component {
       displayTime: this.state.fullHours
     });
 
+    var tpl = this.props.tpl;
+
+    tableWrap.style.height = tpl.defaultDuration * 100 + 2 * 50 + "px";
+    timeLabel.style.height = tpl.defaultDuration * 100 + 2 * 50 + "px";
+
+    var count = 0;
+    var fullHours = self.state.fullHours;
+
+    for (; count < fullHours.length; count++) {
+      if (tpl.defaultStartTime === fullHours[count]) {
+        break;
+      }
+    }
+
+    var scrollTop = (count - 1) * 50;
+
+    self.setState({
+      defaultScrollTop: scrollTop
+    });
+
+    tableWrap.scrollTop = scrollTop;
+    timeLabel.scrollTop = scrollTop;
+
+    /*
     api.LessonTemplateInfo("",
       { "Authorization": self.token },
       "",
@@ -327,6 +368,7 @@ class OneWeekTemplateClass extends React.Component {
         console.log("Something wrong.");
       }
     );
+    */
 
   }
 
@@ -350,16 +392,20 @@ class OneWeekTemplateClass extends React.Component {
     };
 
     if (!target.dataset.clicked) {
-      target.style.backgroundColor = "#ddd";
+      target.style.backgroundColor = "#a8d8ff";
       target.dataset.clicked = "clicked";
       lessonsSelected.push(lessonClicked);
     } else {
-      lessonsSelected.splice(lessonsSelected.indexOf(lessonClicked), 1);
-      target.style.backgroundColor = "#fff";
+      lessonsSelected.forEach((item, index) => {
+        if (item.weekday === lessonClicked.weekday && item.beginTime === lessonClicked.beginTime) {
+          lessonsSelected.splice(index, 1);
+        }
+      });
+
+      target.style.backgroundColor = "#ddd";
       target.dataset.clicked = "";
     }
 
-    console.log(lessonsSelected);
     this.setState({
       lessonsSelected: lessonsSelected
     });
@@ -384,7 +430,5 @@ class OneWeekTemplateClass extends React.Component {
   }
 
 }
-
-var OneWeekTemplate = connect()(OneWeekTemplateClass);
 
 export default OneWeekTemplate;

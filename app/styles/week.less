@@ -1,6 +1,5 @@
 .one-week {
   position: relative;
-  padding-top: 30px;
   padding-left: 50px;
   .week-title {
     font-size: 36px;
@@ -44,7 +43,16 @@
     tr {
       td {
         border: 1px solid #ddd;
+        height: 50px !important;
+        cursor: pointer;
+        .unselected {
+          display: none;
+          color: #999;
+        }
       }
     }
+  }
+  .save {
+    padding-top: 20px;
   }
 }
