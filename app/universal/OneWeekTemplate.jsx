@@ -16,6 +16,8 @@ class OneWeekTemplate extends React.Component {
 
     var tpl = this.props.tpl;
 
+    console.log(tpl);
+
     this.state = {
       open: false,
       notification: "",
@@ -30,7 +32,7 @@ class OneWeekTemplate extends React.Component {
       defaultDuration: tpl.defaultDuration,
 
       saveResultMessage: "",
-      lessonsSelected: [],
+      lessonsSelected: tpl.existedTemplate,
 
       timeSwitched: false,
 
@@ -47,6 +49,48 @@ class OneWeekTemplate extends React.Component {
 
       toggled: false
     };
+
+    this.hoursRawData = [
+      "0:00", "0:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30",
+      "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+      "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"
+    ];
+  }
+
+  renderData () {
+    console.log("existedTemplate: ", this.state.existedTemplate);
+    if (this.state.existedTemplate.length > 0) {
+      let self = this;
+      let elems = document.getElementsByClassName("cell");
+      let tpl = this.state.existedTemplate.map((item, index) => {
+        return {
+          week: parseInt(item.weekday) + 1,
+          beginTime: self.hoursRawData.indexOf(item.beginTime)
+        };
+      });
+
+      var matched = 0;
+
+      for (let i = 0; i < elems.length; i++) {
+        for (let j = 0; j < tpl.length; j++) {
+          let elem = elems[i];
+          let dataset = elems[i].dataset;
+          let oneTpl = tpl[j];
+
+          if (parseInt(dataset.x) === oneTpl.week && parseInt(dataset.y) === oneTpl.beginTime) {
+            matched++;
+            elem.dataset.clicked = "clicked";
+            elem.style.backgroundColor = "#75c4ff";
+            break;
+          }
+        }
+
+        if (matched === tpl.length) {
+          break;
+        }
+      }
+
+    }
   }
 
   notify (message) {
@@ -181,13 +225,13 @@ class OneWeekTemplate extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
-                      <TableRowColumn onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="7" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}></TableRowColumn>
                     </TableRow>
                   )
                 })
@@ -205,7 +249,8 @@ class OneWeekTemplate extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose.bind(this)}
         >
-          <h1>Weekly timetable updated!</h1>
+          <h1 className="text-center" style={{marginBottom: 20}}>Weekly timetable updated!</h1>
+          <h3 className="text-center">Now, Click the Button below to Schedule Lessons.</h3>
         </Dialog>
         <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
@@ -251,6 +296,7 @@ class OneWeekTemplate extends React.Component {
     var data = {
       "tpl": lessonsSelected
     };
+
     console.log(data);
 
     nprogress.start();
@@ -260,6 +306,7 @@ class OneWeekTemplate extends React.Component {
       (resp) => {
         nprogress.done();
         if (resp.success) {
+          self.props.templateReq();
           self.handleOpen();
         } else {
           self.notify("network is busy, please try again later.");
@@ -315,60 +362,10 @@ class OneWeekTemplate extends React.Component {
       defaultScrollTop: scrollTop
     });
 
+    self.renderData();
+
     tableWrap.scrollTop = scrollTop;
     timeLabel.scrollTop = scrollTop;
-
-    /*
-    api.LessonTemplateInfo("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          var data = resp.data;
-
-          console.log(data);
-
-          self.setState({
-            existedTemplate: data.tpl,
-            hasTemplate: data.tpl.length > 0,
-            teacherTimezone: data.timezone,
-            studentTimezone: data.studentTimezone,
-            timezoneOffset: data.studentTimeoffset / 3600,          //  unit:   hour.
-            displayTimezone: data.timezone,
-            defaultDuration: data.hours,
-            defaultStartTime: data.hourFrom
-          });
-
-          tableWrap.style.height = data.hours * 100 + 2 * 50 + "px";
-          timeLabel.style.height = data.hours * 100 + 2 * 50 + "px";
-
-          var count = 0;
-          var fullHours = self.state.fullHours;
-
-          for (; count < fullHours.length; count++) {
-            if (data.hourFrom === fullHours[count]) {
-              break;
-            }
-          }
-
-          var scrollTop = (count - 1) * 50;
-
-          self.setState({
-            defaultScrollTop: scrollTop
-          });
-
-          tableWrap.scrollTop = scrollTop;
-          timeLabel.scrollTop = scrollTop;
-
-        } else {
-          console.log("Something wrong, returns failure.");
-        }
-      },
-      (err) => {
-        console.log("Something wrong.");
-      }
-    );
-    */
 
   }
 
@@ -377,19 +374,15 @@ class OneWeekTemplate extends React.Component {
     var target = e.currentTarget;
     var lessonsSelected = this.state.lessonsSelected;
     var fullHours = this.state.fullHours;
-    var beginTime = "";
+    var beginTime = this.hoursRawData[rowNumber];
     var lessonClicked = "";
-
-    if (rowNumber % 2) {
-      beginTime = fullHours[rowNumber - 1].replace(/00/, "30");
-    } else {
-      beginTime = fullHours[rowNumber];
-    }
 
     lessonClicked = {
       weekday: columnId - 1,
       beginTime: beginTime
     };
+
+    console.log(lessonClicked);
 
     if (!target.dataset.clicked) {
       target.style.backgroundColor = "#a8d8ff";
@@ -397,7 +390,7 @@ class OneWeekTemplate extends React.Component {
       lessonsSelected.push(lessonClicked);
     } else {
       lessonsSelected.forEach((item, index) => {
-        if (item.weekday === lessonClicked.weekday && item.beginTime === lessonClicked.beginTime) {
+        if (parseInt(item.weekday) === lessonClicked.weekday && item.beginTime === lessonClicked.beginTime) {
           lessonsSelected.splice(index, 1);
         }
       });

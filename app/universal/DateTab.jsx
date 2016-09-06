@@ -8,24 +8,36 @@ class DateTab extends React.Component {
 
   constructor (props) {
     super (props);
+    this.state = {
+      highlightDays: []
+    };
   }
 
-  handleSelect (range) {
-    console.log(range);
-  }
-
-  handleChange () {
-    console.log(arguments);
-  }
 
   render () {
+    return (
+      <div className="date">
+        <MultipleDatePicker
+          highlightDays={this.state.highlightDays} //details below
+          // dayClick={this.dayClickCallback.bind(this)} //details below
+          // dayHover={this.dayHoverCallback.bind(this)} //details below
+          // changeMonth={this.monthChangeCallback.bind(this)} //details below
+          callbackContext={this} //context given to every callback
+        />
+      </div>
+    )
+  }
 
-    const monthlyTimetable = this.props.monthlyTimetable;
-    console.log(monthlyTimetable);
+  shouldComponentUpdate () {
+    return true;
+  }
 
-    var today = new Date();
-    var maxDate = new Date();
+  componentDidMount () {
+    this.generateHighlightDays(this.props.monthlyTimetable);
+  }
 
+  generateHighlightDays (dataSource) {
+    var monthlyTimetable = dataSource;
     var myHighlightDays = monthlyTimetable.timetable.map((item, index) => {
       return {
         day: moment(item.lessonDate),
@@ -35,18 +47,15 @@ class DateTab extends React.Component {
       }
     });
 
-    return (
-      <div className="date">
-        <MultipleDatePicker
-          highlightDays={myHighlightDays} //details below
-          // dayClick={this.dayClickCallback.bind(this)} //details below
-          // dayHover={this.dayHoverCallback.bind(this)} //details below
-          // changeMonth={this.monthChangeCallback.bind(this)} //details below
-          callbackContext={this} //context given to every callback
-        />
-      </div>
-    )
+    this.setState({
+      highlightDays: myHighlightDays
+    });
+  }
 
+  componentWillReceiveProps (nextProps) {
+    if (JSON.stringify(nextProps.monthlyTimetable) !== JSON.stringify(this.props.monthlyTimetable)) {
+      this.generateHighlightDays(nextProps.monthlyTimetable);
+    }
   }
 
   dayClickCallback () {

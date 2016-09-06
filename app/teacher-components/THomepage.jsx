@@ -112,7 +112,7 @@ class ScheduleComp extends React.Component {
   render () {
     return (
       <section className="schedule-dashboard dashboard">
-        <ScheduleCourse weeklyTimetable={this.props.weeklyTimetable} monthlyTimetable={this.props.monthlyTimetable} token={this.props.token} tpl={this.props.tpl} dispatch={this.props.dispatch}></ScheduleCourse>
+        <ScheduleCourse weeklyTimetableReq={this.props.weeklyTimetableReq} monthlyTimetableReq={this.props.monthlyTimetableReq} weeklyTimetable={this.props.weeklyTimetable} monthlyTimetable={this.props.monthlyTimetable} token={this.props.token} tpl={this.props.tpl} dispatch={this.props.dispatch}></ScheduleCourse>
       </section>
     )
   }
@@ -220,9 +220,6 @@ class THomepageClass extends React.Component {
 
     var dynamicDashboardComp = this.props.dashboardComponent;
 
-    console.log(profile);
-    console.log(dynamicDashboardComp);
-
     switch (profile.status) {
       case 3:
       case 5:
@@ -234,10 +231,10 @@ class THomepageClass extends React.Component {
             DashboardComponent = <SettingComp token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
             break;
           case "schedule":
-            DashboardComponent = <ScheduleComp weeklyTimetable={this.state.weeklyTimetable} monthlyTimetable={this.state.monthlyTimetable} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></ScheduleComp>;
+            DashboardComponent = <ScheduleComp weeklyTimetableReq={this.weeklyTimetableReq.bind(this)} monthlyTimetableReq={this.monthlyTimetableReq.bind(this)} weeklyTimetable={this.state.weeklyTimetable} monthlyTimetable={this.state.monthlyTimetable} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></ScheduleComp>;
             break;
           case "template":
-            DashboardComponent = <OneWeekTemplate token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></OneWeekTemplate>;
+            DashboardComponent = <OneWeekTemplate templateReq={this.lessonTemplateReq.bind(this)} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></OneWeekTemplate>;
             break;
           default:
             DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
@@ -273,6 +270,92 @@ class THomepageClass extends React.Component {
     )
   }
 
+  lessonTemplateReq () {
+
+    var self = this;
+
+    var lessonTemplateReq = api.LessonTemplateInfo(
+      "",
+      { "Authorization": self.props.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          var data = resp.data;
+
+          self.setState({
+            tpl: {
+              existedTemplate: data.tpl.length ? data.tpl : [],
+              teacherTimezone: data.timezone,
+              studentTimezone: data.studentTimezone,
+              timezoneOffset: data.studentTimeoffset / 3600,          //  unit:   hour.
+              displayTimezone: data.timezone,
+              defaultDuration: data.hours,
+              defaultStartTime: data.hourFrom
+            },
+            hasTemplate: data.tpl.length > 0
+          });
+
+        } else {
+          console.log("Something wrong, returns failure.");
+        }
+      },
+      (err) => {
+        console.log("Something wrong.");
+      }
+    );
+
+  }
+
+  weeklyTimetableReq () {
+
+    var self = this;
+
+    var weeklyTimetableReq = api.WeeklyTimeTable(
+      "",
+      { "Authorization": self.props.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          self.setState({
+            weeklyTimetable: resp.data
+          });
+        } else {
+          console.log("network is busy, please try again later.");
+        }
+      },
+      (err) => {
+        console.log(err);
+        console.log("network is busy, please try again later.");
+      }
+    );
+
+  }
+
+  monthlyTimetableReq () {
+
+    var self = this;
+
+    var monthlyTimetableReq = api.MonthlyTimeTable(
+      "",
+      { "Authorization": self.props.token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          self.setState({
+            monthlyTimetable: resp.data
+          });
+        } else {
+          console.log("network is busy, please try again later.");
+        }
+      },
+      (err) => {
+        console.log(err);
+        console.log("network is busy, please try again later.");
+      }
+    );
+
+  }
+
   componentDidMount () {
     var self = this;
 
@@ -298,75 +381,11 @@ class THomepageClass extends React.Component {
       }
     );
 
-    var lessonTemplateReq = api.LessonTemplateInfo(
-      "",
-      { "Authorization": self.props.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          var data = resp.data;
+    this.lessonTemplateReq();
 
-          console.log(data);
+    this.weeklyTimetableReq();
 
-          self.setState({
-            tpl: {
-              existedTemplate: data.tpl,
-              teacherTimezone: data.timezone,
-              studentTimezone: data.studentTimezone,
-              timezoneOffset: data.studentTimeoffset / 3600,          //  unit:   hour.
-              displayTimezone: data.timezone,
-              defaultDuration: data.hours,
-              defaultStartTime: data.hourFrom
-            },
-            hasTemplate: data.tpl.length > 0
-          });
-
-        } else {
-          console.log("Something wrong, returns failure.");
-        }
-      },
-      (err) => {
-        console.log("Something wrong.");
-      }
-    );
-
-    var weeklyTimetableReq = api.WeeklyTimeTable(
-      "",
-      { "Authorization": self.props.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          self.setState({
-            weeklyTimetable: resp.data
-          });
-        } else {
-          console.log("network is busy, please try again later.");
-        }
-      },
-      (err) => {
-        console.log(err);
-        console.log("network is busy, please try again later.");
-      }
-    );
-
-    var monthlyTimetableReq = api.MonthlyTimeTable(
-      "",
-      { "Authorization": self.props.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          self.setState({
-            monthlyTimetable: resp.data
-          });
-        } else {
-          console.log("network is busy, please try again later.");
-        }
-      },
-      (err) => {
-        console.log(err);
-        console.log("network is busy, please try again later.");
-      }
-    );
+    this.monthlyTimetableReq();
 
   }
 

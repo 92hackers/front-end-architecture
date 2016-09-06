@@ -17,15 +17,70 @@ class Week extends React.Component {
     ];
     this.weekDays = [];
 
-    this.lessonsSelected = [];
     this.lessonsAdded = [];
     this.lessonsDeleted = [];
 
     this.state = {
       defaultScrollTop: "",
       notification: "",
+      existedTemplate: this.props.tpl.existedTemplate,
       lessonsSelected: []
     };
+
+    this.hoursRawData = [
+      "0:00", "0:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30",
+      "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+      "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"
+    ];
+
+  }
+
+  renderData (lessonData, immutable) {
+      let self = this;
+      let elems = document.getElementsByClassName("cell");
+      let tpl = lessonData.map((item, index) => {
+        // var time = item.beginTime ? item.beginTime : item.lessonTime;
+        var time = item.beginTime || item.lessonTime;
+
+        return {
+         week: parseInt(item.weekday),
+    beginTime: self.hoursRawData.indexOf(time),
+       status: item.status || "",
+           id:  item.id || ""
+        };
+
+      });
+
+
+      var matched = 0;
+
+      for (let i = 0; i < elems.length; i++) {
+        for (let j = 0; j < tpl.length; j++) {
+          let elem = elems[i];
+          let dataset = elems[i].dataset;
+          let oneTpl = tpl[j];
+
+          if (parseInt(dataset.x) === oneTpl.week && parseInt(dataset.y) === oneTpl.beginTime) {
+            matched++;
+            elem.dataset.clicked = "clicked";
+
+            // 下面的代码是已经保存过后的当周的课程，渲染出来过后，需要在上面记录一些内容。
+            if (immutable) {
+              elem.dataset.immutable = "immutable";
+              if (oneTpl.status !== undefined) {
+                elem.dataset.status =  oneTpl.status;
+              }
+              elem.dataset.id = oneTpl.id;
+            }
+            elem.style.backgroundColor = "#75c4ff";
+            break;
+          }
+        }
+
+        if (matched === tpl.length) {
+          break;
+        }
+      }
 
   }
 
@@ -40,9 +95,6 @@ class Week extends React.Component {
   }
 
   render () {
-
-    const weeklyTimetable = this.props.weeklyTimetable;
-    console.log(weeklyTimetable);
 
     const times = [
       "0:00", "", "1:00", "", "2:00", "", "3:00", "", "4:00", "", "5:00", "", "6:00", "", "7:00", "",
@@ -84,14 +136,14 @@ class Week extends React.Component {
       return new Date(today.getTime() + n * oneDayMilSeconds);
     }
 
-    var currentDay = today.getDay();
-    var index = today.getDay();
+    var currentDay = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1;
+    var index = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1;
 
     currentWeekDays[currentDay] = today.getDate();
 
     this.weekDays[currentDay] = today.toDateString();
 
-    while (index > 1) {
+    while (index > 0) {
       index--;
       this.weekDays[index] = prevNDate(currentDay - index).toDateString();
       currentWeekDays[index] = prevNDate(currentDay - index).getDate();
@@ -99,7 +151,7 @@ class Week extends React.Component {
 
     index = currentDay;
 
-    while (index < 7) {
+    while (index < 6) {
       index++;
       this.weekDays[index] = postNDate(index - currentDay).toDateString();
       currentWeekDays[index] = postNDate(index - currentDay).getDate();
@@ -127,13 +179,13 @@ class Week extends React.Component {
           <TableHeader displaySelectAll={false}
             adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn style={tableHeaderStyles}>Mon <span className="week-date">{currentWeekDays[1]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableHeaderStyles}>Tue <span className="week-date">{currentWeekDays[2]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableHeaderStyles}>Wed <span className="week-date">{currentWeekDays[3]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableHeaderStyles}>Thu <span className="week-date">{currentWeekDays[4]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableHeaderStyles}>Fri <span className="week-date">{currentWeekDays[5]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableHeaderStyles}>Sat <span className="week-date">{currentWeekDays[6]}</span></TableHeaderColumn>
-              <TableHeaderColumn style={tableHeaderStyles}>Sun <span className="week-date">{currentWeekDays[7]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Mon <span className="week-date">{currentWeekDays[0]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Tue <span className="week-date">{currentWeekDays[1]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Wed <span className="week-date">{currentWeekDays[2]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Thu <span className="week-date">{currentWeekDays[3]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Fri <span className="week-date">{currentWeekDays[4]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Sat <span className="week-date">{currentWeekDays[5]}</span></TableHeaderColumn>
+              <TableHeaderColumn style={tableHeaderStyles}>Sun <span className="week-date">{currentWeekDays[6]}</span></TableHeaderColumn>
             </TableRow>
           </TableHeader>
         </Table>
@@ -144,13 +196,13 @@ class Week extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn data-x="7" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
                     </TableRow>
                   )
                 })
@@ -178,7 +230,6 @@ class Week extends React.Component {
     }
 
     var date = this.weekDays[c];
-    console.log(new Date(date + " " + time));
     return new Date(date + " " + time) > new Date();
   }
 
@@ -200,14 +251,16 @@ class Week extends React.Component {
   cellLeave (r) {
     var ele = r.target;
 
-    console.log(ele.children[0]);
-
     if (!ele.dataset.clicked) {
       ele.style.backgroundColor = "#fff";
     }
-    if (ele.children[0].style.display === "block") {
+
+    if (ele.className === "unselected") {
+      ele.style.display = "none";
+    } else if ( ele.children[0].style.display === "block") {
       ele.children[0].style.display = "none";
     }
+
   }
 
   scrollBack () {
@@ -225,17 +278,18 @@ class Week extends React.Component {
 
     var self = this;
     var lessonsAdded = this.lessonsAdded;
+    var lessonsDeleted = this.lessonsDeleted;
 
-    if (!lessonsAdded.length) {
+    if (!lessonsAdded.length && !lessonsDeleted.length) {
       self.notify("please click the time table cell to schedule your lessons.");
       return;
     }
 
     var data = {
-      "add": lessonsAdded
+      "add": lessonsAdded,
+      "delete": lessonsDeleted
     };
 
-    console.log(data);
     nprogress.start();
 
     api.NewLessonTimeTable(data,
@@ -245,6 +299,10 @@ class Week extends React.Component {
         nprogress.done();
         if (resp.success) {
           self.notify("Save Time Table Successfully");
+          self.props.weeklyTimetableReq();
+          self.props.monthlyTimetableReq();
+          self.lessonsAdded = [];
+          self.lessonsDeleted = [];
         } else {
           self.notify("Please Select Future Date and Time Correctly.");
         }
@@ -260,12 +318,18 @@ class Week extends React.Component {
   cellClick (rowNumber, columnId, e) {
 
     var target = e.currentTarget;
+    var dataset = target.dataset;
     var fullHours = this.timesData;
     var time = "";
 
-    var weekIndex = columnId;
+    if (!this.validTime(rowNumber, columnId - 1)) {
+      return;
+    }
 
-    if (!this.validTime(rowNumber, columnId)) {
+    // if status > 0, the lesson had been booked.
+
+    if (dataset.immutable === "immutable" && dataset.status > 0) {
+      this.notify("This Lesson Can not be Cancelled.");
       return;
     }
 
@@ -275,20 +339,27 @@ class Week extends React.Component {
       time = fullHours[rowNumber];
     }
 
-    var date = this.weekDays[weekIndex];
+    var date = this.weekDays[columnId - 1];
 
     var selectedLesson = {
-        "lessonDate": date,
-        "lessonTime": time,
-        "student_id": 0
-      };
+      "lessonDate": date,
+      "lessonTime": time,
+      "student_id": 0
+    };
 
-    if (!target.dataset.clicked) {
+    if (!dataset.clicked) {
 
       this.lessonsAdded.push(selectedLesson);
 
       target.style.backgroundColor = "#a8d8ff";
       target.dataset.clicked = "clicked";
+
+      if (dataset.immutable === "immutable") {
+        let index = this.lessonsDeleted.indexOf(dataset.id);
+        if (index !== -1) {
+          this.lessonsDeleted.splice(index, 1);
+        }
+      }
 
     } else {
 
@@ -298,11 +369,14 @@ class Week extends React.Component {
         }
       });
 
+      if (dataset.immutable === "immutable") {
+        this.lessonsDeleted.push(dataset.id);
+      }
+
       target.style.backgroundColor = "#ddd";
       target.dataset.clicked = "";
     }
 
-    console.log(this.lessonsAdded);
   }
 
   tableScroll (e) {
@@ -321,6 +395,32 @@ class Week extends React.Component {
 
     tableWrap.scrollTop = timeLables.scrollTop;
 
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+
+      var weeklyTimetable = nextProps.weeklyTimetable.timetable;
+      var existedTemplate = this.state.existedTemplate;
+
+      if (weeklyTimetable.length > 0) {
+        this.renderData(weeklyTimetable, true);
+      } else if (existedTemplate.length > 0) {
+        this.renderData(existedTemplate);
+
+      existedTemplate.forEach((item, index) => {
+        var date = self.weekDays[parseInt(item.weekday)];
+        if (new Date(date + " " + item.beginTime) > new Date()) {
+          self.lessonsAdded.push({
+            lessonDate: date,
+            lessonTime: item.beginTime,
+            "student_id": 0
+          });
+        }
+      });
+
+      }
+    }
   }
 
   componentDidMount () {
@@ -346,7 +446,6 @@ class Week extends React.Component {
     var timeLabel = document.getElementsByClassName("time-labels")[0];
 
     var tpl = this.props.tpl;
-    console.log(tpl);
 
     tableWrap.style.height = tpl.defaultDuration * 100 + 2 * 50 + "px";
     timeLabel.style.height = tpl.defaultDuration * 100 + 2 * 50 + "px";
@@ -368,6 +467,29 @@ class Week extends React.Component {
 
     tableWrap.scrollTop = scrollTop;
     timeLabel.scrollTop = scrollTop;
+
+    // 优先加载 weekly 已经设置的数据， 如果没有，则设置 template 的数据。
+
+    var weeklyTimetable = this.props.weeklyTimetable.timetable;
+    var existedTemplate = this.state.existedTemplate;
+
+    if (weeklyTimetable.length > 0) {
+      this.renderData(weeklyTimetable, true);
+    } else if (existedTemplate.length > 0) {
+      this.renderData(existedTemplate);
+
+    existedTemplate.forEach((item, index) => {
+      var date = self.weekDays[parseInt(item.weekday)];
+      if (new Date(date + " " + item.beginTime) > new Date()) {
+        self.lessonsAdded.push({
+          lessonDate: date,
+          lessonTime: item.beginTime,
+          "student_id": 0
+        });
+      }
+    });
+
+    }
 
   }
 

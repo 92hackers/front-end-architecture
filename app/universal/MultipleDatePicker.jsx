@@ -55,12 +55,32 @@ var MultipleDatePicker = React.createClass({
         	});
         }
 
+
 		this.setState({
 			month: month,
 			highlightDays: highlightDays,
 			weekDaysOff: this.props.weekDaysOff || []
 		});
 	},
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps !== this.props) {
+      var highlightDays = [];
+
+      if(Object.prototype.toString.call(nextProps.highlightDays) === '[object Array]'){
+        highlightDays = nextProps.highlightDays.map(function(hDay){
+          var nHday = hDay;
+          if(!moment.isMoment(nHday.day)){
+            nHday.day = moment(nHday.day);
+          }
+          return nHday;
+        });
+      }
+
+      this.setState({
+        highlightDays: highlightDays
+      });
+    }
+  },
 	daySelectionChanged: function(day, selected){
 		var hD = this.state.highlightDays,
 			found = hD.filter(function(d){
@@ -152,17 +172,17 @@ var MultipleDatePicker = React.createClass({
 
 		return (
 			<div className="multiple-date-picker">
-	            <div className="picker-top-row">
-		            <div className="text-center picker-navigate picker-navigate-left-arrow" onClick={this.goToPreviousMonth}>&lt;</div>
-		            <div className="text-center picker-month">{this.state.month.format('MMMM YYYY')}</div>
-		            <div className="text-center picker-navigate picker-navigate-right-arrow" onClick={this.goToNextMonth}>&gt;</div>
-	            </div>
-	            <div className="picker-days-week-row">{this.getDaysOfWeek()}</div>
-	            <div className="picker-days-row">
-	            	{this.getEmptyFirstDays(firstDayOfMonth)}
-		            {this.getDays(lastDayOfPreviousMonth, lastDayOfMonth)}
-		            {this.getEmptyLastDays(lastDayOfMonth)}
-	            </div>
+        <div className="picker-top-row">
+          <div className="text-center picker-navigate picker-navigate-left-arrow" onClick={this.goToPreviousMonth}>&lt;</div>
+          <div className="text-center picker-month">{this.state.month.format('MMMM YYYY')}</div>
+          <div className="text-center picker-navigate picker-navigate-right-arrow" onClick={this.goToNextMonth}>&gt;</div>
+        </div>
+        <div className="picker-days-week-row">{this.getDaysOfWeek()}</div>
+        <div className="picker-days-row">
+          {this.getEmptyFirstDays(firstDayOfMonth)}
+          {this.getDays(lastDayOfPreviousMonth, lastDayOfMonth)}
+          {this.getEmptyLastDays(lastDayOfMonth)}
+        </div>
 			</div>
 		);
 	}
