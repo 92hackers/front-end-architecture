@@ -7,3 +7,5 @@ import "./summer.jpg";
 import "./teacher-avatar.png";
 import "./tom.png";
 import "./winter.jpg";
+import "./template-guide.png";
+import "./schedule-lessons.png";

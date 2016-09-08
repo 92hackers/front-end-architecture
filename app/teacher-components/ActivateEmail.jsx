@@ -15,6 +15,12 @@ class ActivateEmailClass extends React.Component {
     };
   }
 
+  componentWillReceiveProps () {
+    if (!this.props.token) {
+      browserHistory.push("/sign-in");
+    }
+  }
+
   handleChangeClick (e) {
 
     e.preventDefault();
@@ -46,25 +52,25 @@ class ActivateEmailClass extends React.Component {
 
     if (!!token) {
       api.TNewEmail("",
-      {"Authorization": token},
-      "",
-      (resp) => {
-        if (resp.success) {
-          self.notify("A New Email Has Already Been Sent To Your Registered Email Address");
-        } else {
-          self.notify(resp.data.error);
+        {"Authorization": token},
+        "",
+        (resp) => {
+          if (resp.success) {
+            self.notify("A New Email Has Already Been Sent To Your Registered Email Address");
+          } else {
+            self.notify(resp.data.error);
+          }
+        },
+        (err) => {
+          console.log(err);
+          self.notify("Network Is Busy, Please Try Again Later.");
         }
-      },
-      (err) => {
-        console.log(err);
-        self.notify("Network Is Busy, Please Try Again Later.");
-      }
-    )
-  } else {
-    browserHistory.push("/sign-in?action=resendEmail");
-  }
+      )
+    } else {
+      browserHistory.push("/sign-in?action=resendEmail");
+    }
 
-}
+  }
 
   render () {
 

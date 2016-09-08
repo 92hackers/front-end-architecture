@@ -347,9 +347,11 @@ class Week extends React.Component {
       "student_id": 0
     };
 
-    if (!dataset.clicked) {
+    if (!dataset.clicked) {           //  select the item.
 
-      this.lessonsAdded.push(selectedLesson);
+      if (!dataset.immutable) {          //  only add  new lesson.
+        this.lessonsAdded.push(selectedLesson);
+      }
 
       target.style.backgroundColor = "#a8d8ff";
       target.dataset.clicked = "clicked";
@@ -361,7 +363,7 @@ class Week extends React.Component {
         }
       }
 
-    } else {
+    } else {                          //   calcel selected.
 
       this.lessonsAdded.forEach((item, index) => {
         if (item.lessonDate === selectedLesson.lessonDate && item.lessonTime === selectedLesson.lessonTime) {
@@ -425,6 +427,8 @@ class Week extends React.Component {
 
   componentDidMount () {
     var self = this;
+
+    console.log(this.props.weeklyTimetable);
 
     //  hightlight today.
     var today = new Date().getDay();

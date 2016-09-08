@@ -226,6 +226,9 @@ class THomepageClass extends React.Component {
         DashboardComponent = <WaitForInterview interviewTime={profile.interview}></WaitForInterview>;
         break;
       case 10:
+        DashboardComponent = <OneWeekTemplate newUser={true} templateReq={this.lessonTemplateReq.bind(this)} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></OneWeekTemplate>;
+        break;
+      case 11:
         switch (dynamicDashboardComp) {
           case "setting":
             DashboardComponent = <SettingComp token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
@@ -240,6 +243,8 @@ class THomepageClass extends React.Component {
             DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
         }
         break;
+      default:
+        DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
     }
 
     return (

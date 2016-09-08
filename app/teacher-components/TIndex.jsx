@@ -181,7 +181,7 @@ class TIndex extends React.Component {
           <div className="section-wrap">
             <h1 className="title primary-color">WeTeach Video</h1>
             <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
-            <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/Fe_4RJKmaho" frameBorder="0" allowFullScreen></iframe>
+            <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/iM6AGrZTbbQ" frameBorder="0" allowFullScreen></iframe>
           </div>
         </section>
         <section className="teachers-thoughts">

@@ -89,12 +89,13 @@
 }
 
 .picker-day:not(.picker-off):not(.picker-empty):hover {
-  background-color: #eee;
-  color: @pickable-day-picked-color;
-  cursor: pointer;
+  // background-color: #eee;
+  // color: @pickable-day-picked-color;
+  // 这里不需要底色，目的就是不让他选择。
+  // cursor: pointer;
 }
 
-.picker-day.picker-selected,
+
 .picker-day.picker-selected:hover{
   background-color: @pickable-day-picked-background;
   color: @pickable-day-picked-color;

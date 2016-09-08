@@ -14,3 +14,25 @@
     }
   }
 }
+
+.guide-arrow {
+  line-height: 480px;
+  width: 48px;
+  font-size: 48px;
+  color: #ddd;
+  &:hover {
+    color: #bbb;
+  }
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.back-arrow {
+  .guide-arrow();
+}
+
+.next-arrow {
+  .guide-arrow();
+  text-align: right;
+}

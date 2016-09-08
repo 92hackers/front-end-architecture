@@ -1,4 +1,5 @@
 .date {
+  @border-color: #ddd;
   padding-top: 20px;
   .multiple-date-picker {
     .picker-top-row {
@@ -9,8 +10,8 @@
       padding-bottom: 5px;
     }
     .picker-days-row {
-      border-top: 1px solid #eee;
-      border-left: 1px solid #eee;
+      border-top: 1px solid @border-color;
+      border-left: 1px solid @border-color;
       .picker-day {
         height: 100px;
         text-align: right;
@@ -18,13 +19,14 @@
         font-size: 18px;
         font-weight: bold;
         border: none;
-        border-bottom: 1px solid #eee;
-        border-right: 1px solid #eee;
+        border-bottom: 1px solid @border-color;
+        border-right: 1px solid @border-color;
       }
       .today {
-        color: @teacher_base;
+        color: @teacher_base !important;
       }
       .picker-selected {
+        color: #fff;
         background-color: @shallow_base_color;
       }
     }

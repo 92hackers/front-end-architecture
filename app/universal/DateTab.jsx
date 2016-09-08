@@ -19,8 +19,8 @@ class DateTab extends React.Component {
       <div className="date">
         <MultipleDatePicker
           highlightDays={this.state.highlightDays} //details below
-          // dayClick={this.dayClickCallback.bind(this)} //details below
-          // dayHover={this.dayHoverCallback.bind(this)} //details below
+          dayClick={this.dayClickCallback.bind(this)} //details below
+          dayHover={this.dayHoverCallback.bind(this)} //details below
           // changeMonth={this.monthChangeCallback.bind(this)} //details below
           callbackContext={this} //context given to every callback
         />
@@ -59,15 +59,11 @@ class DateTab extends React.Component {
   }
 
   dayClickCallback () {
-
+    return false;
   }
 
   dayHoverCallback () {
-
-  }
-
-  monthChangeCallback () {
-
+    return false;
   }
 
 }
