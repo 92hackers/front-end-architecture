@@ -240,7 +240,7 @@ class Week extends React.Component {
 
     if (this.validTime(data.y, data.x)) {
       if (!data.clicked) {
-        ele.style.backgroundColor = "#ddd";
+        ele.style.backgroundColor = "#ecf0f1";
       }
     } else {
       ele.children[0].style.display = "block";
@@ -375,7 +375,7 @@ class Week extends React.Component {
         this.lessonsDeleted.push(dataset.id);
       }
 
-      target.style.backgroundColor = "#ddd";
+      target.style.backgroundColor = "#ecf0f1";
       target.dataset.clicked = "";
     }
 

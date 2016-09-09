@@ -30,8 +30,7 @@ import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
 import StepToSignUp from './teacher-components/StepToSignUp';
 import ScheduleCourse from './teacher-components/ScheduleCourse';
-import OneWeekTemplate from './universal/OneWeekTemplate';
-import DateTab from './universal/DateTab';
+import OnlineTest from './teacher-components/OnlineTest';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -39,6 +38,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {blue500} from 'material-ui/styles/colors';
 
 import NotFound from './universal/NotFound';
+import DateTab from './universal/DateTab';
+import OneWeekTemplate from './universal/OneWeekTemplate';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -98,6 +99,7 @@ const routes = {
     { path: "sign-up", component: TSignUp },
     { path: "sign-in", component: TSignIn },
     { path: "teacher-homepage", component: THomepage },
+    { path: "teacher-online-test", component: OnlineTest },
     { path: "active-email", component: ActivateEmail },
     { path: "input-new-email", component: InputNewEmail },
     { path: "forget-password", component: ForgetPassword },
@@ -106,8 +108,8 @@ const routes = {
     { path: "about-job", component: TAboutJob },
     { path: "about-school", component: TAboutSchool },
     { path: "step-to-sign-up", component: StepToSignUp },
-    { path: "c", component: ScheduleCourse },
-    { path: "t", component: OneWeekTemplate },
+    // { path: "c", component: ScheduleCourse },
+    // { path: "t", component: OneWeekTemplate },
     { path: "*", component: NotFound }
   ]
 };

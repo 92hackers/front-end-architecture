@@ -15,7 +15,7 @@ class ActivateEmailClass extends React.Component {
     };
   }
 
-  componentWillReceiveProps () {
+  componentWillMount () {
     if (!this.props.token) {
       browserHistory.push("/sign-in");
     }

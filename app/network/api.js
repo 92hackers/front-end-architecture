@@ -187,7 +187,27 @@ var apis = [
       method: "get",
       queryParam: true                //   need  date,    default  today.
     }
+  },
+
+  //  online test qpis.
+
+  {
+    name: "OnlineTestQuestion",       //  need  authorization.
+    options: {
+      api: "exam/q",
+      method: "get",
+      queryParam: true                //  need  step parameter, must provided. step = {1,2,3,4,5,6};
+    }
+  },
+  {
+    name: "onlineTestCheck",           //  need authorization.
+    options: {
+      api: "exam/a",
+      method: "post",
+      queryParam: true                 //  need  step parameter, must provided. step = {1,2,3,4,5,6};
+    }
   }
+
 ];
 
 apis.forEach((item, index) => {
