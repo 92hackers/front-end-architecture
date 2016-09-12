@@ -15,6 +15,14 @@ class OnlineTest extends React.Component {
       finished: false
     };
     this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MzM4ODkwNiwibmJmIjoxNDczMzg4OTA2LCJqdGkiOjJ9.HJe0eHGwNU8W4oO8RUA1eVx_JdVZACB1ZYOsdN3Dqno";
+    this.stepTitles = [
+      "Trial Lessons",
+      "Special Considerations",
+      "Concepts and Principles",
+      "Online Resources",
+      "Normal Lessons",
+      "Online Teaching Game"
+    ];
   }
 
   handlePrev () {
@@ -85,24 +93,15 @@ class OnlineTest extends React.Component {
       <div className="online-test">
         <div className="container">
           <Stepper activeStep={stepIndex}>
-            <Step>
-              <StepLabel>Trial Lessons</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Special Considerations</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Concepts and Principles</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Online Resources</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Normal Lessons</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Online Teaching Game</StepLabel>
-            </Step>
+            {
+              this.stepTitles.map((item, index) => {
+                return (
+                  <Step key={index}>
+                    <StepLabel>{item}</StepLabel>
+                  </Step>
+                );
+              })
+            }
           </Stepper>
           <div className="step-content">
             <Paper className="article" zDepth={1}>

@@ -11,8 +11,8 @@ var sprity = require('sprity');
 var env = process.env.NODE_ENV;
 
 gulp.task("clean", () => {
-    console.log("haha");
-	del(["build"]);
+  gulpUtil.log("cleaning...");
+	del(["build", "builg.tar.gz"]);
 });
 
 gulp.task('sprites', function () {
@@ -36,6 +36,10 @@ gulp.task("webpack-dev", () => {
     contentBase: '/',
     historyApiFallback: false,
     hot: true,
+    proxy: {
+      "**": "http://localhost:3000"
+    },
+    historyApiFallback: true,
     stats: {
       colos: true
     },

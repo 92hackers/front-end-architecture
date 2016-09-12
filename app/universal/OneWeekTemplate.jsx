@@ -103,7 +103,7 @@ class OneWeekTemplate extends React.Component {
           if (parseInt(dataset.x) === oneTpl.week && parseInt(dataset.y) === oneTpl.beginTime) {
             matched++;
             elem.dataset.clicked = "clicked";
-            elem.style.backgroundColor = "#75c4ff";
+            elem.style.backgroundColor = "#a8d8ff";
             break;
           }
         }
@@ -372,7 +372,7 @@ class OneWeekTemplate extends React.Component {
   cellHover (r,c,e) {
     var ele = r.target;
     if (!ele.dataset.clicked) {
-      ele.style.backgroundColor = "#ddd";
+      ele.style.backgroundColor = "#ecf0f1";
     }
   }
 
@@ -519,7 +519,7 @@ class OneWeekTemplate extends React.Component {
         }
       });
 
-      target.style.backgroundColor = "#ddd";
+      target.style.backgroundColor = "#ecf0f1";
       target.dataset.clicked = "";
     }
 

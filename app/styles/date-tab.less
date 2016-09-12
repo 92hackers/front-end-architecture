@@ -14,20 +14,137 @@
       border-left: 1px solid @border-color;
       .picker-day {
         height: 100px;
-        text-align: right;
-        padding-right: 20px;
-        font-size: 18px;
         font-weight: bold;
         border: none;
         border-bottom: 1px solid @border-color;
         border-right: 1px solid @border-color;
+        vertical-align: top;
+        .lesson-day {
+          font-size: 18px;
+          font-weight: bold;
+          display: block;
+          text-align: right;
+          margin-right: 20px;
+        }
       }
       .today {
         color: @teacher_base !important;
+        .day-num {
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          background-color: rgb(255, 64, 129);
+          border-radius: 50%;
+          display: inline-block;
+          color: #fff;
+        }
       }
       .picker-selected {
-        color: #fff;
-        background-color: @shallow_base_color;
+
+        .lesson-student {
+          text-align: left;
+          padding-left: 5px;
+          padding-right: 5px;
+          cursor: pointer;
+          font-size: 12px;
+          .fa-circle {
+            margin-right: 10px;
+            line-height: 18px;
+            float: left;
+          }
+          .name {
+            float: left;
+            max-width: 55px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .time {
+            float: right;
+            color: #bbb;
+          }
+          &:hover {
+            .time, .fa-circle, .name {
+              color: #fff;
+            }
+          }
+          background-color: #fff;
+        }
+        .more {
+          text-align: left;
+          margin-left: 29px;
+          padding-left: 5px;
+          padding-right: 5px;
+          color: #bbb;
+          font-size: 12px;
+        }
+        .lesson-status-0 {
+          .fa-circle {
+            color: @unBook;
+          }
+          &:hover {
+            background-color: @unBook;
+          }
+        }
+        .lesson-status-1 {
+          .fa-circle {
+            color: @unPay;
+          }
+          &:hover {
+            background-color: @unPay;
+          }
+        }
+        .lesson-status-2 {
+          .fa-circle {
+            color: @booked;
+          }
+          &:hover {
+            background-color: @booked;
+          }
+        }
+        .lesson-status-3 {
+          .fa-circle {
+            color: @cancle;
+          }
+          &:hover {
+            background-color: @cancle;
+          }
+        }
+        .lesson-status-4 {
+          .fa-circle {
+            color: @cancle;
+          }
+          &:hover {
+            background-color: @cancle;
+          }
+        }
+        .lesson-status-5 {
+          .fa-circle {
+            color: @cancle;
+          }
+          &:hover {
+            background-color: @cancle;
+          }
+
+        }
+        .lesson-status-6 {
+
+          .fa-circle {
+            color: @cancle;
+          }
+          &:hover {
+            background-color: @cancle;
+          }
+        }
+        .lesson-status-10 {
+          .fa-circle {
+            color: @completed;
+          }
+          &:hover {
+            background-color: @completed;
+          }
+        }
       }
     }
   }

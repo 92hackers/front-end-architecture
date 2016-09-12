@@ -13,7 +13,7 @@
 var MultipleDatePickerDay = React.createClass({
 	componentWillMount: function(){
 		this.setState({
-			selected: this.props.selected || false
+			selected: this.props.selected || false,
 		});
 	},
 	handleClick: function(){
@@ -30,13 +30,41 @@ var MultipleDatePickerDay = React.createClass({
 	},
 	render: function(){
 		var classes = 'text-center picker-day';
+    var lessons = this.props.lessons;
 		classes += this.state.selected ? ' picker-selected' : '';
 		classes += this.props.day.isSame(moment(), 'DAY') ? ' today' : '';
 		classes += this.props.day.isBefore(moment(), 'DAY') ? ' past' : '';
 		classes += this.props.day.isAfter(moment(), 'DAY') ? ' future' : '';
 		classes += this.props.notSelectable ? ' picker-off' : '';
 		classes += ' ' + (this.props.css || '');
-		return (<div className={classes} title={this.props.title} onClick={this.handleClick} onMouseEnter={this.handleHover}>{this.props.day.format('D')}</div>);
+		return (<div className={classes} title={this.props.title} onClick={this.handleClick} onMouseEnter={this.handleHover}>
+      <span className="lesson-day">
+        <span className="day-num">
+          {this.props.day.format('D')}
+        </span>
+      </span>
+      <ul>
+        {
+          lessons.map((item, index) => {
+            var classNames = "lesson-student" + " clearfix" + " lesson-status-" + item.status;
+              var studentInfoDisplay = <li className={classNames} key={index}>
+                <i className="fa fa-circle"></i>
+                <span className="name">{item.studentName}</span>
+                <span className="time">{item.lessonTime}</span>
+              </li>;
+            if (lessons.length > 3) {
+              if (index < 2) {
+                return studentInfoDisplay;
+              } else if (index === 2) {
+                return <li className="more">{lessons.length - 2} more...</li>
+              }
+            } else {
+              return studentInfoDisplay;
+            }
+          })
+        }
+      </ul>
+    </div>);
 	}
 });
 
@@ -56,9 +84,11 @@ var MultipleDatePicker = React.createClass({
         }
 
 
+    console.log(this.props.lessonInfo);
 		this.setState({
 			month: month,
 			highlightDays: highlightDays,
+      lessonInfo: this.props.lessonInfo,
 			weekDaysOff: this.props.weekDaysOff || []
 		});
 	},
@@ -77,7 +107,8 @@ var MultipleDatePicker = React.createClass({
       }
 
       this.setState({
-        highlightDays: highlightDays
+        highlightDays: highlightDays,
+        lessonInfo: nextProps.lessonInfo
       });
     }
   },
@@ -137,20 +168,33 @@ var MultipleDatePicker = React.createClass({
     getDays: function(previousDay, lastDayOfMonth){
 		return Array.apply(0, new Array(lastDayOfMonth.date())).map(function(x, i){
         	var day = previousDay.add(1, 'DAY').clone(),
-        		hDay = this.state.highlightDays.filter(function(d){
-					return d.day.isSame(day, 'day');
-	    		});
+            hDay = this.state.highlightDays.filter(function(d){
+              return d.day.isSame(day, 'day');
+            }),
+            lessonInfo = this.state.lessonInfo,
+            lessons = [];
 
 			hDay = hDay[0] || {day: day};
+      if (hDay.selected) {
+        for (let i = 0; i < lessonInfo.length; i++) {
+          if (lessonInfo[i].date === hDay.title) {
+            lessons = lessonInfo[i].lessons;
+            break;
+          }
+        }
+      }
+
 			return (<MultipleDatePickerDay
 				key={hDay.day.valueOf()}
 				day={hDay.day}
+        lessons={lessons}
 				css={hDay.css}
 				notSelectable={hDay.notSelectable || this.state.weekDaysOff.indexOf(day.day()) > -1}
 				selected={hDay.selected}
 				title={hDay.title}
 				dayClick={this.props.dayClick}
 				dayHover={this.props.dayHover}
+        students={this.props.students}
 				dayClickContext={this.props.callbackContext}
 				daySelectionChanged={this.daySelectionChanged} />);
         }, this);

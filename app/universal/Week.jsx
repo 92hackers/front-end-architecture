@@ -46,7 +46,8 @@ class Week extends React.Component {
          week: parseInt(item.weekday),
     beginTime: self.hoursRawData.indexOf(time),
        status: item.status || "",
-           id:  item.id || ""
+           id: item.id || "",
+  studentName: item.studentName || ""
         };
 
       });
@@ -72,7 +73,38 @@ class Week extends React.Component {
               }
               elem.dataset.id = oneTpl.id;
             }
-            elem.style.backgroundColor = "#75c4ff";
+
+            let backgroundColor = "";
+            switch (parseInt(oneTpl.status)) {
+              case 0 :
+                backgroundColor = "#ff9c00";
+                break;
+              case 1 :
+                backgroundColor = "#b7b7b7";
+                break;
+              case 2 :
+                backgroundColor = "#5cc92b";
+                break;
+              case 3 :
+              case 4 :
+              case 5 :
+              case 6 :
+                backgroundColor = "#ed391d";
+                break;
+              case 10 :
+                backgroundColor = "#6ca4f8";
+                break;
+              default :
+                backgroundColor = "#fff";
+            }
+            console.log(backgroundColor);
+            elem.style.backgroundColor = backgroundColor;
+
+            let children = elem.children[1];
+            console.log(children);
+            children.innerText = oneTpl.studentName;
+            children.style.color = "#fff";
+
             break;
           }
         }
@@ -196,13 +228,13 @@ class Week extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
                     </TableRow>
                   )
                 })
@@ -353,7 +385,7 @@ class Week extends React.Component {
         this.lessonsAdded.push(selectedLesson);
       }
 
-      target.style.backgroundColor = "#a8d8ff";
+      target.style.backgroundColor = "#ff9c00";
       target.dataset.clicked = "clicked";
 
       if (dataset.immutable === "immutable") {
