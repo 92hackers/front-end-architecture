@@ -318,7 +318,7 @@ class THomepageClass extends React.Component {
     var weeklyTimetableReq = api.WeeklyTimeTable(
       "",
       { "Authorization": self.props.token },
-      "",
+      arguments[0],
       (resp) => {
         if (resp.success) {
           self.setState({
@@ -343,7 +343,7 @@ class THomepageClass extends React.Component {
     var monthlyTimetableReq = api.MonthlyTimeTable(
       "",
       { "Authorization": self.props.token },
-      "",
+      arguments[0],
       (resp) => {
         if (resp.success) {
           self.setState({

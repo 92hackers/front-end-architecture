@@ -506,7 +506,6 @@ class OneWeekTemplate extends React.Component {
       beginTime: beginTime
     };
 
-    console.log(lessonClicked);
 
     if (!target.dataset.clicked) {
       target.style.backgroundColor = "#a8d8ff";

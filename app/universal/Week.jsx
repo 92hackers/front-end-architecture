@@ -24,7 +24,15 @@ class Week extends React.Component {
       defaultScrollTop: "",
       notification: "",
       existedTemplate: this.props.tpl.existedTemplate,
-      lessonsSelected: []
+      lessonsSelected: [],
+      month: "",
+      year: "",
+      currentWeekDays: [],
+      historyData: false,
+      weekDays: [],
+      prevWeek: "",
+      nextWeek: "",
+      reqParam: ""
     };
 
     this.hoursRawData = [
@@ -52,7 +60,6 @@ class Week extends React.Component {
 
       });
 
-
       var matched = 0;
 
       for (let i = 0; i < elems.length; i++) {
@@ -72,7 +79,6 @@ class Week extends React.Component {
                 elem.dataset.status =  oneTpl.status;
               }
               elem.dataset.id = oneTpl.id;
-            }
 
             let backgroundColor = "";
             switch (parseInt(oneTpl.status)) {
@@ -97,13 +103,14 @@ class Week extends React.Component {
               default :
                 backgroundColor = "#fff";
             }
-            console.log(backgroundColor);
             elem.style.backgroundColor = backgroundColor;
 
             let children = elem.children[1];
-            console.log(children);
             children.innerText = oneTpl.studentName;
             children.style.color = "#fff";
+          } else {
+            elem.style.backgroundColor = "#a8d8ff";
+          }
 
             break;
           }
@@ -117,6 +124,7 @@ class Week extends React.Component {
   }
 
   notify (message) {
+
     if (!!message.length) {
       this.setState({
         notification: message
@@ -124,6 +132,126 @@ class Week extends React.Component {
         this.refs.notification.handleNotificationOpen();
       });
     }
+  }
+
+  cleanData () {
+    var elems = document.getElementsByClassName("cell");
+    var count = 0;
+    for (let i = 0; i < elems.length; i++) {
+      let item = elems[i];
+      if (item.dataset.clicked === "clicked") {
+        item.dataset.clicked = "";
+        item.dataset.immutable = "";
+        item.dataset.status = "";
+        item.dataset.id = "";
+        item.style.backgroundColor = "#fff";
+        item.children[1].innerText = "";
+        count++;
+      }
+      if (count === elems.length) {
+        break;
+      }
+    }
+
+    var dateElems = document.getElementsByClassName("week-date");
+
+    for (let i = 0; i < dateElems.length; i++) {
+      let item = dateElems[i];
+      if (item.dataset.today === "today") {
+        item.style.backgroundColor = "#fff";
+        item.style.color = "inherit";
+        item.style.lineHeight = "inherit";
+        item.style.width = "inherit";
+        item.style.borderRadius = "inherit";
+      }
+    }
+
+  }
+
+  goPrevWeek () {
+    var prevWeek = this.state.prevWeek;
+    this.setState({
+      reqParam: prevWeek
+    });
+    nprogress.start();
+    this.cleanData();
+    this.renderMetaData(new Date(prevWeek));
+    this.props.weeklyTimetableReq(prevWeek);
+    if (new Date(prevWeek) < new Date()) {
+      this.setState({
+        historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
+      });
+    }
+    this.highlightToday();
+  }
+
+  goNextWeek () {
+    var nextWeek = this.state.nextWeek;
+    this.setState({
+      reqParam: nextWeek
+    });
+    nprogress.start();
+    this.cleanData();
+    this.renderMetaData(new Date(nextWeek));
+    this.props.weeklyTimetableReq(nextWeek);
+    if (new Date(nextWeek) > new Date()) {
+      this.setState({
+        historyData: false
+      });
+    }
+    this.highlightToday();
+  }
+
+  renderMetaData (date) {
+
+    var today = date || new Date();     // default today.
+
+    const months = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const currentWeekDays = [];
+
+    const oneDayMilSeconds = 1000 * 60 * 60 * 24;
+
+    var prevNDate = (n) => {
+      return new Date(today.getTime() - n * oneDayMilSeconds);
+    };
+
+    var postNDate = (n) => {
+      return new Date(today.getTime() + n * oneDayMilSeconds);
+    }
+
+    var currentDay = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1;
+    var index = currentDay;
+
+    currentWeekDays[currentDay] = today.getDate();
+
+    this.weekDays[currentDay] = today.toDateString();
+
+    while (index > 0) {
+      index--;
+      this.weekDays[index] = prevNDate(currentDay - index).toDateString();
+      currentWeekDays[index] = prevNDate(currentDay - index).getDate();
+    }
+
+    index = currentDay;
+
+    while (index < 6) {
+      index++;
+      this.weekDays[index] = postNDate(index - currentDay).toDateString();
+      currentWeekDays[index] = postNDate(index - currentDay).getDate();
+    }
+
+    const month = months[today.getMonth()];
+    const year = today.getFullYear();
+
+    this.setState({
+      year: year,
+      month: month,
+      weekDays: this.weekDays,
+      currentWeekDays: currentWeekDays
+    });
+
   }
 
   render () {
@@ -150,53 +278,17 @@ class Week extends React.Component {
       color: "#333"
     };
 
-    const months = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-
-    const today = new Date();
-
-    const currentWeekDays = [];
-
-    const oneDayMilSeconds = 1000 * 60 * 60 * 24;
-
-    var prevNDate = (n) => {
-      return new Date(today.getTime() - n * oneDayMilSeconds);
-    };
-
-    var postNDate = (n) => {
-      return new Date(today.getTime() + n * oneDayMilSeconds);
-    }
-
-    var currentDay = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1;
-    var index = today.getDay() - 1 === -1 ? 6 : today.getDay() - 1;
-
-    currentWeekDays[currentDay] = today.getDate();
-
-    this.weekDays[currentDay] = today.toDateString();
-
-    while (index > 0) {
-      index--;
-      this.weekDays[index] = prevNDate(currentDay - index).toDateString();
-      currentWeekDays[index] = prevNDate(currentDay - index).getDate();
-    }
-
-    index = currentDay;
-
-    while (index < 6) {
-      index++;
-      this.weekDays[index] = postNDate(index - currentDay).toDateString();
-      currentWeekDays[index] = postNDate(index - currentDay).getDate();
-    }
-
-    const month = months[today.getMonth()];
-    const year = today.getFullYear();
+    const currentWeekDays = this.state.currentWeekDays;
 
     return (
       <div className="one-week">
         <h1 className="week-title">
-          <span className="week-month">{month}</span>
-          <span className="week-year">{year}</span>
+          <span className="arrow" onClick={this.goPrevWeek.bind(this)} title="Previous Week">&lt;</span>
+          <span className="month">
+            <span className="week-month">{this.state.month}</span>
+            <span className="week-year">{this.state.year}</span>
+          </span>
+          <span className="arrow" onClick={this.goNextWeek.bind(this)} title="Next Week">&gt;</span>
         </h1>
         <ul className="time-labels" onScroll={this.labelScroll.bind(this)}>
           {
@@ -274,7 +366,7 @@ class Week extends React.Component {
       if (!data.clicked) {
         ele.style.backgroundColor = "#ecf0f1";
       }
-    } else {
+    } else if (!data.status) {
       ele.children[0].style.display = "block";
     }
 
@@ -283,13 +375,13 @@ class Week extends React.Component {
   cellLeave (r) {
     var ele = r.target;
 
-    if (!ele.dataset.clicked) {
+    if (!ele.dataset.clicked && ele.className === "cell") {
       ele.style.backgroundColor = "#fff";
     }
 
     if (ele.className === "unselected") {
       ele.style.display = "none";
-    } else if ( ele.children[0].style.display === "block") {
+    } else if ( ele.className === "cell" && ele.children[0].style.display === "block") {
       ele.children[0].style.display = "none";
     }
 
@@ -312,6 +404,10 @@ class Week extends React.Component {
     var lessonsAdded = this.lessonsAdded;
     var lessonsDeleted = this.lessonsDeleted;
 
+    console.log("lessonadded: ", lessonsAdded);
+
+    console.log("lessonsDeleted: ", lessonsDeleted);
+
     if (!lessonsAdded.length && !lessonsDeleted.length) {
       self.notify("please click the time table cell to schedule your lessons.");
       return;
@@ -331,8 +427,9 @@ class Week extends React.Component {
         nprogress.done();
         if (resp.success) {
           self.notify("Save Time Table Successfully");
-          self.props.weeklyTimetableReq();
-          self.props.monthlyTimetableReq();
+          let param = self.state.reqParam;
+          self.props.weeklyTimetableReq(param);
+          self.props.monthlyTimetableReq(param);
           self.lessonsAdded = [];
           self.lessonsDeleted = [];
         } else {
@@ -432,52 +529,75 @@ class Week extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    var self = this;
     if (JSON.stringify(nextProps) !== JSON.stringify(this.props)) {
+
+      nprogress.done();
 
       var weeklyTimetable = nextProps.weeklyTimetable.timetable;
       var existedTemplate = this.state.existedTemplate;
 
-      if (weeklyTimetable.length > 0) {
-        this.renderData(weeklyTimetable, true);
-      } else if (existedTemplate.length > 0) {
-        this.renderData(existedTemplate);
-
-      existedTemplate.forEach((item, index) => {
-        var date = self.weekDays[parseInt(item.weekday)];
-        if (new Date(date + " " + item.beginTime) > new Date()) {
-          self.lessonsAdded.push({
-            lessonDate: date,
-            lessonTime: item.beginTime,
-            "student_id": 0
-          });
-        }
+      var weeklyData = nextProps.weeklyTimetable;
+      this.setState({
+        prevWeek: weeklyData.pervWeek,
+        nextWeek: weeklyData.nextWeek
       });
 
+      if (weeklyTimetable.length > 0) {
+        this.renderData(weeklyTimetable, true);
+      } else if (existedTemplate.length > 0 && !this.state.historyData) {
+        this.renderData(existedTemplate);
+        existedTemplate.forEach((item, index) => {
+          var date = self.weekDays[parseInt(item.weekday)];
+          if (new Date(date + " " + item.beginTime) > new Date()) {
+            self.lessonsAdded.push({
+              lessonDate: date,
+              lessonTime: item.beginTime,
+              "student_id": 0
+            });
+          }
+        });
       }
     }
   }
 
-  componentDidMount () {
-    var self = this;
+  highlightToday () {
+    var today = new Date();
 
-    console.log(this.props.weeklyTimetable);
+    if (this.state.weekDays.indexOf(today.toDateString()) === -1) {
+      return ;
+    }
 
-    //  hightlight today.
-    var today = new Date().getDay();
     var weekIndex = "";
     var dateElems = document.getElementsByClassName("week-date");
 
-    weekIndex = today === 0 ? 6 : today - 1;
+    weekIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
 
+    dateElems[weekIndex].dataset.today = "today";
     dateElems[weekIndex].style.lineHeight = "30px";
     dateElems[weekIndex].style.borderRadius = "50%";
     dateElems[weekIndex].style.backgroundColor = "rgb(255, 64, 129)";
     dateElems[weekIndex].style.color = "white";
     dateElems[weekIndex].style.display = "inline-block";
     dateElems[weekIndex].style.width = "30px";
+  }
+
+  componentDidMount () {
+    var self = this;
+
+    var weeklyData = this.props.weeklyTimetable;
+
+    this.renderMetaData(new Date(weeklyData.weekFrom));
+
+    this.setState({
+      prevWeek: weeklyData.pervWeek,
+      nextWeek: weeklyData.nextWeek
+    });
+
+    //  hightlight today.
+    this.highlightToday();
 
     // scroll the scrollbar to recommended time range.
-
     var tableWrap = document.getElementsByClassName("table-wrap")[0];
     var timeLabel = document.getElementsByClassName("time-labels")[0];
 
@@ -506,8 +626,9 @@ class Week extends React.Component {
 
     // 优先加载 weekly 已经设置的数据， 如果没有，则设置 template 的数据。
 
-    var weeklyTimetable = this.props.weeklyTimetable.timetable;
+    var weeklyTimetable = weeklyData.timetable;
     var existedTemplate = this.state.existedTemplate;
+
 
     if (weeklyTimetable.length > 0) {
       this.renderData(weeklyTimetable, true);

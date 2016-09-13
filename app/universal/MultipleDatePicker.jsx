@@ -56,7 +56,7 @@ var MultipleDatePickerDay = React.createClass({
               if (index < 2) {
                 return studentInfoDisplay;
               } else if (index === 2) {
-                return <li className="more">{lessons.length - 2} more...</li>
+                return <li className="more" key={index}>{lessons.length - 2} more...</li>
               }
             } else {
               return studentInfoDisplay;
