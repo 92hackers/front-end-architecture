@@ -38,6 +38,10 @@ class DateTab extends React.Component {
     return true;
   }
 
+  monthChangeCallback () {
+    console.log(arguments);
+  }
+
   generateHighlightDays (dataSource) {
     var monthlyTimetable = dataSource.timetable;
     var filteredData = [];
@@ -68,8 +72,6 @@ class DateTab extends React.Component {
 
       }
     }
-
-    console.log(filteredData);
 
     var myHighlightDays = filteredData.map((item, index) => {
       return {

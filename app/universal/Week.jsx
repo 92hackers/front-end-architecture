@@ -376,7 +376,7 @@ class Week extends React.Component {
     var ele = r.target;
 
     if (!ele.dataset.clicked && ele.className === "cell") {
-      ele.style.backgroundColor = "#fff";
+      ele.style.backgroundColor = "transparent";
     }
 
     if (ele.className === "unselected") {

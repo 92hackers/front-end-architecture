@@ -379,7 +379,7 @@ class OneWeekTemplate extends React.Component {
   cellLeave (r) {
     var ele = r.target;
     if (!ele.dataset.clicked) {
-      ele.style.backgroundColor = "#fff";
+      ele.style.backgroundColor = "transparent";
     }
   }
 
