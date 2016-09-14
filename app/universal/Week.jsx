@@ -280,13 +280,16 @@ class Week extends React.Component {
 
     const currentWeekDays = this.state.currentWeekDays;
 
+    var month = this.state.month || "";
+    var year = this.state.year || "";
+
     return (
       <div className="one-week">
         <h1 className="week-title">
           <span className="arrow" onClick={this.goPrevWeek.bind(this)} title="Previous Week">&lt;</span>
           <span className="month">
-            <span className="week-month">{this.state.month}</span>
-            <span className="week-year">{this.state.year}</span>
+            <span className="week-month">{month}</span>
+            <span className="week-year">{year}</span>
           </span>
           <span className="arrow" onClick={this.goNextWeek.bind(this)} title="Next Week">&gt;</span>
         </h1>
@@ -534,7 +537,7 @@ class Week extends React.Component {
 
       nprogress.done();
 
-      var weeklyTimetable = nextProps.weeklyTimetable.timetable;
+      var weeklyTimetable = nextProps.weeklyTimetable.timetable || [];
       var existedTemplate = this.state.existedTemplate;
 
       var weeklyData = nextProps.weeklyTimetable;
@@ -558,6 +561,8 @@ class Week extends React.Component {
           }
         });
       }
+      self.renderMetaData();
+      self.highlightToday();
     }
   }
 
@@ -626,8 +631,8 @@ class Week extends React.Component {
 
     // 优先加载 weekly 已经设置的数据， 如果没有，则设置 template 的数据。
 
-    var weeklyTimetable = weeklyData.timetable;
-    var existedTemplate = this.state.existedTemplate;
+    var weeklyTimetable = weeklyData.timetable || [];
+    var existedTemplate = this.state.existedTemplate || [];
 
 
     if (weeklyTimetable.length > 0) {

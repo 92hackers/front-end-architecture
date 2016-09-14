@@ -8,7 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 // var fontName = "fonts/[name].[hash:8].[ext]";
 
 var imageName = "images/[name].[ext]";
-var fontName = "/fonts/[name].[ext]";
+var fontName = "fonts/[name].[ext]";
 
 var rootDir = path.join(__dirname, "..");
 
@@ -28,6 +28,7 @@ module.exports = {
   entry: main,
 	output: {
     path: outputPath,
+    publicPath: "/",
 		filename: "js/[name].[chunkhash:8].js"
 	},
 	resolve: {

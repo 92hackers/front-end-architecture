@@ -14,10 +14,6 @@ class DateTab extends React.Component {
     };
   }
 
-  componentWillMount () {
-    this.generateHighlightDays(this.props.monthlyTimetable);
-  }
-
   render () {
     console.log(this.state.lessonInfo);
     return (
@@ -34,6 +30,10 @@ class DateTab extends React.Component {
     )
   }
 
+  componentDidMount () {
+    this.generateHighlightDays(this.props.monthlyTimetable);
+  }
+
   shouldComponentUpdate () {
     return true;
   }
@@ -43,7 +43,7 @@ class DateTab extends React.Component {
   }
 
   generateHighlightDays (dataSource) {
-    var monthlyTimetable = dataSource.timetable;
+    var monthlyTimetable = dataSource.timetable || [];
     var filteredData = [];
 
     for (let i = 0; i < monthlyTimetable.length; i++) {

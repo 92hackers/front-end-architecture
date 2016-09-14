@@ -76,6 +76,7 @@ class OneWeekTemplate extends React.Component {
         timezoneOffset: tpl.timezoneOffset
       }, () => {
         self.initialDomRender();
+        self.renderData();
       });
     }
   }
@@ -192,8 +193,8 @@ class OneWeekTemplate extends React.Component {
 
   render () {
 
-    const times = this.state.displayTime;
-    const timezone = this.state.displayTimezone;
+    const times = this.state.displayTime || "";
+    const timezone = this.state.displayTimezone || "";
 
     const toRenderTableColums = [
       "12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM",

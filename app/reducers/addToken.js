@@ -5,6 +5,7 @@ const addToken = (state = {}, action) => {
         token: action.token
       }
     case 'REMOVE_TOKEN':
+      localStorage.removeItem("user_token");
       return {
         token: ""
       }

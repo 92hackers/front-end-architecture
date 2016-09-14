@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import Notification from '../universal/Notification';
+import Auth from '../universal/Auth';
 import addToken from '../actions/addToken';
 import api from '../network/api';
 
@@ -75,7 +76,9 @@ class TSignInClass extends React.Component {
       if (resp.success) {
         if (!!resp.data.token) {
           console.log(resp.data.token);
-          this.props.dispatch(addToken("Bearer " + resp.data.token));     // store  user token into global store object.
+          let token = resp.data.token;
+          localStorage.setItem("user_token", token);
+          this.props.dispatch(addToken("Bearer " + token));     // store  user token into global store object.
         }
         switch (resp.data.status) {
           case 1 :
@@ -129,6 +132,7 @@ class TSignInClass extends React.Component {
 
     return (
       <div className="teacher-sign-in">
+        <Auth></Auth>
         <form className="sign-in-form">
           <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
           <br/>

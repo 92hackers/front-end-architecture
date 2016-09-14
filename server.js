@@ -8,6 +8,13 @@ var compression = require("compression");
 var qiniu = require("qiniu");
 var app = express();
 
+// CORS.
+app.all("*", (req, res, next) => {
+	res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 app.use(compression());
 app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 app.use(bodyParser.json({ limit: "1000mb" }));

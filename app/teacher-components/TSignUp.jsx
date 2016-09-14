@@ -21,6 +21,12 @@ class TSignUp extends React.Component {
     };
   }
 
+  componentWillMount () {
+    if (!!localStorage.getItem("user_token")) {
+      browserHistory.push("/teacher-homepage");
+    }
+  }
+
   notify (message) {
     if (!!message.length) {
       this.setState({

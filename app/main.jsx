@@ -4,8 +4,10 @@ import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-rout
 import FacebookLogin from 'react-facebook-login';
 import { Provider } from 'react-redux';
 import {createStore} from 'redux';
-import reducers from './reducers';
 import { useScroll } from 'react-router-scroll';
+
+import reducers from './reducers';
+import addToken from './actions/addToken';
 
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
@@ -46,6 +48,14 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 let store = createStore(reducers);
+
+// authorization
+const userToken = localStorage.getItem("user_token");
+
+var storedToken = store.getState().addToken.token;
+if (!!userToken && !storedToken) {
+  store.dispatch(addToken("Bearer " + userToken));
+}
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -98,7 +108,13 @@ const routes = {
   childRoutes: [
     { path: "sign-up", component: TSignUp },
     { path: "sign-in", component: TSignIn },
-    { path: "teacher-homepage", component: THomepage },
+    { path: "teacher-homepage",         //    add  router to dashboard components.
+      component: THomepage,
+      childRoutes: [{
+        path: "/dashboard",
+        component: DateTab
+      }]
+    },
     { path: "teacher-online-test", component: OnlineTest },
     { path: "active-email", component: ActivateEmail },
     { path: "input-new-email", component: InputNewEmail },
@@ -116,12 +132,11 @@ const routes = {
 
 ReactDom.render((
   <Provider store={store}>
-    <Router routes={routes} render={applyRouterMiddleware(useScroll(scrollBehavior))} history={browserHistory}>
+    <Router routes={routes} render={applyRouterMiddleware(useScroll(scrollBehavior))}  history={browserHistory}>
       {/* <Route path="/" component={App}>
         <Route path="/sign-up" component={TSignUp}></Route>
         <Route path="/sign-in" component={TSignIn}></Route>
         <Route path="/teacher-homepage" component={THomepage}></Route>
-        <Route path="/complete-profile" component={TInfo}></Route>
         <Route path="/active-email" name="activeEmail" component={ActivateEmail}></Route>
         <Route path="/input-new-email" component={InputNewEmail}></Route>
         <Route path="/forget-password" component={ForgetPassword}></Route>

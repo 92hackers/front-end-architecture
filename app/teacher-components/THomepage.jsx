@@ -364,6 +364,8 @@ class THomepageClass extends React.Component {
   componentDidMount () {
     var self = this;
 
+    console.log("dashboard param: ", this.props.params);
+
     if (!this.props.token) {
       return;
     }

@@ -6,7 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var imageName = "images/[name].[ext]";
-var fontName = "/fonts/[name].[ext]";
+var fontName = "fonts/[name].[ext]";
 
 var rootDir = path.join(__dirname, "..");
 var main = path.join(rootDir, "app/entry");
