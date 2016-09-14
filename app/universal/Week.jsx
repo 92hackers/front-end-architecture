@@ -538,7 +538,7 @@ class Week extends React.Component {
       nprogress.done();
 
       var weeklyTimetable = nextProps.weeklyTimetable.timetable || [];
-      var existedTemplate = this.state.existedTemplate;
+      var existedTemplate = this.state.existedTemplate || [];
 
       var weeklyData = nextProps.weeklyTimetable;
       this.setState({
