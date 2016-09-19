@@ -272,8 +272,8 @@ class OneWeekTemplate extends React.Component {
           </Table>
         </div>
         <div className="save clearfix">
-          <RaisedButton className="left" label="Scroll to Recommended time range" onTouchTap={this.scrollBack.bind(this)}></RaisedButton>
-          <RaisedButton className="right" label="Save the Template" primary={true} onTouchTap={this.handleSubmit.bind(this)}></RaisedButton>
+          <RaisedButton className="left" label="Peak Times" onTouchTap={this.scrollBack.bind(this)}></RaisedButton>
+          <RaisedButton className="right" label="Save Template" primary={true} onTouchTap={this.handleSubmit.bind(this)}></RaisedButton>
         </div>
         <Dialog
           actions={actions}
