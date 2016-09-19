@@ -99,7 +99,7 @@ class TSignUp extends React.Component {
       (resp) => {
         nprogress.done();
         if (resp.success) {
-          let url = "/active-email?user_name=" + data.firstname;
+          let url = "/active-email?user_name=" + "s@x^nil*@(<)";
           console.log(url);
           browserHistory.push(url);         //  jump to  Active your email notification page.
         } else {
@@ -346,7 +346,8 @@ class TSignUp extends React.Component {
     ];
 
     var labelStyle = {
-      color: "#666666"
+      color: "#666666",
+      fontWeight: "bold"
     };
 
     return (

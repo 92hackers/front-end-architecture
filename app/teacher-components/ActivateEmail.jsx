@@ -86,7 +86,7 @@ class ActivateEmailClass extends React.Component {
         <p><i className="fa fa-check-circle"></i> Thank you!</p>
         <p>We have sent an email to your registered email address.</p>
         <p>Please check your email for the verification link.</p>
-        <p style={{marginTop: "50px"}}>If you didn't receive the email:</p>
+        <p style={{marginTop: "50px"}}>If you did not receive the email:</p>
         <div style={{marginTop: "20px"}}>You may<RaisedButton style={buttonStyles} label="resend the email" onClick={this.handleResendClick.bind(this)}></RaisedButton> or <RaisedButton style={buttonStyles} label="change the email address" onClick={this.handleChangeClick.bind(this)}></RaisedButton></div>
         <Notification message={this.state.notification} ref="notification"></Notification>
       </div>

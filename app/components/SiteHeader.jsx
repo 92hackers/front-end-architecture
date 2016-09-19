@@ -8,10 +8,11 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
-import removeToken from '../actions/removeToken.js';
 import dashboardDisplay from '../actions/dashboardDisplay.js';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import api from '../network/api';
+import SignOutButton from '../universal/SignOutButton';
 
 class SiteHeaderClass extends React.Component {
 
@@ -19,9 +20,59 @@ class SiteHeaderClass extends React.Component {
     super (props);
     this.state = {
       open: false,
-      inviteDialogOpen: false
+      inviteDialogOpen: false,
+      token: this.props.token,
+      userStatus: "",
+      dataIsReady: false
     };
-    this.currentPath = location.pathname;
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps !== this.props) {
+      var token = nextProps.token;
+      this.setState({
+        token: token
+      }, () => {
+        if (!!token) {
+          this.getProfileData(token);
+        }
+      });
+    }
+  }
+
+  getProfileData (token) {
+    var self = this;
+    var profileRequest = api.TGetProfile(
+      "",
+      { "Authorization": token },
+      "",
+      (resp) => {
+        if (resp.success) {
+          console.log("profile request status: ", resp.data.status);
+          self.setState({
+            userStatus: resp.data.status,
+            dataIsReady: true
+          });
+        } else {
+          browserHistory.push("/sign-in");
+          self.props.dispatch(removeToken());
+        }
+      },
+      (err) => {
+        console.log("network is busy, please try again later");
+      }
+    );
+  }
+
+  componentWillMount () {
+    var token = this.state.token;
+
+    if (!token) {
+      return;
+    } else {
+      this.getProfileData(token);
+    }
+
   }
 
   handleTouchTap (e) {
@@ -44,12 +95,6 @@ class SiteHeaderClass extends React.Component {
     this.handleInviteDialogOpen();
   }
 
-  handleSignOut (e) {
-    e.preventDefault();
-    this.props.dispatch(removeToken());
-    this.props.dispatch(dashboardDisplay(""));
-    browserHistory.push("/");
-  }
 
   handleInviteDialogClose () {
     this.setState({
@@ -97,7 +142,11 @@ class SiteHeaderClass extends React.Component {
 
   render () {
 
-    var isUserLoggedIn = this.props.isUserLoggedIn;
+    var isUserLoggedIn = this.state.token;
+    var userStatus = this.state.userStatus;
+
+    console.log("user token: ", isUserLoggedIn);
+    console.log("user status: ", userStatus);
 
     var inviteActions = [
       <RaisedButton
@@ -109,51 +158,57 @@ class SiteHeaderClass extends React.Component {
 
     var dynamicComponent = "";
 
-    if (isUserLoggedIn) {
-      dynamicComponent = (
-        <ul className="right">
-          <li className="header-item">
-            <a href="javascript:;" onTouchTap={this.handleHelpClick.bind(this)}><i className="fa fa-question"></i> Help</a>
-            <span className="nav-border-line"></span>
-          </li>
-          <li className="header-item">
-            <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-bars"></i> Dashboard</a>
-            <span className="nav-border-line"></span>
-            <Popover
-              open={this.state.open}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'top'}}
-              onRequestClose={this.handleRequestClose.bind(this)}
-            >
-              <List className="dashboard-dropdown">
-                <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleProfileClick.bind(this)} />
-                <ListItem primaryText="Settings" leftIcon={<i className="fa fa-cogs"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
-                <ListItem primaryText="Timetable" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleScheduleClick.bind(this)} />
-                <ListItem primaryText="Template" leftIcon={<i className="fa fa-newspaper-o"></i>} onTouchTap={this.handleTemplateClick.bind(this)}></ListItem>
-              </List>
-            </Popover>
-          </li>
-          {/* <li className="header-item">
-            <a href="javascript:;" onTouchTap={this.handleInvite.bind(this)}><i className="fa fa-user-plus"></i> Invite Friend</a>
-            <span className="nav-border-line"></span>
-            TODO:   inviting friend not ready to first version.
-          </li> */}
-          <li className="header-item">
-            <a href="javascript:;" className="sign-out" onTouchTap={this.handleSignOut.bind(this)}><i className="fa fa-sign-out"></i> Sign out</a>
-            <span className="nav-border-line"></span>
-          </li>
-          {/* <Dialog     TODO
-            title="Invite your friends to WeTeach"
-            actions={inviteActions}
-            modal={false}
-            open={this.state.inviteDialogOpen}
-            onRequestClose={this.handleInviteDialogClose.bind(this)}
-            >
-            your invite code is:  YAWEFAWEFAWEFAE999AWEF
-          </Dialog> */}
-        </ul>
-      );
+    if (!!isUserLoggedIn) {
+      switch (userStatus) {
+        case 10:
+        case 11:
+        case 15:
+        dynamicComponent = (
+          <ul className="right">
+            <li className="header-item">
+              <a href="javascript:;" onTouchTap={this.handleHelpClick.bind(this)}><i className="fa fa-question"></i> Help</a>
+              <span className="nav-border-line"></span>
+            </li>
+            <li className="header-item">
+              <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-bars"></i> Dashboard</a>
+              <span className="nav-border-line"></span>
+              <Popover
+                open={this.state.open}
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                onRequestClose={this.handleRequestClose.bind(this)}
+              >
+                <List className="dashboard-dropdown">
+                  <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleProfileClick.bind(this)} />
+                  <ListItem primaryText="Settings" leftIcon={<i className="fa fa-cogs"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
+                  <ListItem primaryText="Timetable" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleScheduleClick.bind(this)} />
+                  <ListItem primaryText="Template" leftIcon={<i className="fa fa-newspaper-o"></i>} onTouchTap={this.handleTemplateClick.bind(this)}></ListItem>
+                </List>
+              </Popover>
+            </li>
+            {/* <li className="header-item">
+              <a href="javascript:;" onTouchTap={this.handleInvite.bind(this)}><i className="fa fa-user-plus"></i> Invite Friend</a>
+              <span className="nav-border-line"></span>
+              TODO:   inviting friend not ready to first version.
+            </li> */}
+            <SignOutButton></SignOutButton>
+            {/* <Dialog     TODO
+              title="Invite your friends to WeTeach"
+              actions={inviteActions}
+              modal={false}
+              open={this.state.inviteDialogOpen}
+              onRequestClose={this.handleInviteDialogClose.bind(this)}
+              >
+              your invite code is:  YAWEFAWEFAWEFAE999AWEF
+            </Dialog> */}
+          </ul>
+          );
+          break;
+        default:
+          dynamicComponent = <ul className="right"><SignOutButton></SignOutButton></ul>;
+          break;
+      }
     } else {
       dynamicComponent = (
         <ul className="header-item-right">

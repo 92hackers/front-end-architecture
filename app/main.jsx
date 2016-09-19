@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-router';
 import FacebookLogin from 'react-facebook-login';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import {createStore} from 'redux';
 import { useScroll } from 'react-router-scroll';
 
@@ -59,6 +59,8 @@ if (!!userToken && !storedToken) {
   store.dispatch(addToken("Bearer " + userToken));
 }
 
+console.log(store.getState());
+
 const muiTheme = getMuiTheme({
   palette: {
     primaryColor: blue500,
@@ -69,40 +71,45 @@ const muiTheme = getMuiTheme({
   fontFamily: "Open Sans, sans-serif"
 });
 
-class App extends React.Component {
+class AppClass extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render () {
-
-      var userToken = store.getState().addToken.token;
-      var isUserLoggedIn = false;
-
-      isUserLoggedIn = userToken ? true : false;
-
-      return (
-        <div className="weteach-root">
-          {/* <FacebookLogin appId="169495646797915" autoLoad={true} fields="name,email,picture"></FacebookLogin> */}
-          <MuiThemeProvider muiTheme={muiTheme}>
-            <SiteHeader isUserLoggedIn={isUserLoggedIn}></SiteHeader>
-          </MuiThemeProvider>
-          <MuiThemeProvider muiTheme={muiTheme}>
-            {this.props.children || <TIndex></TIndex>}
-          </MuiThemeProvider>
-          <SiteFooter></SiteFooter>
-        </div>
-      )
-    }
-
+  constructor(props) {
+    super(props);
   }
 
-  const scrollBehavior = (prevRouterProps, { routes }) => {
+  render () {
 
-    return [0,0];
+    return (
+      <div className="weteach-root">
+        {/* <FacebookLogin appId="169495646797915" autoLoad={true} fields="name,email,picture"></FacebookLogin> */}
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <SiteHeader token={this.props.token}></SiteHeader>
+        </MuiThemeProvider>
+        <MuiThemeProvider muiTheme={muiTheme}>
+          {this.props.children || <TIndex></TIndex>}
+        </MuiThemeProvider>
+        <SiteFooter></SiteFooter>
+      </div>
+    )
+  }
+}
 
-  };
+const mapStateToProps = (state) => {
+  return {
+    token: state.addToken.token
+  }
+}
+
+const App = connect(
+  mapStateToProps
+)(AppClass);
+
+
+const scrollBehavior = (prevRouterProps, { routes }) => {
+
+  return [0,0];
+
+};
 
 const routes = {
   path: "/",

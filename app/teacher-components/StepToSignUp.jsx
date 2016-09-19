@@ -554,7 +554,7 @@ class BasicInfo extends React.Component {
         defaultGender = "male";
     }
 
-    var labelStyle = { color: "#666666"};
+    var labelStyle = { color: "#666666", fontWeight: "bold"};
 
     return (
       <div className="basic-info">
@@ -966,7 +966,8 @@ class TeachingExperience extends React.Component {
     var profile = this.state.profile;
 
     var labelStyle = {
-      color: "#666666"
+      color: "#666666",
+      fontWeight: "bold"
     };
 
     return (

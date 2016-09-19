@@ -99,7 +99,7 @@ class TSignInClass extends React.Component {
               }
               )
             } else if (!queryParam) {
-              let url = "/active-email?user_name=" + resp.data.token;
+              let url = "/active-email?user_name=" + "s@x^nil*@(<)";
               browserHistory.push(url);
             }
             break;
@@ -138,7 +138,8 @@ class TSignInClass extends React.Component {
     };
 
     var labelStyle = {
-      color: "#666666"
+      color: "#666666",
+      fontWeight: "bold"
     };
 
     return (
@@ -152,7 +153,7 @@ class TSignInClass extends React.Component {
           <br/>
           <br/>
           <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></RaisedButton>
-          <RaisedButton labelStyle={labelStyle} label="Forget your password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></RaisedButton>
+          <RaisedButton labelStyle={labelStyle} label="Forgot your password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></RaisedButton>
           {/* <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-facebook-official"></FontIcon>} label="Sign in with Facebook" style={style}></RaisedButton>
             <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-linkedin"></FontIcon>} label="Sign in with Linkedin" style={style}></RaisedButton> */}

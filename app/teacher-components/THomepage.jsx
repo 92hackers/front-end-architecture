@@ -87,13 +87,17 @@ class SettingComp extends React.Component {
   }
 
   render () {
+    var labelStyle = {
+      color: "#666666",
+      fontWeight: "bold"
+    };
     return (
       <section className="setting-dashboard dashboard">
         <h1 className="text-center">Change Password</h1>
         <form>
-          <TextField floatingLabelText="Old Password" id="old-password" type="password"></TextField>
-          <TextField floatingLabelText="New Password" id="new-password" type="password"></TextField>
-          <TextField floatingLabelText="Confirm Password" id="confirm-password" type="password"></TextField>
+          <TextField floatingLabelStyle={labelStyle} floatingLabelText="Old Password" id="old-password" type="password"></TextField>
+          <TextField floatingLabelStyle={labelStyle} floatingLabelText="New Password" id="new-password" type="password"></TextField>
+          <TextField floatingLabelStyle={labelStyle} floatingLabelText="Confirm Password" id="confirm-password" type="password"></TextField>
           <br/>
           <br/>
           <RaisedButton onTouchTap={this.handleSubmit.bind(this)} label="Submit" primary={true} style={{width: "100%"}}></RaisedButton>
