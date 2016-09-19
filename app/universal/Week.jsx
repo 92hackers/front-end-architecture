@@ -168,38 +168,50 @@ class Week extends React.Component {
 
   }
 
+  ifDataSubmited () {
+    return !(!!this.lessonsAdded.length || !!this.lessonsDeleted.length);
+  }
+
   goPrevWeek () {
     var prevWeek = this.state.prevWeek;
-    this.setState({
-      reqParam: prevWeek
-    });
-    nprogress.start();
-    this.cleanData();
-    this.renderMetaData(new Date(prevWeek));
-    this.props.weeklyTimetableReq(prevWeek);
-    if (new Date(prevWeek) < new Date()) {
+    if (this.ifDataSubmited()) {
       this.setState({
-        historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
+        reqParam: prevWeek
       });
+      nprogress.start();
+      this.cleanData();
+      this.renderMetaData(new Date(prevWeek));
+      this.props.weeklyTimetableReq(prevWeek);
+      if (new Date(prevWeek) < new Date()) {
+        this.setState({
+          historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
+        });
+      }
+      this.highlightToday();
+    } else {
+      this.notify("Please submit your timetable before doing that.");
     }
-    this.highlightToday();
   }
 
   goNextWeek () {
     var nextWeek = this.state.nextWeek;
-    this.setState({
-      reqParam: nextWeek
-    });
-    nprogress.start();
-    this.cleanData();
-    this.renderMetaData(new Date(nextWeek));
-    this.props.weeklyTimetableReq(nextWeek);
-    if (new Date(nextWeek) > new Date()) {
+    if (this.ifDataSubmited()) {
       this.setState({
-        historyData: false
+        reqParam: nextWeek
       });
+      nprogress.start();
+      this.cleanData();
+      this.renderMetaData(new Date(nextWeek));
+      this.props.weeklyTimetableReq(nextWeek);
+      if (new Date(nextWeek) > new Date()) {
+        this.setState({
+          historyData: false
+        });
+      }
+      this.highlightToday();
+    } else {
+      this.notify("Please submit your timetable before doing that.");
     }
-    this.highlightToday();
   }
 
   renderMetaData (date) {
