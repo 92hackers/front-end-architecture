@@ -30,9 +30,15 @@ class Notification extends React.Component {
   }
 
   render () {
+
+    var style = {
+      fontWeight: "bold"
+    };
+
     return (
       <Snackbar
         open={this.state.open}
+        bodyStyle={style}
         message={this.props.message}
         autoHideDuration={this.props.duration || 4000}
         onRequestClose={this.handleRequestClose.bind(this)}

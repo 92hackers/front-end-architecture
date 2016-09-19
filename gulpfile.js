@@ -19,6 +19,7 @@ gulp.task('sprites', function () {
   return sprity.src({
     src: './app/sprites-source/*.{png,jpg}',
     style: './sprite.css',
+    engine: "lwip",
     margin: 0,
     cssPath: "/images"        //   url path in css file.
   })

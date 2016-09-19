@@ -16,6 +16,7 @@ import removeToken from '../actions/removeToken';
 import dashboardDisplay from '../actions/dashboardDisplay';
 import ScheduleCourse from './ScheduleCourse';
 import OneWeekTemplate from '../universal/OneWeekTemplate';
+import Loading from '../universal/Loading';
 
 class SettingComp extends React.Component {
 
@@ -118,23 +119,6 @@ class ScheduleComp extends React.Component {
   }
 }
 
-
-class WaitForInterview extends React.Component {
-
-  constructor (props) {
-    super (props);
-  }
-
-  render () {
-    return (
-      <div className="wait-for-interview text-center">
-        <h1 style={{marginBottom: "40px", color: "#999"}}>Your interview scheduled on: </h1>
-        <h2 className="interview-time">{this.props.interviewTime}</h2>
-      </div>
-    )
-  }
-}
-
 class THomepageClass extends React.Component {
 
   constructor (props) {
@@ -171,7 +155,8 @@ class THomepageClass extends React.Component {
       tpl: {},
       hasTemplate: false,
       weeklyTimetable: {},
-      monthlyTimetable: {}
+      monthlyTimetable: {},
+      dataIsReady: false
     };
   }
 
@@ -223,12 +208,9 @@ class THomepageClass extends React.Component {
     var newUser = profile.status < 11;
 
     switch (profile.status) {
-      case 3:
-      case 5:
-        DashboardComponent = <WaitForInterview interviewTime={profile.interview}></WaitForInterview>;
-        break;
       case 10:
       case 11:
+      case 15:
         switch (dynamicDashboardComp) {
           case "setting":
             DashboardComponent = <SettingComp token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
@@ -248,33 +230,36 @@ class THomepageClass extends React.Component {
         }
         break;
       default:
-        DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
+        DashboardComponent = <h1 className="text-center">Something Wrong.</h1>;
     }
+
+    var dataIsReady = this.state.dataIsReady;
+    var content = dataIsReady ? <main className="container">
+      <div className="row">
+        <div className="col-3">
+          <div className="avatar-profile">
+            <img src={profile.avatar ? profile.avatar : "/images/teacher-avatar.png"} alt="profile avatar"/>
+          </div>
+          <div className="name-gender">
+            <h2 className="profile-name">{profile.firstname} {profile.lastname} <span className="gender-icon">{genderIcon}</span></h2>
+          </div>
+          <hr/>
+          <ul className="profile-data">
+            <li><span className="profile-icon"><i className="fa fa-globe"></i></span><span className="profile-meta-data">{profile["nation"]}</span></li>
+            <li><span className="profile-icon"><i className="fa fa-map-marker"></i></span><span className="profile-meta-data">{profile["country"]}</span></li>
+            <li><span className="profile-icon"><i className="fa fa-envelope-o"></i></span><span className="profile-meta-data">{profile.email}</span></li>
+            <li><span className="profile-icon"><i className="fa fa-pencil"></i></span><span className="profile-meta-data">{teachingExperience}</span></li>
+          </ul>
+        </div>
+        <div className="col-9">
+          {DashboardComponent}
+        </div>
+      </div>
+    </main> : <Loading dataIsReady={dataIsReady}></Loading>;
 
     return (
       <div className="t-homepage">
-        <main className="container">
-          <div className="row">
-            <div className="col-3">
-              <div className="avatar-profile">
-                <img src={profile.avatar ? profile.avatar : "/images/teacher-avatar.png"} alt="profile avatar"/>
-              </div>
-              <div className="name-gender">
-                <h2 className="profile-name">{profile.firstname} {profile.lastname} <span className="gender-icon">{genderIcon}</span></h2>
-              </div>
-              <hr/>
-              <ul className="profile-data">
-                <li><span className="profile-icon"><i className="fa fa-globe"></i></span><span className="profile-meta-data">{profile["nation"]}</span></li>
-                <li><span className="profile-icon"><i className="fa fa-map-marker"></i></span><span className="profile-meta-data">{profile["country"]}</span></li>
-                <li><span className="profile-icon"><i className="fa fa-envelope-o"></i></span><span className="profile-meta-data">{profile.email}</span></li>
-                <li><span className="profile-icon"><i className="fa fa-pencil"></i></span><span className="profile-meta-data">{teachingExperience}</span></li>
-              </ul>
-            </div>
-            <div className="col-9">
-              {DashboardComponent}
-            </div>
-          </div>
-        </main>
+        {content}
       </div>
     )
   }
@@ -368,8 +353,6 @@ class THomepageClass extends React.Component {
   componentDidMount () {
     var self = this;
 
-    console.log("dashboard param: ", this.props.params);
-
     if (!this.props.token) {
       return;
     }
@@ -381,10 +364,12 @@ class THomepageClass extends React.Component {
       (resp) => {
         if (resp.success) {
           self.setState({
-            profile: resp.data
+            profile: resp.data,
+            dataIsReady: true
           });
         } else {
-          console.log("get profile data error.");
+          browserHistory.push("/sign-in");
+          self.props.dispatch(removeToken());
         }
       },
       (err) => {

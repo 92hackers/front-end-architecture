@@ -112,10 +112,10 @@ class SiteHeaderClass extends React.Component {
     if (isUserLoggedIn) {
       dynamicComponent = (
         <ul className="right">
-          {/* <li className="header-item">
+          <li className="header-item">
             <a href="javascript:;" onTouchTap={this.handleHelpClick.bind(this)}><i className="fa fa-question"></i> Help</a>
             <span className="nav-border-line"></span>
-          </li> */}
+          </li>
           <li className="header-item">
             <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-bars"></i> Dashboard</a>
             <span className="nav-border-line"></span>

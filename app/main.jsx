@@ -21,6 +21,7 @@ import SiteFooter from './components/SiteFooter';
 import TSignIn from './teacher-components/TSignIn';
 import TSignUp from './teacher-components/TSignUp';
 import ActivateEmail from './teacher-components/ActivateEmail';
+import DisplayUserStatus from './teacher-components/DisplayUserStatus';
 // import TInfo from './teacher-components/TInfo';
 import THomepage from './teacher-components/THomepage';
 import InputNewEmail from './teacher-components/InputNewEmail';
@@ -42,6 +43,7 @@ import {blue500} from 'material-ui/styles/colors';
 import NotFound from './universal/NotFound';
 import DateTab from './universal/DateTab';
 import OneWeekTemplate from './universal/OneWeekTemplate';
+import Loading from './universal/Loading';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -124,7 +126,8 @@ const routes = {
     { path: "about-job", component: TAboutJob },
     { path: "about-school", component: TAboutSchool },
     { path: "step-to-sign-up", component: StepToSignUp },
-    // { path: "c", component: ScheduleCourse },
+    { path: "display-user-status", component: DisplayUserStatus },
+    // { path: "c", component: Loading },
     // { path: "t", component: OneWeekTemplate },
     { path: "*", component: NotFound }
   ]

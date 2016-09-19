@@ -80,13 +80,13 @@ class TIndex extends React.Component {
     }
 
     var startStyle = {
-      width: 240,
+      width: 260,
       height: 62
     };
 
     var aboutSchool = {
       fontSize: 30,
-      width: 266,
+      width: 300,
       height: 70,
       marginRight: 50,
       borderRadius: 40
@@ -94,7 +94,7 @@ class TIndex extends React.Component {
 
     var aboutJob = {
       fontSize: 30,
-      width: 266,
+      width: 300,
       height: 70,
       marginLeft: 50,
       borderRadius: 40
@@ -108,13 +108,13 @@ class TIndex extends React.Component {
               <IndexHeader></IndexHeader>
               <h1 className="title">WeTeach</h1>
               <h2 className="sub-title">Online English teaching as it should be!</h2>
-              <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
+              <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start Teaching" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
             </div>
           </div>
           <div className="arrow-down"><i className="icon icon-down-arrow" onClick={this.scrollDown.bind(this)}></i></div>
         </section>
         <section className="introduction section-wrap">
-          <h1 className="primary-color title">Introduction</h1>
+          <h1 className="primary-color title">What is WeTeach ?</h1>
           <p className="intro-words">WeTeach connects teachers with Chinese primary school students to learn together online.</p>
           <p className="intro-words">Our current focus is on English reading comprehension, pronunciation and confidence building.</p>
           <p className="intro-words">Part of our proceeds goes to charities supporting rural education in China.</p>
@@ -138,11 +138,11 @@ class TIndex extends React.Component {
                 <p className="card-desc">A reliable online classroom and resources library with all the materials and tools you could need to teach a great class.</p>
               </div>
               <i className="icon icon-doubt"></i>
-              <h2 className="title">Total online classroom solution</h2>
+              <h2 className="title">Online classroom</h2>
             </li>
             <li className="card-item card-gray">
               <div className="card-mask">
-                <p className="card-desc">A special team dedicated to ensuring you can teach without any hiccups.</p>
+                <p className="card-desc">A special team dedicated to providing you with all required technical support.</p>
               </div>
               <i className="icon icon-technology"></i>
               <h2 className="title">Full technical support</h2>
@@ -170,7 +170,7 @@ class TIndex extends React.Component {
             </li>
             <li className="card-item card-blue">
               <div className="card-mask">
-                <p className="card-desc">We welcome you into a vibrant and supportive community of teachers and parents from around the world.</p>
+                <p className="card-desc">We welcome you into a vibrant and supportive community of teachers, parents, and students from around the world.</p>
               </div>
               <i className="icon icon-Community"></i>
               <h2 className="title">Community</h2>
@@ -179,9 +179,9 @@ class TIndex extends React.Component {
         </section>
         <section className="video">
           <div className="section-wrap">
-            <h1 className="title primary-color">WeTeach Video</h1>
+            <h1 className="title primary-color">Why WeTeach ?</h1>
             <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
-            <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/iM6AGrZTbbQ" frameBorder="0" allowFullScreen></iframe>
+            <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/iM6AGrZTbbQ?rel=0" frameBorder="0" allowFullScreen></iframe>
           </div>
         </section>
         <section className="teachers-thoughts">
@@ -227,8 +227,8 @@ class TIndex extends React.Component {
             </ul>
           </div>
           <div className="buttons">
-            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutSchool} label="About School" primary={true} onClick={this.aboutSchool.bind(this)}></RaisedButton>
-            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
+            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutSchool} label="About the School" primary={true} onClick={this.aboutSchool.bind(this)}></RaisedButton>
+            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About the Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
           </div>
         </section>
         <section className="section-wrap contact-us">

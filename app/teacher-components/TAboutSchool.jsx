@@ -14,13 +14,13 @@ class TAboutSchool extends React.Component {
         <section className="bg-img">
           <div className="content">
             <IndexHeader></IndexHeader>
-            <h1 className="main-title">About School</h1>
+            <h1 className="main-title">About the School</h1>
             <h2 className="main-sub-title">Online English teaching as it should be.</h2>
           </div>
         </section>
         <section className="container">
           <section className="wish">
-            <h1 className="title">Why Are We Building WeTeach</h1>
+            <h1 className="title">Why Are We Building WeTeach ?</h1>
             <ul className="icons">
               <li className="icon icon-plant-tree">
                 <div className="mask">
@@ -29,12 +29,12 @@ class TAboutSchool extends React.Component {
               </li>
               <li className="icon icon-drink">
                 <div className="mask">
-                  <p className="content">We want to create fulfilling, flexible, and financially rewarding opportunities for teachers to teach from the comfort of their own home.</p>
+                  <p className="content">We want to create fulfilling, flexible, and financially rewarding opportunities for teachers to teach from the comfort of their own home or the beach.</p>
                 </div>
               </li>
               <li className="icon icon-love">
                 <div className="mask">
-                  <p className="content">We want education to be personal and customized, not transactional, where teachers, students, and parents forge lifelong friendships.</p>
+                  <p className="content">We want education to be personal, not transactional, where teachers, students, and parents forge lifelong friendships.</p>
                 </div>
               </li>
               <li className="icon icon-connect">
@@ -58,7 +58,7 @@ class TAboutSchool extends React.Component {
           <section className="students-video">
             <h1 className="title">Students' Video</h1>
             <p className="last-p">Felix saying thanks for all the help heather has given him</p>
-            <iframe width="1024" height="576" src="https://www.youtube.com/embed/-2wJlQ-uxl0" frameBorder="0" allowFullScreen></iframe>
+            <iframe width="1024" height="576" src="https://www.youtube.com/embed/-2wJlQ-uxl0?rel=0" frameBorder="0" allowFullScreen></iframe>
           </section>
           <section className="activities">
             <h1 className="title">Offline Activities</h1>

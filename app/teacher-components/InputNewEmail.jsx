@@ -65,7 +65,8 @@ class InputNewEmailClass extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          browserHistory.push("/active-email");
+          let url = "/active-email?user_name=" + self.props.token;
+          browserHistory.push(url);
         } else {
           self.notify("Something Wrong, Please Try Again Later.");
         }

@@ -554,6 +554,8 @@ class BasicInfo extends React.Component {
         defaultGender = "male";
     }
 
+    var labelStyle = { color: "#666666"};
+
     return (
       <div className="basic-info">
         <div className="meta-data-picture clearfix">
@@ -562,9 +564,9 @@ class BasicInfo extends React.Component {
               <li className="data-item">
                 <div className="name">
                   <div className="icon-wrap"><i className="fa fa-user"></i></div>
-                  <TextField value={profile.firstname} name="firstname" floatingLabelText="FirstName" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <TextField floatingLabelStyle={labelStyle} value={profile.firstname} name="firstname" floatingLabelText="FirstName" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                   <i className="vertical-line"></i>
-                  <TextField value={profile.lastname} name="lastname" floatingLabelText="LastName" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <TextField floatingLabelStyle={labelStyle} value={profile.lastname} name="lastname" floatingLabelText="LastName" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                 </div>
               </li>
               <li className="data-item">
@@ -585,9 +587,9 @@ class BasicInfo extends React.Component {
               <li className="data-item">
                 <div className="phone-num">
                   <div className="icon-wrap"><i className="fa fa-phone"></i></div>
-                  <TextField value={profile["tel_code"] ? profile["tel_code"] : ""} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <TextField floatingLabelStyle={labelStyle} value={profile["tel_code"] ? profile["tel_code"] : ""} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                   <i className="vertical-line"></i>
-                  <TextField value={profile["tel_num"] ? profile["tel_num"] : ""} name="tel_num" floatingLabelText="Phone Number" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <TextField floatingLabelStyle={labelStyle} value={profile["tel_num"] ? profile["tel_num"] : ""} name="tel_num" floatingLabelText="Phone Number" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                 </div>
               </li>
             </ul>
@@ -614,7 +616,7 @@ class BasicInfo extends React.Component {
           </div>
           <div className="timezone">
             <div className="dropdown-icon-wrap"><i className="fa fa-clock-o"></i></div>
-            <Dropdown options={this.state.timezoneList} onChange={this.changeTimezone.bind(this)} value={this.state.timezoneValue} placeholder="Your TimeZone"></Dropdown>
+            <Dropdown options={this.state.timezoneList} onChange={this.changeTimezone.bind(this)} value={this.state.timezoneValue} placeholder="Your Time Zone"></Dropdown>
           </div>
         </div>
         <div className="education-background">
@@ -625,27 +627,27 @@ class BasicInfo extends React.Component {
             <Dialog title="Add Your Education Experience" actions={addEduExpActions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleEduDialogClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
-                  <TextField className="left" style={{width: "40%"}} id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
-                  <TextField className="right" style={{width: "40%"}} id="t-edu-end-year" floatingLabelText="End Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="t-edu-end-year" floatingLabelText="End Year"></TextField>
                 </div>
-                <TextField id="t-edu-school" type="text" floatingLabelText="School"></TextField>
+                <TextField floatingLabelStyle={labelStyle} id="t-edu-school" type="text" floatingLabelText="School"></TextField>
                 <br/>
-                <TextField id="t-edu-major" type="text" floatingLabelText="Major"></TextField>
+                <TextField floatingLabelStyle={labelStyle} id="t-edu-major" type="text" floatingLabelText="Major"></TextField>
                 <br/>
-                <TextField id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
+                <TextField floatingLabelStyle={labelStyle} id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
               </div>
             </Dialog>
             <Dialog title="Modify Your Education Experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
-                  <TextField className="left" style={{width: "40%"}} id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
-                  <TextField className="right" style={{width: "40%"}} id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
                 </div>
-                <TextField id="t-edu-school-m" defaultValue={this.state.eduExpSelected.institution} type="text" floatingLabelText="School"></TextField>
+                <TextField floatingLabelStyle={labelStyle} id="t-edu-school-m" defaultValue={this.state.eduExpSelected.institution} type="text" floatingLabelText="School"></TextField>
                 <br/>
-                <TextField id="t-edu-major-m" defaultValue={this.state.eduExpSelected.major} type="text" floatingLabelText="Major"></TextField>
+                <TextField floatingLabelStyle={labelStyle} id="t-edu-major-m" defaultValue={this.state.eduExpSelected.major} type="text" floatingLabelText="Major"></TextField>
                 <br/>
-                <TextField id="t-edu-degree-m" defaultValue={this.state.eduExpSelected.degree} type="text" floatingLabelText="Degree"></TextField>
+                <TextField floatingLabelStyle={labelStyle} id="t-edu-degree-m" defaultValue={this.state.eduExpSelected.degree} type="text" floatingLabelText="Degree"></TextField>
               </div>
             </Dialog>
           </div>
@@ -963,14 +965,15 @@ class TeachingExperience extends React.Component {
 
     var profile = this.state.profile;
 
-    console.log(profile);
-    console.log(this.state.teachExpValue);
+    var labelStyle = {
+      color: "#666666"
+    };
 
     return (
       <div className="teaching-experience">
         <div className="select-years">
           <span className="title">Teaching Experience</span>
-          <SelectField style={{verticalAlign: "middle"}} id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Teaching Experience">
+          <SelectField style={{verticalAlign: "middle"}} id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Select...">
             <MenuItem style={{cursor: "pointer"}} value={0} primaryText="Less than 5 years" />
             <MenuItem style={{cursor: "pointer"}} value={1} primaryText="Between 5 to 15 years" />
             <MenuItem style={{cursor: "pointer"}} value={2} primaryText="More than 15 years" />
@@ -983,7 +986,7 @@ class TeachingExperience extends React.Component {
               <span className="title">What important qualities should an ESL teacher possess?</span>
             </div>
             <div className="input-box">
-              <TextField placeholder="500 Characters limited" value={profile.intro ? profile.intro : ""} style={textFieldStyle} name="intro" id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField maxLength="500" floatingLabelStyle={labelStyle} placeholder="500 Characters Remaining" value={profile.intro ? profile.intro : ""} style={textFieldStyle} name="intro" id="self-intro" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -992,7 +995,7 @@ class TeachingExperience extends React.Component {
               <span className="title">Name 5 factors to consider when lesson planning.</span>
             </div>
             <div className="input-box">
-              <TextField placeholder="500 Characters limited" value={profile.style ? profile.style : ""} style={textFieldStyle} name="style" id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField maxLength="500" floatingLabelStyle={labelStyle} placeholder="500 Characters Remaining" value={profile.style ? profile.style : ""} style={textFieldStyle} name="style" id="teach-style" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -1001,7 +1004,7 @@ class TeachingExperience extends React.Component {
               <span className="title">How do you plan to keep young learners motivated and engaged in an online classroom setting?</span>
             </div>
             <div className="input-box">
-              <TextField placeholder="500 Characters limited" value={profile.whyteach ? profile.whyteach : ""} style={textFieldStyle} name="whyteach" id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField maxLength="500" floatingLabelStyle={labelStyle} placeholder="500 Characters Remaining" value={profile.whyteach ? profile.whyteach : ""} style={textFieldStyle} name="whyteach" id="why-a-teacher" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
           <li className="words-item">
@@ -1010,7 +1013,7 @@ class TeachingExperience extends React.Component {
               <span className="title">Is there any other useful information you'd like to provide about yourself? (optional)</span>
             </div>
             <div className="input-box">
-              <TextField placeholder="500 Characters limited" value={profile.additional ? profile.additional : ""} style={textFieldStyle} name="additional" id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
+              <TextField maxLength="500" floatingLabelStyle={labelStyle} placeholder="500 Characters Remaining" value={profile.additional ? profile.additional : ""} style={textFieldStyle} name="additional" id="addition" multiLine={true} rows={5} rowsMax={5} type="textarea" onChange={this.handleValueChange.bind(this)}></TextField>
             </div>
           </li>
         </ul>
@@ -1106,7 +1109,8 @@ class ScheduleInterview extends React.Component {
       availableDate: [],
       availableTime: [],
       allAvailableTime: [],
-      timeToIdMapping: []
+      timeToIdMapping: [],
+      notification: ""
     };
     this.token = this.props.token;
   }
@@ -1209,6 +1213,7 @@ class ScheduleInterview extends React.Component {
             </div>
           </div>
         </div>
+        <Notification message={this.state.notification} ref="notification"></Notification>
       </div>
     )
   }
@@ -1217,9 +1222,27 @@ class ScheduleInterview extends React.Component {
     this.fetchInterviewData(this.props.timezoneId);
   }
 
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
+  }
+
   handleSubmit () {
     var self = this;
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
+
+    console.log(interviewPeriod);
+    if (!interviewPeriod) {
+      self.notify("Please select one interview time.");
+      return;
+    } else {
+      self.props.displaySuccessWorlds.bind(this);
+    }
 
     var interviewId = "";
     var timeToIdMapping = this.state.timeToIdMapping;
@@ -1234,6 +1257,7 @@ class ScheduleInterview extends React.Component {
       "inter_time": interviewId
     };
 
+    console.log("interview data: ", data);
     api.TApplyStep3(data,
       {"Authorization": self.token},
       "",
@@ -1255,7 +1279,7 @@ class StepToSignUpClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      stepIndex: 0,
+      stepIndex: 1,
       timezoneId: "",
       confirmDialogueOpen: false,
       profile: {},
@@ -1336,7 +1360,7 @@ class StepToSignUpClass extends React.Component {
 
         return <TeachingExperience profile={this.state.profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
-        return <ScheduleInterview timezoneId={this.state.timezoneId} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
+        return <ScheduleInterview timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
         return (<h1>some thing wrong.</h1>);
     }
@@ -1365,17 +1389,18 @@ class StepToSignUpClass extends React.Component {
     this.handleClose();
   }
 
-  handleYes () {
-    // submit data.
-
-    const {stepIndex} = this.state;
-    this.refs.scheduleInterview.handleSubmit();
+  displaySuccessWorlds () {
     this.setState({
       isFinished: true,
       stepIndex: stepIndex + 1
     });
-    this.handleClose();
+  }
 
+  handleYes () {
+    // submit interview data.
+    const {stepIndex} = this.state;
+    this.refs.scheduleInterview.handleSubmit();
+    this.handleClose();
   }
 
   render () {
@@ -1437,13 +1462,13 @@ class StepToSignUpClass extends React.Component {
           <div className="stepper-wrap">
             <Stepper style={stepperStyle} activeStep={this.state.stepIndex}>
               <Step>
-                <StepLabel className="step-label" style={stepLabelStyle}>Complete profile</StepLabel>
+                <StepLabel className="step-label" style={stepLabelStyle}>Personal profile</StepLabel>
               </Step>
               <Step>
                 <StepLabel className="step-label" style={stepLabelStyle}>Teaching experience</StepLabel>
               </Step>
               <Step>
-                <StepLabel className="step-label" style={stepLabelStyle}>Schedule interview</StepLabel>
+                <StepLabel className="step-label" style={stepLabelStyle}>Interview schedule</StepLabel>
               </Step>
             </Stepper>
             <div className="step-content">
@@ -1453,7 +1478,6 @@ class StepToSignUpClass extends React.Component {
             </div>
           </div>
           <Dialog
-            title="A Little Tip!"
             actions={actions}
             modal={false}
             open={this.state.confirmDialogueOpen}
@@ -1461,7 +1485,7 @@ class StepToSignUpClass extends React.Component {
           >
             <h2 style={{marginBottom: 30}} className="confirm-words text-center">Please note:</h2>
             <h2 style={{marginBottom: 30}} className="confirm-words text-center">Once you submit your application you will not be able to make any changes.</h2>
-            <h2 className="confirm-words text-center">Confirm Application!</h2>
+            <h2 className="confirm-words text-center">Would you like to confirm your application?</h2>
           </Dialog>
         </div>
       </section>

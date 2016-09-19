@@ -15,7 +15,7 @@ class TAboutJob extends React.Component {
         <section className="bg-img">
           <div className="content">
             <IndexHeader></IndexHeader>
-            <h1 className="main-title">About Job</h1>
+            <h1 className="main-title">About the Job</h1>
             <h2 className="main-sub-title">Online English teaching as it should be.</h2>
           </div>
         </section>
@@ -23,7 +23,7 @@ class TAboutJob extends React.Component {
           <section className="introduction">
             <h1 className="title">Job introduction</h1>
             <p>WeTeach connects teachers with Chinese primary school students to learn together online.</p>
-            <p>Our current focus is on English reading comprehension, pronunciation and confidence building.</p>
+            <p>Our current focus is on English reading comprehension, pronunciation, and confidence building.</p>
             <p>Part of our proceeds goes to charities supporting rural education in China.</p>
           </section>
           <section className="payment">

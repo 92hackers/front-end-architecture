@@ -75,12 +75,11 @@ class TSignInClass extends React.Component {
       nprogress.done();
       if (resp.success) {
         if (!!resp.data.token) {
-          console.log(resp.data.token);
           let token = resp.data.token;
           localStorage.setItem("user_token", token);
           this.props.dispatch(addToken("Bearer " + token));     // store  user token into global store object.
         }
-        switch (resp.data.status) {
+        switch (parseInt(resp.data.status)) {
           case 1 :
             var queryParam = self.props.location.query.action;
             var token = "Bearer " + resp.data.token;
@@ -98,16 +97,28 @@ class TSignInClass extends React.Component {
               (err) => {
                 self.notify("Network Is Busy, Try Again Later");
               }
-            )
-          } else if (!queryParam) {
-              browserHistory.push("/active-email");
+              )
+            } else if (!queryParam) {
+              let url = "/active-email?user_name=" + resp.data.token;
+              browserHistory.push(url);
             }
             break;
           case 2 :
             browserHistory.push("/step-to-sign-up");
             break;
-          default :
+          case 3 :
+          case 4 :
+          case 8 :
+            browserHistory.push("/display-user-status");
+            break;
+          case 10 :
+          case 11 :
+          case 15 :
             browserHistory.push("/teacher-homepage");
+            break;
+          default:
+            browserHistory.push("/not-found");
+            break;
         }
       } else {
         self.notify("Email Address Or Password Error");
@@ -127,16 +138,16 @@ class TSignInClass extends React.Component {
     };
 
     var labelStyle = {
-      color: "#999999"
+      color: "#666666"
     };
 
     return (
       <div className="teacher-sign-in">
         <Auth></Auth>
         <form className="sign-in-form">
-          <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
+          <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address" floatingLabelStyle={labelStyle}></TextField>
           <br/>
-          <TextField name="Password" id="t-password" type="password" floatingLabelText="Password"></TextField>
+          <TextField name="Password" id="t-password" type="password" floatingLabelText="Password" floatingLabelStyle={labelStyle}></TextField>
           <br/>
           <br/>
           <br/>

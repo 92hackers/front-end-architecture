@@ -99,7 +99,9 @@ class TSignUp extends React.Component {
       (resp) => {
         nprogress.done();
         if (resp.success) {
-          browserHistory.push("/active-email");         //  jump to  Active your email notification page.
+          let url = "/active-email?user_name=" + data.firstname;
+          console.log(url);
+          browserHistory.push(url);         //  jump to  Active your email notification page.
         } else {
           if (!!resp.data.email) {
             self.notify("This Email Address Has Already Been Registered");
@@ -343,21 +345,25 @@ class TSignUp extends React.Component {
       />
     ];
 
+    var labelStyle = {
+      color: "#666666"
+    };
+
     return (
       <div className="t-sign-up">
         <form id="t-sign-up-form">
           <div className="clearfix">
-            <TextField name="FirstName" className="left" style={{width: "40%"}} id="t-first-name" type="text" floatingLabelText="First Name"></TextField>
-            <TextField name="LastName" className="right" style={{width: "40%"}} id="t-last-name" type="text" floatingLabelText="Last Name"></TextField>
+            <TextField name="FirstName" className="left" style={{width: "40%"}} id="t-first-name" type="text" floatingLabelText="First Name" floatingLabelStyle={labelStyle}></TextField>
+            <TextField name="LastName" className="right" style={{width: "40%"}} id="t-last-name" type="text" floatingLabelText="Last Name" floatingLabelStyle={labelStyle}></TextField>
           </div>
-          <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address"></TextField>
+          <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address" floatingLabelStyle={labelStyle}></TextField>
           <br/>
-          <TextField name="Password" id="t-password" type="password" floatingLabelText="Password"></TextField>
+          <TextField name="Password" id="t-password" type="password" floatingLabelText="Password" floatingLabelStyle={labelStyle}></TextField>
           <br/>
-          <TextField name="Confirm-Password" id="t-re-password" type="password" floatingLabelText="Confirm Password"></TextField>
+          <TextField name="Confirm-Password" id="t-re-password" type="password" floatingLabelText="Confirm Password" floatingLabelStyle={labelStyle}></TextField>
           <br/>
           <br/>
-          <small style={{color: "#999"}}>By clicking Sign Up, you agree to our <a href="javascript:;" id="site-terms" onClick={this.handleTermsClick.bind(this)}>Terms</a> and that you have read our <a href="javascript:;" id="site-policy" onClick={this.handlePrivacyClick.bind(this)}>Privacy Policy</a>,</small>
+          <small style={{color: "#999"}}>By clicking Sign Up, You agree to our <a href="javascript:;" id="site-terms" onClick={this.handleTermsClick.bind(this)}>Terms</a> and that you have read our <a href="javascript:;" id="site-policy" onClick={this.handlePrivacyClick.bind(this)}>Privacy Policy</a>,</small>
           <br/>
           <br/>
           <RaisedButton type="submit" label="Sign up" primary={true} style={style} onClick={this.handleSubmit.bind(this)}></RaisedButton>

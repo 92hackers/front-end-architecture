@@ -537,6 +537,10 @@ class Week extends React.Component {
 
       nprogress.done();
 
+      if (!this.state.prevWeek && !this.state.nextWeek) {
+        this.renderMetaData();
+      }
+
       var weeklyTimetable = nextProps.weeklyTimetable.timetable || [];
       var existedTemplate = this.state.existedTemplate || [];
 
@@ -561,7 +565,6 @@ class Week extends React.Component {
           }
         });
       }
-      self.renderMetaData();
       self.highlightToday();
     }
   }
