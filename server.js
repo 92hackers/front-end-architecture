@@ -5,7 +5,6 @@ var path = require("path");
 var express = require("express");
 var bodyParser = require("body-parser");
 var compression = require("compression");
-var qiniu = require("qiniu");
 var app = express();
 
 // CORS.
