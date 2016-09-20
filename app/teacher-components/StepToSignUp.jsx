@@ -1280,7 +1280,7 @@ class StepToSignUpClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      stepIndex: 1,
+      stepIndex: 0,
       timezoneId: "",
       confirmDialogueOpen: false,
       profile: {},

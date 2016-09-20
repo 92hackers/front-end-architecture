@@ -7,9 +7,9 @@
     "test": "npm test",
     "init": "./init.sh",
     "dev": "gulp dev",
-    "build": "NODE_ENV=production npm install && gulp build",
+    "build": "npm install && NODE_ENV=production gulp build",
     "start": "node server.js",
-    "deploy": "NODE_ENV=production gulp build && tar -czvf build.tar.gz build && cd $P && scp build.tar.gz root@$S:/var/www/weteach.test/frontend/frontend-teachers/ && ssh -t root@$S 'cd /var/www/weteach.test/frontend/frontend-teachers/ && rm -rf build && tar -zxvf build.tar.gz && exit ; bash'"
+    "deploy": "NODE_ENV=production gulp build && tar -czvf build.tar.gz build && cd $P && scp -P 1998 build.tar.gz root@$S:/var/www/weteach/frontend-teachers/ && ssh -p 1998 -t root@$S 'cd /var/www/weteach/frontend-teachers/ && rm -rf build && tar -zxvf build.tar.gz && exit ; bash'"
   },
   "repository": {
     "type": "git",
