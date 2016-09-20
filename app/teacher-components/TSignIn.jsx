@@ -9,7 +9,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import Notification from '../universal/Notification';
-import Auth from '../universal/Auth';
 import addToken from '../actions/addToken';
 import api from '../network/api';
 
@@ -144,7 +143,6 @@ class TSignInClass extends React.Component {
 
     return (
       <div className="teacher-sign-in">
-        <Auth></Auth>
         <form className="sign-in-form">
           <TextField name="Email" id="t-email" type="email" floatingLabelText="Email Address" floatingLabelStyle={labelStyle}></TextField>
           <br/>

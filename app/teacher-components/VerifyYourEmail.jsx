@@ -38,7 +38,6 @@ class VerifyYourEmail extends React.Component {
   componentDidMount () {
     var self = this;
     var activeCode = this.props.location.query.token;
-    console.log(activeCode);
 
     if (!!activeCode) {
 
