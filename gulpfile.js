@@ -27,6 +27,8 @@ gulp.task('sprites', function () {
 });
 
 gulp.task("webpack-dev", () => {
+  gulpUtil.log("If you has add images, you should exec 'gulp sprites' first. ");
+
   var webpackDevServer = require("webpack-dev-server");
   var webpackDev = require("./packing/webpack-dev");
 
@@ -58,6 +60,8 @@ gulp.task("webpack-dev", () => {
 });
 
 gulp.task("webpack-build", () => {
+  gulpUtil.log("If you has add images, you should exec 'gulp sprites' first. ");
+
   var webpackBuild = require("./packing/webpack-build");
 	webpack(webpackBuild, (err, stats) => {
 		if (err)
@@ -69,7 +73,7 @@ gulp.task("webpack-build", () => {
 });
 
 gulp.task("dev", () => {
-  runSequence("clean", "sprites", "webpack-dev", (err) => {
+  runSequence("clean", "webpack-dev", (err) => {
     if (err) {
       throw new gulpUtil.PluginError("gulp dev", err);
     }
@@ -77,7 +81,7 @@ gulp.task("dev", () => {
 });
 
 gulp.task("build", () => {
-	runSequence("clean", "sprites", "webpack-build", (err) => {
+	runSequence("clean", "webpack-build", (err) => {
 		if (err) {
 			console.log(err);
 		} else {
