@@ -17,8 +17,6 @@ class OneWeekTemplate extends React.Component {
 
     var tpl = this.props.tpl;
 
-    console.log(tpl);
-
     this.state = {
       open: false,
       notification: "",
@@ -82,7 +80,6 @@ class OneWeekTemplate extends React.Component {
   }
 
   renderData () {
-    console.log("existedTemplate: ", this.state.existedTemplate);
     if (this.state.existedTemplate.length > 0) {
       let self = this;
       let elems = document.getElementsByClassName("cell");
@@ -181,7 +178,6 @@ class OneWeekTemplate extends React.Component {
 
   scheduleLessons () {
     this.handleClose();
-    console.log("dispatch schedule.");
     this.props.dispatch(dashboardDisplay("schedule"));
   }
 
@@ -410,8 +406,6 @@ class OneWeekTemplate extends React.Component {
       "tpl": lessonsSelected
     };
 
-    console.log(data);
-
     nprogress.start();
     api.NewLessonTemplate(data,
       { "Authorization": self.props.token },
@@ -427,7 +421,6 @@ class OneWeekTemplate extends React.Component {
       },
       (err) => {
         nprogress.done();
-        console.log(err);
         self.notify("network is busy, please try again later.");
       }
     );

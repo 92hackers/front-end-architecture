@@ -59,8 +59,6 @@ if (!!userToken && !storedToken) {
   store.dispatch(addToken("Bearer " + userToken));
 }
 
-console.log(store.getState());
-
 const muiTheme = getMuiTheme({
   palette: {
     primaryColor: blue500,

@@ -58,7 +58,6 @@ class SiteHeaderClass extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          console.log("profile request status: ", resp.data.status);
           self.setState({
             userStatus: resp.data.status,
             dataIsReady: true
@@ -156,9 +155,6 @@ class SiteHeaderClass extends React.Component {
 
     var isUserLoggedIn = this.state.token;
     var userStatus = this.state.userStatus;
-
-    console.log("user token: ", isUserLoggedIn);
-    console.log("user status: ", userStatus);
 
     var inviteActions = [
       <RaisedButton

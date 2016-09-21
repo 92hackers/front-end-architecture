@@ -419,10 +419,6 @@ class Week extends React.Component {
     var lessonsAdded = this.lessonsAdded;
     var lessonsDeleted = this.lessonsDeleted;
 
-    console.log("lessonadded: ", lessonsAdded);
-
-    console.log("lessonsDeleted: ", lessonsDeleted);
-
     if (!lessonsAdded.length && !lessonsDeleted.length) {
       self.notify("please click the time table cell to schedule your lessons.");
       return;
@@ -453,7 +449,6 @@ class Week extends React.Component {
       },
       (err) => {
         nprogress.done();
-        console.log(err);
         self.notify("network is busy, please try again later.");
       }
     );

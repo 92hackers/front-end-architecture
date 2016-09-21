@@ -15,7 +15,6 @@ class DateTab extends React.Component {
   }
 
   render () {
-    console.log(this.state.lessonInfo);
     return (
       <div className="date">
         <MultipleDatePicker

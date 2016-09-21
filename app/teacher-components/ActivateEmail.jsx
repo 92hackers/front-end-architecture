@@ -64,7 +64,6 @@ class ActivateEmailClass extends React.Component {
           }
         },
         (err) => {
-          console.log(err);
           self.notify("Network Is Busy, Please Try Again Later.");
         }
       )

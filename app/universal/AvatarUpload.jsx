@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {connect} from 'react-redux';
 import api from '../network/api';
+import Notification from './Notification';
 
 
 class AvatarUploadClass extends React.Component {
@@ -12,9 +13,20 @@ class AvatarUploadClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      open: false
+      open: false,
+      notification: ""
     };
     this.token = this.props.token;
+  }
+
+  notify (message) {
+    if (!!message.length) {
+      this.setState({
+        notification: message
+      }, () => {
+        this.refs.notification.handleNotificationOpen();
+      });
+    }
   }
 
   handleOpen (e)  {
@@ -45,12 +57,11 @@ class AvatarUploadClass extends React.Component {
           if (resp.success) {
             self.props.setAvatarUrl(resp.data.imgurl);
           } else {
-            console.log("upload picture failed.");
+            self.notify("upload picture failed");
           }
         },
         (err) => {
-          console.log("network is Busy, please try again later.");
-          console.log(err);
+          self.notify("network error.");
         }
       );
     }
@@ -81,6 +92,7 @@ class AvatarUploadClass extends React.Component {
 
     return (
       <div className="container">
+        <Notification ref="notification" message={this.state.notification}></Notification>
         <Dialog title="Crop your picture" actions={actions} modal={false} open={this.state.open} onRequestClose={this.handleClose.bind(this)}>
           <div id="crop-picture">
             <Cropper

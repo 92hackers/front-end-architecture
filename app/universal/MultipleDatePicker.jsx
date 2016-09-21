@@ -83,8 +83,6 @@ var MultipleDatePicker = React.createClass({
         	});
         }
 
-
-    console.log(this.props.lessonInfo);
 		this.setState({
 			month: month,
 			highlightDays: highlightDays,

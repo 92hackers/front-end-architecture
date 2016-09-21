@@ -83,9 +83,9 @@ gulp.task("dev", () => {
 gulp.task("build", () => {
 	runSequence("clean", "webpack-build", (err) => {
 		if (err) {
-			console.log(err);
+      gulpUtil.log("error: ", err);
 		} else {
-			console.log("build successfully.");
+      gulpUtil.log("build successfully");
 		}
 	});
 });

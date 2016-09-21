@@ -260,7 +260,6 @@ class BasicInfo extends React.Component {
   }
 
   changeTimezone (value) {
-    console.log(value.label);
     this.setState({
       timezoneValue: value.label,
       timezoneId: value.value
@@ -868,7 +867,6 @@ class BasicInfo extends React.Component {
 
     }
 
-    console.log(data);
     return true;
   }
 }
@@ -877,7 +875,6 @@ class TeachingExperience extends React.Component {
 
   constructor (props) {
     super (props);
-    console.log(this.props.teachExpValue);
     this.state = {
       notification: "",
       profile: this.props.profile || {},
@@ -915,7 +912,6 @@ class TeachingExperience extends React.Component {
 
   componentDidMount () {
     var profile = this.props.profile;
-    console.log("teaching experience profile: ", profile);
     var tmp = {
       experience: profile.experience,
       intro: profile.intro,
@@ -1237,7 +1233,6 @@ class ScheduleInterview extends React.Component {
     var self = this;
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
-    console.log(interviewPeriod);
     if (!interviewPeriod) {
       self.notify("Please select one interview time.");
       return;
@@ -1258,7 +1253,6 @@ class ScheduleInterview extends React.Component {
       "inter_time": interviewId
     };
 
-    console.log("interview data: ", data);
     api.TApplyStep3(data,
       {"Authorization": self.token},
       "",
@@ -1298,8 +1292,6 @@ class StepToSignUpClass extends React.Component {
     var self = this;
     var result = "";
     const {stepIndex} = this.state;
-
-    console.log(stepIndex);
 
     switch (stepIndex) {
       case 0:
@@ -1507,7 +1499,6 @@ class StepToSignUpClass extends React.Component {
         (resp) => {
           if (resp.success) {
             let profile = resp.data;
-            console.log(profile);
             if (profile.timezone) {
               self.setState({
                 timezoneId: profile.timezone
