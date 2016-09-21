@@ -1,13 +1,14 @@
 {
   "name": "front-end-architecture",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "a front end architecture based on react.",
   "main": "index.js",
   "scripts": {
     "test": "npm test",
     "init": "./init.sh",
     "dev": "gulp dev",
-    "build": "npm install && NODE_ENV=production gulp build",
+    "sprite": "gulp sprites",
+    "build": "NODE_ENV=production gulp build",
     "start": "node server.js",
     "deploy": "NODE_ENV=production gulp build && tar -czvf build.tar.gz build && cd $P && scp -P 1998 build.tar.gz root@$S:/var/www/weteach/frontend-teachers/ && ssh -p 1998 -t root@$S 'cd /var/www/weteach/frontend-teachers/ && rm -rf build && tar -zxvf build.tar.gz && exit ; bash'"
   },
@@ -85,6 +86,7 @@
     "redux": "^3.5.2",
     "redux-form": "^5.3.1",
     "reqwest": "^2.0.5",
+    "sprity": "^1.0.8",
     "validate-js": "^2.0.1"
   },
   "dependencies": {

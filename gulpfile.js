@@ -6,7 +6,6 @@ var config = require("config");
 var webpack = require("webpack");
 var runSequence = require("run-sequence");
 var gulpif = require('gulp-if');
-var sprity = require('sprity');
 
 var env = process.env.NODE_ENV;
 
@@ -16,6 +15,7 @@ gulp.task("clean", () => {
 });
 
 gulp.task('sprites', function () {
+  var sprity = require('sprity');
   return sprity.src({
     src: './app/sprites-source/*.{png,jpg}',
     style: './sprite.css',
