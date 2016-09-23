@@ -1091,7 +1091,6 @@ class TeachingExperience extends React.Component {
 
     }
 
-    console.log(data);
     return true;
   }
 }
@@ -1233,11 +1232,13 @@ class ScheduleInterview extends React.Component {
     var self = this;
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
+    interviewPeriod = 1;
+
     if (!interviewPeriod) {
       self.notify("Please select one interview time.");
       return;
     } else {
-      self.props.displaySuccessWorlds.bind(this);
+      self.props.displaySuccessWorlds();
     }
 
     var interviewId = "";
@@ -1264,7 +1265,6 @@ class ScheduleInterview extends React.Component {
       }
     );
 
-    console.log(data);
   }
 
 }
@@ -1274,7 +1274,7 @@ class StepToSignUpClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      stepIndex: 0,
+      stepIndex: 2,
       timezoneId: "",
       confirmDialogueOpen: false,
       profile: {},
@@ -1383,6 +1383,7 @@ class StepToSignUpClass extends React.Component {
   }
 
   displaySuccessWorlds () {
+    var stepIndex = this.state.stepIndex;
     this.setState({
       isFinished: true,
       stepIndex: stepIndex + 1
