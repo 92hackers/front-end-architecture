@@ -1232,8 +1232,6 @@ class ScheduleInterview extends React.Component {
     var self = this;
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
-    interviewPeriod = 1;
-
     if (!interviewPeriod) {
       self.notify("Please select one interview time.");
       return;
@@ -1274,7 +1272,7 @@ class StepToSignUpClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      stepIndex: 2,
+      stepIndex: 0,
       timezoneId: "",
       confirmDialogueOpen: false,
       profile: {},
