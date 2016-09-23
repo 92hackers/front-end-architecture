@@ -17,6 +17,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import api from '../network/api';
 import Notification from '../universal/Notification';
 import AvatarUpload from '../universal/AvatarUpload';
+import Loading from '../universal/Loading';
 import TAvatar from './TAvatar';
 
 class BasicInfo extends React.Component {
@@ -66,98 +67,101 @@ class BasicInfo extends React.Component {
   componentWillMount () {
     if (!this.token) {
       browserHistory.push("/sign-in");
+    } else {
+      this.setProfile(this.state.profile);
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-
-    if (nextProps !== this.props) {
-      let profile = nextProps.profile;
-
-      let eduExp = [];
-      if (!!profile.eduexp) {
-        eduExp = profile.eduexp;
-        this.setState({
-          eduListItems: eduExp,
-          eduList: eduExp.length
-        });
-      }
-      if (profile.avatar) {
-        this.setState({
-          avatarUrl: profile.avatar,
-        });
-      }
-      if (profile.nation) {
-        this.setState({
-          nationalityValue: profile.nation
-        });
-      }
-      if (profile.country) {
-        this.setState({
-          countryValue: profile.country
-        });
-      }
-      if (profile.region) {
-        this.setState({
-          regionValue: profile.region
-        });
-      }
-      if (profile.city) {
-        this.setState({
-          cityValue: profile.city
-        });
-      }
-      if (profile["timezone_name"]) {
-        this.setState({
-          timezoneValue: profile["timezone_name"]
-        });
-      }
-      if (profile.nationality) {
-        this.setState({
-          nationalityId: profile.nationality
-        });
-      }
-      if (profile["residence_n"]) {
-        this.setState({
-          countryId: profile["residence_n"]
-        });
-      }
-      if (profile["residence_p"]) {
-        this.setState({
-          regionId: profile["residence_p"]
-        });
-      }
-      if (profile["residence_c"]) {
-        this.setState({
-          cityId: profile["residence_c"]
-        });
-      }
-      if (profile.timezone) {
-        this.setState({
-          timezoneId: profile.timezone
-        });
-      }
-
+  setProfile (profile) {
+    let eduExp = [];
+    if (!!profile.eduexp) {
+      eduExp = profile.eduexp;
       this.setState({
-        oldProfile: {
-          firstname:      profile.firstname,
-          lastname:       profile.lastname,
-          gender:         profile.gender,
-          avatar:         profile.avatar,
-          nationality:    profile.nationality,
-          "residence_n":  profile["residence_n"],
-          "residence_p":  profile["residence_p"],
-          "residence_c":  profile["residence_c"],
-          "timezone":     profile.timezone,
-          eduexp:         profile.eduexp,
-          "tel_code":     profile["tel_code"],
-          "tel_num":      profile["tel_num"]
-        },
-        profile: profile
+        eduListItems: eduExp,
+        eduList: eduExp.length
       });
-
+    }
+    if (profile.avatar) {
+      this.setState({
+        avatarUrl: profile.avatar,
+      });
+    }
+    if (profile.nation) {
+      this.setState({
+        nationalityValue: profile.nation
+      });
+    }
+    if (profile.country) {
+      this.setState({
+        countryValue: profile.country
+      });
+    }
+    if (profile.region) {
+      this.setState({
+        regionValue: profile.region
+      });
+    }
+    if (profile.city) {
+      this.setState({
+        cityValue: profile.city
+      });
+    }
+    if (profile["timezone_name"]) {
+      this.setState({
+        timezoneValue: profile["timezone_name"]
+      });
+    }
+    if (profile.nationality) {
+      this.setState({
+        nationalityId: profile.nationality
+      });
+    }
+    if (profile["residence_n"]) {
+      this.setState({
+        countryId: profile["residence_n"]
+      });
+    }
+    if (profile["residence_p"]) {
+      this.setState({
+        regionId: profile["residence_p"]
+      });
+    }
+    if (profile["residence_c"]) {
+      this.setState({
+        cityId: profile["residence_c"]
+      });
+    }
+    if (profile.timezone) {
+      this.setState({
+        timezoneId: profile.timezone
+      });
     }
 
+    this.setState({
+      oldProfile: {
+        firstname:      profile.firstname,
+        lastname:       profile.lastname,
+        gender:         profile.gender,
+        avatar:         profile.avatar,
+        nationality:    profile.nationality,
+        "residence_n":  profile["residence_n"],
+        "residence_p":  profile["residence_p"],
+        "residence_c":  profile["residence_c"],
+        "timezone":     profile.timezone,
+        eduexp:         profile.eduexp,
+        "tel_code":     profile["tel_code"],
+        "tel_num":      profile["tel_num"]
+      },
+      profile: profile
+    });
+
+  }
+
+  componentWillReceiveProps (nextProps) {
+    var profile = nextProps.profile;
+    if (nextProps.profile !== this.props.profile) {
+      this.setProfile(profile);
+    }
   }
 
   notify (message) {
@@ -766,7 +770,7 @@ class BasicInfo extends React.Component {
             timezoneList: timezoneList,
           });
 
-          if (!!self.state.timezoneValue && !!self.state.timezoneId) {      //  如果已经设置了值，就不需要这里再设置值了。
+          if (!self.state.timezoneValue && !self.state.timezoneId) {      //  如果已经设置了值，就不需要这里再设置值了。
             self.props.setTimezoneId(defaultTimezoneId);
             self.setState({
               timezoneValue: defaultTimezone,
@@ -884,29 +888,44 @@ class TeachingExperience extends React.Component {
     this.token = this.props.token;
   }
 
+  setProfile (profile) {
+    var experience = "";
+
+    switch (profile.experience) {
+      case 3 :
+        experience = 2;
+        break;
+      case 2 :
+        experience = 1;
+        break;
+      case 1 :
+        experience = 0;
+        break;
+      default:
+      experience = "";
+    }
+
+    this.setState({
+      profile: profile,
+      teachExpValue: experience
+    });
+  }
+
+
   componentWillReceiveProps (nextProps) {
-    if (nextProps !== this.props) {
+    var profile = nextProps.profile;
 
-      var experience = "";
+    if (profile !== this.props.profile) {
+      this.setProfile(profile);
+    }
 
-      switch (nextProps.profile.experience) {
-        case 3 :
-          experience = 2;
-          break;
-        case 2 :
-          experience = 1;
-          break;
-        case 1 :
-          experience = 0;
-          break;
-        default:
-          experience = "";
-      }
+  }
 
-      this.setState({
-        profile: nextProps.profile,
-        teachExpValue: experience
-      });
+  componentWillMount () {
+    if (!this.token) {
+      browserHistory.push("/sign-in");
+    } else {
+      this.setProfile(this.state.profile);
     }
   }
 
@@ -1106,6 +1125,7 @@ class ScheduleInterview extends React.Component {
       availableTime: [],
       allAvailableTime: [],
       timeToIdMapping: [],
+      dataIsReady: false,
       notification: ""
     };
     this.token = this.props.token;
@@ -1165,6 +1185,7 @@ class ScheduleInterview extends React.Component {
         }
 
         self.setState({
+          dataIsReady: true,
           availableDate: date || [],
           allAvailableTime: time || [],
           timeToIdMapping: timeToIdMapping || [],
@@ -1185,29 +1206,33 @@ class ScheduleInterview extends React.Component {
       <div className="schedule-interview">
         <div className="wrap">
           <h1 className="title">Schedule Video Interview</h1>
-          <div className="input-box">
-            <div className="input-item">
-              <span className="interview-icon"><i className="fa fa-calendar"></i></span>
-              <SelectField style={{verticalAlign: "middle"}} value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
-                {
-                  this.state.availableDate.map((item, index) => {
-                    return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
-                  })
-                }
-              </SelectField>
-            </div>
-            <br/>
-            <div className="input-item">
-              <span className="interview-icon"><i className="fa fa-clock-o"></i></span>
-              <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
-                {
-                  this.state.availableTime.map((item, index) => {
-                    return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item.period}></MenuItem>;
-                  })
-                }
-              </SelectField>
-            </div>
-          </div>
+          {
+            this.state.dataIsReady ? (
+              <div className="input-box">
+                <div className="input-item">
+                  <span className="interview-icon"><i className="fa fa-calendar"></i></span>
+                  <SelectField style={{verticalAlign: "middle"}} value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
+                    {
+                      this.state.availableDate.map((item, index) => {
+                        return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
+                      })
+                    }
+                  </SelectField>
+                </div>
+                <br/>
+                <div className="input-item">
+                  <span className="interview-icon"><i className="fa fa-clock-o"></i></span>
+                  <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
+                    {
+                      this.state.availableTime.map((item, index) => {
+                        return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item.period}></MenuItem>;
+                      })
+                    }
+                  </SelectField>
+                </div>
+              </div>
+                ) : <Loading dataIsReady={this.state.dataisready}></Loading>
+          }
         </div>
         <Notification message={this.state.notification} ref="notification"></Notification>
       </div>
@@ -1276,7 +1301,8 @@ class StepToSignUpClass extends React.Component {
       timezoneId: "",
       confirmDialogueOpen: false,
       profile: {},
-      isFinished: false
+      isFinished: false,
+      dataIsReady: false
     };
   }
 
@@ -1464,9 +1490,9 @@ class StepToSignUpClass extends React.Component {
               </Step>
             </Stepper>
             <div className="step-content">
-              <section className="content">
-                {content}
-              </section>
+              {
+                this.state.dataIsReady ? (<section className="content">{content}</section>) : <Loading></Loading>
+              }
             </div>
           </div>
           <Dialog
@@ -1504,7 +1530,8 @@ class StepToSignUpClass extends React.Component {
               });
             }
             self.setState({
-              profile: profile
+              profile: profile,
+              dataIsReady: true
             });
           } else {
             console.log("error fetching");
