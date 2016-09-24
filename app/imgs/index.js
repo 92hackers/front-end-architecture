@@ -9,3 +9,8 @@ import "./tom.png";
 import "./winter.png";
 import "./template-guide.png";
 import "./schedule-lessons.png";
+import "./screen-1.png";
+import "./screen-2.png";
+import "./screen-3.png";
+import "./screen-4.png";
+import "./gestures.png";

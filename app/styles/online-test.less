@@ -20,15 +20,41 @@
         margin-top: 30px;
         margin-bottom: 30px;
       }
-      h3 {
+      h3, h4 {
         margin-bottom: 15px;
         margin-top: 15px;
       }
       ul {
-        list-style: initial;
         margin-left: 50px;
         margin-top: 10px;
         margin-bottom: 10px;
+      }
+      input[type=radio] {
+        position: absolute;
+        width: inherit;
+        height: inherit;
+        left: -50px;
+        top: 3px;
+      }
+      li {
+        position: relative;
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
+      }
+      .submit {
+        text-align: center;
+        .submit-btn {
+          vertical-align: top;
+        }
+      }
+      .value {
+        vertical-align: top;
+        display: inline-block;
+      }
+      .img {
+        padding-top: 15px;
+        padding-bottom: 15px;
       }
     }
   }

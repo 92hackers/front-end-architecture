@@ -4,7 +4,8 @@
 import reqwest from 'reqwest';
 
 var apiVersion = "/v1/";
-var host = "http://api.weteach.info";
+//var host = "http://api.weteach.info";         //   production
+var host = "http://api.yiyouabc.com";           //   development
 
 var apis = [
   {
@@ -200,7 +201,7 @@ var apis = [
     }
   },
   {
-    name: "onlineTestCheck",           //  need authorization.
+    name: "OnlineTestCheck",           //  need authorization.
     options: {
       api: "exam/a",
       method: "post",
