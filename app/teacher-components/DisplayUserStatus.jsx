@@ -47,7 +47,7 @@ class DisplayUserStatusClass extends React.Component {
     var status = profile.status;
     switch(status) {
       case 3 :
-        return (<div><p>Your Interview time: </p><p>{profile.interview}</p></div>);
+        return (<div><p>Your Interview is scheduled for: </p><p>{profile.interview}</p></div>);
         break;
       case 4 :
         return (<div><p>You have passed the interview, Please wait for your final approval!</p></div>);
