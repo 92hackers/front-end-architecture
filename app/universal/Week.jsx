@@ -32,7 +32,8 @@ class Week extends React.Component {
       weekDays: [],
       prevWeek: "",
       nextWeek: "",
-      reqParam: ""
+      reqParam: "",
+      timetableClicked: false
     };
 
     this.hoursRawData = [
@@ -43,7 +44,7 @@ class Week extends React.Component {
 
   }
 
-  renderData (lessonData, immutable) {
+  renderData (lessonData, immutable = false) {
       let self = this;
       let elems = document.getElementsByClassName("cell");
       let tpl = lessonData.map((item, index) => {
@@ -64,11 +65,20 @@ class Week extends React.Component {
 
       for (let i = 0; i < elems.length; i++) {
         for (let j = 0; j < tpl.length; j++) {
+
           let elem = elems[i];
           let dataset = elems[i].dataset;
           let oneTpl = tpl[j];
 
-          if (parseInt(dataset.x) === oneTpl.week && parseInt(dataset.y) === oneTpl.beginTime) {
+          var x = parseInt(dataset.x);
+          var y = parseInt(dataset.y);
+
+          if (x === oneTpl.week && y === oneTpl.beginTime) {
+
+            if (!immutable && !this.validTime(y, x))  {
+              break;
+            }
+
             matched++;
             elem.dataset.clicked = "clicked";
 
@@ -80,38 +90,37 @@ class Week extends React.Component {
               }
               elem.dataset.id = oneTpl.id;
 
-            let backgroundColor = "";
-            switch (parseInt(oneTpl.status)) {
-              case 0 :
-                backgroundColor = "#ff9c00";
-                break;
-              case 1 :
-                backgroundColor = "#b7b7b7";
-                break;
-              case 2 :
-                backgroundColor = "#5cc92b";
-                break;
-              case 3 :
-              case 4 :
-              case 5 :
-              case 6 :
-                backgroundColor = "#ed391d";
-                break;
-              case 10 :
-                backgroundColor = "#6ca4f8";
-                break;
-              default :
-                backgroundColor = "#fff";
+              let backgroundColor = "";
+              switch (parseInt(oneTpl.status)) {
+                case 0 :
+                  backgroundColor = "#ff9c00";
+                  break;
+                case 1 :
+                  backgroundColor = "#b7b7b7";
+                  break;
+                case 2 :
+                  backgroundColor = "#5cc92b";
+                  break;
+                case 3 :
+                case 4 :
+                case 5 :
+                case 6 :
+                  backgroundColor = "#ed391d";
+                  break;
+                case 10 :
+                  backgroundColor = "#6ca4f8";
+                  break;
+                default :
+                  backgroundColor = "#fff";
+              }
+              elem.style.backgroundColor = backgroundColor;
+
+              let children = elem.children[1];
+              children.innerText = oneTpl.studentName;
+              children.style.color = "#fff";
+            } else {
+              elem.style.backgroundColor = "#a8d8ff";
             }
-            elem.style.backgroundColor = backgroundColor;
-
-            let children = elem.children[1];
-            children.innerText = oneTpl.studentName;
-            children.style.color = "#fff";
-          } else {
-            elem.style.backgroundColor = "#a8d8ff";
-          }
-
             break;
           }
         }
@@ -120,7 +129,6 @@ class Week extends React.Component {
           break;
         }
       }
-
   }
 
   notify (message) {
@@ -168,50 +176,58 @@ class Week extends React.Component {
 
   }
 
-  ifDataSubmited () {
-    return !(!!this.lessonsAdded.length || !!this.lessonsDeleted.length);
-  }
-
   goPrevWeek () {
     var prevWeek = this.state.prevWeek;
-    if (this.ifDataSubmited()) {
-      this.setState({
-        reqParam: prevWeek
-      });
-      nprogress.start();
-      this.cleanData();
-      this.renderMetaData(new Date(prevWeek));
-      this.props.weeklyTimetableReq(prevWeek);
-      if (new Date(prevWeek) < new Date()) {
-        this.setState({
-          historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
-        });
-      }
-      this.highlightToday();
-    } else {
+
+    if (this.state.timetableClicked) {
       this.notify("Please submit your timetable before doing that.");
+      return;
     }
+
+    this.lessonsAdded = [];
+    this.lessonsDeleted = [];
+
+    this.setState({
+      reqParam: prevWeek
+    });
+    nprogress.start();
+    this.cleanData();
+    this.renderMetaData(new Date(prevWeek));
+    this.props.weeklyTimetableReq(prevWeek);
+    if (new Date(prevWeek) < new Date()) {
+      this.setState({
+        historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
+      });
+    }
+    this.highlightToday();
+
   }
 
   goNextWeek () {
     var nextWeek = this.state.nextWeek;
-    if (this.ifDataSubmited()) {
-      this.setState({
-        reqParam: nextWeek
-      });
-      nprogress.start();
-      this.cleanData();
-      this.renderMetaData(new Date(nextWeek));
-      this.props.weeklyTimetableReq(nextWeek);
-      if (new Date(nextWeek) > new Date()) {
-        this.setState({
-          historyData: false
-        });
-      }
-      this.highlightToday();
-    } else {
+
+    if (this.state.timetableClicked) {
       this.notify("Please submit your timetable before doing that.");
+      return;
     }
+
+    this.lessonsAdded = [];
+    this.lessonsDeleted = [];
+
+    this.setState({
+      reqParam: nextWeek
+    });
+    nprogress.start();
+    this.cleanData();
+    this.renderMetaData(new Date(nextWeek));
+    this.props.weeklyTimetableReq(nextWeek);
+    if (new Date(nextWeek) > new Date()) {
+      this.setState({
+        historyData: false
+      });
+    }
+    this.highlightToday();
+
   }
 
   renderMetaData (date) {
@@ -443,6 +459,10 @@ class Week extends React.Component {
           self.props.monthlyTimetableReq(param);
           self.lessonsAdded = [];
           self.lessonsDeleted = [];
+
+          self.setState({
+            timetableClicked: false
+          });
         } else {
           self.notify("Please Select Future Date and Time Correctly.");
         }
@@ -452,6 +472,7 @@ class Week extends React.Component {
         self.notify("network is busy, please try again later.");
       }
     );
+
   }
 
   cellClick (rowNumber, columnId, e) {
@@ -517,6 +538,10 @@ class Week extends React.Component {
       target.style.backgroundColor = "#ecf0f1";
       target.dataset.clicked = "";
     }
+
+    this.setState({
+      timetableClicked: true
+    });
 
   }
 

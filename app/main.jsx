@@ -33,7 +33,7 @@ import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
 import StepToSignUp from './teacher-components/StepToSignUp';
 import ScheduleCourse from './teacher-components/ScheduleCourse';
-import OnlineTest from './teacher-components/OnlineTest';
+import OnlineTest from './teacher-components/online-test/OnlineTest';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
