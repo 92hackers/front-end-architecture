@@ -811,29 +811,27 @@ class BasicInfo extends React.Component {
     let numericP = /^[0-9]+$/;
 
     if (!firstName.length) {
-      notification = "Please Input Your firstName";
+      notification = "Please enter your first name.";
     } else if (!lastName.length) {
-      notification = "Please Input Your lastName";
+      notification = "Please enter your last name.";
     } else if (!nationality) {
-      notification = "Please Select Your Nationality";
+      notification = "Please select your nationality.";
     } else if (!gender.length) {
-      notification = "Please Select Your Gender";
+      notification = "Please select your gender.";
     } else if (!avatar.length) {
-      notification = "Please Upload Your Profile Picture";
+      notification = "Please upload your profile picture.";
     } else if (!country) {
-      notification = "Please Select Your Location Country";
-    } else if (!region) {
-      notification = "Please Select Your Location Region";
+      notification = "Please select your country of residence.";
     } else if (!timezone) {
-      notification = "Please Select Your Location Timezone";
+      notification = "Please select your location timezone.";
     } else if (!phoneNum.length) {
-      notification = "Please Input Your Phone Number";
+      notification = "Please enter your phone number.";
     } else if (!eduExperienceList.length) {
-      notification = "Please Input At Lease One Education Experience";
+      notification = "Please complete Education Background.";
     } else if (!numericP.test(phoneNum)) {
-      notification = "Phone Number Should Be Numbers";
+      notification = "Phone number should be numbers.";
     } else if (!!nationCode.length && !numericP.test(nationCode)) {
-      notification = "Country Code Should Be Numbers";
+      notification = "Country code should be numbers.";
     }
 
     if (!!notification.length) {
@@ -1049,21 +1047,21 @@ class TeachingExperience extends React.Component {
     let addition = document.getElementById("addition").value;
 
     if (!teachExperience.length) {
-        notification = "Please Select Your Teaching Experience";
+        notification = "Please select the number of years that you have taught.";
     } else if (!selfIntro.length) {
-        notification = "Please Answer Question 1.";
+        notification = "Please answer Question 1.";
     } else if (!teachStyle.length) {
-        notification = "Please Answer Question 2.";
+        notification = "Please answer Question 2.";
     } else if (!whyATeacher.length) {
-        notification = "Please Answer Question 3.";
+        notification = "Please answer Question 3.";
     }
 
     if (selfIntro.length > 500) {
-      notification = "Question 1 Should Be Less Than 500 Characters";
+      notification = "Question 1 should be less than 500 characters.";
     } else if (teachStyle.length > 500) {
-      notification = "Question 2 Should Be Less Than 500 Characters";
+      notification = "Question 2 should be less than 500 characters.";
     } else if (whyATeacher.length > 500) {
-      notification = "Question 3 Should Be Less Than 500 Characters";
+      notification = "Question 3 should be less than 500 characters.";
     }
 
     if (!!notification.length) {
