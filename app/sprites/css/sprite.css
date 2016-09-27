@@ -3,153 +3,173 @@
   background-image: url('/images/sprite.png');
 }
 
-.icon-down-arrow {
+.icon-zoom {
   background-position: -0px -0px;
+  width: 24px;
+  height: 24px;
+}
+.icon-shiqu {
+  background-position: -0px -24px;
+  width: 24px;
+  height: 24px;
+}
+.icon-dianhua {
+  background-position: -0px -48px;
+  width: 24px;
+  height: 24px;
+}
+.icon-dizhi {
+  background-position: -0px -72px;
+  width: 24px;
+  height: 24px;
+}
+.icon-down-arrow {
+  background-position: -0px -96px;
   width: 46px;
   height: 46px;
 }
 .icon-left-arrow {
-  background-position: -0px -46px;
+  background-position: -0px -142px;
   width: 62px;
   height: 62px;
 }
-.icon-Leisure {
-  background-position: -0px -108px;
-  width: 100px;
-  height: 100px;
-}
-.icon-time {
-  background-position: -0px -208px;
-  width: 100px;
-  height: 100px;
-}
 .icon-technology {
-  background-position: -0px -308px;
-  width: 100px;
-  height: 100px;
-}
-.icon-Professional- {
-  background-position: -0px -408px;
+  background-position: -0px -204px;
   width: 100px;
   height: 100px;
 }
 .icon-suitcase {
-  background-position: -0px -508px;
+  background-position: -0px -304px;
   width: 100px;
   height: 100px;
 }
-.icon-shen-qing {
-  background-position: -0px -608px;
-  width: 100px;
-  height: 100px;
-}
-.icon-money {
-  background-position: -0px -708px;
-  width: 100px;
-  height: 100px;
-}
-.icon-doubt {
-  background-position: -0px -808px;
+.icon-Leisure {
+  background-position: -0px -404px;
   width: 100px;
   height: 100px;
 }
 .icon-Community {
-  background-position: -0px -908px;
+  background-position: -0px -504px;
+  width: 100px;
+  height: 100px;
+}
+.icon-time {
+  background-position: -0px -604px;
+  width: 100px;
+  height: 100px;
+}
+.icon-doubt {
+  background-position: -0px -704px;
+  width: 100px;
+  height: 100px;
+}
+.icon-Professional- {
+  background-position: -0px -804px;
+  width: 100px;
+  height: 100px;
+}
+.icon-shen-qing {
+  background-position: -0px -904px;
+  width: 100px;
+  height: 100px;
+}
+.icon-money {
+  background-position: -0px -1004px;
   width: 100px;
   height: 100px;
 }
 .icon-Fun {
-  background-position: -0px -1008px;
+  background-position: -0px -1104px;
   width: 100px;
   height: 100px;
 }
 .icon-dialogue-left {
-  background-position: -0px -1108px;
+  background-position: -0px -1204px;
   width: 858px;
   height: 178px;
 }
 .icon-dialogue-right {
-  background-position: -0px -1286px;
+  background-position: -0px -1382px;
   width: 858px;
   height: 178px;
 }
-.icon-hallette {
-  background-position: -0px -1464px;
+.icon-Patty-Harte {
+  background-position: -0px -1560px;
   width: 184px;
   height: 184px;
 }
-.icon-Patty-Harte {
-  background-position: -0px -1648px;
+.icon-hallette {
+  background-position: -0px -1744px;
   width: 184px;
   height: 184px;
 }
 .icon-Paul-Clutterbuck {
-  background-position: -0px -1832px;
+  background-position: -0px -1928px;
   width: 184px;
   height: 184px;
 }
+.icon-computer {
+  background-position: -0px -2112px;
+  width: 200px;
+  height: 200px;
+}
 .icon-book {
-  background-position: -0px -2016px;
+  background-position: -0px -2312px;
   width: 200px;
   height: 200px;
 }
 .icon-people {
-  background-position: -0px -2216px;
+  background-position: -0px -2512px;
   width: 200px;
   height: 200px;
-}
-.icon-computer {
-  background-position: -0px -2416px;
-  width: 200px;
-  height: 200px;
-}
-.icon-learning {
-  background-position: -0px -2616px;
-  width: 369px;
-  height: 323px;
 }
 .icon-four-persons {
-  background-position: -0px -2939px;
+  background-position: -0px -2712px;
   width: 369px;
   height: 323px;
 }
 .icon-play {
-  background-position: -0px -3262px;
+  background-position: -0px -3035px;
+  width: 369px;
+  height: 323px;
+}
+.icon-learning {
+  background-position: -0px -3358px;
   width: 369px;
   height: 323px;
 }
 .icon-love {
-  background-position: -0px -3585px;
+  background-position: -0px -3681px;
   width: 270px;
   height: 360px;
 }
 .icon-drink {
-  background-position: -0px -3945px;
+  background-position: -0px -4041px;
   width: 270px;
   height: 360px;
 }
 .icon-connect {
-  background-position: -0px -4305px;
+  background-position: -0px -4401px;
   width: 270px;
   height: 360px;
 }
 .icon-plant-tree {
-  background-position: -0px -4665px;
+  background-position: -0px -4761px;
   width: 270px;
   height: 360px;
 }
 .icon-horse {
-  background-position: -0px -5025px;
+  background-position: -0px -5121px;
   width: 469px;
   height: 373px;
 }
 .icon-banner {
-  background-position: -0px -5398px;
+  background-position: -0px -5494px;
   width: 655px;
   height: 373px;
 }
 .icon-circle {
-  background-position: -0px -5771px;
+  background-position: -0px -5867px;
   width: 600px;
   height: 600px;
 }
