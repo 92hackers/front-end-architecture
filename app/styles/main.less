@@ -564,3 +564,34 @@ form {
 .show-inline {
   display: inline-block !important;
 }
+
+.welcomeDialog {
+  padding-top: 0 !important;
+}
+.welcomeBody {
+  max-height: 100% !important;
+}
+
+.guide-image-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #fff;
+  &:hover {
+    color: #bbb;
+  }
+  font-size: 80px;
+}
+.back-arrow {
+  left: 20px;
+  .guide-image-arrow();
+}
+.next-arrow {
+  right: 20px;
+  .guide-image-arrow();
+  text-align: right;
+  .finish-btn {
+    font-size: 40px;
+  }
+}

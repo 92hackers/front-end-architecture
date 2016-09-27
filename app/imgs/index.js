@@ -14,3 +14,6 @@ import "./screen-2.png";
 import "./screen-3.png";
 import "./screen-4.png";
 import "./gestures.png";
+import "./guide-1.jpg";
+import "./guide-2.jpg";
+import "./guide-3.jpg";

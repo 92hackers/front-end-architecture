@@ -183,7 +183,8 @@ class OneWeekTemplate extends React.Component {
 
   handleWelcomeClose () {
     this.setState({
-      welcomeOpen: false
+      welcomeOpen: false,
+      stepIndex: 0
     });
   }
 
@@ -222,7 +223,7 @@ class OneWeekTemplate extends React.Component {
       <div className="one-week">
         <div className="head-content clearfix">
           <h1 className="week-title">{timezone}</h1>
-          <RaisedButton style={{verticalAlign: "middle", float: "right", marginTop: "9px"}} label="Switch Timezone" primary={true} onClick={this.switchTimezone.bind(this)}></RaisedButton>
+          <RaisedButton style={{verticalAlign: "middle", float: "right", marginTop: "9px"}} label="Switch Time Zone" primary={true} onClick={this.switchTimezone.bind(this)}></RaisedButton>
         </div>
         <ul className="time-labels" onScroll={this.labelScroll.bind(this)}>
           {
@@ -272,10 +273,11 @@ class OneWeekTemplate extends React.Component {
           <RaisedButton className="right" label="Save Template" primary={true} onTouchTap={this.handleSubmit.bind(this)}></RaisedButton>
         </div>
         <Dialog
-          actions={actions}
+          autoScrollBodyContent={true}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose.bind(this)}
+          contentStyle={{width: "90%", maxWidth: 1200, transform: "translate(0px, 40px)"}}
         >
           <h1 className="text-center" style={{marginBottom: 20}}>Weekly timetable updated!</h1>
           <h3 className="text-center">Now, Click the Button below to Schedule Lessons.</h3>
@@ -283,26 +285,23 @@ class OneWeekTemplate extends React.Component {
         <Notification ref="notification" message={this.state.notification}></Notification>
         <Dialog
           modal={false}
+          className="welcomeDialog"
+          bodyClassName="welcomeBody"
+          autoScrollBodyContent={true}
+          contentClassName="welcomeContent"
           open={this.state.welcomeOpen}
           onRequestClose={this.handleWelcomeClose.bind(this)}
+          contentStyle={{width: "100%", maxWidth: "100%", transform: 0}}
+          overlayStyle={{backgroundColor: "transparent"}}
+          bodyStyle={{padding: 0}}
         >
-          <i className="fa fa-times" style={{position: "absolute", right: 24, top: 14, cursor: "pointer", fontSize: "20px", color: "#ddd"}} onClick={this.handleWelcomeClose.bind(this)}></i>
-          <Stepper activeStep={stepIndex}>
-            <Step>
-              <StepLabel>Set Weekly Lessons Template</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>Schedule your Lessons</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>All things done.</StepLabel>
-            </Step>
-          </Stepper>
+          <i className="fa fa-times" style={{position: "absolute", right: 24, top: 14, cursor: "pointer", fontSize: "50px", color: "#fff"}} onClick={this.handleWelcomeClose.bind(this)}></i>
+          <Stepper activeStep={stepIndex}></Stepper>
           <div className="back-arrow" onClick={this.handlePrev.bind(this)} disabled={stepIndex === 0}><i className="fa fa-angle-left fa-3"></i></div>
-          <div className="step-content" style={{width: 624, height: 480, display: "inline-block", verticalAlign: "top"}}>
+          <div className="step-content" style={{width: "100%", height: "100%", display: "inline-block", verticalAlign: "top", overflow: "hidden", borderRadius: 3}}>
             {this.getStepContent(stepIndex)}
           </div>
-          <div className="next-arrow" onClick={this.handleNext.bind(this)} style={stepIndex === 2 ? {display: "none"} : {display: "inline-block"}}><i className="fa fa-angle-right fa-3"></i></div>
+          <div className="next-arrow" onClick={this.handleNext.bind(this)}>{stepIndex === 2 ? <span className="finish-btn">End</span> : <i className="fa fa-angle-right fa-3"></i>}</div>
         </Dialog>
       </div>
     )
@@ -337,34 +336,18 @@ class OneWeekTemplate extends React.Component {
 
     switch (stepIndex) {
       case 0 :
-        return <div className="step step-one" style={styles}><img style={styles} src="/images/template-guide.png" alt="guide img."/></div>;
-        break;
+        return <div className="step step-one" style={styles}><img style={styles} src="/images/guide-1.jpg" alt="guide img."/></div>;
+
       case 1 :
-        return <div className="step step-two" style={styles}><img style={styles} src="/images/schedule-lessons.png" alt="step two img."/></div>;
-        break;
+        return <div className="step step-two" style={styles}><img style={styles} src="/images/guide-2.jpg" alt="step two img."/></div>;
+
       case 2 :
-        return <div className="step step-three text-center" style={styles}>
-          <br/>
-          <br/>
-          <h1>Your timetable will be displayed to our Chinese primary school students.</h1>
-          <br/>
-          <br/>
-          <h1>Now, Let's Start!</h1>
-          <br/>
-          <RaisedButton label="Start" primary={true} onClick={this.startButton.bind(this)}></RaisedButton>
-        </div>;
-        break;
+        return <div className="step step-three" style={styles}><img style={styles} src="/images/guide-3.jpg" alt="step 3."/></div>;
+
       default :
         return <h1>Something Wrong.</h1>;
     }
   }
-
-  startButton () {
-    this.setState({
-      welcomeOpen: false
-    });
-  }
-
 
   cellHover (r,c,e) {
     var ele = r.target;
