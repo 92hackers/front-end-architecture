@@ -2,9 +2,17 @@
   "env": "dev",
   "version": "0.0.1",
   "useCdn": false,
-  "cdn": "",
-  "devHost": "http://api.weteach.test",
-  "productionHost": "",
+  "cdnHost": "",
+  "devHost": "http://api.yiyouabc.com",
+  "productionHost": "http://api.weteach.info",
   "apiVersion": "/v1/",
-  "devPort": 3001
+  "devPort": 3001,
+  "devEnv": {
+    "host": "",
+    "apiVersion": ""
+  },
+  "productionEnv": {
+    "host": "",
+    "apiVersion": ""
+  }
 }
