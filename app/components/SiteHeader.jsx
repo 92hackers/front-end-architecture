@@ -21,6 +21,7 @@ class SiteHeaderClass extends React.Component {
     super (props);
     this.state = {
       open: false,
+      settingsOpen: false,
       inviteDialogOpen: false,
       token: this.props.token,
       userStatus: "",
@@ -100,6 +101,12 @@ class SiteHeaderClass extends React.Component {
     });
   }
 
+  handleSettingsRequestClose () {
+    this.setState({
+      settingsOpen: false
+    });
+  }
+
   handleInvite (e) {
     e.preventDefault();
     this.handleInviteDialogOpen();
@@ -118,10 +125,11 @@ class SiteHeaderClass extends React.Component {
     });
   }
 
-  handleProfileClick (e) {
+  handleEditProfileClick (e) {
     e.preventDefault();
     this.handleRequestClose();
     browserHistory.push("/teacher-homepage");
+    this.props.dispatch(dashboardDisplay("editProfile"));
   }
 
   handleSettingClick (e) {
@@ -152,6 +160,15 @@ class SiteHeaderClass extends React.Component {
     });
   }
 
+  handleSettingsTouchTap (e) {
+    e.preventDefault();
+
+    this.setState({
+      settingsOpen: true,
+      settingsAnchorEl: e.currentTarget
+    });
+  }
+
   render () {
 
     var isUserLoggedIn = this.state.token;
@@ -167,57 +184,96 @@ class SiteHeaderClass extends React.Component {
 
     var dynamicComponent = "";
 
+    var settingsMenu = (
+      <li className="header-item">
+        <a href="javascript:;" className="dashboard" onTouchTap={this.handleSettingsTouchTap.bind(this)}><i className="fa fa-bars"></i>Settings</a>
+        <span className="nav-border-line"></span>
+        <Popover
+          open={this.state.settingsOpen}
+          anchorEl={this.state.settingsAnchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleSettingsRequestClose.bind(this)}
+        >
+          <List className="dashboard-dropdown">
+            <ListItem primaryText="Change Password" leftIcon={<i className="fa fa-key"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
+            <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={this.handleEditProfileClick.bind(this)}></ListItem>
+          </List>
+        </Popover>
+      </li>
+    );
+
     if (!!isUserLoggedIn) {
-      switch (userStatus) {
-        case 10:
-        case 11:
-        case 15:
+      if (userStatus === 2) {
         dynamicComponent = (
           <ul className="right">
             <li className="header-item">
-              <a href="javascript:;" onTouchTap={this.handleHelpClick.bind(this)}><i className="fa fa-question"></i> Help</a>
+              <Link to="/step-to-sign-up">Application</Link>
               <span className="nav-border-line"></span>
             </li>
-            <li className="header-item">
-              <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-bars"></i> Dashboard</a>
-              <span className="nav-border-line"></span>
-              <Popover
-                open={this.state.open}
-                anchorEl={this.state.anchorEl}
-                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                onRequestClose={this.handleRequestClose.bind(this)}
-              >
-                <List className="dashboard-dropdown">
-                  {/* <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleProfileClick.bind(this)} /> */}
-                  <ListItem primaryText="Settings" leftIcon={<i className="fa fa-cogs"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
-                  <ListItem primaryText="Timetable" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleScheduleClick.bind(this)} />
-                  <ListItem primaryText="Template" leftIcon={<i className="fa fa-newspaper-o"></i>} onTouchTap={this.handleTemplateClick.bind(this)}></ListItem>
-                </List>
-              </Popover>
-            </li>
-            {/* <li className="header-item">
-              <a href="javascript:;" onTouchTap={this.handleInvite.bind(this)}><i className="fa fa-user-plus"></i> Invite Friend</a>
-              <span className="nav-border-line"></span>
-              TODO:   inviting friend not ready to first version.
-            </li> */}
+            {settingsMenu}
             <SignOutButton></SignOutButton>
-            {/* <Dialog     TODO
-              title="Invite your friends to WeTeach"
-              actions={inviteActions}
-              modal={false}
-              open={this.state.inviteDialogOpen}
-              onRequestClose={this.handleInviteDialogClose.bind(this)}
-              >
-              your invite code is:  YAWEFAWEFAWEFAE999AWEF
-            </Dialog> */}
           </ul>
-          );
+       );
+     } else if (userStatus > 2) {
+       switch (userStatus) {
+         case 3:
+         case 4:
+           dynamicComponent = (
+             <ul className="right">
+               <li className="header-item">
+                 <Link to="teacher-online-test">Online Test</Link>
+                 <span className="nav-border-line"></span>
+               </li>
+               {settingsMenu}
+               <SignOutButton></SignOutButton>
+             </ul>
+           );
+           break;
+         case 8:
+          dynamicComponent = (
+            <ul className="right">
+              {settingsMenu}
+              <SignOutButton></SignOutButton>
+            </ul>
+          )
           break;
-        default:
-          dynamicComponent = <ul className="right"><SignOutButton></SignOutButton></ul>;
-          break;
-      }
+         case 10:
+         case 11:
+         case 15:
+           dynamicComponent = (
+             <ul className="right">
+               <li className="header-item">
+                 <a href="javascript:;" onTouchTap={this.handleHelpClick.bind(this)}><i className="fa fa-question"></i> Help</a>
+                 <span className="nav-border-line"></span>
+               </li>
+               <li className="header-item">
+                 <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-bars"></i> Lessons</a>
+                 <span className="nav-border-line"></span>
+                 <Popover
+                   open={this.state.open}
+                   anchorEl={this.state.anchorEl}
+                   anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                   targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                   onRequestClose={this.handleRequestClose.bind(this)}
+                 >
+                   <List className="dashboard-dropdown">
+                     {/* <ListItem primaryText="Profile" leftIcon={<i className="fa fa-user"></i>} onTouchTap={this.handleProfileClick.bind(this)} /> */}
+                     <ListItem primaryText="Timetable" leftIcon={<i className="fa fa-calendar-plus-o"></i>} onTouchTap={this.handleScheduleClick.bind(this)} />
+                     <ListItem primaryText="Template" leftIcon={<i className="fa fa-newspaper-o"></i>} onTouchTap={this.handleTemplateClick.bind(this)}></ListItem>
+                   </List>
+                 </Popover>
+               </li>
+               {settingsMenu}
+               <SignOutButton></SignOutButton>
+             </ul>
+           );
+           break;
+          default:
+            dynamicComponent = <ul className="right"><SignOutButton></SignOutButton></ul>;
+            break;
+       }
+     }
     } else {
       dynamicComponent = (
         <ul className="header-item-right">
