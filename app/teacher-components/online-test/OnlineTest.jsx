@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
+import {blue500} from 'material-ui/styles/colors';
 
 import WaitForSubmit from '../../universal/WaitForSubmit';
 import Notification from '../../universal/Notification';
@@ -19,16 +19,16 @@ import LessonGuide from './LessonGuide';
 import SpecialConsiderations from './SpecialConsiderations';
 
 
-class OnlineTest extends React.Component {
+class OnlineTestClass extends React.Component {
 
   constructor (props) {
     super (props);
     this.state = {
       stepIndex: 0,
       notification: "",
-      finished: false
+      isFinished: false
     };
-    this.token = this.props.token || "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkueWl5b3VhYmMuY29tIiwiYXVkIjoiaHR0cDpcL1wvYXBpLnlpeW91YWJjLmNvbSIsImlhdCI6MTQ3MzM4ODkwNiwibmJmIjoxNDczMzg4OTA2LCJqdGkiOjJ9.HJe0eHGwNU8W4oO8RUA1eVx_JdVZACB1ZYOsdN3Dqno";
+    this.token = this.props.token;
     this.stepTitles = [
       "Online Classroom Guide",
       "ESL Concepts and Principles",
@@ -40,7 +40,13 @@ class OnlineTest extends React.Component {
 
   handleNext () {
     var stepIndex = this.state.stepIndex;
-    if (stepIndex < 4) {
+    if (stepIndex === 4) {
+      this.setState({
+        isFinished: true
+      });
+      return;
+    }
+    if (stepIndex < 5) {
       this.setState({
         stepIndex: stepIndex + 1
       });
@@ -76,35 +82,44 @@ class OnlineTest extends React.Component {
 
   render () {
     var stepIndex = this.state.stepIndex;
+
+    var articleContent = this.state.isFinished ? (
+      <div className="successful-words text-center ">
+        <p style={{color: blue500, fontSize: 24}}>Thanks for completing the self-study moduals.</p>
+      </div>
+    ) : (
+      <div>
+        {this.getStepContent(stepIndex)}
+        <div className="submit">
+          <RaisedButton className="submit-btn" label="Next" primary={true} onClick={this.handleSubmit.bind(this)}></RaisedButton>
+          <WaitForSubmit ref="loader" successMessage="Correct!" failMessage="Incorrect!"></WaitForSubmit>
+        </div>
+      </div>
+    );
+
     return (
       <div className="online-test">
-        <MuiThemeProvider>
-          <div>
-            <div className="container">
-              <Stepper activeStep={stepIndex}>
-                {
-                  this.stepTitles.map((item, index) => {
-                    return (
-                      <Step key={index}>
-                        <StepLabel>{item}</StepLabel>
-                      </Step>
-                    );
-                  })
-                }
-              </Stepper>
-              <div className="step-content">
-                <Paper className="article" zDepth={1}>
-                  {this.getStepContent(stepIndex)}
-                  <div className="submit">
-                    <RaisedButton className="submit-btn" label="Next" primary={true} onClick={this.handleSubmit.bind(this)}></RaisedButton>
-                    <WaitForSubmit ref="loader" successMessage="Correct!" failMessage="Incorrect!"></WaitForSubmit>
-                  </div>
-                </Paper>
-              </div>
+        <div>
+          <div className="container">
+            <Stepper activeStep={stepIndex}>
+              {
+                this.stepTitles.map((item, index) => {
+                  return (
+                    <Step key={index}>
+                      <StepLabel>{item}</StepLabel>
+                    </Step>
+                  );
+                })
+              }
+            </Stepper>
+            <div className="step-content">
+              <Paper className="article" zDepth={1}>
+                {articleContent}
+              </Paper>
             </div>
-            <Notification ref="notification" message={this.state.notification}></Notification>
           </div>
-        </MuiThemeProvider>
+          <Notification ref="notification" message={this.state.notification}></Notification>
+        </div>
       </div>
     )
   }
@@ -143,8 +158,6 @@ class OnlineTest extends React.Component {
       ]
     };
 
-    console.log(data);
-
     this.refs.loader.displayLoader();
 
     var param = stepIndex + 1;
@@ -172,5 +185,13 @@ class OnlineTest extends React.Component {
   }
 
 }
+
+const mapStateToProps =  (state) => {
+  return {
+    token: state.addToken.token
+  }
+};
+
+const OnlineTest = connect(mapStateToProps)(OnlineTestClass);
 
 export default OnlineTest;

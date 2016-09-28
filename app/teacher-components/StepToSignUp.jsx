@@ -1,6 +1,6 @@
 // step page to complete sign up process.
 import React from 'react';
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import {connect} from 'react-redux';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
@@ -13,6 +13,7 @@ import Dropdown from 'react-dropdown';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import {red500} from 'material-ui/styles/colors';
 
 import api from '../network/api';
 import Notification from '../universal/Notification';
@@ -1434,8 +1435,12 @@ class StepToSignUpClass extends React.Component {
       <div className="successful-words">
         <p>Thanks for completing the Personal Details Form!</p>
         <p>We will review the form within 24hrs and provide you with an interview invitation via email.</p>
-        <p>We look forward to speaking with you!</p>
-        <p>Regards, WeTeach Team</p>
+        <p>In preparation for your interview,</p>
+        <p>Please complete a few self-study moduals: <Link style={{color: red500}} to="/teacher-online-test" className="go-to-test">Here</Link></p>
+        <br/>
+        <p>Regards!</p>
+        <br/>
+        <p>WeTeach Team</p>
       </div>
     ) : (
       <div>
