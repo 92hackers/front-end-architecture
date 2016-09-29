@@ -1,22 +1,12 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-router';
-import FacebookLogin from 'react-facebook-login';
 import { Provider, connect } from 'react-redux';
 import {createStore} from 'redux';
 import { useScroll } from 'react-router-scroll';
 
 import reducers from './reducers';
 import addToken from './actions/addToken';
-
-import SiteHeader from './components/SiteHeader';
-import SiteFooter from './components/SiteFooter';
-// import Index from './components/index/Index';
-// import SignUp from './components/sign-up/SignUp';
-// import ChildInfo from './components/sign-up/ChildInfo';
-// import HomepageHeader from './components/parent-homepage/HomepageHeader';
-// import Homepage from './components/parent-homepage/Homepage';
-// import SignIn from './components/sign-in/SignIn';
 
 import TSignIn from './teacher-components/TSignIn';
 import TSignUp from './teacher-components/TSignUp';
@@ -28,22 +18,15 @@ import InputNewEmail from './teacher-components/InputNewEmail';
 import ForgetPassword from './teacher-components/ForgetPassword';
 import TInputNewPassword from './teacher-components/TInputNewPassword';
 import VerifyYourEmail from './teacher-components/VerifyYourEmail';
-import TIndex from './teacher-components/TIndex';
 import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
 import StepToSignUp from './teacher-components/StepToSignUp';
 import ScheduleCourse from './teacher-components/ScheduleCourse';
 import OnlineTest from './teacher-components/online-test/OnlineTest';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {blue500} from 'material-ui/styles/colors';
+import App from './containers/App';
 
 import NotFound from './universal/NotFound';
-import DateTab from './universal/DateTab';
-import OneWeekTemplate from './universal/OneWeekTemplate';
-import Loading from './universal/Loading';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -59,54 +42,10 @@ if (!!userToken && !storedToken) {
   store.dispatch(addToken("Bearer " + userToken));
 }
 
-const muiTheme = getMuiTheme({
-  palette: {
-    primaryColor: blue500,
-    primary1Color: blue500,
-    primary2Color: blue500,
-    primary3Color: blue500,
-  },
-  fontFamily: "Open Sans, sans-serif"
-});
-
-class AppClass extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render () {
-
-    return (
-      <div className="weteach-root">
-        {/* <FacebookLogin appId="169495646797915" autoLoad={true} fields="name,email,picture"></FacebookLogin> */}
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <SiteHeader token={this.props.token}></SiteHeader>
-        </MuiThemeProvider>
-        <MuiThemeProvider muiTheme={muiTheme}>
-          {this.props.children || <TIndex></TIndex>}
-        </MuiThemeProvider>
-        <SiteFooter></SiteFooter>
-      </div>
-    )
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    token: state.addToken.token
-  }
-}
-
-const App = connect(
-  mapStateToProps
-)(AppClass);
-
+console.log(store.getState());
 
 const scrollBehavior = (prevRouterProps, { routes }) => {
-
   return [0,0];
-
 };
 
 const routes = {
@@ -116,11 +55,7 @@ const routes = {
     { path: "sign-up", component: TSignUp },
     { path: "sign-in", component: TSignIn },
     { path: "teacher-homepage",         //    add  router to dashboard components.
-      component: THomepage,
-      childRoutes: [{
-        path: "/dashboard",
-        component: DateTab
-      }]
+      component: THomepage
     },
     { path: "teacher-online-test", component: OnlineTest },
     { path: "active-email", component: ActivateEmail },
@@ -132,8 +67,6 @@ const routes = {
     { path: "about-school", component: TAboutSchool },
     { path: "step-to-sign-up", component: StepToSignUp },
     { path: "display-user-status", component: DisplayUserStatus },
-    // { path: "c", component: Loading },
-    // { path: "t", component: OneWeekTemplate },
     { path: "*", component: NotFound }
   ]
 };

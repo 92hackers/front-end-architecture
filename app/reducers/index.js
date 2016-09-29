@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux'
-import addToken from './addToken.js';
+import notification from './notification';
+import user from './user';
+import dataIsReady from './dataIsReady';
 import dashboardDisplay from './dashboardDisplay.js';
 
 const allReducers = combineReducers({
-  addToken,
+  dataIsReady,
+  user,
+  notification,
   dashboardDisplay
 });
 

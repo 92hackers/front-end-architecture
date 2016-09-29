@@ -32,11 +32,16 @@ module.exports = {
 	resolve: {
 		extensions: ["", ".js", ".coffee", ".jsx", ".less", "css"]
 	},
+  exclude: [
+    path.resolve(rootDir, "node_modules"),
+  ],
 	module: {
 		loaders: [
 			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
-			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015"] }, exclude: /node_modules/ },
-			{ test: /\.coffee$/, loader: "coffee", exclude: /node_modules/ },
+			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}] }, exclude: /node_modules/ },
+			{ test: /\.coffee$/, loader: "coffee"},
+			// { test: /\.less$/, loader: 'style!css?sourceMap!postcss!less?sourceMap' },
+			// { test: /\.css$/, loader: 'style!css?sourceMap!postcss' },
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style", "css!postcss!less") },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style", "css!postcss") },
 			{ test: /\.json$/, loader: "json"},
