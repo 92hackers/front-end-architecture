@@ -1,34 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import api from '../network/api';
 import EmailInputBox from '../universal/EmailInputBox';
-import Notification from '../universal/Notification';
 import formValidate from 'validate-js';
 
-class InputNewEmailClass extends React.Component {
+class InputNewEmailComp extends React.Component {
 
   constructor (props) {
     super (props);
-    this.state = {
-      notification: ""
-    };
-  }
-
-  componentWillMount () {
-    if (!this.props.token) {                // if the user not log in, redirect to sign in page.
-      browserHistory.push("/sign-in");
-    }
-  }
-
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
   }
 
   handleSubmit (e) {
@@ -52,7 +31,7 @@ class InputNewEmailClass extends React.Component {
     validator._validateForm();
 
     if (!!notification.length) {
-      self.notify(notification);
+      self.props.showNotification(notification);
       return;
     }
 
@@ -68,11 +47,11 @@ class InputNewEmailClass extends React.Component {
           let url = "/active-email?user_name=" + "s@x^nil*@(<)";
           browserHistory.push(url);
         } else {
-          self.notify("Something Wrong, Please Try Again Later.");
+          self.props.networkError();
         }
       },
       (err) => {
-        self.notify("Network Is Busy, Please Try Again Later.");
+        self.props.networkError();
       }
     )
   }
@@ -81,20 +60,9 @@ class InputNewEmailClass extends React.Component {
     return (
       <div className="input-new-email">
         <EmailInputBox submitText="Send activation email" id="email-address" handle={this.handleSubmit.bind(this)}></EmailInputBox>
-        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.addToken.token
-  }
-}
-
-const InputNewEmail = connect(
-  mapStateToProps
-)(InputNewEmailClass);
-
-export default InputNewEmail;
+export default InputNewEmailComp;

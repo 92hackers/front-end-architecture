@@ -1,6 +1,7 @@
 // teacher's homepage.
 
 import React from 'react';
+import {browserHistory} from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -8,33 +9,17 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Notification from '../universal/Notification';
-import api from '../network/api';
-import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
-import removeToken from '../actions/removeToken';
-import dashboardDisplay from '../actions/dashboardDisplay';
 import ScheduleCourse from './ScheduleCourse';
 import OneWeekTemplate from '../universal/OneWeekTemplate';
-import Loading from '../universal/Loading';
+import DisplayUserStatus from './DisplayUserStatus';
+
+import api from '../network/api';
+import SiteLoading from '../containers/SiteLoading';
 
 class SettingComp extends React.Component {
 
   constructor (props) {
     super (props);
-    this.state = {
-      notification: ""
-    };
-  }
-
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
   }
 
   handleSubmit (e) {
@@ -55,7 +40,7 @@ class SettingComp extends React.Component {
     }
 
     if (!!warning) {
-      this.notify(warning);
+      this.props.showNotification(warning);
     }
 
     var data = {
@@ -69,19 +54,18 @@ class SettingComp extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          self.notify("Change Password Successfully!");
+          self.props.showNotification("Change Password Successfully!");
           var timeId = setTimeout(() => {
             clearTimeout(timeId);
-            self.props.dispatch(removeToken());
-            self.props.dispatch(dashboardDisplay(""));
+            self.props.signOut();
             browserHistory.push("/sign-in");
           }, 4100);
         } else {
-          self.notify("Please input Correct Passwords");
+          self.props.showNotification("Please input Correct Passwords");
         }
       },
       (err) => {
-        self.notify("Network Is Busy, Please Try Again Later.");
+        self.props.networkError();
       }
     );
   }
@@ -102,7 +86,6 @@ class SettingComp extends React.Component {
           <br/>
           <RaisedButton onTouchTap={this.handleSubmit.bind(this)} label="Submit" primary={true} style={{width: "100%"}}></RaisedButton>
         </form>
-        <Notification ref="notification" message={this.state.notification}></Notification>
       </section>
     )
   }
@@ -123,53 +106,16 @@ class ScheduleComp extends React.Component {
   }
 }
 
-class THomepageClass extends React.Component {
+class THomepage extends React.Component {
 
   constructor (props) {
     super (props);
     this.state = {
-      profile: {
-        email: "",
-        status: 0,
-        interview: "",
-        "timezone_name": "",
-        nation: "",
-        country: "",
-        region: "",
-        city: "",
-        nationality: "",
-        timezone: "",
-        "timezone_offset": "",
-        experience: "",
-        eduexp: [],
-        "residence_n": "",
-        "residence_p": "",
-        "residence_c": "",
-        "firstname": "",
-        lastname: "",
-        gender: 0,
-        "tel_code": "",
-        "tel_num": "",
-        avatar: "",
-        intro: "",
-        style: "",
-        whyteach: "",
-        additional: ""
-      },
       tpl: {},
       hasTemplate: false,
       weeklyTimetable: {},
-      monthlyTimetable: {},
-      dataIsReady: false
+      monthlyTimetable: {}
     };
-  }
-
-  componentWillMount () {
-
-    if (!this.props.token) {
-      browserHistory.push("/sign-in");
-    }
-
   }
 
   render () {
@@ -183,11 +129,8 @@ class THomepageClass extends React.Component {
       cursor: "pointer"
     };
 
-    const profile = this.state.profile;
-
+    const profile = this.props.profile;
     var genderIcon = "";
-
-    //map gender to number: 0--female,   1--male.
 
     genderIcon = profile.gender === 0 ? <i className="fa fa-venus"></i> : <i className="fa fa-mars"></i>;
 
@@ -195,23 +138,28 @@ class THomepageClass extends React.Component {
 
     switch (profile.experience) {
       case 3 :
-      teachingExperience = "More than 15 years";
-      break;
+        teachingExperience = "More than 15 years";
+        break;
       case 2 :
-      teachingExperience = "Between 5 to 15 years";
-      break;
+        teachingExperience = "Between 5 to 15 years";
+        break;
       case 1 :
-      teachingExperience = "Less than 5 years";
-      break;
+        teachingExperience = "Less than 5 years";
+        break;
     }
 
     var DashboardComponent = "";
 
-    var dynamicDashboardComp = this.props.dashboardComponent;
+    var dynamicDashboardComp = this.props.dashboard;
 
     var newUser = profile.status < 11;
 
     switch (profile.status) {
+      case 3:
+      case 4:
+      case 8:
+        dashboardComponent = <DisplayUserStatus></DisplayUserStatus>;
+        break;
       case 10:
       case 11:
       case 15:
@@ -236,11 +184,10 @@ class THomepageClass extends React.Component {
         }
         break;
       default:
-        DashboardComponent = <h1 className="text-center">Something Wrong.</h1>;
+        DashboardComponent = <h1 className="text-center"></h1>;
     }
 
-    var dataIsReady = this.state.dataIsReady;
-    var content = dataIsReady ? <main className="container">
+    var content = !this.props.pendingCounter ? <main className="container">
       <div className="row">
         <div className="col-3">
           <div className="avatar-profile">
@@ -261,7 +208,7 @@ class THomepageClass extends React.Component {
           {DashboardComponent}
         </div>
       </div>
-    </main> : <Loading dataIsReady={dataIsReady}></Loading>;
+    </main> : <SiteLoading></SiteLoading>;
 
     return (
       <div className="t-homepage">
@@ -363,26 +310,6 @@ class THomepageClass extends React.Component {
       return;
     }
 
-    var profileRequest = api.TGetProfile(
-      "",
-      { "Authorization": self.props.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          self.setState({
-            profile: resp.data,
-            dataIsReady: true
-          });
-        } else {
-          browserHistory.push("/sign-in");
-          self.props.dispatch(removeToken());
-        }
-      },
-      (err) => {
-        console.log("network is busy, please try again later");
-      }
-    );
-
     this.lessonTemplateReq();
 
     this.weeklyTimetableReq();
@@ -396,16 +323,5 @@ class THomepageClass extends React.Component {
   }
 
 }
-
-const mapStateToProps = (state) => {
-  return {
-    token: state.addToken.token,
-    dashboardComponent: state.dashboardDisplay.component
-  }
-}
-
-const THomepage = connect(
-  mapStateToProps
-)(THomepageClass);
 
 export default THomepage;

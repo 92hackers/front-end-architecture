@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import notification from './notification';
 import user from './user';
-import dataIsReady from './dataIsReady';
-import dashboardDisplay from './dashboardDisplay.js';
+import pendingCounter from './pendingCounter';
+import dashboardDisplay from './dashboardDisplay';
 
 const allReducers = combineReducers({
-  dataIsReady,
+  pendingCounter,
   user,
   notification,
   dashboardDisplay

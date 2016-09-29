@@ -2,8 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {browserHistory} from 'react-router';
-import removeToken from '../actions/removeToken.js';
-import dashboardDisplay from '../actions/dashboardDisplay.js';
+import { userActions, dashboardActions } from '../actions';
 
 class SignOutButtonClass extends React.Component {
 
@@ -23,8 +22,8 @@ class SignOutButtonClass extends React.Component {
 
   handleSignOut (e) {
     e.preventDefault();
-    this.props.dispatch(removeToken());
-    this.props.dispatch(dashboardDisplay(""));
+    this.props.dispatch(userActions.signOut());
+    this.props.dispatch(dashboardActions.dashboardDisplay(""));
     browserHistory.push("/");
   }
 

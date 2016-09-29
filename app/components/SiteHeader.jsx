@@ -8,14 +8,12 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
-import { connect } from 'react-redux';
-import dashboardDisplay from '../actions/dashboardDisplay.js';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import api from '../network/api';
 import SignOutButton from '../universal/SignOutButton';
 
-class SiteHeaderClass extends React.Component {
+class SiteHeaderComp extends React.Component {
 
   constructor (props) {
     super (props);
@@ -25,7 +23,6 @@ class SiteHeaderClass extends React.Component {
       inviteDialogOpen: false,
       token: this.props.token,
       userStatus: "",
-      dataIsReady: false,
       welcomeOpen: false,
       stepIndex: 0
     };
@@ -37,53 +34,6 @@ class SiteHeaderClass extends React.Component {
       welcomeOpen: false,
       stepIndex: 0
     });
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps !== this.props) {
-      var token = nextProps.token;
-      this.setState({
-        token: token
-      }, () => {
-        if (!!token) {
-          this.getProfileData(token);
-        }
-      });
-    }
-  }
-
-  getProfileData (token) {
-    var self = this;
-    var profileRequest = api.TGetProfile(
-      "",
-      { "Authorization": token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          self.setState({
-            userStatus: resp.data.status,
-            dataIsReady: true
-          });
-        } else {
-          browserHistory.push("/sign-in");
-          self.props.dispatch(removeToken());
-        }
-      },
-      (err) => {
-        console.log("network is busy, please try again later");
-      }
-    );
-  }
-
-  componentWillMount () {
-    var token = this.state.token;
-
-    if (!token) {
-      return;
-    } else {
-      this.getProfileData(token);
-    }
-
   }
 
   handleTouchTap (e) {
@@ -129,28 +79,28 @@ class SiteHeaderClass extends React.Component {
     e.preventDefault();
     this.handleRequestClose();
     browserHistory.push("/teacher-homepage");
-    this.props.dispatch(dashboardDisplay("editProfile"));
+    this.props.dashboardDisplay("editProfile");
   }
 
   handleSettingClick (e) {
     e.preventDefault();
     this.handleRequestClose();
     browserHistory.push("/teacher-homepage");
-    this.props.dispatch(dashboardDisplay("setting"));
+    this.props.dashboardDisplay("setting");
   }
 
   handleScheduleClick (e) {
     e.preventDefault();
     this.handleRequestClose();
     browserHistory.push("/teacher-homepage");
-    this.props.dispatch(dashboardDisplay("schedule"));
+    this.props.dashboardDisplay("schedule");
   }
 
   handleTemplateClick (e) {
     e.preventDefault();
     this.handleRequestClose();
     browserHistory.push("/teacher-homepage");
-    this.props.dispatch(dashboardDisplay("template"))
+    this.props.dashboardDisplay("template");
   }
 
   handleHelpClick (e) {
@@ -171,8 +121,8 @@ class SiteHeaderClass extends React.Component {
 
   render () {
 
-    var isUserLoggedIn = this.state.token;
-    var userStatus = this.state.userStatus;
+    var isUserLoggedIn = this.props.token;
+    var userStatus = this.props.status;
 
     var inviteActions = [
       <RaisedButton
@@ -362,6 +312,4 @@ class SiteHeaderClass extends React.Component {
   }
 };
 
-var SiteHeader = connect()(SiteHeaderClass);
-
-export default SiteHeader;
+export default SiteHeaderComp;

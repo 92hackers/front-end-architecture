@@ -3,12 +3,11 @@ import {browserHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import apis from '../network/api';
-import Notification from '../universal/Notification';
 import formValidate from 'validate-js';
 import Dialog from 'material-ui/Dialog';
 import nprogress from 'nprogress';
 
-class TSignUp extends React.Component {
+class TSignUpComp extends React.Component {
 
   constructor (props) {
     super (props);
@@ -19,16 +18,6 @@ class TSignUp extends React.Component {
       dialogTitle: "",
       dialogContent: ""
     };
-  }
-
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
   }
 
   handleSubmit (e) {
@@ -363,7 +352,6 @@ class TSignUp extends React.Component {
           <br/>
           <RaisedButton type="submit" label="Sign up" primary={true} style={style} onClick={this.handleSubmit.bind(this)}></RaisedButton>
         </form>
-        <Notification ref="notification" message={this.state.notification}></Notification>
         <Dialog
           title={this.state.dialogTitle}
           actions={termsActions}
@@ -379,4 +367,4 @@ class TSignUp extends React.Component {
   }
 }
 
-export default TSignUp;
+export default TSignUpComp;

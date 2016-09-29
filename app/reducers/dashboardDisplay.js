@@ -1,9 +1,10 @@
+import { dashboardActions } from '../actions';
+
 const dashboardDisplay = (state = {}, action) => {
   switch (action.type) {
-    case 'DASHBOARD_DISPLAY':
-      return {
-        component: action.component
-      }
+    case 'DISPLAY':
+      return {...state, comp: action.comp};
+
     default:
       return state;
   }

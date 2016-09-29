@@ -1,10 +1,12 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
-import IndexHeader from './IndexHeader';
+import IndexHeader from '../containers/IndexHeader';
 import toggleHeader from '../utilities/toggleHeader';
 
-class TIndex extends React.Component {
+import {connect} from 'react-redux';
+
+class TIndexComp extends React.Component {
 
   constructor (props) {
     super (props);
@@ -108,7 +110,9 @@ class TIndex extends React.Component {
               <IndexHeader></IndexHeader>
               <h1 className="title">WeTeach</h1>
               <h2 className="sub-title">Online English teaching as it should be!</h2>
-              <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start Teaching" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
+              {
+                this.props.token ? <div></div> : <RaisedButton className="index-start-btn" style={startStyle} labelStyle={labelStyle} label="Start Teaching" primary={true} onTouchTap={this.handleStart.bind(this)}></RaisedButton>
+              }
             </div>
           </div>
           <div className="arrow-down"><i className="icon icon-down-arrow" onClick={this.scrollDown.bind(this)}></i></div>
@@ -244,5 +248,13 @@ class TIndex extends React.Component {
     toggleHeader.reset();
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.user.token
+  }
+}
+
+const TIndex = connect(mapStateToProps)(TIndexComp);
 
 export default TIndex;

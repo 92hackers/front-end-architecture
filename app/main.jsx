@@ -4,27 +4,24 @@ import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-rout
 import { Provider, connect } from 'react-redux';
 import {createStore} from 'redux';
 import { useScroll } from 'react-router-scroll';
+import allReducers from './reducers';
 
-import reducers from './reducers';
-import addToken from './actions/addToken';
-
-import TSignIn from './teacher-components/TSignIn';
-import TSignUp from './teacher-components/TSignUp';
-import ActivateEmail from './teacher-components/ActivateEmail';
-import DisplayUserStatus from './teacher-components/DisplayUserStatus';
 // import TInfo from './teacher-components/TInfo';
-import THomepage from './teacher-components/THomepage';
-import InputNewEmail from './teacher-components/InputNewEmail';
-import ForgetPassword from './teacher-components/ForgetPassword';
-import TInputNewPassword from './teacher-components/TInputNewPassword';
-import VerifyYourEmail from './teacher-components/VerifyYourEmail';
+import InputNewEmail from './containers/InputNewEmail';
+import ForgetPassword from './containers/ForgetPassword';
+import VerifyYourEmail from './containers/VerifyYourEmail';
 import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
-import StepToSignUp from './teacher-components/StepToSignUp';
+import StepToSignUp from './containers/StepToSignUp';
 import ScheduleCourse from './teacher-components/ScheduleCourse';
-import OnlineTest from './teacher-components/online-test/OnlineTest';
 
 import App from './containers/App';
+import OnlineTest from './containers/OnlineTest';
+import SignIn from './containers/SignIn';
+import THomepage from './containers/TeacherHomepage';
+import TSignUp from './containers/TSignUp';
+import ActivateEmail from './containers/ActivateEmail';
+import TInputNewPassword from './containers/TInputNewPassword';
 
 import NotFound from './universal/NotFound';
 
@@ -32,17 +29,7 @@ import NotFound from './universal/NotFound';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-let store = createStore(reducers);
-
-// authorization
-const userToken = localStorage.getItem("user_token");
-
-var storedToken = store.getState().addToken.token;
-if (!!userToken && !storedToken) {
-  store.dispatch(addToken("Bearer " + userToken));
-}
-
-console.log(store.getState());
+let store = createStore(allReducers);
 
 const scrollBehavior = (prevRouterProps, { routes }) => {
   return [0,0];
@@ -53,7 +40,7 @@ const routes = {
   component: App,
   childRoutes: [
     { path: "sign-up", component: TSignUp },
-    { path: "sign-in", component: TSignIn },
+    { path: "sign-in", component: SignIn },
     { path: "teacher-homepage",         //    add  router to dashboard components.
       component: THomepage
     },
@@ -66,7 +53,6 @@ const routes = {
     { path: "about-job", component: TAboutJob },
     { path: "about-school", component: TAboutSchool },
     { path: "step-to-sign-up", component: StepToSignUp },
-    { path: "display-user-status", component: DisplayUserStatus },
     { path: "*", component: NotFound }
   ]
 };

@@ -1,46 +1,11 @@
-
 import React from 'react';
-import {connect} from 'react-redux';
 import api from '../network/api';
-import Loading from '../universal/Loading';
+import SiteLoading from '../containers/SiteLoading';
 
-class DisplayUserStatusClass extends React.Component {
+class DisplayUserStatusComp extends React.Component {
 
   constructor (props) {
     super (props);
-    this.state = {
-      dataIsReady: false,
-      profile: {}
-    };
-  }
-
-  componentWillMount () {
-    var token = this.props.token;
-    var self = this;
-
-    var profileRequest = api.TGetProfile(
-      "",
-      { "Authorization": token },
-      "",
-      (resp) => {
-        self.setState({
-          dataIsReady: true
-        });
-        if (resp.success) {
-          self.setState({
-            profile: resp.data
-          });
-        } else {
-          console.log("some thing wrong.");
-          alert("some thing wrong.");
-        }
-      },
-      (err) => {
-        alert("network is busy, please try again later");
-        console.log("network is busy, please try again later");
-      }
-    );
-
   }
 
   getOutput (profile) {
@@ -59,9 +24,8 @@ class DisplayUserStatusClass extends React.Component {
   }
 
   render () {
-    var profile = this.state.profile;
-    var dataIsReady = this.state.dataIsReady;
-    var content = dataIsReady ? this.getOutput(profile) : <Loading dataIsReady={dataIsReady}></Loading>;
+    var profile = this.props.profile;
+    var content = !this.props.pendingCounter ? this.getOutput(profile) : <SiteLoading></SiteLoading>;
 
     return (
       <div className="display-user-status">
@@ -70,20 +34,6 @@ class DisplayUserStatusClass extends React.Component {
     )
   }
 
-  componentDidMount () {
-
-  }
-
 }
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.addToken.token
-  }
-}
-
-const DisplayUserStatus = connect(
-  mapStateToProps
-)(DisplayUserStatusClass);
-
-export default DisplayUserStatus;
+export default DisplayUserStatusComp;

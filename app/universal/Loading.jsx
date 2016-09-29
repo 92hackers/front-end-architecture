@@ -6,26 +6,23 @@ class Loading extends React.Component {
 
   constructor (props) {
     super (props);
-    this.state = {
-      dataIsReady: this.props.dataIsReady
-    };
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps !== this.props.isDisplay) {
-      this.setState({
-        dataIsReady: nextProps.dataIsReady
-      });
-    }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   if (nextProps !== this.props.isDisplay) {
+  //     this.setState({
+  //       dataIsReady: nextProps.dataIsReady
+  //     });
+  //   }
+  // }
 
   render () {
 
     var style = {
       textAlign: "center",
-      display: this.state.dataIsReady ? "none" : "block",
-      paddingTop: 100,
-      paddingBottom: 100
+      display: !this.props.pendingCounter ? "none" : "block",
+      paddingTop: 200,
+      paddingBottom: 200
     };
 
     return (

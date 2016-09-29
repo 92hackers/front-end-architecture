@@ -1,9 +1,5 @@
 
-const dashboardDisplay = (component) => {
-  return {
-    type: "DASHBOARD_DISPLAY",
-    component: component
-  };
-}
+import { createAction } from './lib';
 
-export default dashboardDisplay;
+export const DISPLAY = "DISPLAY";
+export const dashboardDisplay = (comp) => createAction(DISPLAY, {comp});

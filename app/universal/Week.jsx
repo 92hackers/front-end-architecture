@@ -1,11 +1,13 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {notificationActions} from '../actions';
+
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import Notification from './Notification';
 import nprogress from 'nprogress';
 import api from '../network/api';
 
-class Week extends React.Component {
+class WeekComp extends React.Component {
 
   constructor (props) {
     super (props);
@@ -131,17 +133,6 @@ class Week extends React.Component {
       }
   }
 
-  notify (message) {
-
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
-  }
-
   cleanData () {
     var elems = document.getElementsByClassName("cell");
     var count = 0;
@@ -180,7 +171,7 @@ class Week extends React.Component {
     var prevWeek = this.state.prevWeek;
 
     if (this.state.timetableClicked) {
-      this.notify("Please submit your timetable before doing that.");
+      this.props.showNotification("Please submit your timetable before doing that.");
       return;
     }
 
@@ -207,7 +198,7 @@ class Week extends React.Component {
     var nextWeek = this.state.nextWeek;
 
     if (this.state.timetableClicked) {
-      this.notify("Please submit your timetable before doing that.");
+      this.props.showNotification("Please submit your timetable before doing that.");
       return;
     }
 
@@ -369,7 +360,6 @@ class Week extends React.Component {
           <RaisedButton className="left" label="Peak Times" onTouchTap={this.scrollBack.bind(this)}></RaisedButton>
           <RaisedButton className="right" label="Save Timetable" primary={true} onTouchTap={this.handleSubmit.bind(this)}></RaisedButton>
         </div>
-        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }
@@ -436,7 +426,7 @@ class Week extends React.Component {
     var lessonsDeleted = this.lessonsDeleted;
 
     if (!lessonsAdded.length && !lessonsDeleted.length) {
-      self.notify("please click the time table cell to schedule your lessons.");
+      this.props.showNotification("please click the time table cell to schedule your lessons.");
       return;
     }
 
@@ -453,7 +443,7 @@ class Week extends React.Component {
       (resp) => {
         nprogress.done();
         if (resp.success) {
-          self.notify("Save Time Table Successfully");
+          self.props.showNotification("Save Time Table Successfully");
           let param = self.state.reqParam;
           self.props.weeklyTimetableReq(param);
           self.props.monthlyTimetableReq(param);
@@ -464,12 +454,12 @@ class Week extends React.Component {
             timetableClicked: false
           });
         } else {
-          self.notify("Please Select Future Date and Time Correctly.");
+          self.props.showNotification("Please Select Future Date and Time Correctly.");
         }
       },
       (err) => {
         nprogress.done();
-        self.notify("network is busy, please try again later.");
+        self.props.networkError();
       }
     );
 
@@ -489,7 +479,7 @@ class Week extends React.Component {
     // if status > 0, the lesson had been booked.
 
     if (dataset.immutable === "immutable" && dataset.status > 0) {
-      this.notify("This Lesson Can not be Cancelled.");
+      self.props.showNotification("This Lesson Can not be Cancelled.");
       return;
     }
 
@@ -691,5 +681,18 @@ class Week extends React.Component {
   }
 
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showNotification: (message) => {
+      dispatch(notificationActions.showNotification(message));
+    },
+    networkError: () => {
+      dispatch(notificationActions.networkError());
+    }
+  }
+}
+
+const Week = connect(null, mapDispatchToProps)(WeekComp);
 
 export default Week;

@@ -1,13 +1,16 @@
 import * as notification from './notification';
 import * as user from './user';
-import * as dataIsReady from './dataIsReady';
+import * as pendingCounter from './pendingCounter';
+import * as dashboardDisplay from './dashboardDisplay';
 
 export const notificationActions = notification;
 export const userActions = user;
-export const dataIsReadyActions = dataIsReady;
+export const pendingCounterActions = pendingCounter;
+export const dashboardActions = dashboardDisplay;
 
 export default {
   notificationActions,
   userActions,
-  dataIsReadyActions,
+  pendingCounterActions,
+  dashboardActions
 };

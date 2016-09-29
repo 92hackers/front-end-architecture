@@ -5,12 +5,12 @@ import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import api from "../network/api";
-import Notification from './Notification';
-import dashboardDisplay from '../actions/dashboardDisplay';
 import nprogress from 'nprogress';
 
+import {connect} from 'react-redux';
+import {dashboardActions, notificationActions} from '../actions';
 
-class OneWeekTemplate extends React.Component {
+class OneWeekTemplateComp extends React.Component {
 
   constructor (props) {
     super(props);
@@ -114,16 +114,6 @@ class OneWeekTemplate extends React.Component {
     }
   }
 
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
-  }
-
   changeTime () {
     var offset = this.state.timezoneOffset;
     var fullHours = this.state.fullHours;
@@ -178,7 +168,7 @@ class OneWeekTemplate extends React.Component {
 
   scheduleLessons () {
     this.handleClose();
-    this.props.dispatch(dashboardDisplay("schedule"));
+    this.props.dashboardDisplay("schedule");
   }
 
   handleWelcomeClose () {
@@ -282,7 +272,6 @@ class OneWeekTemplate extends React.Component {
           <h1 className="text-center" style={{marginBottom: 20}}>Weekly timetable updated!</h1>
           <h3 className="text-center">Now, Click the Button below to Schedule Lessons.</h3>
         </Dialog>
-        <Notification ref="notification" message={this.state.notification}></Notification>
         <Dialog
           modal={false}
           className="welcomeDialog"
@@ -381,7 +370,7 @@ class OneWeekTemplate extends React.Component {
     var lessonsSelected = this.state.lessonsSelected;
 
     if (!lessonsSelected.length) {
-      self.notify("Please Click The Time Table Cell To Set Your Weekly Template.");
+      self.props.showNotification("Please Click The Time Table Cell To Set Your Weekly Template.");
       return;
     }
 
@@ -399,12 +388,12 @@ class OneWeekTemplate extends React.Component {
           self.props.templateReq();
           self.handleOpen();
         } else {
-          self.notify("network is busy, please try again later.");
+          self.props.networkError();
         }
       },
       (err) => {
         nprogress.done();
-        self.notify("network is busy, please try again later.");
+        self.props.networkError();
       }
     );
   }
@@ -523,5 +512,21 @@ class OneWeekTemplate extends React.Component {
   }
 
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showNotification: (message) => {
+      dispatch(notificationActions.showNotification(message));
+    },
+    networkError: () => {
+      dispatch(notificationActions.networkError());
+    },
+    dashboardDisplay: (comp) => {
+      dispatch(dashboardActions.dashboardDisplay(comp));
+    }
+  }
+}
+
+const OneWeekTemplate = connect(null, mapDispatchToProps)(OneWeekTemplateComp);
 
 export default OneWeekTemplate;

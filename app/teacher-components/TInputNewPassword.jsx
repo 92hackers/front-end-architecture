@@ -5,25 +5,11 @@ import formValidate from 'validate-js';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import api from '../network/api';
-import Notification from '../universal/Notification';
 
-class TInputNewPassword extends React.Component {
+class TInputNewPasswordComp extends React.Component {
 
   constructor(props) {
     super (props);
-    this.state = {
-      notification: ""
-    };
-  }
-
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
   }
 
   handleSubmit (e) {
@@ -53,7 +39,7 @@ class TInputNewPassword extends React.Component {
     var resetToken = this.props.location.query.token;
 
     if (!!notification.length) {
-      self.notify(notification);
+      self.props.showNotification(notification);
       return;
     }
 
@@ -64,26 +50,25 @@ class TInputNewPassword extends React.Component {
 
     if (resetToken.length) {
 
-      api.TReset(data, "", "",
-      (resp) => {
-        if (resp.success) {
-          self.notify("Reset Password Successfully! Wait To Refresh");
-          var timeId = setTimeout(() => {
-            clearTimeout(timeId);
-            browserHistory.push("/sign-in");
-          }, 4100);
-        } else {
-          self.notify("Something Wrong, Please Try Again Later");
-        }
-      },
-      (err) => {
-        self.notify("Network Is Busy, Please Try Again Later");
-      }
-    );
-  } else {
-    self.notify("Some Thing Wrong.");
-  }
-
+        api.TReset(data, "", "",
+          (resp) => {
+            if (resp.success) {
+              self.props.showNotification("Reset Password Successfully! Wait To Refresh");
+              var timeId = setTimeout(() => {
+                clearTimeout(timeId);
+                browserHistory.push("/sign-in");
+              }, 4100);
+            } else {
+              self.props.networkError();
+            }
+          },
+          (err) => {
+            self.props.networkError();
+          }
+        );
+    } else {
+      self.props.showNotification("wrong, try again later.");
+    }
   }
 
   render () {
@@ -96,10 +81,9 @@ class TInputNewPassword extends React.Component {
           <br/>
           <RaisedButton label="Submit" primary={true} onClick={this.handleSubmit.bind(this)} style={{width: "100%"}}></RaisedButton>
         </form>
-        <Notification message={this.state.notification} ref="notification"></Notification>
       </div>
     )
   }
 }
 
-export default TInputNewPassword;
+export default TInputNewPasswordComp;

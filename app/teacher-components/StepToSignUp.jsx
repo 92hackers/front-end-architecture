@@ -1,7 +1,6 @@
 // step page to complete sign up process.
 import React from 'react';
 import {browserHistory, Link} from 'react-router';
-import {connect} from 'react-redux';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,9 +15,8 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {red500} from 'material-ui/styles/colors';
 
 import api from '../network/api';
-import Notification from '../universal/Notification';
 import AvatarUpload from '../universal/AvatarUpload';
-import Loading from '../universal/Loading';
+import SiteLoading from '../containers/SiteLoading';
 import TAvatar from './TAvatar';
 
 class BasicInfo extends React.Component {
@@ -162,16 +160,6 @@ class BasicInfo extends React.Component {
     var profile = nextProps.profile;
     if (nextProps.profile !== this.props.profile) {
       this.setProfile(profile);
-    }
-  }
-
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
     }
   }
 
@@ -346,7 +334,7 @@ class BasicInfo extends React.Component {
       }
 
       if (!!notification.length) {
-        this.notify(notification);
+        this.props.showNotification(notification);
         return ;
       }
 
@@ -366,7 +354,7 @@ class BasicInfo extends React.Component {
         eduList: tempEduList
       });
     } else {
-      this.notify("Please Complete All Fields");
+      this.props.showNotification("Please Complete All Fields");
     }
 
   }
@@ -411,7 +399,7 @@ class BasicInfo extends React.Component {
       }
 
       if (!!notification.length) {
-        this.notify(notification);
+        this.props.showNotification(notification);
         return ;
       }
 
@@ -430,7 +418,7 @@ class BasicInfo extends React.Component {
       });
 
     } else {
-      this.notify("Please Complete All Fields.");
+      this.props.showNotification("Please Complete All Fields.");
     }
 
   }
@@ -681,7 +669,6 @@ class BasicInfo extends React.Component {
               }
             </TableBody>
           </Table>
-          <Notification ref="notification" message={this.state.notification}></Notification>
         </div>
       </div>
     )
@@ -836,7 +823,7 @@ class BasicInfo extends React.Component {
     }
 
     if (!!notification.length) {
-      self.notify(notification);
+      self.props.showNotification(notification);
       return;
     }
 
@@ -944,16 +931,6 @@ class TeachingExperience extends React.Component {
     }
   }
 
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
-  }
-
   handleChange (e, index) {
     this.setState({
       teachExpValue: index
@@ -1032,7 +1009,6 @@ class TeachingExperience extends React.Component {
             </div>
           </li>
         </ul>
-        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }
@@ -1066,7 +1042,7 @@ class TeachingExperience extends React.Component {
     }
 
     if (!!notification.length) {
-      self.notify(notification);
+      self.props.showNotification(notification);
       return;
     }
 
@@ -1230,10 +1206,9 @@ class ScheduleInterview extends React.Component {
                   </SelectField>
                 </div>
               </div>
-                ) : <Loading dataIsReady={this.state.dataisready}></Loading>
+                ) : <SiteLoading></SiteLoading>
           }
         </div>
-        <Notification message={this.state.notification} ref="notification"></Notification>
       </div>
     )
   }
@@ -1242,22 +1217,12 @@ class ScheduleInterview extends React.Component {
     this.fetchInterviewData(this.props.timezoneId);
   }
 
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
-  }
-
   handleSubmit () {
     var self = this;
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
     if (!interviewPeriod) {
-      self.notify("Please select one interview time.");
+      self.props.showNotification("Please select one interview time.");
       return;
     } else {
       self.props.displaySuccessWorlds();
@@ -1291,7 +1256,7 @@ class ScheduleInterview extends React.Component {
 
 }
 
-class StepToSignUpClass extends React.Component {
+class StepToSignUpComp extends React.Component {
 
   constructor (props) {
     super (props);
@@ -1299,16 +1264,8 @@ class StepToSignUpClass extends React.Component {
       stepIndex: 0,
       timezoneId: "",
       confirmDialogueOpen: false,
-      profile: {},
       isFinished: false,
-      dataIsReady: false
     };
-  }
-
-  componentWillMount () {
-    if (!this.props.token) {
-      browserHistory.push("/sign-in");
-    }
   }
 
   handleNext () {
@@ -1354,13 +1311,16 @@ class StepToSignUpClass extends React.Component {
   }
 
   getContent (stepIndex) {
+
+    const profile = this.props.profile;
+
     switch (stepIndex) {
       case 0:
-        return <BasicInfo profile={this.state.profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
+        return <BasicInfo showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
       case 1:
         var experience = "";
 
-        switch (this.state.profile.experience) {
+        switch (profile.experience) {
           case 3 :
             experience = 2;
             break;
@@ -1374,9 +1334,9 @@ class StepToSignUpClass extends React.Component {
             experience = "";
         }
 
-        return <TeachingExperience profile={this.state.profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
+        return <TeachingExperience showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
-        return <ScheduleInterview timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
+        return <ScheduleInterview showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
         return (<h1>some thing wrong.</h1>);
     }
@@ -1474,9 +1434,6 @@ class StepToSignUpClass extends React.Component {
       color: '#2196f3'
     };
 
-    // const stepLabelActiveStyle = {
-    // };
-
     return (
       <section className="step-to-sign-up">
         <div className="container">
@@ -1494,7 +1451,7 @@ class StepToSignUpClass extends React.Component {
             </Stepper>
             <div className="step-content">
               {
-                this.state.dataIsReady ? (<section className="content">{content}</section>) : <Loading></Loading>
+                !this.props.pendingCounter ? (<section className="content">{content}</section>) : <SiteLoading></SiteLoading>
               }
             </div>
           </div>
@@ -1514,49 +1471,9 @@ class StepToSignUpClass extends React.Component {
   }
 
   componentDidMount () {
-    var self = this;
-
-    if (!self.props.token) {
-      browserHistory.push("/sign-in");
-      return;
-    } else {
-
-      this.profileRequest = api.TGetProfile("",
-        { "Authorization": self.props.token },
-        "",
-        (resp) => {
-          if (resp.success) {
-            let profile = resp.data;
-            if (profile.timezone) {
-              self.setState({
-                timezoneId: profile.timezone
-              });
-            }
-            self.setState({
-              profile: profile,
-              dataIsReady: true
-            });
-          } else {
-            console.log("error fetching");
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-
-    }
-
+    //  get profile data.
   }
 
 }
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.addToken.token
-  }
-};
-
-const StepToSignUp = connect(mapStateToProps)(StepToSignUpClass);
-
-export default StepToSignUp;
+export default StepToSignUpComp;

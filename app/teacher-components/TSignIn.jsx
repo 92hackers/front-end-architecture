@@ -1,35 +1,18 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 import formValidate from 'validate-js';
-import { connect } from 'react-redux';
 import nprogress from 'nprogress';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 
-import Notification from '../universal/Notification';
-import addToken from '../actions/addToken';
 import api from '../network/api';
 
-class TSignInClass extends React.Component {
+class TSignInComp extends React.Component {
 
   constructor (props) {
     super (props);
-    this.state = {
-      open: false,
-      notification: ""
-    };
-  }
-
-  notify (message) {
-    if (!!message.length) {
-      this.setState({
-        notification: message
-      }, () => {
-        this.refs.notification.handleNotificationOpen();
-      });
-    }
   }
 
   handleSubmit(e) {
@@ -59,7 +42,7 @@ class TSignInClass extends React.Component {
     validator._validateForm();
 
     if (!!notification.length) {
-      self.notify(notification);
+      self.props.showNotification(notification);
       return;
     }
 
@@ -74,9 +57,7 @@ class TSignInClass extends React.Component {
       nprogress.done();
       if (resp.success) {
         if (!!resp.data.token) {
-          let token = resp.data.token;
-          localStorage.setItem("user_token", token);
-          this.props.dispatch(addToken("Bearer " + token));     // store  user token into global store object.
+          self.props.signIn("Bearer " + resp.data.token);
         }
         switch (parseInt(resp.data.status)) {
           case 1 :
@@ -84,19 +65,19 @@ class TSignInClass extends React.Component {
             var token = "Bearer " + resp.data.token;
             if (queryParam === "resendEmail") {
               api.TNewEmail("",
-              {"Authorization": token},
-              "",
-              (resp) => {
-                if (resp.success) {
-                  self.notify("A New Email Has Aleady Send To Your Registered Email Address");
-                } else {
-                  self.notify(resp.data.error);
+                {"Authorization": token},
+                "",
+                (resp) => {
+                  if (resp.success) {
+                    self.props.showNotification("A New Email Has Aleady Send To Your Registered Email Address");
+                  } else {
+                    self.props.showNotification(resp.data.error);
+                  }
+                },
+                (err) => {
+                  self.props.networkError();
                 }
-              },
-              (err) => {
-                self.notify("Network Is Busy, Try Again Later");
-              }
-              )
+              );
             } else if (!queryParam) {
               let url = "/active-email?user_name=" + "s@x^nil*@(<)";
               browserHistory.push(url);
@@ -120,12 +101,12 @@ class TSignInClass extends React.Component {
             break;
         }
       } else {
-        self.notify("Email Address Or Password Error");
+        self.props.showNotification("Email Address Or Password Error");
       }
     },
     (err) => {
       nprogress.done();
-      self.notify("Something Wrong, Please Try Again Later");
+      self.props.networkError();
     }
     );
   }
@@ -156,7 +137,6 @@ class TSignInClass extends React.Component {
             <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>
           <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-linkedin"></FontIcon>} label="Sign in with Linkedin" style={style}></RaisedButton> */}
         </form>
-        <Notification ref="notification" message={this.state.notification}></Notification>
       </div>
     )
   }
@@ -168,6 +148,4 @@ class TSignInClass extends React.Component {
 
 }
 
-var TSignIn = connect()(TSignInClass);
-
-export default TSignIn;
+export default TSignInComp;

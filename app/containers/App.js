@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 import AppContainer from '../teacher-components/AppContainer';
-import { userActions } from '../actions';
-import { dataIsReadyActions } from '../actions';
+import { notificationActions, userActions, pendingCounterActions } from '../actions';
 
-// const mapStateToProps = (state) => {
-//
-//   return {
-//     token: state.user.token
-//   }
-// }
+const mapStateToProps = (state) => {
+  return {
+    token: state.user.token,
+    pendingCounter: state.pendingCounter
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -17,9 +16,21 @@ const mapDispatchToProps = (dispatch) => {
     },
     getProfile: (profile) => {
       dispatch(userActions.getProfile(profile));
+    },
+    increaseCounter: () => {
+      dispatch(pendingCounterActions.increaseCounter());
+    },
+    decreaseCounter: () => {
+      dispatch(pendingCounterActions.decreaseCounter());
+    },
+    showNotification: (message) => {
+      dispatch(notificationActions.showNotification(message));
+    },
+    networkError: () => {
+      dispatch(notificationActions.networkError());
     }
   };
 }
 
-const App = connect(null, mapDispatchToProps)(AppContainer);
+const App = connect(mapStateToProps, mapDispatchToProps)(AppContainer);
 export default App;

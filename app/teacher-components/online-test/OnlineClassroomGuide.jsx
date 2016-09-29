@@ -5,10 +5,10 @@ import Quiz from './Quiz';
 class OnlineClassroomGuide extends React.Component {
 
  constructor (props) {
-     super (props);
-     this.state = {
-       questions: []
-     };
+   super (props);
+   this.state = {
+     questions: []
+   };
  }
 
  componentWillMount () {
@@ -25,7 +25,7 @@ class OnlineClassroomGuide extends React.Component {
      }
    },
    (err) => {
-     alert("something wrong.");
+     console.log("some wrong.");
    }
   )
  }
