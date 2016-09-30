@@ -33,31 +33,28 @@ class VerifyYourEmailComp extends React.Component {
     var self = this;
     var activeCode = this.props.location.query.token;
 
-    console.log("active code: ", activeCode);
-
     if (!!activeCode) {
 
       api.TEmailActivate("","",
-      activeCode,
-      (resp) => {
-        if (resp.success) {
-          self.setState({
-            isSuccess: true
-          });
-          var timeoutId = setTimeout(() => {
-            clearTimeout(timeoutId);
-            console.log("route to sign in page: ");
-            browserHistory.push("/sign-in");
-          }, 2000);
-        } else {
-          self.props.showNotification("Verify Failed, Please Try Again Later");
+        activeCode,
+        (resp) => {
+          if (resp.success) {
+            self.setState({
+              isSuccess: true
+            });
+            var timeoutId = setTimeout(() => {
+              clearTimeout(timeoutId);
+              browserHistory.push("/sign-in");
+            }, 4000);
+          } else {
+            self.props.showNotification("Verify Failed, Please Try Again Later");
+          }
+        },
+        (err) => {
+          self.props.networkError();
         }
-      },
-      (err) => {
-        self.props.networkError();
-      }
-    );
-  }
+      );
+    }
   }
 }
 

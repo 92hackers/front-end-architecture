@@ -21,7 +21,6 @@ class AppContainer extends React.Component {
   }
 
   routerByStatus (status) {
-    console.log("user status: ",status);
     switch (parseInt(status)) {
       case 1:
         let url = "/active-email?user_name=" + "s@x^nil*@(<)";
@@ -63,7 +62,7 @@ class AppContainer extends React.Component {
 
     var token = localStorage.getItem("user_token") || "";
 
-    if (!!token) {
+    if (!!token && !this.props.token) {
 
       self.props.increaseCounter();
 

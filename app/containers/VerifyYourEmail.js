@@ -4,7 +4,6 @@ import VerifyYourEmailComp from '../teacher-components/VerifyYourEmail';
 
 const mapStateToProps = (state) => {
   return {
-
   }
 };
 
