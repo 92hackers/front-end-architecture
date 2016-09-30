@@ -60,7 +60,7 @@ class AppContainer extends React.Component {
     var requestRoute = this.props.location.pathname;
     requestRoute = requestRoute.replace(/\//, "");
 
-    var token = this.props.token || localStorage.getItem("user_token") || "";
+    var token = localStorage.getItem("user_token") || "";
 
     if (!!token) {
 

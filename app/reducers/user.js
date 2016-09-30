@@ -18,8 +18,8 @@ export default function auth(state = initState, action) {
 
     case userActions.SIGN_OUT:
       localStorage.removeItem('user_token');
-      return {...state, token: '', loggedIn: false, profile: ""};
-      
+      return {token: '', loggedIn: false, profile: {}};
+
     default:
       return state;
   }
