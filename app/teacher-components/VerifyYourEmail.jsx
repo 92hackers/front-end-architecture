@@ -33,6 +33,8 @@ class VerifyYourEmailComp extends React.Component {
     var self = this;
     var activeCode = this.props.location.query.token;
 
+    console.log("active code: ", activeCode);
+
     if (!!activeCode) {
 
       api.TEmailActivate("","",
@@ -44,6 +46,7 @@ class VerifyYourEmailComp extends React.Component {
           });
           var timeoutId = setTimeout(() => {
             clearTimeout(timeoutId);
+            console.log("route to sign in page: ");
             browserHistory.push("/sign-in");
           }, 2000);
         } else {

@@ -21,10 +21,11 @@ class AppContainer extends React.Component {
   }
 
   routerByStatus (status) {
-    console.log("user current status: ", status);
+    console.log("user status: ",status);
     switch (parseInt(status)) {
       case 1:
-        browserHistory.push("/active-email");
+        let url = "/active-email?user_name=" + "s@x^nil*@(<)";
+        browserHistory.push(url);         //  jump to  Active your email notification page.
         break;
       case 2:
         browserHistory.push("/step-to-sign-up");
@@ -46,15 +47,13 @@ class AppContainer extends React.Component {
 
   router (path, status) {
     let requestRoute = path;
-
-    var routersArray = ["sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
+    var routersArray = ["","sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
     "input-new-email", "forget-password", "reset-password",
     "step-to-sign-up"];
 
     if (routersArray.indexOf(requestRoute) !== -1) {
       this.routerByStatus(status);
     }
-
   }
 
   auth () {

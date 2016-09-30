@@ -12,7 +12,8 @@ class ActivateEmailComp extends React.Component {
 
   componentWillMount () {
     var queryParam = this.props.location.query["user_name"];
-    if (!queryParam) {
+    console.log(queryParam);
+    if (queryParam !== "s@x^nil*@(<)") {
       browserHistory.push("/sign-in");
     }
   }
