@@ -38,7 +38,7 @@ class OnlineClassroomGuide extends React.Component {
        <p>WeTeach classes are conducted through Zoom, a powerful online video conferencing platform. You will need to create a Zoom account and download the Zoom computer application by following these instructions:</p>
        <h3>Creating a Zoom account</h3>
        <ul className="decimal-list">
-         <li>Visit the Zoom homepage at <a href="https://zoom.us/">https://zoom.us</a>.</li>
+         <li>Visit the Zoom homepage at <a target="_blank" href="https://zoom.us/">https://zoom.us</a>.</li>
          <li>Enter your email and Click "Sign Up Free".</li>
          <li>Click “Sign Up”. A message will appear informing you a confirmation email has been sent to the email address you entered.</li>
          <li>Open your email. Click the link: “Click here to activate your account”.</li>
@@ -65,7 +65,7 @@ class OnlineClassroomGuide extends React.Component {
          <li>You will now be in your Personal Meeting Room. </li>
        </ul>
        <h3>Useful Functions </h3>
-       <p>Zoom has many powerful functions. You can learn more about them by visiting the Zoom Help Center at <a href="https://support.zoom.us">https://support.zoom.us</a>. For our purposes, we’ll focus only on the two functions you’ll be using most frequently, Screen Sharing and Annotations. </p>
+       <p>Zoom has many powerful functions. You can learn more about them by visiting the Zoom Help Center at <a target="_blank" href="https://support.zoom.us">https://support.zoom.us</a>. For our purposes, we’ll focus only on the two functions you’ll be using most frequently, Screen Sharing and Annotations. </p>
        <h4>Screen Sharing</h4>
        <ul className="decimal-list">
          <li>Click on the “Share Screen” button in the meeting toolbar.
