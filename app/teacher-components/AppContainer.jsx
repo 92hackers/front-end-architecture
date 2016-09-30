@@ -8,7 +8,7 @@ import {blue500} from 'material-ui/styles/colors';
 import TIndex from './TIndex';
 import api from '../network/api';
 
-import SiteHeader from '../components/SiteHeader';
+import SiteHeader from '../containers/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
 
 import SiteNotification from '../containers/SiteNotification';
