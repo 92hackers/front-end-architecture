@@ -47,7 +47,7 @@ class AppContainer extends React.Component {
     let requestRoute = path;
 
     var routersArray = ["sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
-    "active-email", "input-new-email", "forget-password", "reset-password",
+    "input-new-email", "forget-password", "reset-password",
     "step-to-sign-up"];
 
     if (routersArray.indexOf(requestRoute) !== -1) {
