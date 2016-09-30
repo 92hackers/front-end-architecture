@@ -63,7 +63,7 @@ class TSignUpComp extends React.Component {
     validator._validateForm();
 
     if (!!errorMessage.length) {
-      this.notify(errorMessage);
+      this.props.showNotification(errorMessage);
       return;
     }
 
@@ -87,14 +87,14 @@ class TSignUpComp extends React.Component {
           browserHistory.push(url);         //  jump to  Active your email notification page.
         } else {
           if (!!resp.data.email) {
-            self.notify("This Email Address Has Already Been Registered");
+            self.props.showNotification("This Email Address Has Already Been Registered");
             return;
           }
         }
       },
       (err) => {
         nprogress.done();
-        self.notify("Network Is Busy, Please Try Again Later.");
+        self.props.networkError();
       }
     )
     console.log(data);
