@@ -2,6 +2,7 @@
 import React from 'react';
 import {browserHistory, Link} from 'react-router';
 
+import CircularProgress from 'material-ui/CircularProgress';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -134,6 +135,7 @@ class BasicInfo extends React.Component {
       this.setState({
         timezoneId: profile.timezone
       });
+      this.props.setTimezoneId(profile.timezone);
     }
 
     this.setState({
@@ -1206,7 +1208,7 @@ class ScheduleInterview extends React.Component {
                   </SelectField>
                 </div>
               </div>
-                ) : <SiteLoading></SiteLoading>
+                ) : <CircularProgress></CircularProgress>
           }
         </div>
       </div>

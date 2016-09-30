@@ -147,7 +147,7 @@ class SiteHeaderComp extends React.Component {
         >
           <List className="dashboard-dropdown">
             <ListItem primaryText="Change Password" leftIcon={<i className="fa fa-key"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
-            <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={this.handleEditProfileClick.bind(this)}></ListItem>
+            {/* <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={this.handleEditProfileClick.bind(this)}></ListItem> */}
           </List>
         </Popover>
       </li>
