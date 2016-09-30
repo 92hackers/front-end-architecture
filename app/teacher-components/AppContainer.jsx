@@ -21,6 +21,7 @@ class AppContainer extends React.Component {
   }
 
   routerByStatus (status) {
+    console.log("user current status: ", status);
     switch (parseInt(status)) {
       case 1:
         browserHistory.push("/active-email");
@@ -53,6 +54,7 @@ class AppContainer extends React.Component {
     if (routersArray.indexOf(requestRoute) !== -1) {
       this.routerByStatus(status);
     }
+
   }
 
   auth () {
@@ -64,10 +66,6 @@ class AppContainer extends React.Component {
 
     if (!!token) {
 
-      if (!this.props.token) {
-        self.props.signIn(token);
-      }
-
       self.props.increaseCounter();
 
       var profileRequest = api.TGetProfile(
@@ -76,18 +74,24 @@ class AppContainer extends React.Component {
         "",
         (resp) => {
           if (resp.success) {
+
+            if (!self.props.token) {
+              self.props.signIn(token);
+            }
+
             self.props.getProfile(resp.data);
             self.router(requestRoute, resp.data.status);
             self.props.decreaseCounter();
-          } else {
-            self.props.showNotification("Your session token expired, Please sign in again.");
-            browserHistory.push("/sign-in");
           }
         },
         (err) => {
-          self.props.networkError();
+          self.props.showNotification("Your session token expired, Please sign in again.");
+          self.props.clearCounter();
+          self.props.signOut();
+          browserHistory.push("/sign-in");
         }
       );
+
     } else {
       if (!!requestRoute.length) {
         browserHistory.push("/sign-in");
@@ -128,10 +132,12 @@ class AppContainer extends React.Component {
                 <div>
                   <SiteHeader token={this.props.token}></SiteHeader>
                   {this.props.children || <TIndex></TIndex>}
-                  <SiteNotification></SiteNotification>
                 </div>
                   ) : <SiteLoading></SiteLoading>
             }
+          </MuiThemeProvider>
+          <MuiThemeProvider muiTheme={muiTheme}>
+            <SiteNotification></SiteNotification>
           </MuiThemeProvider>
           <SiteFooter></SiteFooter>
         </div>

@@ -14,6 +14,9 @@ const mapDispatchToProps = (dispatch) => {
     signIn: (token) => {
       dispatch(userActions.signIn(token));
     },
+    signOut: () => {
+      dispatch(userActions.signOut());
+    },
     getProfile: (profile) => {
       dispatch(userActions.getProfile(profile));
     },
@@ -22,6 +25,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     decreaseCounter: () => {
       dispatch(pendingCounterActions.decreaseCounter());
+    },
+    clearCounter: () => {
+      dispatch(pendingCounterActions.clearCounter());
     },
     showNotification: (message) => {
       dispatch(notificationActions.showNotification(message));
