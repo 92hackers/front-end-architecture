@@ -4,6 +4,7 @@ import VerifyYourEmailComp from '../teacher-components/VerifyYourEmail';
 
 const mapStateToProps = (state) => {
   return {
+    loggedIn: state.user.loggedIn
   }
 };
 

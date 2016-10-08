@@ -28,9 +28,10 @@ class VerifyYourEmailComp extends React.Component {
     return (
       <div className="verify-your-email" style={{paddingTop: "100px", paddingBottom: "100px"}}>
         <h1 style={{display: verify}} className="text-center">Verifying <CircularProgress></CircularProgress></h1>
-        <h1 style={{display: success}} className="text-center"><i className="fa fa-check-circle"></i>Account activated! please sign in to continue.</h1>
+        <h1 style={{display: success}} className="text-center"><i className="fa fa-check-circle"></i>Account activated! Please {this.props.loggedIn ? <span>complete your personal profile.</span> : <span>sign in to continue.</span>}</h1>
       </div>
     )
+
   }
 
   //   get active code from url.
@@ -50,7 +51,11 @@ class VerifyYourEmailComp extends React.Component {
             });
             var timeoutId = setTimeout(() => {
               clearTimeout(timeoutId);
-              browserHistory.push("/sign-in");
+              if (self.props.loggedIn) {
+                browserHistory.push("step-to-sign-up");
+              } else {
+                browserHistory.push("/sign-in");
+              }
             }, 4000);
           } else {
             self.props.showNotification("Verify Failed, Please Try Again Later");
