@@ -25,7 +25,7 @@ class ESL extends React.Component {
      }
    },
    (err) => {
-     alert("something wrong.");
+     console.error("something wrong.");
    }
   )
  }
@@ -68,6 +68,11 @@ class ESL extends React.Component {
       </div>
     )
   }
+
+  componentDidMount () {
+    window.scrollTo(0,0);
+  }
+
 }
 
 export default ESL;

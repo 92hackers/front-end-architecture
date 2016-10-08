@@ -20,7 +20,7 @@ class AppContainer extends React.Component {
     super(props);
   }
 
-  routerByStatus (status) {
+  routerByStatus (status, examined) {
     switch (parseInt(status)) {
       case 1:
         let url = "/active-email?user_name=" + "s@x^nil*@(<)";
@@ -31,7 +31,11 @@ class AppContainer extends React.Component {
         break;
       case 3:
       case 4:
-        browserHistory.push("/teacher-online-test");
+        if (!!examined) {               // if teacher pass the online test, route to teacher homepage, or to do the test.
+          browserHistory.push("/teacher-homepage");
+        } else {
+          browserHistory.push("/teacher-online-test");
+        }
         break;
       case 8:
       case 10:
@@ -44,13 +48,13 @@ class AppContainer extends React.Component {
     }
   }
 
-  router (path, status) {
+  router (path, status, examined) {
     let requestRoute = path;
     var routersArray = ["","sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
     "input-new-email", "forget-password", "step-to-sign-up"];
 
     if (routersArray.indexOf(requestRoute) !== -1) {
-      this.routerByStatus(status);
+      this.routerByStatus(status, examined);
     }
   }
 
@@ -68,8 +72,9 @@ class AppContainer extends React.Component {
         "",
         (resp) => {
           if (resp.success) {
-            self.props.getProfile(resp.data);
-            self.router(requestRoute, resp.data.status);
+            const profile = resp.data;
+            self.props.getProfile(profile);
+            self.router(requestRoute, profile.status, profile.examined);
             self.props.decreaseCounter();
           }
         },

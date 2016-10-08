@@ -5,7 +5,8 @@ import IndexHeaderComp from '../teacher-components/IndexHeader';
 const mapStateToProps = (state) => {
   return {
     token: state.user.token,
-    status: state.user.profile.status
+    status: state.user.profile.status,
+    examined: state.user.profile.examined
   }
 };
 

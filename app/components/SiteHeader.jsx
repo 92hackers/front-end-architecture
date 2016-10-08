@@ -120,9 +120,7 @@ class SiteHeaderComp extends React.Component {
   }
 
   render () {
-
-    var isUserLoggedIn = this.props.token;
-    var userStatus = this.props.status;
+    const {token: isUserLoggedIn, status: userStatus, examined: examined} = this.props;
 
     var inviteActions = [
       <RaisedButton
@@ -169,16 +167,29 @@ class SiteHeaderComp extends React.Component {
        switch (userStatus) {
          case 3:
          case 4:
-           dynamicComponent = (
-             <ul className="right">
-               <li className="header-item">
-                 <Link to="teacher-online-test">Online Test</Link>
-                 <span className="nav-border-line"></span>
-               </li>
-               {settingsMenu}
-               <SignOutButton></SignOutButton>
-             </ul>
-           );
+          if (!!examined) {
+            dynamicComponent = (
+              <ul className="right">
+                <li className="header-item">
+                  <Link to="teacher-homepage">Homepage</Link>
+                  <span className="nav-border-line"></span>
+                </li>
+                {settingsMenu}
+                <SignOutButton></SignOutButton>
+              </ul>
+            );
+          } else {
+            dynamicComponent = (
+              <ul className="right">
+                <li className="header-item">
+                  <Link to="teacher-online-test">Online Test</Link>
+                  <span className="nav-border-line"></span>
+                </li>
+                {settingsMenu}
+                <SignOutButton></SignOutButton>
+              </ul>
+            );
+          }
            break;
          case 8:
           dynamicComponent = (

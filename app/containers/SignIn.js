@@ -4,7 +4,7 @@ import TSignInComp from '../teacher-components/TSignIn';
 
 const mapStateToProps =  (state) => {
   return {
-
+    examined: state.user.profile.examined
   }
 };
 

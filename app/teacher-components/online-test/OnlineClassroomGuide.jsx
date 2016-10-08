@@ -1,4 +1,5 @@
 import React from "react";
+import {blue500} from 'material-ui/styles/colors';
 import api from '../../network/api';
 import Quiz from './Quiz';
 
@@ -25,7 +26,7 @@ class OnlineClassroomGuide extends React.Component {
      }
    },
    (err) => {
-     console.log("some wrong.");
+     console.error("some wrong.");
    }
   )
  }
@@ -38,7 +39,7 @@ class OnlineClassroomGuide extends React.Component {
        <p>WeTeach classes are conducted through Zoom, a powerful online video conferencing platform. You will need to create a Zoom account and download the Zoom computer application by following these instructions:</p>
        <h3>Creating a Zoom account</h3>
        <ul className="decimal-list">
-         <li>Visit the Zoom homepage at <a target="_blank" href="https://zoom.us/">https://zoom.us</a>.</li>
+         <li>Visit the Zoom homepage at <a style={{color: blue500}} target="_blank" href="https://zoom.us/">https://zoom.us</a>.</li>
          <li>Enter your email and Click "Sign Up Free".</li>
          <li>Click “Sign Up”. A message will appear informing you a confirmation email has been sent to the email address you entered.</li>
          <li>Open your email. Click the link: “Click here to activate your account”.</li>
@@ -105,6 +106,10 @@ class OnlineClassroomGuide extends React.Component {
        <Quiz questions={this.state.questions}></Quiz>
      </div>
    )
+ }
+
+ componentDidMount () {
+   window.scrollTo(0,0);
  }
 }
 

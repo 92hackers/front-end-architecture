@@ -6,7 +6,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.user.token,
     pendingCounter: state.pendingCounter,
-    status: state.user.profile.status
+    status: state.user.profile.status,
+    examined: state.user.profile.examined
   }
 };
 

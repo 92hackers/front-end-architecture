@@ -13,8 +13,7 @@ class IndexHeaderComp extends React.Component {
   render () {
     var dynamicContent = "";
 
-    const token = this.props.token;
-    const userStatus = this.props.status;
+    const {token, status: userStatus, examined: examined} = this.props;
 
     if (!!token) {
       switch (userStatus) {
@@ -28,12 +27,21 @@ class IndexHeaderComp extends React.Component {
           break;
         case 3:
         case 4:
-          dynamicContent = (
-            <ul className="right">
-              <li><Link to="/teacher-online-test" className="primary-button">Online Test</Link></li>
-              <SignOutButton className="primary-button" style={{lineHeight: "39px", marginTop: "10px"}}></SignOutButton>
-            </ul>
-          );
+          if (!!examined) {
+            dynamicContent = (
+              <ul className="right">
+                <li><Link to="/teacher-homepage" className="primary-button">Homepage</Link></li>
+                <SignOutButton className="primary-button" style={{lineHeight: "39px", marginTop: "10px"}}></SignOutButton>
+              </ul>
+            );
+          } else {
+            dynamicContent = (
+              <ul className="right">
+                <li><Link to="/teacher-online-test" className="primary-button">Online Test</Link></li>
+                <SignOutButton className="primary-button" style={{lineHeight: "39px", marginTop: "10px"}}></SignOutButton>
+              </ul>
+            );
+          }
           break;
         case 10:
         case 11:

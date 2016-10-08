@@ -1,11 +1,13 @@
 // Teacher online test.
 
 import React from 'react';
+import {Link} from 'react-router';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import {blue500} from 'material-ui/styles/colors';
+import {red500} from 'material-ui/styles/colors';
 
 import WaitForSubmit from '../../universal/WaitForSubmit';
 import api from '../../network/api';
@@ -41,7 +43,6 @@ class OnlineTestComp extends React.Component {
       this.setState({
         isFinished: true
       });
-      return;
     }
     if (stepIndex < 5) {
       this.setState({
@@ -81,7 +82,8 @@ class OnlineTestComp extends React.Component {
 
     var articleContent = this.state.isFinished ? (
       <div className="successful-words text-center ">
-        <p style={{color: blue500, fontSize: 24}}>Thanks for completing the self-study moduals.</p>
+        <p style={{color: blue500, fontSize: 24, marginBottom: 20}}>Thanks for completing the self-study moduals.</p>
+        <p style={{color: blue500, fontSize: 24}}>You could click<Link style={{color: red500}} className="go-to-dashboard" to="/teacher-homepage">Here</Link>to go to your homepage.</p>
       </div>
     ) : (
       <div>
@@ -157,6 +159,23 @@ class OnlineTestComp extends React.Component {
       (resp) => {
         if (resp.success) {
           self.refs.loader.displaySuccess(self.handleNext, self);
+          if (param === 5) {
+            api.TGetProfile("",
+              { "Authorization": self.token},
+              "",
+              (resp) => {
+                var data = resp.data;
+                if (resp.success) {
+                  self.props.getProfile(data);
+                } else {
+                  self.props.showNotification(data);
+                }
+              },
+              (err) => {
+                self.props.networkError();
+              }
+            );
+          }
         } else {
           self.refs.loader.displayError();
         }

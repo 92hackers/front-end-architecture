@@ -26,7 +26,7 @@ class BestPracitices extends React.Component {
      }
    },
    (err) => {
-     alert("something wrong.");
+     console.error("something wrong.");
    }
   )
  }
@@ -61,6 +61,10 @@ class BestPracitices extends React.Component {
         <Quiz questions={this.state.questions}></Quiz>
       </div>
     )
+  }
+
+  componentDidMount () {
+    window.scrollTo(0,0);
   }
 }
 

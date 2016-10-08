@@ -88,6 +88,8 @@ class TSignInComp extends React.Component {
             break;
           case 3 :
           case 4 :
+            browserHistory.push("/teacher-online-test");
+            break;
           case 8 :
           case 10 :
           case 11 :
