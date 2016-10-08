@@ -10,7 +10,7 @@ var gulpif = require('gulp-if');
 
 gulp.task("preprocess", () => {
 
-  var host = process.env.NODE_ENV.toString() === "production" ? config.productionHost : config.devHost;
+  var host = process.env.API_HOST && process.env.API_HOST.toString() === "production" ? config.productionHost : config.devHost;
   var apiVersion = config.apiVersion.replace(/\//g, "\\/");
   host = host.replace(/\/\//, "\\/\\/");
 
