@@ -47,8 +47,7 @@ class AppContainer extends React.Component {
   router (path, status) {
     let requestRoute = path;
     var routersArray = ["","sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
-    "input-new-email", "forget-password", "reset-password",
-    "step-to-sign-up"];
+    "input-new-email", "forget-password", "step-to-sign-up"];
 
     if (routersArray.indexOf(requestRoute) !== -1) {
       this.routerByStatus(status);
@@ -84,7 +83,11 @@ class AppContainer extends React.Component {
 
     } else {
       if (!!requestRoute.length) {
-        browserHistory.push("/sign-in");
+        // 不需要 token 的路径有: 1，reset-password,  2, activate-your-account, 这里留待以后扩充。
+        let tokenlessRoutes = ["reset-password", "activate-your-account"];
+        if (!tokenlessRoutes.includes(requestRoute)) {
+          browserHistory.push("/sign-in");
+        }
       } else {
         browserHistory.push("/");
       }

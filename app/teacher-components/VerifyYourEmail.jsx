@@ -12,6 +12,12 @@ class VerifyYourEmailComp extends React.Component {
     };
   }
 
+  componentWillMount () {
+    if (!this.props.location.query.token) {
+      browserHistory.push("/sign-in");
+    }
+  }
+
   render () {
 
     var progressComponent = "";
@@ -56,6 +62,7 @@ class VerifyYourEmailComp extends React.Component {
       );
     }
   }
+
 }
 
 export default VerifyYourEmailComp;

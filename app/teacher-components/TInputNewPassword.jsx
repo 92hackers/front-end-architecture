@@ -12,6 +12,12 @@ class TInputNewPasswordComp extends React.Component {
     super (props);
   }
 
+  componentWillMount () {
+    if (!this.props.location.query.token) {
+      browserHistory.push("/sign-in");
+    }
+  }
+
   handleSubmit (e) {
 
     e.preventDefault();
@@ -34,7 +40,7 @@ class TInputNewPasswordComp extends React.Component {
       if (errors.length > 0) {
         notification = errors[0].message;
       }
-    })
+    });
 
     var resetToken = this.props.location.query.token;
 
@@ -67,7 +73,7 @@ class TInputNewPasswordComp extends React.Component {
           }
         );
     } else {
-      self.props.showNotification("wrong, try again later.");
+      self.props.showNotification("Something wrong, Try again later.");
     }
   }
 
