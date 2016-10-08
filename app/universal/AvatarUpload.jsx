@@ -38,13 +38,10 @@ class AvatarUploadClass extends React.Component {
     } else {
       let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL("image/jpeg", 0.5);
 
-      this.props.displayLoader();
-
       api.FileUpload({ filedata: cropResult},
         { "Authorization": token },
         "",
         (resp) => {
-          self.propf.hideLoader();
           if (resp.success) {
             self.props.setAvatarUrl(resp.data.imgurl);
           } else {
@@ -52,7 +49,6 @@ class AvatarUploadClass extends React.Component {
           }
         },
         (err) => {
-          self.props.hideLoader();
           self.props.networkError();
         }
       );

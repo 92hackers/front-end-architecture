@@ -598,7 +598,7 @@ class BasicInfo extends React.Component {
               <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
             </RaisedButton>
             <WaitForSubmit ref="loader"></WaitForSubmit>
-            <AvatarUpload ref="avatarUpload" displayLoader={this.refs.loader.displayLoader.bind(this)} hideLoader={this.refs.loader.hideLoader.bind(this)} src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
+            <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           </div>
         </div>
         <div className="residence-timezone clearfix">
