@@ -84,7 +84,7 @@ class SiteHeaderComp extends React.Component {
 
   handleSettingClick (e) {
     e.preventDefault();
-    this.handleRequestClose();
+    this.handleSettingsRequestClose();
     browserHistory.push("/teacher-homepage");
     this.props.dashboardDisplay("setting");
   }

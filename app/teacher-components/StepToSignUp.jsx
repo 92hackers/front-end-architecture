@@ -1226,8 +1226,6 @@ class ScheduleInterview extends React.Component {
     if (!interviewPeriod) {
       self.props.showNotification("Please select one interview time.");
       return;
-    } else {
-      self.props.displaySuccessWorlds();
     }
 
     var interviewId = "";
@@ -1247,10 +1245,26 @@ class ScheduleInterview extends React.Component {
       {"Authorization": self.token},
       "",
       (resp) => {
-        console.log(resp);
+        if (resp.success) {
+          self.props.displaySuccessWorlds();
+          api.TGetProfile("",
+          {"Authorization": self.token},
+          "",
+          (resp) => {
+            if (resp.success) {
+              self.props.getProfile(resp.data);
+            }
+          },
+          (err) => {
+            self.props.networkError();
+          }
+          );
+        } else {
+          self.props.showNotification(resp.data.error);
+        }
       },
       (err) => {
-        console.log("data upload error.");
+        self.props.networkError();
       }
     );
 
@@ -1338,7 +1352,7 @@ class StepToSignUpComp extends React.Component {
 
         return <TeachingExperience showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
-        return <ScheduleInterview showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
+        return <ScheduleInterview getProfile={this.props.getProfile} showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
         return (<h1>some thing wrong.</h1>);
     }

@@ -15,7 +15,6 @@ class IndexHeaderComp extends React.Component {
 
     const token = this.props.token;
     const userStatus = this.props.status;
-    console.log(userStatus);
 
     if (!!token) {
       switch (userStatus) {

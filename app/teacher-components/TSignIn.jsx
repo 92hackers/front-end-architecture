@@ -89,8 +89,6 @@ class TSignInComp extends React.Component {
           case 3 :
           case 4 :
           case 8 :
-            browserHistory.push("/display-user-status");
-            break;
           case 10 :
           case 11 :
           case 15 :

@@ -55,14 +55,11 @@ class AppContainer extends React.Component {
     }
   }
 
-  auth () {
-    var self = this;
-    var requestRoute = this.props.location.pathname;
-    requestRoute = requestRoute.replace(/\//, "");
+  auth (token) {
+    const self = this;
+    const requestRoute = this.props.location.pathname.replace(/\//, "");
 
-    var token = localStorage.getItem("user_token") || "";
-
-    if (!!token && !this.props.token) {
+    if (!!token) {
 
       self.props.increaseCounter();
 
@@ -72,11 +69,6 @@ class AppContainer extends React.Component {
         "",
         (resp) => {
           if (resp.success) {
-
-            if (!self.props.token) {
-              self.props.signIn(token);
-            }
-
             self.props.getProfile(resp.data);
             self.router(requestRoute, resp.data.status);
             self.props.decreaseCounter();
@@ -100,12 +92,13 @@ class AppContainer extends React.Component {
   }
 
   componentWillMount () {
-    this.auth();
+    this.auth(this.props.token);
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.token !== this.props.token) {
-      this.auth();
+    var token = nextProps.token;
+    if (token !== this.props.token) {
+      this.auth(token);
     }
   }
 

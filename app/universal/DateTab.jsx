@@ -38,7 +38,6 @@ class DateTab extends React.Component {
   }
 
   monthChangeCallback () {
-    console.log(arguments);
   }
 
   generateHighlightDays (dataSource) {

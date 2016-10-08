@@ -11,9 +11,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn: (token) => {
-      dispatch(userActions.signIn(token));
-    },
     signOut: () => {
       dispatch(userActions.signOut());
     },

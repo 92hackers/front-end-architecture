@@ -3,7 +3,6 @@ import { notificationActions } from '../actions';
 import IndexHeaderComp from '../teacher-components/IndexHeader';
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     token: state.user.token,
     status: state.user.profile.status

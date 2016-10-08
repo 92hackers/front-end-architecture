@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import { notificationActions, pendingCounterActions } from '../actions';
+import { notificationActions, userActions, pendingCounterActions } from '../actions';
 import StepToSignUpComp from '../teacher-components/StepToSignUp';
 
 const mapStateToProps = (state) => {
@@ -12,6 +12,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getProfile: (profile) => {
+      dispatch(userActions.getProfile(profile));
+    },
     showNotification: (message) => {
       dispatch(notificationActions.showNotification(message));
     },

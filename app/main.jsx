@@ -5,6 +5,7 @@ import { Provider, connect } from 'react-redux';
 import {createStore} from 'redux';
 import { useScroll } from 'react-router-scroll';
 import allReducers from './reducers';
+import { userActions } from './actions';
 
 // import TInfo from './teacher-components/TInfo';
 import InputNewEmail from './containers/InputNewEmail';
@@ -29,7 +30,12 @@ import NotFound from './universal/NotFound';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-let store = createStore(allReducers);
+const store = createStore(allReducers);
+
+const token = localStorage.getItem("user_token") || "";
+if (!!token) {
+  store.dispatch(userActions.signIn(token));
+}
 
 const scrollBehavior = (prevRouterProps, { routes }) => {
   return [0,0];
