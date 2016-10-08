@@ -83,7 +83,6 @@ class TSignUpComp extends React.Component {
         nprogress.done();
         if (resp.success) {
           let url = "/active-email?user_name=" + "s@x^nil*@(<)";
-          console.log(url);
           browserHistory.push(url);         //  jump to  Active your email notification page.
         } else {
           if (!!resp.data.email) {
@@ -97,7 +96,6 @@ class TSignUpComp extends React.Component {
         self.props.networkError();
       }
     )
-    console.log(data);
   }
 
   open () {
