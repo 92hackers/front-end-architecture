@@ -49,6 +49,22 @@ class VerifyYourEmailComp extends React.Component {
             self.setState({
               isSuccess: true
             });
+            if (self.props.loggedIn) {
+              api.TGetProfile("",
+                { "Authorization": self.props.token},
+                "",
+                (resp) => {
+                  if (resp.success) {
+                    self.props.getProfile(resp.data);
+                  } else {
+                    self.props.showNotification(resp.data);
+                  }
+                },
+                (err) => {
+                  self.props.networkError();
+                }
+              );
+            }
             var timeoutId = setTimeout(() => {
               clearTimeout(timeoutId);
               if (self.props.loggedIn) {
