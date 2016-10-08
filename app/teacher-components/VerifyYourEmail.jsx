@@ -72,7 +72,7 @@ class VerifyYourEmailComp extends React.Component {
               } else {
                 browserHistory.push("/sign-in");
               }
-            }, 2500);
+            }, 3000);
           } else {
             self.props.showNotification("Verify Failed, Please Try Again Later");
           }
