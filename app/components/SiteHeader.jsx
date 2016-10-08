@@ -103,6 +103,10 @@ class SiteHeaderComp extends React.Component {
     this.props.dashboardDisplay("template");
   }
 
+  handleHomepageClick () {
+    this.props.dashboardDisplay("");
+  }
+
   handleHelpClick (e) {
     e.preventDefault();
     this.setState({
@@ -171,7 +175,7 @@ class SiteHeaderComp extends React.Component {
             dynamicComponent = (
               <ul className="right">
                 <li className="header-item">
-                  <Link to="teacher-homepage">Homepage</Link>
+                  <Link to="teacher-homepage" onClick={this.handleHomepageClick.bind(this)}>Homepage</Link>
                   <span className="nav-border-line"></span>
                 </li>
                 {settingsMenu}

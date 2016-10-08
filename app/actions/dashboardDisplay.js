@@ -1,4 +1,3 @@
-
 import { createAction } from './lib';
 
 export const DISPLAY = "DISPLAY";

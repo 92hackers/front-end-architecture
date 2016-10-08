@@ -11,7 +11,6 @@ import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import {red500} from 'material-ui/styles/colors';
 import {green500} from 'material-ui/styles/colors';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class WaitForSubmit extends React.Component {
   constructor (props) {
@@ -23,14 +22,12 @@ class WaitForSubmit extends React.Component {
       marginTop: -7
     };
     return (
-      <div className="wait-for-submit">
-        <MuiThemeProvider>
-          <div>
-            <CircularProgress className="circle-progress" size={0.5} style={loadingStyle}></CircularProgress>
-            <span className="result success" style={{color: green500}}><i className="fa fa-check"></i>{this.props.successMessage}</span>
-            <span className="result fail" style={{color: red500}}><i className="fa fa-close"></i>{this.props.failMessage}</span>
-          </div>
-        </MuiThemeProvider>
+      <div className="wait-for-submit-wrap text-center">
+        <div className="wait-for-submit">
+          <CircularProgress className="circle-progress" size={0.5} style={loadingStyle}></CircularProgress>
+          <span className="result success" style={{color: green500}}><i className="fa fa-check"></i>{this.props.successMessage}</span>
+          <span className="result fail" style={{color: red500}}><i className="fa fa-close"></i>{this.props.failMessage}</span>
+        </div>
       </div>
     )
   }

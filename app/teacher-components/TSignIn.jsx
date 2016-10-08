@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 
 import api from '../network/api';
+import WaitForSubmit from '../universal/WaitForSubmit';
 
 class TSignInComp extends React.Component {
 
@@ -47,6 +48,8 @@ class TSignInComp extends React.Component {
     }
 
     nprogress.start();
+    this.refs.loader.displayLoader();
+
     var signinRequest = api.TSignIn({
       email: email,
       password: password
@@ -55,6 +58,8 @@ class TSignInComp extends React.Component {
     "",
     (resp) => {
       nprogress.done();
+      self.refs.loader.hideLoader();
+
       if (resp.success) {
         if (!!resp.data.token) {
           self.props.signIn("Bearer " + resp.data.token);
@@ -106,6 +111,7 @@ class TSignInComp extends React.Component {
     },
     (err) => {
       nprogress.done();
+      self.refs.loader.hideLoader();
       self.props.networkError();
     }
     );
@@ -131,7 +137,8 @@ class TSignInComp extends React.Component {
           <br/>
           <br/>
           <br/>
-          <RaisedButton type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></RaisedButton>
+          <RaisedButton className="submit-btn" type="submit" label="Sign in" primary={true} onClick={this.handleSubmit.bind(this)} style={style}></RaisedButton>
+          <WaitForSubmit ref="loader"></WaitForSubmit>
           <RaisedButton labelStyle={labelStyle} label="Forgot your password ?" style={style} onClick={this.handleForgetPassword.bind(this)}></RaisedButton>
           {/* <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-facebook-official"></FontIcon>} label="Sign in with Facebook" style={style}></RaisedButton>
             <RaisedButton labelStyle={labelStyle} icon={<FontIcon className="fa fa-twitter"></FontIcon>} label="Sign in with Twitter" style={style}></RaisedButton>

@@ -158,7 +158,10 @@ class OnlineTestComp extends React.Component {
       param,
       (resp) => {
         if (resp.success) {
+
+          window.scrollTo(0,0);       //  返回到最上面。
           self.refs.loader.displaySuccess(self.handleNext, self);
+
           if (param === 5) {
             api.TGetProfile("",
               { "Authorization": self.token},

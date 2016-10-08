@@ -7,6 +7,8 @@ import formValidate from 'validate-js';
 import Dialog from 'material-ui/Dialog';
 import nprogress from 'nprogress';
 
+import WaitForSubmit from '../universal/WaitForSubmit';
+
 class TSignUpComp extends React.Component {
 
   constructor (props) {
@@ -76,11 +78,14 @@ class TSignUpComp extends React.Component {
     };
 
     nprogress.start();
+    this.refs.loader.displayLoader();
+
     var signUpRequest = apis.TSignUp(data,
       {},
       "",
       (resp) => {
         nprogress.done();
+        self.refs.loader.hideLoader();
         if (resp.success) {
           let url = "/active-email?user_name=" + "s@x^nil*@(<)";
           browserHistory.push(url);         //  jump to  Active your email notification page.
@@ -93,6 +98,7 @@ class TSignUpComp extends React.Component {
       },
       (err) => {
         nprogress.done();
+        self.refs.loader.hideLoader();
         self.props.networkError();
       }
     )
@@ -348,7 +354,8 @@ class TSignUpComp extends React.Component {
           <small style={{color: "#999"}}>By clicking Sign Up, You agree to our <a href="javascript:;" id="site-terms" onClick={this.handleTermsClick.bind(this)}>Terms</a> and that you have read our <a href="javascript:;" id="site-policy" onClick={this.handlePrivacyClick.bind(this)}>Privacy Policy</a>,</small>
           <br/>
           <br/>
-          <RaisedButton type="submit" label="Sign up" primary={true} style={style} onClick={this.handleSubmit.bind(this)}></RaisedButton>
+          <RaisedButton type="submit" label="Sign up" primary={true} style={style} className="submit-btn" onClick={this.handleSubmit.bind(this)}></RaisedButton>
+          <WaitForSubmit ref="loader"></WaitForSubmit>
         </form>
         <Dialog
           title={this.state.dialogTitle}

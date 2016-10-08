@@ -19,6 +19,7 @@ import api from '../network/api';
 import AvatarUpload from '../universal/AvatarUpload';
 import SiteLoading from '../containers/SiteLoading';
 import TAvatar from './TAvatar';
+import WaitForSubmit from '../universal/WaitForSubmit';
 
 class BasicInfo extends React.Component {
 
@@ -593,10 +594,11 @@ class BasicInfo extends React.Component {
               <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
             </div>
             <br/>
-            <RaisedButton icon={<i style={{fontSize: 20, color: "#fff"}} className="fa fa-camera"></i>} primary={true} id="upload-profile-picture" label="Upload Profile Picture" style={{width: "50%", margin: '0 auto', display: "block"}}>
+            <RaisedButton className="submit-btn" icon={<i style={{fontSize: 20, color: "#fff"}} className="fa fa-camera"></i>} primary={true} id="upload-profile-picture" label="Upload Profile Picture" style={{width: "50%", margin: '0 auto', display: "block"}}>
               <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
             </RaisedButton>
-            <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
+            <WaitForSubmit ref="loader"></WaitForSubmit>
+            <AvatarUpload ref="avatarUpload" displayLoader={this.refs.loader.displayLoader.bind(this)} hideLoader={this.refs.loader.hideLoader.bind(this)} src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           </div>
         </div>
         <div className="residence-timezone clearfix">
