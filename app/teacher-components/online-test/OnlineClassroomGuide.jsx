@@ -49,24 +49,24 @@ class OnlineClassroomGuide extends React.Component {
          <li>You will now be able to use your Zoom account.</li>
        </ul>
        <h3>Downloading Zoom for your Windows Machine or Mac OSX</h3>
-       <p>Visit https://zoom.us/support/download using a computer running Windows or Mac OSX. The download will start automatically.</p>
+       <p>Visit <a href="https://zoom.us/support/download" style={{color: blue500}} target="_blank">https://zoom.us/support/download</a> using a computer running Windows or Mac OSX. The download will start automatically.</p>
        <p>Once you have created your Zoom account and downloaded the computer application, you’ll be ready to begin hosting online meetings (classes) by following these steps:</p>
        <ul className="decimal-list">
-         <li>Visit https://zoom.us/ and log in. You’ll be redirected to your Zoom “Meetings” page.</li>
+         <li>Visit <a href="https://zoom.us/ " style={{color: blue500}} target="_blank">https://zoom.us/ </a>and log in. You’ll be redirected to your Zoom “Meetings” page.</li>
          <li>Click on the “Start” button to launch the Zoom computer application.</li>
          <li>You will be prompted by a pop-up window asking, “How do you want to join the audio conference?” Click on the “Join Audio Conference by Computer” button.</li>
-         <li>You are now in your Personal Meeting Room, where you’ll be conducting your online lessons. In order for a student to enter your Personal Meeting Room, he or she will need to know your Personal Meeting ID, which you can find by visiting your online Zoom profile page here: https://www.zoom.us/profile.</li>
+         <li>You are now in your Personal Meeting Room, where you’ll be conducting your online lessons. In order for a student to enter your Personal Meeting Room, he or she will need to know your Personal Meeting ID, which you can find by visiting your online Zoom profile page here: <a href="https://www.zoom.us/profile" target="_blank" style={{color: blue500}}>https://www.zoom.us/profile</a>.</li>
          <li>Please send your Personal Meeting ID to teacher@weteach.info, so that we can make this known to students once they have decided to study with you.</li>
        </ul>
        <h3>Starting a Zoom Meeting</h3>
        <ul className="decimal-list">
-         <li>Once you have created a Zoom account and downloaded and installed the Zoom application to your computer, log in and navigate to your “My Meetings” page at https://www.zoom.us/meeting.</li>
+         <li>Once you have created a Zoom account and downloaded and installed the Zoom application to your computer, log in and navigate to your “My Meetings” page at <a href="https://www.zoom.us/meeting" style={{color: blue500}} target="_blank">https://www.zoom.us/meeting</a>.</li>
          <li>You will see information about your Personal Meeting Room. Click on the “Start” button to launch the Zoom computer application. </li>
          <li>You will be presented with a pop-up window asking “How do you want to join the audio conference? Click “Join Audio Conference by Computer.” </li>
          <li>You will now be in your Personal Meeting Room. </li>
        </ul>
        <h3>Useful Functions </h3>
-       <p>Zoom has many powerful functions. You can learn more about them by visiting the Zoom Help Center at <a target="_blank" href="https://support.zoom.us">https://support.zoom.us</a>. For our purposes, we’ll focus only on the two functions you’ll be using most frequently, Screen Sharing and Annotations. </p>
+       <p>Zoom has many powerful functions. You can learn more about them by visiting the Zoom Help Center at <a target="_blank" href="https://support.zoom.us" style={{color: blue500}}>https://support.zoom.us</a>. For our purposes, we’ll focus only on the two functions you’ll be using most frequently, Screen Sharing and Annotations. </p>
        <h4>Screen Sharing</h4>
        <ul className="decimal-list">
          <li>Click on the “Share Screen” button in the meeting toolbar.
