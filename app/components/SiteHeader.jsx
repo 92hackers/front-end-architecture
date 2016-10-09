@@ -111,6 +111,9 @@ class SiteHeaderComp extends React.Component {
     e.preventDefault();
     this.setState({
       welcomeOpen: true
+    }, () => {
+      document.querySelector(".step").style.height = window.innerHeight + "px";
+      document.querySelector(".step").style.width = window.innerWidth + "px";
     });
   }
 
@@ -282,6 +285,19 @@ class SiteHeaderComp extends React.Component {
         </Dialog>
       </header>
     )
+  }
+
+  handleGuideImgResize (e) {
+    document.querySelector(".step").style.height = window.innerHeight + "px";
+    document.querySelector(".step").style.width = window.innerWidth + "px";
+  }
+
+  componentDidMount () {
+    window.addEventListener("resize", this.handleGuideImgResize);
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener("resize", this.handleGuideImgResize);
   }
 
   handleNext () {

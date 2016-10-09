@@ -582,7 +582,9 @@ class BasicInfo extends React.Component {
               <li className="data-item">
                 <div className="phone-num">
                   <div className="icon-wrap"><i className="fa fa-phone"></i></div>
-                  <TextField floatingLabelStyle={labelStyle} value={profile["tel_code"] ? profile["tel_code"] : ""} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  <div className="country-code-wrap">
+                    <span className="plus-icon">+</span><TextField floatingLabelStyle={labelStyle} value={profile["tel_code"] ? profile["tel_code"] : ""} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+                  </div>
                   <i className="vertical-line"></i>
                   <TextField floatingLabelStyle={labelStyle} value={profile["tel_num"] ? profile["tel_num"] : ""} name="tel_num" floatingLabelText="Phone Number" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
                 </div>

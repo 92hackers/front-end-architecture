@@ -296,6 +296,15 @@ class OneWeekTemplateComp extends React.Component {
     )
   }
 
+  handleGuideImgResize (e) {
+    document.querySelector(".step").style.height = window.innerHeight + "px";
+    document.querySelector(".step").style.width = window.innerWidth + "px";
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener("resize", this.handleGuideImgResize);
+  }
+
   handleNext () {
     var index = this.state.stepIndex;
     if (index < 2) {
@@ -450,11 +459,14 @@ class OneWeekTemplateComp extends React.Component {
     if (this.props.newUser) {
       this.setState({
         welcomeOpen: true
+      }, () => {
+        document.querySelector(".step").style.height = window.innerHeight + "px";
+        document.querySelector(".step").style.width = window.innerWidth + "px";
       });
     }
 
+    window.addEventListener("resize", this.handleGuideImgResize);
     this.initialDomRender();
-
     this.renderData();
 
   }

@@ -351,7 +351,7 @@ class TSignUpComp extends React.Component {
           <TextField name="Confirm-Password" id="t-re-password" type="password" floatingLabelText="Confirm Password" floatingLabelStyle={labelStyle}></TextField>
           <br/>
           <br/>
-          <small style={{color: "#999"}}>By clicking Sign Up, You agree to our <a href="javascript:;" id="site-terms" onClick={this.handleTermsClick.bind(this)}>Terms</a> and that you have read our <a href="javascript:;" id="site-policy" onClick={this.handlePrivacyClick.bind(this)}>Privacy Policy</a>,</small>
+          <small style={{color: "#999"}}>By clicking Sign Up, you agree to our <a href="javascript:;" id="site-terms" onClick={this.handleTermsClick.bind(this)}>Terms</a> and that you have read our <a href="javascript:;" id="site-policy" onClick={this.handlePrivacyClick.bind(this)}>Privacy Policy</a>,</small>
           <br/>
           <br/>
           <RaisedButton type="submit" label="Sign up" primary={true} style={style} className="submit-btn" onClick={this.handleSubmit.bind(this)}></RaisedButton>
