@@ -219,7 +219,7 @@ class SiteHeaderComp extends React.Component {
                  <span className="nav-border-line"></span>
                </li>
                <li className="header-item">
-                 <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-bars"></i> Lessons</a>
+                 <a href="javascript:;" className="dashboard" onTouchTap={this.handleTouchTap.bind(this)}><i className="fa fa-table"></i> Lessons</a>
                  <span className="nav-border-line"></span>
                  <Popover
                    open={this.state.open}

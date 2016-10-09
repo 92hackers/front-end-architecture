@@ -55,14 +55,19 @@ class SettingComp extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          self.props.showNotification("Password change successful.");
+          self.props.showNotification("Password change successful. Please wait for refreshing.");
           var timeId = setTimeout(() => {
             clearTimeout(timeId);
             self.props.signOut();
             browserHistory.push("/sign-in");
           }, 4100);
         } else {
-          self.props.showNotification("Please create a password between 6 and 20 characters in length.");
+          let data = resp.data;
+          if (data["o_pass"] && data["o_pass"].length > 0) {
+            self.props.showNotification("Old password is incorrect.");
+          } else {
+            self.props.showNotification("Please input correct passwords.");
+          }
         }
       },
       (err) => {
@@ -159,7 +164,7 @@ class THomepage extends React.Component {
 
     switch (dynamicDashboardComp) {
       case "setting":
-        DashboardComponent = <SettingComp showNotification={this.props.showNotification} networkError={this.props.networkError} token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
+        DashboardComponent = <SettingComp signOut={this.props.signOut} showNotification={this.props.showNotification} networkError={this.props.networkError} token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
         break;
       case "schedule":
         DashboardComponent = <ScheduleComp weeklyTimetableReq={this.weeklyTimetableReq.bind(this)} monthlyTimetableReq={this.monthlyTimetableReq.bind(this)} weeklyTimetable={this.state.weeklyTimetable} monthlyTimetable={this.state.monthlyTimetable} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></ScheduleComp>;

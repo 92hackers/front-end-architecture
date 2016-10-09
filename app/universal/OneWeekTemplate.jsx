@@ -1,9 +1,11 @@
 
 import React from 'react';
+
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+
 import api from "../network/api";
 import nprogress from 'nprogress';
 
@@ -263,14 +265,13 @@ class OneWeekTemplateComp extends React.Component {
           <RaisedButton className="right" label="Save Template" primary={true} onTouchTap={this.handleSubmit.bind(this)}></RaisedButton>
         </div>
         <Dialog
-          autoScrollBodyContent={true}
+          actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose.bind(this)}
-          contentStyle={{width: "90%", maxWidth: 1200, transform: "translate(0px, 40px)"}}
         >
-          <h1 className="text-center" style={{marginBottom: 20}}>Weekly timetable updated!</h1>
-          <h3 className="text-center">Now, Click the Button below to Schedule Lessons.</h3>
+          <h1 className="text-center" style={{marginBottom: 20}}>Template updated successfully!</h1>
+          <h3 className="text-center">Now, click the button below to schedule lessons.</h3>
         </Dialog>
         <Dialog
           modal={false}
