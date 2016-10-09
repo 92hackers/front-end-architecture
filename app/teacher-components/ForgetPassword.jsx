@@ -37,9 +37,9 @@ class ForgetPasswordComp extends React.Component {
     api.TReqReset({email: email}, "", "",
       (resp) => {
         if (resp.success) {
-          self.props.showNotification("We have just sent you an email. Please click the link within it to reset your password.");
+          self.props.showNotification("We have just sent you an email. Please click the link within it to reset.");
         } else {
-          self.props.showNotification("Unfortunately a problem was encountered, please confirm your email address is correct.");
+          self.props.showNotification("An issue occured, please confirm your email address.");
         }
       },
       (err) => {

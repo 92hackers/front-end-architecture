@@ -271,7 +271,7 @@ class OneWeekTemplateComp extends React.Component {
           onRequestClose={this.handleClose.bind(this)}
         >
           <h1 className="text-center" style={{marginBottom: 20}}>Template updated successfully!</h1>
-          <h3 className="text-center">Now, click the button below to schedule lessons.</h3>
+          <h3 className="text-center">Now, please click the button below to schedule lessons.</h3>
         </Dialog>
         <Dialog
           modal={false}
