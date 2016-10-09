@@ -32,11 +32,11 @@ class SettingComp extends React.Component {
 
     var warning = "";
     if (!oldPassword || !newPassword || !confirmPassword) {
-      warning = "Please input correct password";
+      warning = "Please input correct password.";
     } else if (oldPassword.length < 6 || newPassword.length < 6 || confirmPassword.length < 6 || oldPassword.length > 20 || newPassword.length > 20 || confirmPassword.length > 20) {
       warning = "Passwords must be between 6 and 20 characters in length.";
     } else if (newPassword !== confirmPassword) {
-      warning = "New passwords do not match";
+      warning = "New passwords do not match.";
     }
 
     if (!!warning) {

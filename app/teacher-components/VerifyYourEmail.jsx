@@ -74,7 +74,7 @@ class VerifyYourEmailComp extends React.Component {
               }
             }, 3000);
           } else {
-            self.props.showNotification("Verify Failed, Please Try Again Later");
+            self.props.showNotification("Verify Failed, Please Try Again Later.");
           }
         },
         (err) => {

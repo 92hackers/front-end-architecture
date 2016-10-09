@@ -45,7 +45,7 @@ class AvatarUploadClass extends React.Component {
           if (resp.success) {
             self.props.setAvatarUrl(resp.data.imgurl);
           } else {
-            self.props.showNotification("upload picture failed");
+            self.props.showNotification("Upload picture failed.");
           }
         },
         (err) => {

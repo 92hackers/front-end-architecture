@@ -12,7 +12,8 @@ class Notification extends React.Component {
   render () {
 
     var style = {
-      fontWeight: "bold"
+      fontWeight: "bold",
+      textAlign: "center"
     };
 
     const { isShow, message } = this.props;

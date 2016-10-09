@@ -112,8 +112,11 @@ class SiteHeaderComp extends React.Component {
     this.setState({
       welcomeOpen: true
     }, () => {
-      document.querySelector(".step").style.height = window.innerHeight + "px";
-      document.querySelector(".step").style.width = window.innerWidth + "px";
+      var elem = document.querySelector(".step");
+      if (!!elem) {
+        document.querySelector(".step").style.height = window.innerHeight + "px";
+        document.querySelector(".step").style.width = window.innerWidth + "px";
+      }
     });
   }
 
@@ -288,8 +291,11 @@ class SiteHeaderComp extends React.Component {
   }
 
   handleGuideImgResize (e) {
-    document.querySelector(".step").style.height = window.innerHeight + "px";
-    document.querySelector(".step").style.width = window.innerWidth + "px";
+    var elem = document.querySelector(".step");
+    if (!!elem) {
+      document.querySelector(".step").style.height = window.innerHeight + "px";
+      document.querySelector(".step").style.width = window.innerWidth + "px";
+    }
   }
 
   componentDidMount () {

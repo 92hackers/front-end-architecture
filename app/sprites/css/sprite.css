@@ -3,22 +3,22 @@
   background-image: url('/images/sprite.png');
 }
 
-.icon-zoom {
+.icon-shiqu {
   background-position: -0px -0px;
   width: 24px;
   height: 24px;
 }
-.icon-shiqu {
+.icon-dianhua {
   background-position: -0px -24px;
   width: 24px;
   height: 24px;
 }
-.icon-dianhua {
+.icon-dizhi {
   background-position: -0px -48px;
   width: 24px;
   height: 24px;
 }
-.icon-dizhi {
+.icon-zoom {
   background-position: -0px -72px;
   width: 24px;
   height: 24px;
@@ -33,17 +33,17 @@
   width: 62px;
   height: 62px;
 }
-.icon-technology {
+.icon-money {
   background-position: -0px -204px;
   width: 100px;
   height: 100px;
 }
-.icon-suitcase {
+.icon-time {
   background-position: -0px -304px;
   width: 100px;
   height: 100px;
 }
-.icon-Leisure {
+.icon-suitcase {
   background-position: -0px -404px;
   width: 100px;
   height: 100px;
@@ -53,7 +53,7 @@
   width: 100px;
   height: 100px;
 }
-.icon-time {
+.icon-Professional- {
   background-position: -0px -604px;
   width: 100px;
   height: 100px;
@@ -63,22 +63,22 @@
   width: 100px;
   height: 100px;
 }
-.icon-Professional- {
+.icon-Leisure {
   background-position: -0px -804px;
   width: 100px;
   height: 100px;
 }
-.icon-shen-qing {
+.icon-Fun {
   background-position: -0px -904px;
   width: 100px;
   height: 100px;
 }
-.icon-money {
+.icon-shen-qing {
   background-position: -0px -1004px;
   width: 100px;
   height: 100px;
 }
-.icon-Fun {
+.icon-technology {
   background-position: -0px -1104px;
   width: 100px;
   height: 100px;
@@ -93,17 +93,17 @@
   width: 858px;
   height: 178px;
 }
-.icon-Patty-Harte {
+.icon-hallette {
   background-position: -0px -1560px;
   width: 184px;
   height: 184px;
 }
-.icon-hallette {
+.icon-Paul-Clutterbuck {
   background-position: -0px -1744px;
   width: 184px;
   height: 184px;
 }
-.icon-Paul-Clutterbuck {
+.icon-Patty-Harte {
   background-position: -0px -1928px;
   width: 184px;
   height: 184px;
@@ -123,7 +123,7 @@
   width: 200px;
   height: 200px;
 }
-.icon-four-persons {
+.icon-learning {
   background-position: -0px -2712px;
   width: 369px;
   height: 323px;
@@ -133,7 +133,7 @@
   width: 369px;
   height: 323px;
 }
-.icon-learning {
+.icon-four-persons {
   background-position: -0px -3358px;
   width: 369px;
   height: 323px;
@@ -143,12 +143,12 @@
   width: 270px;
   height: 360px;
 }
-.icon-drink {
+.icon-connect {
   background-position: -0px -4041px;
   width: 270px;
   height: 360px;
 }
-.icon-connect {
+.icon-drink {
   background-position: -0px -4401px;
   width: 270px;
   height: 360px;
@@ -170,6 +170,6 @@
 }
 .icon-circle {
   background-position: -0px -5867px;
-  width: 600px;
-  height: 600px;
+  width: 400px;
+  height: 400px;
 }

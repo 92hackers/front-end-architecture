@@ -42,7 +42,7 @@ class BestPracitices extends React.Component {
         <h2>What the Camera Sees</h2>
         <h3>The setup</h3>
         <p><strong>Light yourself from the front with soft lighting.</strong> Don’t be a shadowy figure in a dark room illuminated only by the harsh light of a computer monitor. Position a simple desk lamp behind your computer so that the light hits you square. Alternatively, if teaching during the day, place your computer in front of a window to take advantage of the natural light.</p>
-        <p><strong>Use the right camera angle</strong> An upward angle, where you are peering down into the camera, can be unflattering. It’s best to keep your camera as close to eye level as possible.</p>
+        <p><strong>Use the right camera angle.</strong> An upward angle, where you are peering down into the camera, can be unflattering. It’s best to keep your camera as close to eye level as possible.</p>
         <p><strong>Be mindful of your backdrop.</strong> You want your student to be focused on you and the lesson content, not on a distracting background: avoid backlighting, TV screens, or windows.</p>
         <h3>The teacher</h3>
         <p><strong>Wear proper attire.</strong> Put forth the best image possible; you’re on camera after all. Regular business casual is fine.</p>
