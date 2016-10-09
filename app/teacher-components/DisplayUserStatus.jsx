@@ -12,10 +12,10 @@ class DisplayUserStatusComp extends React.Component {
     var status = profile.status;
     switch(status) {
       case 3 :
-        return (<div><p>Your Interview is scheduled for: </p><p>{profile.interview}</p></div>);
+        return (<div><p>Your interview is scheduled for: </p><p>{profile.interview}</p></div>);
         break;
       case 4 :
-        return (<div><p>You have passed the interview, Please wait for your final approval!</p></div>);
+        return (<div><p>You have passed the interview. Please wait for your final approval!</p></div>);
         break;
       case 8 :
         return (<div><p>Unfortunate, Your application denied by WeTeach.</p><p>Thanks for your love for WeTeach, GoodBye!</p></div>);

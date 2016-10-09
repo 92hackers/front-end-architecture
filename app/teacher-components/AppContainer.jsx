@@ -79,7 +79,7 @@ class AppContainer extends React.Component {
           }
         },
         (err) => {
-          self.props.showNotification("Your session token expired, Please sign in again.");
+          self.props.showNotification("Your session has expired. Please sign in again.");
           self.props.clearCounter();
           self.props.signOut();
           browserHistory.push("/sign-in");

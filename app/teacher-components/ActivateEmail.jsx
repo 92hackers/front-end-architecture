@@ -43,7 +43,7 @@ class ActivateEmailComp extends React.Component {
         "",
         (resp) => {
           if (resp.success) {
-            self.props.showNotification("A New Email Has Already Been Sent To Your Registered Email Address");
+            self.props.showNotification("A new email has already been sent to your registered email address.");
           } else {
             self.props.showNotification(resp.data.error);
           }

@@ -171,7 +171,7 @@ class WeekComp extends React.Component {
     var prevWeek = this.state.prevWeek;
 
     if (this.state.timetableClicked) {
-      this.props.showNotification("Please submit your timetable before doing that.");
+      this.props.showNotification("Please enter and save your availability before moving on to the next week.");
       return;
     }
 
@@ -198,7 +198,7 @@ class WeekComp extends React.Component {
     var nextWeek = this.state.nextWeek;
 
     if (this.state.timetableClicked) {
-      this.props.showNotification("Please submit your timetable before doing that.");
+      this.props.showNotification("Please enter and save your availability before moving on to the next week.");
       return;
     }
 
@@ -342,13 +342,13 @@ class WeekComp extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">unAvailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
                     </TableRow>
                   )
                 })
@@ -426,7 +426,7 @@ class WeekComp extends React.Component {
     var lessonsDeleted = this.lessonsDeleted;
 
     if (!lessonsAdded.length && !lessonsDeleted.length) {
-      this.props.showNotification("please click the time table cell to schedule your lessons.");
+      this.props.showNotification("Please enter your availability in the timetable before saving.");
       return;
     }
 
@@ -443,7 +443,7 @@ class WeekComp extends React.Component {
       (resp) => {
         nprogress.done();
         if (resp.success) {
-          self.props.showNotification("Save Time Table Successfully");
+          self.props.showNotification("Timetable saved successfully.");
           let param = self.state.reqParam;
           self.props.weeklyTimetableReq(param);
           self.props.monthlyTimetableReq(param);
@@ -454,7 +454,7 @@ class WeekComp extends React.Component {
             timetableClicked: false
           });
         } else {
-          self.props.showNotification("Please Select Future Date and Time Correctly.");
+          self.props.showNotification("Please select future date and time correctly.");
         }
       },
       (err) => {
@@ -479,7 +479,7 @@ class WeekComp extends React.Component {
     // if status > 0, the lesson had been booked.
 
     if (dataset.immutable === "immutable" && dataset.status > 0) {
-      self.props.showNotification("This Lesson Can not be Cancelled.");
+      self.props.showNotification("This lesson has already been booked by a student.");
       return;
     }
 

@@ -25,14 +25,14 @@ class TSignInComp extends React.Component {
     var email = document.getElementById("t-email").value;
     var password = document.getElementById("t-password").value;
 
+    if (!!password && password.length < 6 || password.length > 20) {
+      notification = "Password incorrect.";
+    }
+
     var validator = new formValidate(document.getElementsByClassName("sign-in-form")[0], [
       {
         name: "Email",
         rules: "required|valid_email"
-      },
-      {
-        name: "Password",
-        rules: "required|min_length[6]|max_length[30]"
       }
     ], (errors) => {
       if (errors.length > 0) {
@@ -74,7 +74,7 @@ class TSignInComp extends React.Component {
                 "",
                 (resp) => {
                   if (resp.success) {
-                    self.props.showNotification("A New Email Has Aleady Send To Your Registered Email Address");
+                    self.props.showNotification("A new email has already been sent to your registered email address.");
                   } else {
                     self.props.showNotification(resp.data.error);
                   }
@@ -106,7 +106,7 @@ class TSignInComp extends React.Component {
             break;
         }
       } else {
-        self.props.showNotification("Email Address Or Password Error");
+        self.props.showNotification("Email address or password incorrect. Please try again.");
       }
     },
     (err) => {

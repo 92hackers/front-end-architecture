@@ -59,7 +59,7 @@ class TInputNewPasswordComp extends React.Component {
         api.TReset(data, "", "",
           (resp) => {
             if (resp.success) {
-              self.props.showNotification("Reset Password Successfully! Wait To Refresh");
+              self.props.showNotification("Reset password successfully! wait to refresh");
               var timeId = setTimeout(() => {
                 clearTimeout(timeId);
                 browserHistory.push("/sign-in");
@@ -73,7 +73,7 @@ class TInputNewPasswordComp extends React.Component {
           }
         );
     } else {
-      self.props.showNotification("Something wrong, Try again later.");
+      self.props.showNotification("Something wrong. Try again later.");
     }
   }
 

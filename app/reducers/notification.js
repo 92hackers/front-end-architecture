@@ -14,7 +14,7 @@ export default function notification(state = initState, action) {
       return {...state, isShow: false, message: ""};
 
     case notificationActions.NETWORK_ERROR:
-      return {...state, isShow: true, message: "Network is busy, please try again later."};
+      return {...state, isShow: true, message: "Network error. Please try again later or contact support."};
 
     default:
       return state;

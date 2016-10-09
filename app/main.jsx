@@ -54,7 +54,7 @@ const routes = {
     { path: "active-email", component: ActivateEmail },
     { path: "input-new-email", component: InputNewEmail },
     { path: "forget-password", component: ForgetPassword },
-    { path: "reset-password", component: TInputNewPassword },
+    { path: "reset-password", component: TInputNewPassword },     // TODO:  noused, delete it.
     { path: "activate-your-account", component: VerifyYourEmail },
     { path: "about-job", component: TAboutJob },
     { path: "about-school", component: TAboutSchool },

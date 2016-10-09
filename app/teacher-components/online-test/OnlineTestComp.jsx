@@ -132,7 +132,7 @@ class OnlineTestComp extends React.Component {
     var elem1 = document.querySelector("input[name='quiz1']:checked");
 
     if (!elem0 || !elem1) {
-      this.props.showNotification("Please Answer All Questions !");
+      this.props.showNotification("Please complete all questions.");
       return ;
     }
 

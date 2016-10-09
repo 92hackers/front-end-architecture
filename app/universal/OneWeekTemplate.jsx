@@ -286,7 +286,7 @@ class OneWeekTemplateComp extends React.Component {
         >
           <i className="fa fa-times" style={{position: "absolute", right: 24, top: 14, cursor: "pointer", fontSize: "50px", color: "#fff"}} onClick={this.handleWelcomeClose.bind(this)}></i>
           <Stepper activeStep={stepIndex}></Stepper>
-          <div className="back-arrow" onClick={this.handlePrev.bind(this)} disabled={stepIndex === 0}><i className="fa fa-angle-left fa-3"></i></div>
+          <div className="back-arrow" onClick={this.handlePrev.bind(this)} style={stepIndex === 0 ? {"display": "none"} : {"display": "block"}}><i className="fa fa-angle-left fa-3"></i></div>
           <div className="step-content" style={{width: "100%", height: "100%", display: "inline-block", verticalAlign: "top", overflow: "hidden", borderRadius: 3}}>
             {this.getStepContent(stepIndex)}
           </div>
@@ -379,7 +379,7 @@ class OneWeekTemplateComp extends React.Component {
     var lessonsSelected = this.state.lessonsSelected;
 
     if (!lessonsSelected.length) {
-      self.props.showNotification("Please Click The Time Table Cell To Set Your Weekly Template.");
+      self.props.showNotification("Please enter your availability in the timetable to set your weekly timetable template.");
       return;
     }
 

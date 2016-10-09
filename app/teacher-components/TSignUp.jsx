@@ -50,7 +50,7 @@ class TSignUpComp extends React.Component {
       },
       {
         name: "Password",
-        rules: "required|min_length[6]|max_length[30]"
+        rules: "required|min_length[6]|max_length[20]"
       },
       {
         name: "Confirm-Password",
@@ -91,7 +91,7 @@ class TSignUpComp extends React.Component {
           browserHistory.push(url);         //  jump to  Active your email notification page.
         } else {
           if (!!resp.data.email) {
-            self.props.showNotification("This Email Address Has Already Been Registered");
+            self.props.showNotification("This email address had already been registered.");
             return;
           }
         }

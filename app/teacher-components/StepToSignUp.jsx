@@ -357,7 +357,7 @@ class BasicInfo extends React.Component {
         eduList: tempEduList
       });
     } else {
-      this.props.showNotification("Please Complete All Fields");
+      this.props.showNotification("Please complete all required details.");
     }
 
   }
@@ -1228,7 +1228,7 @@ class ScheduleInterview extends React.Component {
     var interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
     if (!interviewPeriod) {
-      self.props.showNotification("Please select one interview time.");
+      self.props.showNotification("Please select an interview time.");
       return;
     }
 

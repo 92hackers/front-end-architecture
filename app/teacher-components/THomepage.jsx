@@ -32,16 +32,17 @@ class SettingComp extends React.Component {
 
     var warning = "";
     if (!oldPassword || !newPassword || !confirmPassword) {
-      warning = "Please Input Correct Password";
-    } else if (oldPassword.length < 6 || newPassword.length < 6 || confirmPassword.length < 6) {
-      warning = "Password must be more than 6 words.";
+      warning = "Please input correct password";
+    } else if (oldPassword.length < 6 || newPassword.length < 6 || confirmPassword.length < 6 || oldPassword.length > 20 || newPassword.length > 20 || confirmPassword.length > 20) {
+      warning = "Passwords must be between 6 and 20 characters in length.";
     } else if (newPassword !== confirmPassword) {
-      warning = "You Must Input Consistent Passwords";
+      warning = "New passwords do not match";
     }
 
     if (!!warning) {
       this.props.showNotification(warning);
-    }
+      return;
+    } else {
 
     var data = {
       "o_pass": oldPassword,
@@ -54,20 +55,22 @@ class SettingComp extends React.Component {
       "",
       (resp) => {
         if (resp.success) {
-          self.props.showNotification("Change Password Successfully!");
+          self.props.showNotification("Password change successful.");
           var timeId = setTimeout(() => {
             clearTimeout(timeId);
             self.props.signOut();
             browserHistory.push("/sign-in");
           }, 4100);
         } else {
-          self.props.showNotification("Please input Correct Passwords");
+          self.props.showNotification("Please create a password between 6 and 20 characters in length.");
         }
       },
       (err) => {
         self.props.networkError();
       }
     );
+
+    }
   }
 
   render () {
@@ -156,7 +159,7 @@ class THomepage extends React.Component {
 
     switch (dynamicDashboardComp) {
       case "setting":
-        DashboardComponent = <SettingComp token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
+        DashboardComponent = <SettingComp showNotification={this.props.showNotification} networkError={this.props.networkError} token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
         break;
       case "schedule":
         DashboardComponent = <ScheduleComp weeklyTimetableReq={this.weeklyTimetableReq.bind(this)} monthlyTimetableReq={this.monthlyTimetableReq.bind(this)} weeklyTimetable={this.state.weeklyTimetable} monthlyTimetable={this.state.monthlyTimetable} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></ScheduleComp>;
