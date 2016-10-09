@@ -52,7 +52,7 @@ class ESL extends React.Component {
         <p>The optimal sequence of error correction is:</p>
         <ul className="decimal-list">
           <li><strong>Self-correction.</strong> With prompting, allow the student to correct his or her own error.</li>
-          <li><strong>Teacher correction</strong> If the student is unable to correct his or her own error, you should correct it yourself.</li>
+          <li><strong>Teacher correction.</strong> If the student is unable to correct his or her own error, you should correct it yourself.</li>
         </ul>
         <p>Following this error correction sequence helps keep the lesson student-centered, which should always be one of your biggest aims as a teacher.</p>
         <h2>Elicitation</h2>
