@@ -18,7 +18,7 @@ class DisplayUserStatusComp extends React.Component {
         return (<div><p>You have passed the interview. Please wait for your final approval!</p></div>);
         break;
       case 8 :
-        return (<div><p>Unfortunate, Your application denied by WeTeach.</p><p>Thanks for your love for WeTeach, GoodBye!</p></div>);
+        return (<div><p>Thanks again for joining us for the interview. We appreciate your time.</p><p>The field was very competitive and, unfortunately, we will not be able to match you with students at this time.</p></div>);
         break;
     }
   }
