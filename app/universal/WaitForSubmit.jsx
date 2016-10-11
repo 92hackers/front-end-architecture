@@ -5,7 +5,14 @@
 
 // props:
     // 2, successMessage,
-    // 3, failMessage
+    // 3, failMessage,
+    // 4, style       //  optional   style.
+
+
+    //Usage:
+
+    // show  loader :     this.refs.loader.displayLoader
+    // hide  loader :     this.refs.loader.hideLoader
 
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -18,15 +25,18 @@ class WaitForSubmit extends React.Component {
   }
 
   render () {
-    var loadingStyle = {
+    const loadingStyle = {
       marginTop: -7
     };
+
+    const {successMessage, failMessage, style} = this.props;
+
     return (
-      <div className="wait-for-submit-wrap text-center">
-        <div className="wait-for-submit">
+      <div className="wait-for-submit-wrap text-center" style={{display: "inline-block"}}>
+        <div className="wait-for-submit" style={style}>
           <CircularProgress className="circle-progress" size={0.5} style={loadingStyle}></CircularProgress>
-          <span className="result success" style={{color: green500}}><i className="fa fa-check"></i>{this.props.successMessage}</span>
-          <span className="result fail" style={{color: red500}}><i className="fa fa-close"></i>{this.props.failMessage}</span>
+          <span className="result success" style={{color: green500}}><i className="fa fa-check"></i>{successMessage}</span>
+          <span className="result fail" style={{color: red500}}><i className="fa fa-close"></i>{failMessage}</span>
         </div>
       </div>
     )

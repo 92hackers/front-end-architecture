@@ -596,10 +596,9 @@ class BasicInfo extends React.Component {
               <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
             </div>
             <br/>
-            <RaisedButton className="submit-btn" icon={<i style={{fontSize: 20, color: "#fff"}} className="fa fa-camera"></i>} primary={true} id="upload-profile-picture" label="Upload Profile Picture" style={{width: "50%", margin: '0 auto', display: "block"}}>
+            <RaisedButton icon={<i style={{fontSize: 20, color: "#fff"}} className="fa fa-camera"></i>} primary={true} id="upload-profile-picture" label="Upload Profile Picture" style={{width: "50%", margin: '0 auto', display: "block"}}>
               <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
             </RaisedButton>
-            <WaitForSubmit ref="loader"></WaitForSubmit>
             <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           </div>
         </div>
@@ -850,14 +849,21 @@ class BasicInfo extends React.Component {
 
     if (JSON.stringify(data) !== JSON.stringify(this.state.oldProfile)) {
 
+      this.props.displayLoader();
+
       api.TApplyStep1(data,
         {"Authorization": self.token},
         "",
         (resp) => {
           console.log(resp);
+          if (resp.success) {
+            this.props.displaySuccess();
+          } else {
+            this.props.displayError();
+          }
         },
         (err) => {
-          console.log("upload data error.");
+          this.props.displayError();
         }
       );
 
@@ -1078,19 +1084,25 @@ class TeachingExperience extends React.Component {
 
     if (JSON.stringify(data) !== JSON.stringify(this.state.oldProfile)) {
 
+      this.props.displayLoader();
+
       api.TApplyStep2(data,
         {"Authorization": self.token},
         "",
         (resp) => {
           console.log(resp);
+          if (resp.success) {
+            self.props.displaySuccess();
+          } else {
+            self.props.displayError();
+          }
         },
         (err) => {
-          console.log("upload data error.");
+          self.props.displayError();
         }
       );
 
     }
-
     return true;
   }
 }
@@ -1290,21 +1302,9 @@ class StepToSignUpComp extends React.Component {
 
   handleNext () {
     var self = this;
-    var result = "";
     const {stepIndex} = this.state;
 
-    switch (stepIndex) {
-      case 0:
-        result = self.refs.basicInfo.handleSubmit();
-        break;
-      case 1:
-        result = self.refs.teachingExperience.handleSubmit();
-        break;
-      default:
-        break;
-    }
-
-    if (!!result) {
+    if (stepIndex < 2) {
       this.setState({
         stepIndex: stepIndex + 1
       });
@@ -1336,7 +1336,7 @@ class StepToSignUpComp extends React.Component {
 
     switch (stepIndex) {
       case 0:
-        return <BasicInfo showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
+        return <BasicInfo displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
       case 1:
         var experience = "";
 
@@ -1354,7 +1354,7 @@ class StepToSignUpComp extends React.Component {
             experience = "";
         }
 
-        return <TeachingExperience showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
+        return <TeachingExperience displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} parent={this} showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
         return <ScheduleInterview getProfile={this.props.getProfile} showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
@@ -1367,6 +1367,18 @@ class StepToSignUpComp extends React.Component {
 
     this.handleOpen();
 
+  }
+
+  displayLoader () {
+    this.refs.loader.displayLoader();
+  }
+
+  displaySuccess () {
+    this.refs.loader.displaySuccess(this.handleNext, this);
+  }
+
+  displayError () {
+    this.refs.loader.displayError();
   }
 
   handleClose () {
@@ -1400,6 +1412,17 @@ class StepToSignUpComp extends React.Component {
     this.handleClose();
   }
 
+  clickNextBtn () {
+    switch (this.state.stepIndex) {
+      case 0:
+        this.refs.basicInfo.handleSubmit();
+        break;
+      case 1:
+        this.refs.teachingExperience.handleSubmit();
+        break;
+    }
+  }
+
   render () {
 
     const stepperStyle = {
@@ -1409,7 +1432,9 @@ class StepToSignUpComp extends React.Component {
       marginBottom: 60
     };
 
-    const rightButton = this.state.stepIndex !== 2 ? <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Next" onTouchTap={this.handleNext.bind(this)} disabled={this.state.stepIndex === 2}></RaisedButton> : <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Finish" onTouchTap={this.handleFinish.bind(this)}></RaisedButton>;
+    const stepIndex = this.state.stepIndex;
+
+    const rightButton = stepIndex !== 2 ? <RaisedButton className="submit-btn" labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Next" onTouchTap={this.clickNextBtn.bind(this)} disabled={stepIndex === 2}></RaisedButton> : <RaisedButton labelStyle={{fontSize: 24}} style={{width: 176, height: 50}} primary={true} label="Finish" onTouchTap={this.handleFinish.bind(this)}></RaisedButton>;
 
     var content = this.state.isFinished ? (
       <div className="successful-words">
@@ -1424,11 +1449,12 @@ class StepToSignUpComp extends React.Component {
       </div>
     ) : (
       <div>
-        {this.getContent(this.state.stepIndex)}
+        {this.getContent(stepIndex)}
         <div className="text-center two-buttons">
           <div className="btn-group">
-            <FlatButton disabled={!this.state.stepIndex} label="Back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
+            <FlatButton disabled={!stepIndex} label="Back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
             {rightButton}
+            <WaitForSubmit ref="loader" successMessage="Saved" failMessage="Error" style={{verticalAlign: "middle"}}></WaitForSubmit>
           </div>
         </div>
       </div>
