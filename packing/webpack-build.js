@@ -48,6 +48,7 @@ module.exports = {
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style", "css!postcss!less") },
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style", "css!postcss") },
 			{ test: /\.json$/, loader: "json"},
+      { test: /\.ico$/, loader: "url", query: {limit: 2048, name: imageName} },
 			{ test: /\.(png|jpg|gif)$/,  loader: 'url',  query: {limit: 2048,  name: imageName} },
 			{ test: /\.woff(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff',  name: fontName} },
 			{ test: /\.woff2(\?\S*)?$/,  loader: "url",  query: {limit: 100,  mimetype: 'application/font-woff2',  name: fontName} },

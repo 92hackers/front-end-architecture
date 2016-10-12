@@ -117,7 +117,7 @@ class TIndexComp extends React.Component {
           </div>
           <div className="arrow-down"><i className="icon icon-down-arrow" onClick={this.scrollDown.bind(this)}></i></div>
         </section>
-        <section className="introduction section-wrap">
+        <section className="introduction section-wrap container-wrap">
           <h1 className="primary-color title">What is WeTeach ?</h1>
           <p className="intro-words">WeTeach connects teachers with Chinese primary school students to learn together online.</p>
           <p className="intro-words">Our current focus is on English reading comprehension, pronunciation and confidence building.</p>
@@ -181,14 +181,14 @@ class TIndexComp extends React.Component {
             </li>
           </ul>
         </section>
-        <section className="video">
+        <section className="video container-wrap">
           <div className="section-wrap">
             <h1 className="title primary-color">Why WeTeach ?</h1>
             <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
             <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/iM6AGrZTbbQ?rel=0" frameBorder="0" allowFullScreen></iframe>
           </div>
         </section>
-        <section className="teachers-thoughts">
+        <section className="teachers-thoughts container-wrap">
           <div className="section-wrap">
             <h1 className="title primary-color">Teachers’ Thoughts</h1>
             <ul>
@@ -235,7 +235,7 @@ class TIndexComp extends React.Component {
             <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About the Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
           </div>
         </section>
-        <section className="section-wrap contact-us">
+        <section className="section-wrap contact-us container-wrap">
           <h1 className="title primary-color">Contact Us</h1>
           <p>If you have any queries, suggestions, or would like to be involved.</p>
           <p>please don't hesitate to contact us at <a href="mailto:teacher@weteach.info" className="primary-color">teacher@weteach.info</a></p>
