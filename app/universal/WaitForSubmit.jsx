@@ -32,7 +32,7 @@ class WaitForSubmit extends React.Component {
     const {successMessage, failMessage, style} = this.props;
 
     return (
-      <div className="wait-for-submit-wrap text-center" style={{display: "inline-block"}}>
+      <div className="wait-for-submit-wrap text-center">
         <div className="wait-for-submit" style={style}>
           <CircularProgress className="circle-progress" size={0.5} style={loadingStyle}></CircularProgress>
           <span className="result success" style={{color: green500}}><i className="fa fa-check"></i>{successMessage}</span>

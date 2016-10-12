@@ -591,14 +591,18 @@ class BasicInfo extends React.Component {
               </li>
             </ul>
           </div>
-          <div className="picture">
+          <div className="picture text-center">
             <div className="avatar">
               <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
             </div>
             <br/>
-            <RaisedButton icon={<i style={{fontSize: 20, color: "#fff"}} className="fa fa-camera"></i>} primary={true} id="upload-profile-picture" label="Upload Profile Picture" style={{width: "50%", margin: '0 auto', display: "block"}}>
-              <input type="file" style={uploadPictureStyle} onChange={this.profilePictureSelect.bind(this)}/>
-            </RaisedButton>
+            <a href="#" className="btn button-change-avatar">
+              <i className="fa fa-camera" style={{fontSize: 20, color: "#fff"}}></i>
+              <label htmlFor="upload-profile-picture">
+                Upload profile picture
+                <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect.bind(this)}/>
+              </label>
+            </a>
             <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
           </div>
         </div>
@@ -1454,7 +1458,9 @@ class StepToSignUpComp extends React.Component {
           <div className="btn-group">
             <FlatButton disabled={!stepIndex} label="Back" style={{marginRight: 12}} onTouchTap={this.handlePrev.bind(this)}></FlatButton>
             {rightButton}
-            <WaitForSubmit ref="loader" successMessage="Saved" failMessage="Error" style={{verticalAlign: "middle"}}></WaitForSubmit>
+            <div style={{display: "inline-block"}}>
+              <WaitForSubmit ref="loader" successMessage="Saved" failMessage="Error" style={{verticalAlign: "middle"}}></WaitForSubmit>
+            </div>
           </div>
         </div>
       </div>

@@ -232,4 +232,52 @@
       margin-right: 3px;
     }
   }
+
+  .button-change-avatar {
+    position: relative;
+    display: inline-block;
+    padding: 6px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #fff;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: @teacher_base;
+    border-radius: 2px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    overflow: hidden;
+    text-decoration: none;
+    &:hover {
+      box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.12);
+    }
+
+    #upload-profile-picture {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 120px;
+      height: 34px;
+      padding: 0;
+      cursor: pointer;
+      line-height: 34px;
+      opacity: 0;
+    }
+
+    .fa-camera {
+      font-size: 20px;
+      color: #fff;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+  }
+
 }

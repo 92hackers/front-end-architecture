@@ -12,7 +12,8 @@ class AvatarUploadClass extends React.Component {
   constructor (props) {
     super (props);
     this.state = {
-      open: false
+      open: false,
+      uploadStatus: ""
     };
     this.token = this.props.token;
   }
@@ -38,25 +39,65 @@ class AvatarUploadClass extends React.Component {
     } else {
       let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL("image/jpeg", 0.5);
 
+      this.setState({
+        uploadStatus: "uploading"
+      });
+
       api.FileUpload({ filedata: cropResult},
         { "Authorization": token },
         "",
         (resp) => {
+          var timeId = setTimeout(() => {
+            self.handleClose();
+            self.setState({
+              uploadStatus: ""
+            });
+            clearTimeout(timeId);
+          }, 1500);
           if (resp.success) {
+            self.setState({
+              uploadStatus: "uploadSuccess"
+            });
             self.props.setAvatarUrl(resp.data.imgurl);
           } else {
+            self.setState({
+              uploadStatus: "uploadFail"
+            });
             self.props.showNotification("Upload picture failed.");
           }
         },
         (err) => {
+          set.setState({
+            uploadStatus: "uploadFail"
+          });
           self.props.networkError();
         }
       );
     }
-    this.handleClose();
   }
 
   render () {
+
+    var label = "";
+    var uploading = false;
+
+    switch (this.state.uploadStatus) {
+      case "uploading":
+        label = "Uploading";
+        uploading = true;
+        break;
+      case "uploadSuccess":
+        label = "Upload Successfully";
+        uploading = false;
+        break;
+      case "uploadFail":
+        label = "Upload Failed";
+        uploading = false;
+        break;
+      default:
+        label = "Set new profile picture";
+        break;
+    }
 
     const actions = [
       <RaisedButton
@@ -64,12 +105,14 @@ class AvatarUploadClass extends React.Component {
         label="Cancel"
         default={true}
         onTouchTap={this.handleClose.bind(this)}
+        disabled={uploading}
       />,
       <RaisedButton
         className="dialog-button"
-        label="Set new profile picture"
+        label={label}
         primary={true}
         onTouchTap={this.uploadToServer.bind(this)}
+        disabled={uploading}
       />
     ];
 
