@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-router';
-import { Provider, connect } from 'react-redux';
-import {createStore} from 'redux';
+import { Provider } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
-import allReducers from './reducers';
 import { userActions } from './actions';
 
 // import TInfo from './teacher-components/TInfo';
@@ -25,16 +23,15 @@ import ActivateEmail from './containers/ActivateEmail';
 import TInputNewPassword from './containers/TInputNewPassword';
 
 import NotFound from './universal/NotFound';
+import {store} from './config';
 
 // tap event plugin initialization.
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-const store = createStore(allReducers);
-
 const token = localStorage.getItem("user_token") || "";
 if (!!token) {
-  store.dispatch(userActions.signIn(token));
+  store.store.dispatch(userActions.signIn(token));
 }
 
 const scrollBehavior = (prevRouterProps, { routes }) => {
@@ -54,7 +51,7 @@ const routes = {
     { path: "active-email", component: ActivateEmail },
     { path: "input-new-email", component: InputNewEmail },
     { path: "forget-password", component: ForgetPassword },
-    { path: "reset-password", component: TInputNewPassword },     // TODO:  noused, delete it.
+    { path: "reset-password", component: TInputNewPassword },
     { path: "activate-your-account", component: VerifyYourEmail },
     { path: "about-job", component: TAboutJob },
     { path: "about-school", component: TAboutSchool },
@@ -64,7 +61,7 @@ const routes = {
 };
 
 ReactDom.render((
-  <Provider store={store}>
+  <Provider store={store.store}>
     <Router routes={routes} render={applyRouterMiddleware(useScroll(scrollBehavior))}  history={browserHistory}>
       {/* <Route path="/" component={App}>
         <Route path="/sign-up" component={TSignUp}></Route>

@@ -3,8 +3,8 @@
 
 import reqwest from 'reqwest';
 
-var apiVersion="";
-var host="";
+var apiVersion = API_VERSION;
+var host = API_HOST;
 
 var apis = [
   {

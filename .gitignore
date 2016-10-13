@@ -3,4 +3,3 @@
 /local-test/*
 *.log
 *.tar.gz
-/app/network/api.js

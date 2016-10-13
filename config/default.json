@@ -14,5 +14,6 @@
   "productionEnv": {
     "host": "",
     "apiVersion": ""
-  }
+  },
+  "needMinified": true
 }

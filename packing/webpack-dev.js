@@ -54,7 +54,11 @@ module.exports = {
 		]
 	},
   plugins: [
-		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify(process.env.NODE_ENV) }}),
+		new webpack.DefinePlugin({
+      ENV:          JSON.stringify("dev"),
+      API_HOST:     JSON.stringify(config.devHost),
+      API_VERSION:  JSON.stringify(config.apiVersion)
+    }),
 		new ExtractTextPlugin("css/[name].css"),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin(htmlOptions),

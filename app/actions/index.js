@@ -8,7 +8,7 @@ export const userActions = user;
 export const pendingCounterActions = pendingCounter;
 export const dashboardActions = dashboardDisplay;
 
-export default {
+export {
   notificationActions,
   userActions,
   pendingCounterActions,

@@ -8,10 +8,10 @@
     "init": "./init.sh",
     "dev": "gulp dev",
     "sprite": "gulp sprites",
-    "build": "NODE_ENV=production gulp build",
-    "production": "NODE_ENV=production && API_HOST=production gulp build",
+    "build": "NODE_ENV=development gulp build",
+    "production": "NODE_ENV=production gulp build",
     "start": "node server.js",
-    "deploy": "NODE_ENV=production && API_HOST=production gulp build && tar -czvf build.tar.gz build && cd $P && scp -P 1998 build.tar.gz root@$S:/var/www/weteach/frontend-teachers/ && ssh -p 1998 -t root@$S 'cd /var/www/weteach/frontend-teachers/ && rm -rf build && tar -zxvf build.tar.gz && exit ; bash'"
+    "deploy": "NODE_ENV=production gulp build && tar -czvf build.tar.gz build && cd $P && scp -P 1998 build.tar.gz root@$S:/var/www/weteach/frontend-teachers/ && ssh -p 1998 -t root@$S 'cd /var/www/weteach/frontend-teachers/ && rm -rf build && tar -zxvf build.tar.gz && exit ; bash'"
   },
   "repository": {
     "type": "git",
@@ -81,8 +81,9 @@
     "react-tap-event-plugin": "^1.0.0",
     "react-typeahead": "^2.0.0-alpha.5",
     "redux": "^3.5.2",
+    "redux-async-connect": "^1.0.0-rc4",
     "redux-devtools": "^3.3.1",
-    "redux-form": "^5.3.1",
+    "redux-form": "^6.1.0",
     "reqwest": "^2.0.5",
     "run-sequence": "^1.2.2",
     "sprity": "^1.0.8",
@@ -96,6 +97,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "redux-form-material-ui": "^4.1.0"
   }
 }
