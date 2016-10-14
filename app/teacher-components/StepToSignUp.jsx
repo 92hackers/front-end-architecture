@@ -618,6 +618,7 @@ class BasicInfo extends React.Component {
           <div className="timezone">
             <div className="dropdown-icon-wrap"><i className="fa fa-clock-o"></i></div>
             <Dropdown options={this.state.timezoneList} onChange={this.changeTimezone.bind(this)} value={this.state.timezoneValue} placeholder="Your Time Zone"></Dropdown>
+            <p className="tooltip">This is the local time on your device. Is this timezone correct ?</p>
           </div>
         </div>
         <div className="education-background">
