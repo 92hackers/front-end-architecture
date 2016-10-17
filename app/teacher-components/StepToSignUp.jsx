@@ -860,7 +860,6 @@ class BasicInfo extends React.Component {
         {"Authorization": self.token},
         "",
         (resp) => {
-          console.log(resp);
           if (resp.success) {
             this.props.displaySuccess();
           } else {
@@ -872,9 +871,9 @@ class BasicInfo extends React.Component {
         }
       );
 
+    } else {
+      this.props.stepToNext();
     }
-
-    return true;
   }
 }
 
@@ -1095,7 +1094,6 @@ class TeachingExperience extends React.Component {
         {"Authorization": self.token},
         "",
         (resp) => {
-          console.log(resp);
           if (resp.success) {
             self.props.displaySuccess();
           } else {
@@ -1107,8 +1105,9 @@ class TeachingExperience extends React.Component {
         }
       );
 
+    } else {
+      this.props.stepToNext()
     }
-    return true;
   }
 }
 
@@ -1197,6 +1196,7 @@ class ScheduleInterview extends React.Component {
       console.log("interview request error.");
     }
   )
+
 }
 
   render () {
@@ -1341,7 +1341,7 @@ class StepToSignUpComp extends React.Component {
 
     switch (stepIndex) {
       case 0:
-        return <BasicInfo displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
+        return <BasicInfo stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
       case 1:
         var experience = "";
 
@@ -1359,7 +1359,7 @@ class StepToSignUpComp extends React.Component {
             experience = "";
         }
 
-        return <TeachingExperience displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} parent={this} showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
+        return <TeachingExperience stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} parent={this} showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
         return <ScheduleInterview getProfile={this.props.getProfile} showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
