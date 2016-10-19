@@ -113,13 +113,13 @@ class WeekComp extends React.Component {
                   backgroundColor = "#6ca4f8";
                   break;
                 default :
-                  backgroundColor = "#fff";
+                  backgroundColor = "transparent";
               }
               elem.style.backgroundColor = backgroundColor;
 
               let children = elem.children[1];
               children.innerText = oneTpl.studentName;
-              children.style.color = "#fff";
+              children.style.color = "transparent";
             } else {
               elem.style.backgroundColor = "#a8d8ff";
             }
@@ -143,7 +143,7 @@ class WeekComp extends React.Component {
         item.dataset.immutable = "";
         item.dataset.status = "";
         item.dataset.id = "";
-        item.style.backgroundColor = "#fff";
+        item.style.backgroundColor = "transparent";
         item.children[1].innerText = "";
         count++;
       }
@@ -157,7 +157,7 @@ class WeekComp extends React.Component {
     for (let i = 0; i < dateElems.length; i++) {
       let item = dateElems[i];
       if (item.dataset.today === "today") {
-        item.style.backgroundColor = "#fff";
+        item.style.backgroundColor = "transparent";
         item.style.color = "inherit";
         item.style.lineHeight = "inherit";
         item.style.width = "inherit";
