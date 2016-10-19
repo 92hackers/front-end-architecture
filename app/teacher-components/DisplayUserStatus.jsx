@@ -13,11 +13,15 @@ class DisplayUserStatusComp extends React.Component {
 
     switch(status) {
       case 3 :
-        return (<div>
+      return (
+        <div className="show-interview-time">
           <p>Your interview is scheduled for: </p>
-          <p>your time zone: <span style={{marginLeft: 20}}>{profile["timezone_name"]}</span></p>
-          <p>{profile.interview}</p>
-        </div>);
+          <div className="content">
+            <small><span>{profile["timezone_name"]}</span></small>
+            <p>{profile.interview}</p>
+          </div>
+        </div>
+      );
         break;
       case 4 :
         return (<div><p>You have passed the interview. Please wait for your final approval!</p></div>);
