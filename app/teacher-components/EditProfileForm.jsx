@@ -13,11 +13,11 @@ class EditProfileForm extends React.Component {
 
  componentWillMount () {
    const {token, getRegionList, getCityList, initialValues} = this.props
-   const {countryId, regionId, cityId} = initialValues
+   const {residence_n, residence_p, residence_c} = initialValues
    this.props.getCountryList(token)
    this.props.getTimezoneList(token)
-   if (!!countryId) getRegionList(token, countryId)
-   if (!!regionId) getCityList(token, regionId)
+   if (!!residence_n) getRegionList(token, residence_n)
+   if (!!residence_p) getCityList(token, residence_p)
  }
 
  changeCountry (...args) {
@@ -40,7 +40,7 @@ class EditProfileForm extends React.Component {
          <div className="input-wrap">
            <span className="dropdown-icon-wrap"><i className="fa fa-map-marker"></i></span>
            <Field
-             name="countryId"
+             name="residence_n"
              placeholder="Country"
              component={WrappedSelect}
              options={countryList}
@@ -48,7 +48,7 @@ class EditProfileForm extends React.Component {
            />
            <i className="vertical-line"></i>
            <Field
-             name="regionId"
+             name="residence_p"
              placeholder="Region"
              component={WrappedSelect}
              options={regionList}
@@ -56,7 +56,7 @@ class EditProfileForm extends React.Component {
            />
            <i className="vertical-line"></i>
            <Field
-             name="cityId"
+             name="residence_c"
              placeholder="City"
              component={WrappedSelect}
              options={cityList}
@@ -68,7 +68,7 @@ class EditProfileForm extends React.Component {
          <div className="input-wrap">
            <span className="dropdown-icon-wrap"><i className="fa fa-clock-o"></i></span>
            <Field
-             name="timezoneId"
+             name="timezone"
              placeholder="Time Zone"
              component={WrappedSelect}
              options={timezoneList}
@@ -79,7 +79,7 @@ class EditProfileForm extends React.Component {
          <div className="caption">Zoom Personal Meeting ID</div>
          <div className="input-wrap">
            <span className="dropdown-icon-wrap"><i className="fa fa-desktop"></i></span>
-           <Field name="zoomId" component={TextField} type="text"/>
+           <Field name="zoomid" component={TextField} type="text"/>
          </div>
        </div>
        <div className="phone">
@@ -91,10 +91,10 @@ class EditProfileForm extends React.Component {
            <span className="dropdown-icon-wrap"><i className="fa fa-phone"></i></span>
            <div className="country-code-wrap">
              <span className="plus-icon">+</span>
-             <Field name="countryCode" style={{width: 60}} component={TextField} type="text"/>
+             <Field name="tel_code" style={{width: 60}} component={TextField} type="text"/>
            </div>
            <i className="vertical-line"></i>
-           <Field name="phoneNumber" component={TextField} type="text"/>
+           <Field name="tel_num" component={TextField} type="text"/>
          </div>
        </div>
        <div className="submit text-center">

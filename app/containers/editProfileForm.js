@@ -13,7 +13,7 @@ const generateList = (list, rawData) => {
 const mapStateToProps = (state) => {
   const { geoResources, user } = state
   const { profile, token } = state.user
-  var { "residence_n": countryId,  "residence_p": regionId,  "residence_c": cityId, "timezone": timezoneId, zoomid: zoomId, "tel_code": countryCode, "tel_num": phoneNumber} = profile
+  const { residence_n,  residence_p,  residence_c, timezone, zoomid, tel_code, tel_num } = profile
 
   const countryListRaw = geoResources.countryList.data,
     regionListRaw = geoResources.regionList.data,
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
   generateList(cityList, cityListRaw)
 
   if (timezoneListRaw.length > 0) {
-    timezoneList = timezoneListRaw.map((item) => ({ value: item.id, label: item["en_name"]}))
+    timezoneList = timezoneListRaw.map((item) => ({ value: item.id, label: item.en_name }))
   }
 
   return {
@@ -37,13 +37,13 @@ const mapStateToProps = (state) => {
     cityList,
     timezoneList,
     initialValues: {
-      countryId,
-      regionId,
-      cityId,
-      timezoneId,
-      zoomId,
-      countryCode,
-      phoneNumber,
+      residence_n,
+      residence_p,
+      residence_c,
+      timezone,
+      zoomid,
+      tel_code,
+      tel_num,
     }
   }
 
