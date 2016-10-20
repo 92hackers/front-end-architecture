@@ -37,7 +37,7 @@ module.exports = {
   ],
 	module: {
 		loaders: [
-			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
+			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}, "react"]}, exclude: /node_modules/ },
 			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}] }, exclude: /node_modules/ },
 			{ test: /\.coffee$/, loader: "coffee"},
 			// { test: /\.less$/, loader: 'style!css?sourceMap!postcss!less?sourceMap' },

@@ -21,6 +21,7 @@ import THomepage from './containers/TeacherHomepage';
 import TSignUp from './containers/TSignUp';
 import ActivateEmail from './containers/ActivateEmail';
 import TInputNewPassword from './containers/TInputNewPassword';
+import EditProfile from './containers/editProfile';
 
 import NotFound from './universal/NotFound';
 import {store} from './config';
@@ -47,6 +48,7 @@ const routes = {
     { path: "teacher-homepage",         //    add  router to dashboard components.
       component: THomepage
     },
+    { path: "edit-profile", component: EditProfile },
     { path: "teacher-online-test", component: OnlineTest },
     { path: "active-email", component: ActivateEmail },
     { path: "input-new-email", component: InputNewEmail },

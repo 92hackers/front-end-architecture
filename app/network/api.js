@@ -3,8 +3,8 @@
 
 import reqwest from 'reqwest';
 
-var apiVersion = API_VERSION;
-var host = API_HOST;
+const apiVersion = API_VERSION;
+const host = API_HOST;
 
 var apis = [
   {
@@ -229,3 +229,6 @@ apis.forEach((item, index) => {
     })
   };
 });
+
+exports.apiVersion = apiVersion
+exports.host = host

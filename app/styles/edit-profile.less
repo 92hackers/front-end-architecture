@@ -1,0 +1,110 @@
+.edit-profile {
+  background-color: #e5f2fb;
+  padding-bottom: 100px;
+  padding-top: 100px;
+
+  .wrap {
+    width: 900px;
+    margin: 0 auto;
+    @media (min-width: 768px) {
+      width: 700px;
+    }
+    @media (min-width: 992px) {
+      width: 800px;
+    }
+    @media (min-width: 1200px) {
+      width: 900px;
+    }
+
+    header {
+      font-size: 36px;
+      color: @shallow_base_color;
+      padding-bottom: 48px;
+    }
+    .content {
+      padding: 70px 192px;
+      background-color: #fff;
+      border-radius: 4px;
+
+      form {
+        width: inherit;
+        margin: 0;
+
+        & > div {
+          margin-bottom: 30px;
+        }
+
+        .inline-block {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .caption {
+          font-size: 18px;
+          color: @shallow_base_color;
+        }
+
+        .input-wrap {
+          .dropdown-icon-wrap {
+            .inline-block();
+            width: 24px;
+            text-align: center;
+            margin-right: 10px;
+            .fa {
+              font-size: 24px;
+              color: @shallow_base_color;
+            }
+            .fa-desktop {
+              font-size: 20px;
+            }
+          }
+          .Select {
+            .inline-block();
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .vertical-line {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+        }
+
+        .location-wrap {
+          .Select {
+            width: 130px !important;
+            input {
+              width: 100%;
+            }
+          }
+          .input-wrap {
+            padding-top: 10px;
+          }
+        }
+
+        .timezone {
+          .input-wrap {
+            padding-top: 10px;
+          }
+          .Select {
+            width: 256px;
+          }
+        }
+
+        .phone {
+          .input-wrap {
+            .country-code-wrap {
+              .inline-block();
+              .plus-icon {
+                font-size: 24px;
+                color: #999;
+                margin-right: 5px;
+              }
+            }
+          }
+          margin-bottom: 50px;
+        }
+
+      }
+    }
+  }
+}

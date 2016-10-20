@@ -12,27 +12,27 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     signOut: () => {
-      dispatch(userActions.signOut());
+      dispatch(userActions.signOut())
     },
     getProfile: (profile) => {
-      dispatch(userActions.getProfile(profile));
+      dispatch(userActions.getProfile(profile))
     },
     increaseCounter: () => {
-      dispatch(pendingCounterActions.increaseCounter());
+      dispatch(pendingCounterActions.increaseCounter())
     },
     decreaseCounter: () => {
-      dispatch(pendingCounterActions.decreaseCounter());
+      dispatch(pendingCounterActions.decreaseCounter())
     },
     clearCounter: () => {
-      dispatch(pendingCounterActions.clearCounter());
+      dispatch(pendingCounterActions.clearCounter())
     },
     showNotification: (message) => {
-      dispatch(notificationActions.showNotification(message));
+      dispatch(notificationActions.showNotification(message))
     },
     networkError: () => {
-      dispatch(notificationActions.networkError());
-    }
-  };
+      dispatch(notificationActions.networkError())
+    },
+  }
 }
 
 const App = connect(mapStateToProps, mapDispatchToProps)(AppContainer);

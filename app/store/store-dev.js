@@ -1,4 +1,8 @@
-import {createStore} from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import { apiMiddleware } from 'redux-api-middleware'
+
 import allReducers from '../reducers'
 
-export const store = createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const createStoreWithMiddleware = applyMiddleware(apiMiddleware)(createStore)
+
+export const store = createStoreWithMiddleware(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

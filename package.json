@@ -53,6 +53,7 @@
     "hint.css": "^2.3.2",
     "html-webpack-plugin": "^2.22.0",
     "image-webpack-loader": "^2.0.0",
+    "immutable": "^3.8.1",
     "json-loader": "^0.5.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
@@ -78,12 +79,15 @@
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.6",
     "react-router-scroll": "^0.3.2",
+    "react-select": "^1.0.0-rc.2",
     "react-tap-event-plugin": "^1.0.0",
     "react-typeahead": "^2.0.0-alpha.5",
     "redux": "^3.5.2",
+    "redux-api-middleware": "^1.0.2",
     "redux-async-connect": "^1.0.0-rc4",
     "redux-devtools": "^3.3.1",
     "redux-form": "^6.1.0",
+    "redux-form-material-ui": "^4.1.0",
     "reqwest": "^2.0.5",
     "run-sequence": "^1.2.2",
     "sprity": "^1.0.8",
@@ -97,7 +101,6 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
-    "express": "^4.14.0",
-    "redux-form-material-ui": "^4.1.0"
+    "express": "^4.14.0"
   }
 }
