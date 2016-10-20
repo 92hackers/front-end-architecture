@@ -1,6 +1,7 @@
+import React from 'react';
 import Select from 'react-select'
 
-export const WrappedSelect = ({input, ...props}) => {
+const WrappedSelect = ({input, ...props}) => {
   const {name, value} = input
   return (
     <Select
@@ -21,3 +22,5 @@ export const WrappedSelect = ({input, ...props}) => {
     />
   )
 }
+
+export default WrappedSelect

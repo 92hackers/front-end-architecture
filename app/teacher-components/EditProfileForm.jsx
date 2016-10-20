@@ -3,30 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { Field, reduxForm } from 'redux-form'
 import { TextField } from 'redux-form-material-ui'
 import WaitForSubmit from '../universal/WaitForSubmit'
-import Select from 'react-select'
-// import { WrappedSelect } from '../utilities';
-
-const WrappedSelect = ({input, ...props}) => {
-  const {name, value} = input
-  return (
-    <Select
-      name={name}
-      value={value}
-      {...props}
-      onChange={(newValue) => {
-        if (!!newValue) {
-          input.onChange(newValue.value)
-          if (typeof props.onChange === "function") {
-            props.onChange(newValue.value)
-          }
-        } else {
-          input.onChange(newValue)
-        }
-      }
-      }
-    />
-  )
-}
+import WrappedSelect from '../universal/WrappedSelect';
 
 class EditProfileForm extends React.Component {
 
