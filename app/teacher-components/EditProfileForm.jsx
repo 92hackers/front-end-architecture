@@ -99,7 +99,7 @@ class EditProfileForm extends React.Component {
        </div>
        <div className="submit text-center">
          <div className="btn">
-           <RaisedButton label="Save" labelStyle={{fontSize: 26}} style={{width: 200, height: 48}} primary={true} type="submit"></RaisedButton>
+           <RaisedButton className="submit-btn" label="Save" labelStyle={{fontSize: 26}} style={{width: 200, height: 48}} primary={true} type="submit"></RaisedButton>
            <WaitForSubmit ref="loader"></WaitForSubmit>
          </div>
        </div>
