@@ -119,7 +119,7 @@ class WeekComp extends React.Component {
 
               let children = elem.children[1];
               children.innerText = oneTpl.studentName;
-              children.style.color = "transparent";
+              children.style.color = "#ffffff";
             } else {
               elem.style.backgroundColor = "#a8d8ff";
             }
