@@ -4,14 +4,13 @@ import { default as Comp } from '../teacher-components/EditProfile'
 
 const mapStateToProps = (state) => {
   return {
-    token: state.user.token
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateProfile: (token, data) => {
-      return dispatch(apiActions.updateProfile(token, data))
+    updateProfile: (data) => {
+      return dispatch(apiActions.updateProfile(data))
     },
     showNotification: (message) => {
       dispatch(notificationActions.showNotification(message));

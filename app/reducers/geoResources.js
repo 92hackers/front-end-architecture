@@ -2,103 +2,90 @@ import { apiActions } from '../actions'
 
 const initialState = {
   isFetching: false,
-  countryList: {
-    data: []
-  },
-  regionList: {
-    data: []
-  },
-  cityList: {
-    data: []
-  },
-  timezoneList: {
-    data: []
-  },
+  countryList: [],
+  regionList: [],
+  cityList: [],
+  timezoneList: [],
   continentList: [],
   continentCountryList: [],
 }
 
 const {
-  GEO_CONTINENT_REQUEST,
-  GEO_CONTINENT_SUCCESS,
-  GEO_CONTINENT_FAILURE,
-
-  GEO_CONTINENTCOUNTRY_REQUEST,
-  GEO_CONTINENTCOUNTRY_SUCCESS,
-  GEO_CONTINENTCOUNTRY_FAILURE,
-
-  GEO_COUNTRY_REQUEST,
-  GEO_COUNTRY_SUCCESS,
-  GEO_COUNTRY_FAILURE,
-
-  GEO_REGION_REQUEST,
-  GEO_REGION_SUCCESS,
-  GEO_REGION_FAILURE,
-
-  GEO_CITY_REQUEST,
-  GEO_CITY_SUCCESS,
-  GEO_CITY_FAILURE,
-
-  GEO_TIMEZONE_REQUEST,
-  GEO_TIMEZONE_SUCCESS,
-  GEO_TIMEZONE_FAILURE,
+  GEO_CONTINENT,
+  GEO_CONTINENTCOUNTRY,
+  GEO_COUNTRY,
+  GEO_REGION,
+  GEO_CITY,
+  GEO_TIMEZONE,
 } = apiActions
 
+const {REQUEST: gctr, SUCCESS: gcts, FAILURE: gctf} = GEO_CONTINENT
+const {REQUEST: gctcr, SUCCESS: gctcs, FAILURE: gctcf} = GEO_CONTINENTCOUNTRY
+const {REQUEST: gcr, SUCCESS: gcs, FAILURE: gcf} = GEO_COUNTRY
+const {REQUEST: grr, SUCCESS: grs, FAILURE: grf} = GEO_REGION
+const {REQUEST: gcir, SUCCESS: gcis, FAILURE: gcif} = GEO_CITY
+const {REQUEST: gtr, SUCCESS: gts, FAILURE: gtf} = GEO_TIMEZONE
+
 export default function countryList(state = initialState, action) {
-  switch (action.type) {
-    case GEO_CONTINENT_REQUEST:
+  const {type, payload} = action
+  var data = []
+  if (!!payload) {
+    data = payload.data
+  }
+  switch (type) {
+    case gctr:
       return {...state, isFetching: true}
 
-    case GEO_CONTINENT_SUCCESS:
-      return {...state, isFetching: false, continentList: action.payload.data}
+    case gcts:
+      return {...state, isFetching: false, continentList: data}
 
-    case GEO_COUNTRY_FAILURE:
+    case gctf:
       return {...state, isFetching: false}
 
-    case GEO_CONTINENTCOUNTRY_REQUEST:
+    case gctcr:
       return {...state, isFetching: true}
 
-    case GEO_CONTINENTCOUNTRY_SUCCESS:
-      return {...state, isFetching: false, continentCountryList: action.payload.data}
+    case gctcs:
+      return {...state, isFetching: false, continentCountryList: data}
 
-    case GEO_CONTINENTCOUNTRY_FAILURE:
+    case gctcf:
       return {...state, isFetching: false}
 
-    case GEO_COUNTRY_REQUEST:
+    case gcr:
       return {...state, isFetching: true}
 
-    case GEO_COUNTRY_SUCCESS:
-      return { ...state, isFetching: false, countryList: action.payload }
+    case gcs:
+      return { ...state, isFetching: false, countryList: data }
 
-    case GEO_COUNTRY_FAILURE:
-      return { ...state, isFetching: false, countryList: action.payload }
+    case gcf:
+      return { ...state, isFetching: false, countryList: payload }
 
-    case GEO_REGION_REQUEST:
+    case grr:
       return { ...state, isFetching: true}
 
-    case GEO_REGION_SUCCESS:
-      return { ...state, isFetching: false, regionList: action.payload }
+    case grs:
+      return { ...state, isFetching: false, regionList: data }
 
-    case GEO_REGION_FAILURE:
-      return { ...state, isFetching: false, regionList: action.payload }
+    case grf:
+      return { ...state, isFetching: false, regionList: payload }
 
-    case GEO_CITY_REQUEST:
+    case gcir:
       return {...state, isFetching: true}
 
-    case GEO_CITY_SUCCESS:
-      return { ...state, isFetching: false, cityList: action.payload }
+    case gcis:
+      return { ...state, isFetching: false, cityList: data }
 
-    case GEO_CITY_FAILURE:
-      return { ...state, isFetching: false, cityList: action.payload }
+    case gcif:
+      return { ...state, isFetching: false, cityList: payload }
 
-    case GEO_TIMEZONE_REQUEST:
+    case gtr:
       return { ...state, isFetching: true}
 
-    case GEO_TIMEZONE_SUCCESS:
-      return { ...state, isFetching: false, timezoneList: action.payload }
+    case gts:
+      return { ...state, isFetching: false, timezoneList: data }
 
-    case GEO_TIMEZONE_FAILURE:
-      return { ...state, isFetching: false, timezoneList: action.payload }
+    case gtf:
+      return { ...state, isFetching: false, timezoneList: payload }
 
     default:
       return state

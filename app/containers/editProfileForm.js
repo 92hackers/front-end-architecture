@@ -12,13 +12,13 @@ const generateList = (list, rawData) => {
 
 const mapStateToProps = (state) => {
   const { geoResources, user } = state
-  const { profile, token } = state.user
+  const { profile } = state.user
   const { residence_n,  residence_p,  residence_c, timezone, zoomid, tel_code, tel_num } = profile
 
-  const countryListRaw = geoResources.countryList.data,
-    regionListRaw = geoResources.regionList.data,
-    cityListRaw = geoResources.cityList.data,
-    timezoneListRaw = geoResources.timezoneList.data;
+  const countryListRaw = geoResources.countryList,
+    regionListRaw = geoResources.regionList,
+    cityListRaw = geoResources.cityList,
+    timezoneListRaw = geoResources.timezoneList;
 
   var countryList = [], regionList = [], cityList = [], timezoneList = [];
 
@@ -31,7 +31,6 @@ const mapStateToProps = (state) => {
   }
 
   return {
-    token,
     countryList,
     regionList,
     cityList,
@@ -51,17 +50,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCountryList: (token) => {
-      return dispatch(apiActions.getCountryList(token))
+    getCountryList: () => {
+      dispatch(apiActions.getCountryList())
     },
-    getRegionList: (token, countryCode) => {
-      dispatch(apiActions.getRegionList(token, countryCode))
+    getRegionList: (countryCode) => {
+      dispatch(apiActions.getRegionList(countryCode))
     },
-    getCityList: (token, regionCode) => {
-      dispatch(apiActions.getCityList(token, regionCode))
+    getCityList: (regionCode) => {
+      dispatch(apiActions.getCityList(regionCode))
     },
-    getTimezoneList: (token) => {
-      dispatch(apiActions.getTimezoneList(token))
+    getTimezoneList: () => {
+      dispatch(apiActions.getTimezoneList())
     },
   }
 }

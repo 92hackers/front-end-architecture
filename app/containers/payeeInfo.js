@@ -4,7 +4,7 @@ import { default as Comp } from '../teacher-components/PayeeInfo';
 
 const mapStateToProps = (state) => {
 
-  const {user, geoResources, payeeInfo} = state
+  const {geoResources, payeeInfo} = state
   const {bankNameData, accountInfo} = payeeInfo
   const {region, country, name, address, accountNum, swiftCode, bankName, bankCode} = accountInfo
 
@@ -22,7 +22,6 @@ const mapStateToProps = (state) => {
   }
 
   return {
-    token: user.token,
     continentList,
     continentCountryList,
     bankNameData,
@@ -35,7 +34,7 @@ const mapStateToProps = (state) => {
       swiftCode,
       bankName,
       bankCode,
-    }
+    },
   }
 
 };
@@ -43,20 +42,20 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const { getPayeeInfo, getContinentList, getContinentCountryList, queryBySwiftcode, updatePayeeInfo } = apiActions
   return {
-    getPayeeInfo: (token) => {
-      dispatch(getPayeeInfo(token))
+    getPayeeInfo: () => {
+      dispatch(getPayeeInfo())
     },
-    getContinentList: (token) => {
-      dispatch(getContinentList(token))
+    getContinentList: () => {
+      dispatch(getContinentList())
     },
-    getContinentCountryList: (token, continentId) => {
-      dispatch(getContinentCountryList(token, continentId))
+    getContinentCountryList: (continentId) => {
+      dispatch(getContinentCountryList(continentId))
     },
-    queryBySwiftcode: (token, code) => {
-      return dispatch(queryBySwiftcode(token, code))
+    queryBySwiftcode: (code) => {
+      return dispatch(queryBySwiftcode(code))
     },
-    updatePayeeInfo: (token, data) => {
-      return dispatch(updatePayeeInfo(token, data))
+    updatePayeeInfo: (data) => {
+      return dispatch(updatePayeeInfo(data))
     },
     showNotification: (message) => {
       dispatch(notificationActions.showNotification(message));

@@ -22,9 +22,10 @@ class TIndexComp extends React.Component {
 
   componentDidMount () {
 
+    const minHeight = 700;
     var viewHeight = window.innerHeight;
 
-    viewHeight = viewHeight > 700 ? viewHeight : 700;
+    viewHeight = viewHeight > minHeight ? viewHeight : minHeight;
 
     this.setState({
       viewHeight: viewHeight

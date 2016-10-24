@@ -11,27 +11,17 @@ class EditProfileForm extends React.Component {
     super (props)
   }
 
- componentWillMount () {
-   const {token, getRegionList, getCityList, initialValues} = this.props
+ componentDidMount () {
+   const {getCountryList, getTimezoneList, getRegionList, getCityList, initialValues} = this.props
    const {residence_n, residence_p, residence_c} = initialValues
-   this.props.getCountryList(token)
-   this.props.getTimezoneList(token)
-   if (!!residence_n) getRegionList(token, residence_n)
-   if (!!residence_p) getCityList(token, residence_p)
- }
-
- changeCountry (...args) {
-   const {token, getRegionList} = this.props
-   getRegionList(token, args[0])
- }
-
- changeRegion (...args) {
-   const {token, getCityList} = this.props
-   getCityList(token, args[0])
+   if (!!residence_n) getRegionList(residence_n)
+   if (!!residence_p) getCityList(residence_p)
+   getCountryList()
+   getTimezoneList()
  }
 
  render () {
-   const { initialValues, countryList, regionList, cityList, timezoneList, handleSubmit, pristine } = this.props
+   const { initialValues, countryList, regionList, cityList, timezoneList, handleSubmit, pristine, getRegionList, getCityList } = this.props
 
    return (
      <form onSubmit={handleSubmit}>
@@ -44,7 +34,7 @@ class EditProfileForm extends React.Component {
              placeholder="Country"
              component={WrappedSelect}
              options={countryList}
-             onChange={this.changeCountry.bind(this)}
+             onChange={getRegionList.bind(this)}
            />
            <i className="vertical-line"></i>
            <Field
@@ -52,7 +42,7 @@ class EditProfileForm extends React.Component {
              placeholder="Region"
              component={WrappedSelect}
              options={regionList}
-             onChange={this.changeRegion.bind(this)}
+             onChange={getCityList.bind(this)}
            />
            <i className="vertical-line"></i>
            <Field
@@ -99,7 +89,7 @@ class EditProfileForm extends React.Component {
        </div>
        <div className="submit text-center">
          <div className="btn">
-           <RaisedButton className="submit-btn" label="Save" labelStyle={{fontSize: 26}} style={{width: 200, height: 48}} primary={true} type="submit"></RaisedButton>
+           <RaisedButton disabled={pristine} className="submit-btn" label="Save" labelStyle={{fontSize: 26}} style={{width: 200, height: 48}} primary={true} type="submit"></RaisedButton>
            <WaitForSubmit ref="loader"></WaitForSubmit>
          </div>
        </div>

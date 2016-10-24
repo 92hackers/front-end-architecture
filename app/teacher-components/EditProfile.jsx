@@ -8,7 +8,7 @@ class EditProfile extends React.Component {
   }
 
   handleSubmit (values) {         // 目前先将 validation 写在这里。  暂时先用回调来取得结果。
-    const {token, updateProfile, showNotification, networkError} = this.props
+    const {updateProfile, showNotification, networkError} = this.props
     const {residence_n, timezone, tel_num} = values
 
     var warn = ""
@@ -24,7 +24,7 @@ class EditProfile extends React.Component {
       showNotification(warn)
       return;
     } else {
-      updateProfile(token, values).then((res) => {
+      updateProfile(values).then((res) => {
         if (res.payload.success) {
           showNotification("Your profile updated successfully.")        // 还需要加上 get profile 或者是 额外的跳转。
         } else {

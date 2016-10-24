@@ -15,27 +15,32 @@ class PayeeInfo extends React.Component {
    }
  }
 
- componentWillMount () {
-   const { token, getPayeeInfo, getContinentList, getContinentCountryList, initialValues } = this.props
+ componentDidMount () {
+   const { getPayeeInfo, getContinentList, getContinentCountryList, initialValues } = this.props
    const { region } = initialValues
-   getPayeeInfo(token)
-   getContinentList(token)
-   if (!!region) getContinentCountryList(token, region)
+   getPayeeInfo()
+   getContinentList()
+   if (!!region) getContinentCountryList(region)
  }
 
  componentWillReceiveProps (nextProps) {
-   const { bankNameData, change } = nextProps
+   const {getContinentCountryList, bankNameData, change, initialValues } = nextProps
+   const { region, country } = initialValues
    const field = document.querySelector("[name='bankName']")
 
    if (bankNameData !== this.props.bankNameData) {
      field.value = bankNameData
      change("bankName", bankNameData)
    }
- }
 
- changeContinent (...args) {
-   const { token, getContinentCountryList } = this.props
-   getContinentCountryList(token, args[0])
+   if (region !== this.props.initialValues.region && !!region) {
+     getContinentCountryList(region)
+     if (!!country && country === 2036) {
+       this.setState({
+         isAustraliaSelected: true
+       });
+     }
+   }
  }
 
  changeCountry (...args) {
@@ -50,7 +55,7 @@ class PayeeInfo extends React.Component {
 
  handleSubmit (values) {
    const { region, country, name, address, accountNum, swiftCode, bankName, bankCode } = values
-   const { token, updatePayeeInfo, showNotification, networkError } = this.props
+   const { updatePayeeInfo, showNotification, networkError } = this.props
 
    var warn = ""
    if (!region) {
@@ -81,7 +86,7 @@ class PayeeInfo extends React.Component {
      showNotification(warn)
      return
    } else {
-     updatePayeeInfo(token, values).then(res => {
+     updatePayeeInfo(values).then(res => {
        if (res.payload.success) {
          showNotification("Payee's information saved successfully.")
        } else {
@@ -93,12 +98,12 @@ class PayeeInfo extends React.Component {
  }
 
  sendSwiftCode () {
-   const { token, queryBySwiftcode, showNotification } = this.props
+   const { queryBySwiftcode, showNotification } = this.props
    const code = document.querySelector("[name='swiftCode']").value.trim()
    if (!code) {
      showNotification("Please input your swift code.")
    } else {
-     queryBySwiftcode(token, code).then(res => {
+     queryBySwiftcode(code).then(res => {
        if (!res.payload.data.length) {
          showNotification("Code you entered is incorrect, please try again.")
        }
@@ -108,7 +113,7 @@ class PayeeInfo extends React.Component {
 
  render () {
 
-   const { continentList, continentCountryList, initialValues, handleSubmit, pristine } = this.props
+   const { continentList, continentCountryList, initialValues, handleSubmit, pristine, getContinentCountryList } = this.props
 
    return (
      <section className="payee-info">
@@ -124,7 +129,7 @@ class PayeeInfo extends React.Component {
                    name="region"
                    component={WrappedSelect}
                    options={continentList}
-                   onChange={this.changeContinent.bind(this)}
+                   onChange={getContinentCountryList.bind(this)}
                  />
                </li>
                <li className="select">
@@ -185,7 +190,7 @@ class PayeeInfo extends React.Component {
                      className="input-box"
                      component={TextField}
                    />
-                   <RaisedButton label="Confirm" primary={true} onClick={this.sendSwiftCode.bind(this)}></RaisedButton>
+                   <RaisedButton disabled={pristine} label="Confirm" primary={true} onClick={this.sendSwiftCode.bind(this)}></RaisedButton>
                  </div>
                </li>
                <li>
@@ -218,7 +223,7 @@ class PayeeInfo extends React.Component {
              </ul>
              <div className="submit text-center">
                <div className="btn">
-                 <RaisedButton className="submit-btn" label="Save" labelStyle={{fontSize: 26}} style={{width: 200, height: 48}} primary={true} type="submit"></RaisedButton>
+                 <RaisedButton disabled={pristine} className="submit-btn" label="Save" labelStyle={{fontSize: 26}} style={{width: 200, height: 48}} primary={true} type="submit"></RaisedButton>
                  <WaitForSubmit ref="loader"></WaitForSubmit>
                </div>
              </div>
@@ -232,7 +237,8 @@ class PayeeInfo extends React.Component {
 }
 
 PayeeInfo = reduxForm({
-  form: "payeeInfo"
+  form: "payeeInfo",
+  enableReinitialize: true        // allow comp to re initialize.
 })(PayeeInfo)
 
 export default PayeeInfo

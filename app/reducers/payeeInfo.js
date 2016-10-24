@@ -1,12 +1,8 @@
 import { apiActions } from '../actions';
 
 const {
-  PAYEEINFO_REQUEST,
-  PAYEEINFO_SUCCESS,
-  PAYEEINFO_FAILURE,
-  SWIFT_CODE_REQUEST,
-  SWIFT_CODE_SUCCESS,
-  SWIFT_CODE_FAILURE,
+  PAYEEINFO,
+  SWIFT_CODE,
 } = apiActions
 
 const initialState = {
@@ -17,24 +13,28 @@ const initialState = {
 }
 
 export default function payeeInfo (state = initialState, action) {
-  switch (action.type) {
-    case PAYEEINFO_REQUEST:
+  const {type, payload} = action
+  var data = []
+  if (!!payload) {
+    data = payload.data
+  }
+  switch (type) {
+    case PAYEEINFO.REQUEST:
       return {...state, isFetching: true}
 
-    case PAYEEINFO_SUCCESS:
-      return {...state, isFetching: false, isSuccess: true, accountInfo: action.payload.data}
+    case PAYEEINFO.SUCCESS:
+      return {...state, isFetching: false, isSuccess: true, accountInfo: data}
 
-    case PAYEEINFO_FAILURE:
+    case PAYEEINFO.FAILURE:
       return {...state, isFetching: false, isSuccess: false}
 
-    case SWIFT_CODE_REQUEST:
+    case SWIFT_CODE.REQUEST:
       return {...state, isFetching: true}
 
-    case SWIFT_CODE_SUCCESS:
-      const { data } = action.payload
+    case SWIFT_CODE.SUCCESS:
       return {...state, isFetching: false, isSuccess: true, bankNameData: data.length > 0 ? data[0].bankName : ""}
 
-    case SWIFT_CODE_FAILURE:
+    case SWIFT_CODE.FAILURE:
       return {...state, isFetching: false, isSuccess: false}
 
     default:
