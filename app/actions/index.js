@@ -1,16 +1,13 @@
-import * as notification from './notification';
-import * as user from './user';
-import * as pendingCounter from './pendingCounter';
-import * as dashboardDisplay from './dashboardDisplay';
+import * as notificationActions from './notification'
+import * as userActions from './user'
+import * as pendingCounterActions from './pendingCounter'
+import * as dashboardActions from './dashboardDisplay'
+import * as apiActions from './api'
 
-export const notificationActions = notification;
-export const userActions = user;
-export const pendingCounterActions = pendingCounter;
-export const dashboardActions = dashboardDisplay;
-
-export default {
+export {
   notificationActions,
   userActions,
   pendingCounterActions,
-  dashboardActions
+  apiActions,
+  dashboardActions,
 };

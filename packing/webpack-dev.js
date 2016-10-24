@@ -37,7 +37,7 @@ module.exports = {
   ],
 	module: {
 		loaders: [
-			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
+			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}, "react"]}, exclude: /node_modules/ },
 			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}] }, exclude: /node_modules/ },
 			{ test: /\.coffee$/, loader: "coffee"},
 			// { test: /\.less$/, loader: 'style!css?sourceMap!postcss!less?sourceMap' },
@@ -54,7 +54,11 @@ module.exports = {
 		]
 	},
   plugins: [
-		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify(process.env.NODE_ENV) }}),
+		new webpack.DefinePlugin({
+      ENV:          JSON.stringify("dev"),
+      API_HOST:     JSON.stringify(config.devHost),
+      API_VERSION:  JSON.stringify(config.apiVersion)
+    }),
 		new ExtractTextPlugin("css/[name].css"),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin(htmlOptions),

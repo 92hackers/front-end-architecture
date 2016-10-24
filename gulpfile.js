@@ -5,32 +5,12 @@ var gulpUtil = require("gulp-util");
 var config = require("config");
 var webpack = require("webpack");
 var runSequence = require("run-sequence");
-var shell = require("gulp-shell");
+// var shell = require("gulp-shell");
 var gulpif = require('gulp-if');
 
-gulp.task("preprocess", () => {
-
-  var host = process.env.API_HOST && process.env.API_HOST.toString() === "production" ? config.productionHost : config.devHost;
-  var apiVersion = config.apiVersion.replace(/\//g, "\\/");
-  host = host.replace(/\/\//, "\\/\\/");
-
+gulp.task("clean", () => {
   gulpUtil.log("cleaning...");
 	del(["build", "builg.tar.gz"]);
-
-  gulpUtil.log("config files: ");
-  shell.task([
-    "sed 's/host=\"\"/host=\"<%= host %>\"/; s/apiVersion=\"\"/apiVersion=\"<%= apiVersion %>\"/' api-template.js > api.js"   //  inject host to api.js.
-  ],
-  {
-    verbose: true,
-    cwd: "./app/network/",
-    templateData: {
-      host: host,
-      apiVersion: apiVersion
-    }
-  }
-  )();
-  return ;
 });
 
 gulp.task('sprites', function () {
@@ -88,15 +68,16 @@ gulp.task("webpack-build", () => {
 	webpack(webpackBuild, (err, stats) => {
 		if (err)
 			throw new gulpUtil.PluginError("webpack", err);
+
     var assets = JSON.stringify(stats.toJson().assetsByChunkName);
+
     fs.writeFileSync("build/assets.json",assets);
 		gulpUtil.log("[webpack]", stats.toString());
-    del(["./app/network/api.js"]);
 	});
 });
 
 gulp.task("dev", () => {
-  runSequence("preprocess", "webpack-dev", (err) => {
+  runSequence("clean", "webpack-dev", (err) => {
     if (err) {
       throw new gulpUtil.PluginError("gulp dev", err);
     }
@@ -104,11 +85,11 @@ gulp.task("dev", () => {
 });
 
 gulp.task("build", () => {
-	runSequence("preprocess", "webpack-build", (err) => {
+	runSequence("clean", "webpack-build", (err) => {
 		if (err) {
       gulpUtil.log("error: ", err);
 		} else {
-      gulpUtil.log("build successfully");
+      gulpUtil.log(new Date(), "build successfully");
 		}
 	});
 });

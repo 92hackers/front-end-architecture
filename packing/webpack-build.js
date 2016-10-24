@@ -3,6 +3,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var autoPrefixer = require("autoprefixer");
 var path = require("path");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var config = require("config");
 
 // var imageName = "images/[name].[hash:8].[ext]";
 // var fontName = "fonts/[name].[hash:8].[ext]";
@@ -42,7 +43,7 @@ module.exports = {
   ],
 	module: {
 		loaders: [
-			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", "react"]}, exclude: /node_modules/ },
+			{ test: /\.jsx$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}, "react"]}, exclude: /node_modules/ },
 			{ test: /\.js$/, loader: "babel", query: { presets: ["es2015", {plugins: ["transform-object-rest-spread"]}] }, exclude: /node_modules/ },
 			{ test: /\.coffee$/, loader: "coffee"},
 			{ test: /\.less$/, loader: ExtractTextPlugin.extract("style", "css!postcss!less") },
@@ -60,13 +61,23 @@ module.exports = {
   plugins: process.env.NODE_ENV === 'production' ? [
 		new ExtractTextPlugin("css/[name].[hash:8].css"),
     new HtmlWebpackPlugin(htmlOptions),
-		new webpack.DefinePlugin({"process.env": { "NODE_ENV": JSON.stringify(process.env.NODE_ENV) }}),
+		new webpack.DefinePlugin({          //   modify
+      ENV:  JSON.stringify("production"),
+      API_HOST:     JSON.stringify(config.productionHost),
+      API_VERSION:  JSON.stringify(config.apiVersion)
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin(uglifyOptions)
   ] : [
 		new ExtractTextPlugin("css/[name].[hash:8].css"),
-    new HtmlWebpackPlugin(htmlOptions)
+    new HtmlWebpackPlugin(htmlOptions),
+    new webpack.DefinePlugin({
+      ENV:          JSON.stringify("dev"),
+      API_HOST:     JSON.stringify(config.devHost),
+      API_VERSION:  JSON.stringify(config.apiVersion)
+    }),
+    new webpack.optimize.UglifyJsPlugin(uglifyOptions)
   ],
 	postcss: () => {
 		autoPrefixer({ browsers: ["last 2 versions", "> 1%"] })

@@ -617,3 +617,28 @@ form {
   padding-top: 100px;
   padding-bottom: 100px;
 }
+
+.vertical-line {
+  display: inline-block;
+  border-right: 1px solid #ddd;
+  height: 30px;
+  vertical-align: middle;
+}
+
+//  custom styles for react-select Component.
+
+.Select {
+  cursor: pointer;
+}
+
+.Select-control {
+  .Select-input {
+    input {
+      height: 16px !important;
+    }
+  }
+}
+
+.is-focused:not(.is-open) > .Select-control {
+  border-color: @teacher_base !important;
+}
