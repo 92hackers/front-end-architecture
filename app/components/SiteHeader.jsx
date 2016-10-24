@@ -155,7 +155,12 @@ class SiteHeaderComp extends React.Component {
         >
           <List className="dashboard-dropdown">
             <ListItem primaryText="Change Password" leftIcon={<i className="fa fa-key"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
-            {/* <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={this.handleEditProfileClick.bind(this)}></ListItem> */}
+            <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={() => {browserHistory.replace("/edit-profile")}}></ListItem>
+            {
+              userStatus >= 10 ? (
+                <ListItem primaryText="Payee Info" leftIcon={<i className="fa fa-credit-card"></i>} onTouchTap={() => {browserHistory.replace("/complete-payee-info")}}></ListItem>
+                  ) : (<div></div>)
+            }
           </List>
         </Popover>
       </li>
@@ -214,6 +219,10 @@ class SiteHeaderComp extends React.Component {
          case 15:
            dynamicComponent = (
              <ul className="right">
+               <li className="header-item">
+                 <Link to="teacher-homepage" onClick={this.handleHomepageClick.bind(this)}>Homepage</Link>
+                 <span className="nav-border-line"></span>
+               </li>
                <li className="header-item">
                  <a href="javascript:;" onTouchTap={this.handleHelpClick.bind(this)}><i className="fa fa-question"></i> Help</a>
                  <span className="nav-border-line"></span>

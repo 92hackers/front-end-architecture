@@ -13,6 +13,7 @@ import TAboutSchool from './teacher-components/TAboutSchool';
 import TAboutJob from './teacher-components/TAboutJob';
 import StepToSignUp from './containers/StepToSignUp';
 import ScheduleCourse from './teacher-components/ScheduleCourse';
+import TIndex from './teacher-components/TIndex';
 
 import App from './containers/App';
 import OnlineTest from './containers/OnlineTest';
@@ -43,11 +44,22 @@ const scrollBehavior = (prevRouterProps, { routes }) => {
 const routes = {
   path: "/",
   component: App,
+  indexRoute: { component: TIndex },
   childRoutes: [
     { path: "sign-up", component: TSignUp },
     { path: "sign-in", component: SignIn },
     { path: "teacher-homepage",         //    add  router to dashboard components.
       component: THomepage
+      // childRoutes: [
+      //   {
+      //     path: 'timetable',
+      //     component: PayeeInfo
+      //   },
+      //   {
+      //     path: 'timetable-template',
+      //     component:    //TODO: add component.
+      //   }
+      // ]
     },
     { path: "complete-payee-info", component: PayeeInfo },
     { path: "edit-profile", component: EditProfile },

@@ -9,6 +9,8 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+
+
 import ScheduleCourse from './ScheduleCourse';
 import OneWeekTemplate from '../universal/OneWeekTemplate';
 import DisplayUserStatus from '../containers/DisplayUserStatus';

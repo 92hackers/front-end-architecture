@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {blue500} from 'material-ui/styles/colors';
 
-import TIndex from './TIndex';
 import api from '../network/api';
 
 import SiteHeader from '../containers/SiteHeader';
@@ -51,7 +50,7 @@ class AppContainer extends React.Component {
   router (path, status, examined) {
     let requestRoute = path;
     var routersArray = ["","sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
-    "input-new-email", "forget-password", "step-to-sign-up"];
+    "input-new-email", "forget-password", "step-to-sign-up", "edit-profile", "complete-payee-info"];
 
     if (routersArray.indexOf(requestRoute) !== -1) {
       this.routerByStatus(status, examined);
@@ -101,7 +100,7 @@ class AppContainer extends React.Component {
     }
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.auth(this.props.token);
   }
 
@@ -132,7 +131,7 @@ class AppContainer extends React.Component {
               !this.props.pendingCounter ? (
                 <div>
                   <SiteHeader token={this.props.token}></SiteHeader>
-                  {this.props.children || <TIndex></TIndex>}
+                  { this.props.children }
                 </div>
                   ) : <SiteLoading></SiteLoading>
             }
