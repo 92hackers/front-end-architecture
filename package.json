@@ -1,6 +1,6 @@
 {
   "name": "front-end-architecture",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "a front end architecture based on react.",
   "main": "index.js",
   "scripts": {
@@ -41,6 +41,7 @@
     "css-loader": "^0.23.1",
     "del": "^2.2.1",
     "enzyme": "^2.4.1",
+    "eslint": "^3.8.1",
     "expose-loader": "^0.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
