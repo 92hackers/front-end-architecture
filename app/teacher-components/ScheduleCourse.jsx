@@ -18,7 +18,7 @@ class ScheduleCourse extends React.Component {
             <Week token={this.props.token} tpl={this.props.tpl} weeklyTimetable={this.props.weeklyTimetable} weeklyTimetableReq={this.props.weeklyTimetableReq} monthlyTimetableReq={this.props.monthlyTimetableReq}></Week>
           </Tab>
           <Tab label="Month">
-            <DateTab monthlyTimetable={this.props.monthlyTimetable}></DateTab>
+            <DateTab monthlyTimetable={this.props.monthlyTimetable} monthlyTimetableReq={this.props.monthlyTimetableReq}></DateTab>
           </Tab>
         </Tabs>
       </section>

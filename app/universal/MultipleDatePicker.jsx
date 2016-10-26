@@ -201,11 +201,19 @@ var MultipleDatePicker = React.createClass({
     	if(typeof this.props.changeMonth !== 'function' || this.props.changeMonth.call(this.props.callbackContext, this.props.month.clone(), -1)){
     		this.setState({month: this.state.month.subtract(1, 'MONTH')});
     	}
+      const { goToPreviousMonth } = this.props
+      if(typeof goToPreviousMonth === 'function') {
+        goToPreviousMonth()
+      }
     },
     goToNextMonth: function(){
     	if(typeof this.props.changeMonth !== 'function' || this.props.changeMonth.call(this.props.callbackContext, this.props.month.clone(), 1)){
     		this.setState({month: this.state.month.add(1, 'MONTH')});
     	}
+      const { goToNextMonth } = this.props
+      if (typeof goToNextMonth === 'function') {
+        goToNextMonth()
+      }
     },
 	render: function(){
 		var lastDayOfPreviousMonth = this.state.month.clone().date(0),
