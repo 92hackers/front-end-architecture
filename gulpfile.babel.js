@@ -1,20 +1,36 @@
-var fs = require("fs");
-var gulp = require("gulp");
-var del = require("del");
-var gulpUtil = require("gulp-util");
-var config = require("config");
-var webpack = require("webpack");
-var runSequence = require("run-sequence");
-// var shell = require("gulp-shell");
-var gulpif = require('gulp-if');
+import fs from 'fs'
+import del from 'del'
+import config from 'config'
+import webpack from 'webpack'
+import runSequence from 'run-sequence'
+import gulp from 'gulp'
+import gulpif from 'gulp-if'
+import gulpUtil from 'gulp-util'
+import eslint from 'gulp-eslint'
+import styleLint from 'gulp-stylelint'
 
-gulp.task("clean", () => {
-  gulpUtil.log("cleaning...");
-	del(["build", "builg.tar.gz"]);
-});
+gulp.task('clean', () => {
+  gulpUtil.log('cleaning...')
+  del(['build', 'builg.tar.gz'])
+})
 
-gulp.task('sprites', function () {
-  var sprity = require('sprity');
+gulp.task('jslint', () => gulp.src(['app/*.js', 'app/*.jsx', 'app/**/*.js', 'app/**/*.jsx', '!app/styles/**'])
+  .pipe(eslint('.eslintrc.js'))
+  .pipe(eslint.format())
+  .pipe(eslint.failAfterError())
+)
+
+gulp.task('csslint', () => gulp.src(['app/*.less', 'app/styles/*.less'])
+  .pipe(styleLint({
+    failAfterError: true,
+    reporters: [
+      { formatter: 'verbose', console: true },
+    ],
+  }))
+)
+
+gulp.task('sprites', () => {
+  const sprity = require('sprity');
   return sprity.src({
     src: './app/sprites-source/*.{png,jpg}',
     style: './sprite.css',
@@ -83,6 +99,14 @@ gulp.task("dev", () => {
     }
   });
 });
+
+gulp.task('lint', () => {
+  runSequence('jslint', 'csslint', (err) => {
+    if (err) {
+      throw new gulpUtil.PluginError('gulp lint', err)
+    }
+  })
+})
 
 gulp.task("build", () => {
 	runSequence("clean", "webpack-build", (err) => {

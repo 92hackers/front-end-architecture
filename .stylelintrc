@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "max-empty-lines": 1
+  },
+  "extends": "stylelint-config-standard"
+}
