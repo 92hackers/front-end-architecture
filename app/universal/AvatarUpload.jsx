@@ -87,7 +87,7 @@ class AvatarUploadClass extends React.Component {
         uploading = true;
         break;
       case "uploadSuccess":
-        label = "Upload Successfully";
+        label = "Upload Successful";
         uploading = false;
         break;
       case "uploadFail":
