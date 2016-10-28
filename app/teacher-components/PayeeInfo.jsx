@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react"
 import RaisedButton from 'material-ui/RaisedButton'
 import { Field, reduxForm } from 'redux-form'
+import { browserHistory } from 'react-router'
 import { TextField } from 'redux-form-material-ui'
 import Tooltip from 'react-tooltip'
 import WaitForSubmit from '../universal/WaitForSubmit'
@@ -89,6 +90,9 @@ class PayeeInfo extends React.Component {
      updatePayeeInfo(values).then(res => {
        if (res.payload.success) {
          showNotification("Payee's information saved successfully.")
+         const timeId = setTimeout(() => {
+           browserHistory.replace('/teacher-homepage')
+         }, 4100)
        } else {
          networkError()
        }

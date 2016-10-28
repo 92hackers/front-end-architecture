@@ -26,6 +26,8 @@ class SiteHeaderComp extends React.Component {
       welcomeOpen: false,
       stepIndex: 0
     };
+    this.handleEditProfile = this.handleEditProfile.bind(this)
+    this.handlePayeeInfoClick = this.handlePayeeInfoClick.bind(this)
   }
 
 
@@ -129,6 +131,16 @@ class SiteHeaderComp extends React.Component {
     });
   }
 
+  handleEditProfile () {
+    this.handleSettingsRequestClose();
+    browserHistory.replace("/edit-profile")
+  }
+
+  handlePayeeInfoClick () {
+    this.handleSettingsRequestClose()
+    browserHistory.replace("/complete-payee-info")
+  }
+
   render () {
     const {token: isUserLoggedIn, status: userStatus, examined: examined} = this.props;
 
@@ -155,10 +167,10 @@ class SiteHeaderComp extends React.Component {
         >
           <List className="dashboard-dropdown">
             <ListItem primaryText="Change Password" leftIcon={<i className="fa fa-key"></i>} onTouchTap={this.handleSettingClick.bind(this)} />
-            <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={() => {browserHistory.replace("/edit-profile")}}></ListItem>
+            <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={this.handleEditProfile}></ListItem>
             {
               userStatus >= 10 ? (
-                <ListItem primaryText="Payee Info" leftIcon={<i className="fa fa-credit-card"></i>} onTouchTap={() => {browserHistory.replace("/complete-payee-info")}}></ListItem>
+                <ListItem primaryText="Payee Info" leftIcon={<i className="fa fa-credit-card"></i>} onTouchTap={this.handlePayeeInfoClick}></ListItem>
                   ) : (<div></div>)
             }
           </List>
