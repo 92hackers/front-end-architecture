@@ -30,6 +30,7 @@ class AppContainer extends React.Component {
         break;
       case 3:
       case 4:
+      case 5:
         if (!!examined) {               // if teacher pass the online test, route to teacher homepage, or to do the test.
           browserHistory.push("/teacher-homepage");
         } else {
