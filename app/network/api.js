@@ -1,5 +1,6 @@
 // send request.
 //  created by Chen yuan.
+/* eslint-disable */
 
 import reqwest from 'reqwest';
 

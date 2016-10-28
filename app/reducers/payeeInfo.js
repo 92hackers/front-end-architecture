@@ -7,35 +7,32 @@ const {
 
 const initialState = {
   isFetching: false,
-  accountInfo: {region: "", country: "", name: "", address: "", accountNum: "", swiftCode: "", bankName: "", bankCode: ""},
+  accountInfo: { region: '', country: '', name: '', address: '', accountNum: '', swiftCode: '', bankName: '', bankCode: '' },
   isSuccess: false,
-  bankNameData: ""
+  bankNameData: '',
 }
 
-export default function payeeInfo (state = initialState, action) {
-  const {type, payload} = action
-  var data = []
-  if (!!payload) {
-    data = payload.data
-  }
+export default function payeeInfo(state = initialState, action) {
+  const { type, payload } = action
+  const data = payload ? payload.data : []
   switch (type) {
     case PAYEEINFO.REQUEST:
-      return {...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case PAYEEINFO.SUCCESS:
-      return {...state, isFetching: false, isSuccess: true, accountInfo: data}
+      return { ...state, isFetching: false, isSuccess: true, accountInfo: data }
 
     case PAYEEINFO.FAILURE:
-      return {...state, isFetching: false, isSuccess: false}
+      return { ...state, isFetching: false, isSuccess: false }
 
     case SWIFT_CODE.REQUEST:
-      return {...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case SWIFT_CODE.SUCCESS:
-      return {...state, isFetching: false, isSuccess: true, bankNameData: data.length > 0 ? data[0].bankName : ""}
+      return { ...state, isFetching: false, isSuccess: true, bankNameData: data.length > 0 ? data[0].bankName : '' }
 
     case SWIFT_CODE.FAILURE:
-      return {...state, isFetching: false, isSuccess: false}
+      return { ...state, isFetching: false, isSuccess: false }
 
     default:
       return state

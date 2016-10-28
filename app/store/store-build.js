@@ -5,4 +5,6 @@ import allReducers from '../reducers'
 
 const createStoreWithMiddleware = applyMiddleware(apiMiddleware)(createStore)
 
-export const store = createStoreWithMiddleware(allReducers)
+const store = createStoreWithMiddleware(allReducers)
+
+export default store

@@ -1,18 +1,14 @@
-import {connect} from 'react-redux';
-import { notificationActions } from '../actions';
+import { connect } from 'react-redux';
 import DisplayUserStatusComp from '../teacher-components/DisplayUserStatus';
 
-const mapStateToProps = (state) => {
-  return {
-    profile: state.user.profile,
-    pendingCounter: state.pendingCounter
-  }
-};
+const mapStateToProps = state => ({
+  profile: state.user.profile,
+  pendingCounter: state.pendingCounter,
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
+const mapDispatchToProps = () => ({
+
+})
 
 const DisplayUserStatus = connect(mapStateToProps, mapDispatchToProps)(DisplayUserStatusComp);
 

@@ -4,16 +4,21 @@ import toggleHeader from '../utilities/toggleHeader';
 
 class TAboutSchool extends React.Component {
 
-  constructor (props) {
-    super (props);
-  };
+  componentDidMount() {
+    toggleHeader.set(540);
+  }
 
-  render () {
+  componentWillUnmount() {
+    toggleHeader.reset();
+  }
+
+  /* eslint max-len: 0 */
+  render() {
     return (
       <section className="t-about-school text-center">
         <section className="bg-img">
           <div className="content">
-            <IndexHeader></IndexHeader>
+            <IndexHeader />
             <h1 className="main-title">About the School</h1>
             <h2 className="main-sub-title">Online English teaching as it should be.</h2>
           </div>
@@ -39,7 +44,7 @@ class TAboutSchool extends React.Component {
               </li>
               <li className="icon icon-connect">
                 <div className="mask">
-                  <p className="content">We want to bring people from all over the world together into a community where they can learn about each other's language, culture and history.</p>
+                  <p className="content">We want to bring people from all over the world together into a community where they can learn about each other&apos;s language, culture and history.</p>
                 </div>
               </li>
             </ul>
@@ -48,46 +53,37 @@ class TAboutSchool extends React.Component {
             <h1 className="title">Online Community</h1>
             <p>We foster an online community where teachers, parents, </p>
             <p className="last-p">and students can share with and learn from each other.</p>
-            <div className="icon icon-circle"></div>
+            <div className="icon icon-circle" />
           </section>
           <section className="charity">
             <h1 className="title">Support Society</h1>
             <h2 className="sub-title">Part of our proceeds goes to charities supporting rural education in China.</h2>
-            <div className="icon-charity"></div>
+            <div className="icon-charity" />
           </section>
           <section className="students-video">
-            <h1 className="title">Students' Video</h1>
+            <h1 className="title">Students&apos; Video</h1>
             <p className="last-p">Felix saying thanks for all the help heather has given him</p>
-            <iframe width="1024" height="576" src="https://www.youtube.com/embed/-2wJlQ-uxl0?rel=0" frameBorder="0" allowFullScreen></iframe>
+            <iframe width="1024" height="576" src="https://www.youtube.com/embed/-2wJlQ-uxl0?rel=0" frameBorder="0" allowFullScreen />
           </section>
           <section className="activities">
             <h1 className="title">Offline Activities</h1>
             <p>We organise study tours to the Anglosphere so students can learn more about Western culture </p>
             <p className="last-p">and meet their teachers in person. We also arrange for teachers to visit their students in China.</p>
             <ul className="icons clearfix">
-              <li className="icon-one icon icon-horse left"></li>
-              <li className="icon-two icon icon-banner left"></li>
-              <li className="icon-three icon icon-four-persons left"></li>
-              <li className="icon-four icon icon-learning left"></li>
-              <li className="icon-five icon icon-play left"></li>
+              <li className="icon-one icon icon-horse left" />
+              <li className="icon-two icon icon-banner left" />
+              <li className="icon-three icon icon-four-persons left" />
+              <li className="icon-four icon icon-learning left" />
+              <li className="icon-five icon icon-play left" />
             </ul>
           </section>
           <section className="slogan">
-            <p className="slogan-title">"Learning for life. Friendships for life."</p>
+            <p className="slogan-title">&quot;Learning for life. Friendships for life.&quot;</p>
           </section>
         </section>
       </section>
     )
   }
-
-  componentDidMount () {
-    toggleHeader.set(540);
-  }
-
-  componentWillUnmount () {
-    toggleHeader.reset();
-  }
-
 }
 
 export default TAboutSchool;

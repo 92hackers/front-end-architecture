@@ -19,40 +19,37 @@ const {
   GEO_TIMEZONE,
 } = apiActions
 
-const {REQUEST: gctr, SUCCESS: gcts, FAILURE: gctf} = GEO_CONTINENT
-const {REQUEST: gctcr, SUCCESS: gctcs, FAILURE: gctcf} = GEO_CONTINENTCOUNTRY
-const {REQUEST: gcr, SUCCESS: gcs, FAILURE: gcf} = GEO_COUNTRY
-const {REQUEST: grr, SUCCESS: grs, FAILURE: grf} = GEO_REGION
-const {REQUEST: gcir, SUCCESS: gcis, FAILURE: gcif} = GEO_CITY
-const {REQUEST: gtr, SUCCESS: gts, FAILURE: gtf} = GEO_TIMEZONE
+const { REQUEST: gctr, SUCCESS: gcts, FAILURE: gctf } = GEO_CONTINENT
+const { REQUEST: gctcr, SUCCESS: gctcs, FAILURE: gctcf } = GEO_CONTINENTCOUNTRY
+const { REQUEST: gcr, SUCCESS: gcs, FAILURE: gcf } = GEO_COUNTRY
+const { REQUEST: grr, SUCCESS: grs, FAILURE: grf } = GEO_REGION
+const { REQUEST: gcir, SUCCESS: gcis, FAILURE: gcif } = GEO_CITY
+const { REQUEST: gtr, SUCCESS: gts, FAILURE: gtf } = GEO_TIMEZONE
 
 export default function countryList(state = initialState, action) {
-  const {type, payload} = action
-  var data = []
-  if (!!payload) {
-    data = payload.data
-  }
+  const { type, payload } = action
+  const data = payload ? payload.data : []
   switch (type) {
     case gctr:
-      return {...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case gcts:
-      return {...state, isFetching: false, continentList: data}
+      return { ...state, isFetching: false, continentList: data }
 
     case gctf:
-      return {...state, isFetching: false}
+      return { ...state, isFetching: false }
 
     case gctcr:
-      return {...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case gctcs:
-      return {...state, isFetching: false, continentCountryList: data}
+      return { ...state, isFetching: false, continentCountryList: data }
 
     case gctcf:
-      return {...state, isFetching: false}
+      return { ...state, isFetching: false }
 
     case gcr:
-      return {...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case gcs:
       return { ...state, isFetching: false, countryList: data }
@@ -61,7 +58,7 @@ export default function countryList(state = initialState, action) {
       return { ...state, isFetching: false, countryList: payload }
 
     case grr:
-      return { ...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case grs:
       return { ...state, isFetching: false, regionList: data }
@@ -70,7 +67,7 @@ export default function countryList(state = initialState, action) {
       return { ...state, isFetching: false, regionList: payload }
 
     case gcir:
-      return {...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case gcis:
       return { ...state, isFetching: false, cityList: data }
@@ -79,7 +76,7 @@ export default function countryList(state = initialState, action) {
       return { ...state, isFetching: false, cityList: payload }
 
     case gtr:
-      return { ...state, isFetching: true}
+      return { ...state, isFetching: true }
 
     case gts:
       return { ...state, isFetching: false, timezoneList: data }

@@ -1,6 +1,6 @@
 import { pendingCounterActions } from '../actions';
 
-export default function pendingCounter( state = 0, action) {
+export default function pendingCounter(state = 0, action) {
   switch (action.type) {
     case pendingCounterActions.INCREMENT:
       return state + 1;

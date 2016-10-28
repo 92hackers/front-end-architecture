@@ -1,113 +1,113 @@
 // use calendar component.
 
-import React from 'react';
-import MultipleDatePicker from './MultipleDatePicker';
+import React, { PropTypes } from 'react';
 import moment from 'moment';
+import MultipleDatePicker from './MultipleDatePicker';
 
 class DateTab extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      highlightDays: [],
+      lessonInfo: [],
+      prevMonth: '',
+      nextMonth: '',
+    };
+    this.goToNextMonth = this.goToNextMonth.bind(this)
+    this.goToPreviousMonth = this.goToPreviousMonth.bind(this)
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            highlightDays: [],
-            lessonInfo: [],
-            prevMonth: "",
-            nextMonth: ""
-        };
-        this.goToNextMonth = this.goToNextMonth.bind(this)
-        this.goToPreviousMonth = this.goToPreviousMonth.bind(this)
+  componentDidMount() {
+    this.generateHighlightDays(this.props.monthlyTimetable);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { monthlyTimetable: newOne } = nextProps
+    const { monthlyTimetable: oldOne } = this.props
+    if (JSON.stringify(newOne) !== JSON.stringify(oldOne)) {
+      this.generateHighlightDays(newOne);
     }
+  }
 
-    render() {
-        return (
-            <div className="date">
-                <MultipleDatePicker highlightDays={this.state.highlightDays} lessonInfo={this.state.lessonInfo} dayClick={this.dayClickCallback.bind(this)} dayHover={this.dayHoverCallback.bind(this)} callbackContext={this} goToNextMonth={this.goToNextMonth} goToPreviousMonth={this.goToPreviousMonth}/>
-            </div>
-        )
-    }
+  goToNextMonth() {
+    const { nextMonth } = this.state
+    this.props.monthlyTimetableReq(nextMonth)
+  }
 
-    componentDidMount() {
-        this.generateHighlightDays(this.props.monthlyTimetable);
-    }
+  goToPreviousMonth() {
+    const { prevMonth } = this.state
+    this.props.monthlyTimetableReq(prevMonth)
+  }
 
-    shouldComponentUpdate() {
-        return true;
-    }
+  generateHighlightDays(dataSource) {
+    const monthlyTimetable = dataSource.timetable || [];
+    const filteredData = [];
 
-    goToNextMonth() {
-        const {nextMonth} = this.state
+    const { pervMonth, nextMonth } = dataSource
 
-        this.props.monthlyTimetableReq(nextMonth)
-    }
+    this.setState({ prevMonth: pervMonth, nextMonth });
 
-    goToPreviousMonth() {
-        const {prevMonth} = this.state
-        this.props.monthlyTimetableReq(prevMonth)
-    }
+    for (let i = 0; i < monthlyTimetable.length; i + 1) {
+      const tmp = monthlyTimetable[i];
+      const lessonData = {
+        status: tmp.status,
+        studentName: tmp.studentName,
+        studentId: tmp.studentId,
+        lessonTime: tmp.lessonTime,
+      };
+      const data = {
+        date: tmp.lessonDate,
+        lessons: [lessonData],
+      };
+      if (filteredData.length === 0) {
+        filteredData.push(data);
+      } else {
+        const filteredDates = filteredData.map(item => item.date);
+        const searchIndex = filteredDates.indexOf(tmp.lessonDate);
 
-    generateHighlightDays(dataSource) {
-        var monthlyTimetable = dataSource.timetable || [];
-        var filteredData = [];
-
-        const {pervMonth, nextMonth} = dataSource
-
-        this.setState({prevMonth: pervMonth, nextMonth});
-
-        for (let i = 0; i < monthlyTimetable.length; i++) {
-            let tmp = monthlyTimetable[i];
-            let lessonData = {
-                status: tmp.status,
-                studentName: tmp.studentName,
-                studentId: tmp.studentId,
-                lessonTime: tmp.lessonTime
-            };
-            let data = {
-                date: tmp.lessonDate,
-                lessons: [lessonData]
-            };
-            if (filteredData.length === 0) {
-                filteredData.push(data);
-            } else {
-                let filteredDates = filteredData.map((item) => item.date);
-                var searchIndex = filteredDates.indexOf(tmp.lessonDate);
-
-                if (searchIndex === -1) {
-                    filteredData.push(data)
-                } else {
-                    filteredData[searchIndex].lessons.push(lessonData);
-                }
-
-            }
+        if (searchIndex === -1) {
+          filteredData.push(data)
+        } else {
+          filteredData[searchIndex].lessons.push(lessonData);
         }
-
-        var myHighlightDays = filteredData.map((item, index) => {
-            return {
-                day: moment(item.date),
-                notSelectable: true,
-                selected: true,
-                title: item.date
-            };
-        });
-
-        this.setState({highlightDays: myHighlightDays, lessonInfo: filteredData});
-
+      }
     }
+    const myHighlightDays = filteredData.map(item => (
+      {
+        day: moment(item.date),
+        notSelectable: true,
+        selected: true,
+        title: item.date,
+      }
+    ));
 
-    componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(nextProps.monthlyTimetable) !== JSON.stringify(this.props.monthlyTimetable)) {
-            console.log("month changed");
-            this.generateHighlightDays(nextProps.monthlyTimetable);
-        }
-    }
+    this.setState({ highlightDays: myHighlightDays, lessonInfo: filteredData });
+  }
 
-    dayClickCallback() {
-        return false;
-    }
+  render() {
+    return (
+      <div className="date">
+        <MultipleDatePicker
+          highlightDays={this.state.highlightDays}
+          lessonInfo={this.state.lessonInfo}
+          dayClick={() => false}
+          dayHover={() => false}
+          callbackContext={this}
+          goToNextMonth={this.goToNextMonth}
+          goToPreviousMonth={this.goToPreviousMonth}
+        />
+      </div>
+    )
+  }
+}
 
-    dayHoverCallback() {
-        return false;
-    }
-
+DateTab.propTypes = {
+  monthlyTimetable: PropTypes.shape({
+    pervMonth: PropTypes.string.isRequired,
+    nextMonth: PropTypes.string.isRequired,
+    timetable: PropTypes.array.isRequired,
+  }),
+  monthlyTimetableReq: PropTypes.func,
 }
 
 export default DateTab;

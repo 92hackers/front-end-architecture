@@ -1,37 +1,15 @@
-
 import React from 'react';
-import api from '../../network/api';
 import Quiz from './Quiz';
 
 class LessonGuide extends React.Component {
 
-  constructor (props) {
-    super (props);
-    this.state = {
-      questions: []
-    };
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    this.props.getTestQuestions(5)
   }
 
- componentWillMount () {
-   var self = this;
-   api.OnlineTestQuestion("",
-   { "Authorization": self.props.token},
-   5,
-   (resp) => {
-     if (resp.success) {
-       var data = resp.data;
-       self.setState({
-         questions: data
-       });
-     }
-   },
-   (err) => {
-     console.error("something wrong.");
-   }
-  )
- }
-
-  render () {
+  /* eslint max-len: [0] */
+  render() {
     return (
       <div>
         <h1>WeTeach Lesson Guide</h1>
@@ -72,13 +50,9 @@ class LessonGuide extends React.Component {
         <p>In order to prevent your future lessons from becoming repetitive, it’s important for you to keep track of which materials have been used.</p>
         <h2>Post-Reading Quiz</h2>
         <p>Please take a moment to answer the following questions to ensure a basic grasp on the material presented above.</p>
-        <Quiz questions={this.state.questions}></Quiz>
+        <Quiz questions={this.state.questions} />
       </div>
     )
-  }
-
-  componentDidMount () {
-    window.scrollTo(0,0);
   }
 }
 

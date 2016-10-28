@@ -1,11 +1,10 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 import formValidate from 'validate-js';
 import nprogress from 'nprogress';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
 
 import api from '../network/api';
 import WaitForSubmit from '../universal/WaitForSubmit';

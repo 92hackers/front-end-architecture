@@ -2,76 +2,71 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { browserHistory } from 'react-router';
-import api from '../network/api';
+import { autobind } from 'core-decorators';
 
 class ActivateEmailComp extends React.Component {
 
-  constructor (props) {
-    super (props);
-  }
-
-  componentWillMount () {
-    var queryParam = this.props.location.query["user_name"];
-    if (queryParam !== "s@x^nil*@(<)") {
-      browserHistory.push("/sign-in");
+  componentWillMount() {
+    const queryParam = this.props.location.query.user_name;
+    if (queryParam !== 's@x^nil*@(<)') {
+      browserHistory.push('/sign-in');
     }
   }
 
-  handleChangeClick (e) {
-
+  @autobind
+  handleChangeClick(e) {
     e.preventDefault();
-
-    var token = this.props.token;
-
-    if (!!token) {
-      browserHistory.push("/input-new-email");        // check state to judge if the user logged in.
+    const { loggedIn } = this.props
+    if (loggedIn) {
+      browserHistory.push('/input-new-email');        // check state to judge if the user logged in.
     } else {
-      browserHistory.push("/sign-in?action=changeEmailAddress");
+      browserHistory.push('/sign-in?action=changeEmailAddress');
     }
-
   }
 
-  handleResendClick (e) {
+  @autobind
+  handleResendClick(e) {
     e.preventDefault();
-
-    var self = this;
-    var token = this.props.token;
-
-    if (!!token) {
-      api.TNewEmail("",
-        {"Authorization": token},
-        "",
-        (resp) => {
-          if (resp.success) {
-            self.props.showNotification("A new email has already been sent to your registered email address.");
-          } else {
-            self.props.showNotification(resp.data.error);
-          }
-        },
-        (err) => {
-          self.props.networkError();
+    const { loggedIn, resendActivationEmail, showNotification, networkError } = this.props
+    if (loggedIn) {
+      resendActivationEmail({}).then((res) => {
+        if (res.payload.success) {
+          showNotification('A new email has already been sent to your registered email address.');
+        } else {
+          networkError()
         }
-      )
+      })
     } else {
-      browserHistory.push("/sign-in?action=resendEmail");
+      browserHistory.push('/sign-in?action=resendEmail');
     }
-
   }
 
-  render () {
-
+  render() {
     const buttonStyles = {
-      marginLeft: "10px",
-      marginRight: "10px",
+      marginLeft: '10px',
+      marginRight: '10px',
     };
 
     return (
       <div className="t-activate-email">
-        <p><i className="fa fa-check-circle"></i> Thank you!</p>
+        <p><i className="fa fa-check-circle" /> Thank you!</p>
         <p>We have sent an email to your registered email address.</p>
         <p>Please check your email for the verification link.</p>
-        <p style={{marginTop: "50px"}}>If you did not receive the email:</p>
-        <div style={{marginTop: "20px"}}>You may<RaisedButton style={buttonStyles} label="resend the email" onClick={this.handleResendClick.bind(this)}></RaisedButton> or <RaisedButton style={buttonStyles} label="change the email address" onClick={this.handleChangeClick.bind(this)}></RaisedButton></div>
+        <p style={{ marginTop: '50px' }}>If you did not receive the email:</p>
+        <div style={{ marginTop: '20px' }}>
+          You may
+          <RaisedButton
+            style={buttonStyles}
+            label="resend the email"
+            onClick={this.handleResendClick}
+          />
+          or
+          <RaisedButton
+            style={buttonStyles}
+            label="change the email address"
+            onClick={this.handleChangeClick}
+          />
+        </div>
       </div>
     )
   }

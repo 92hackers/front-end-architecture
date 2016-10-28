@@ -1,124 +1,19 @@
 // teacher's homepage.
 
 import React from 'react';
-import {browserHistory} from 'react-router';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
+import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
 
 import ScheduleCourse from './ScheduleCourse';
 import OneWeekTemplate from '../universal/OneWeekTemplate';
 import DisplayUserStatus from '../containers/DisplayUserStatus';
 
-import api from '../network/api';
 import SiteLoading from '../containers/SiteLoading';
-
-class SettingComp extends React.Component {
-
-  constructor (props) {
-    super (props);
-  }
-
-  handleSubmit (e) {
-    e.preventDefault();
-
-    var self = this;
-    var oldPassword = document.getElementById("old-password").value;
-    var newPassword = document.getElementById("new-password").value;
-    var confirmPassword = document.getElementById("confirm-password").value;
-
-    var warning = "";
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      warning = "Please input correct password.";
-    } else if (oldPassword.length < 6 || newPassword.length < 6 || confirmPassword.length < 6 || oldPassword.length > 20 || newPassword.length > 20 || confirmPassword.length > 20) {
-      warning = "Passwords must be between 6 and 20 characters in length.";
-    } else if (newPassword !== confirmPassword) {
-      warning = "New passwords do not match.";
-    }
-
-    if (!!warning) {
-      this.props.showNotification(warning);
-      return;
-    } else {
-
-    var data = {
-      "o_pass": oldPassword,
-      "n_pass": newPassword,
-      "rn_pass": confirmPassword
-    };
-
-    api.ChangePassword(data,
-      { "Authorization": this.props.token},
-      "",
-      (resp) => {
-        if (resp.success) {
-          self.props.showNotification("Password change successful. Please wait for refreshing.");
-          var timeId = setTimeout(() => {
-            clearTimeout(timeId);
-            self.props.signOut();
-            browserHistory.push("/sign-in");
-          }, 4100);
-        } else {
-          let data = resp.data;
-          if (data["o_pass"] && data["o_pass"].length > 0) {
-            self.props.showNotification("Old password is incorrect.");
-          } else {
-            self.props.showNotification("Please input correct passwords.");
-          }
-        }
-      },
-      (err) => {
-        self.props.networkError();
-      }
-    );
-
-    }
-  }
-
-  render () {
-    var labelStyle = {
-      color: "#666666",
-      fontWeight: "bold"
-    };
-    return (
-      <section className="setting-dashboard dashboard">
-        <h1 className="text-center">Change Password</h1>
-        <form>
-          <TextField floatingLabelStyle={labelStyle} floatingLabelText="Old Password" id="old-password" type="password"></TextField>
-          <TextField floatingLabelStyle={labelStyle} floatingLabelText="New Password" id="new-password" type="password"></TextField>
-          <TextField floatingLabelStyle={labelStyle} floatingLabelText="Confirm Password" id="confirm-password" type="password"></TextField>
-          <br/>
-          <br/>
-          <RaisedButton onTouchTap={this.handleSubmit.bind(this)} label="Submit" primary={true} style={{width: "100%"}}></RaisedButton>
-        </form>
-      </section>
-    )
-  }
-}
-
-class ScheduleComp extends React.Component {
-
-  constructor (props) {
-    super (props);
-  }
-
-  render () {
-    return (
-      <section className="schedule-dashboard dashboard">
-        <ScheduleCourse weeklyTimetableReq={this.props.weeklyTimetableReq} monthlyTimetableReq={this.props.monthlyTimetableReq} weeklyTimetable={this.props.weeklyTimetable} monthlyTimetable={this.props.monthlyTimetable} token={this.props.token} tpl={this.props.tpl} dispatch={this.props.dispatch}></ScheduleCourse>
-      </section>
-    )
-  }
-}
 
 class THomepage extends React.Component {
 
-  constructor (props) {
+  constructor(props) {
     super (props);
     this.state = {
       tpl: {},
@@ -128,53 +23,44 @@ class THomepage extends React.Component {
     };
   }
 
-  render () {
+  render() {
+    const { profile, dashboard, signOut, showNotification, networkError } = this.props
 
-    const appbarStyles = {
-      backgroundColor: "#2196f3",    // teacher base color.
-      boxShadow: "none"
-    };
+    const genderIcon = profile.gender === 0 ? <i className="fa fa-venus" /> : <i className="fa fa-mars" />
 
-    const menuItemStyles = {
-      cursor: "pointer"
-    };
-
-    const profile = this.props.profile;
-    var genderIcon = "";
-
-    genderIcon = profile.gender === 0 ? <i className="fa fa-venus"></i> : <i className="fa fa-mars"></i>;
-
-    var teachingExperience = "";
+    let teachingExperience = '';
 
     switch (profile.experience) {
       case 3 :
-        teachingExperience = "More than 15 years";
+        teachingExperience = 'More than 15 years';
         break;
       case 2 :
-        teachingExperience = "Between 5 to 15 years";
+        teachingExperience = 'Between 5 to 15 years';
         break;
       case 1 :
-        teachingExperience = "Less than 5 years";
+        teachingExperience = 'Less than 5 years';
         break;
+      default:
+        teachingExperience = 'Not clear.'
     }
 
-    var DashboardComponent = "";
+    let DashboardComponent = '';
 
     var dynamicDashboardComp = this.props.dashboard;
 
     var newUser = profile.status < 11;
 
     switch (dynamicDashboardComp) {
-      case "setting":
+      case 'setting':
         DashboardComponent = <SettingComp signOut={this.props.signOut} showNotification={this.props.showNotification} networkError={this.props.networkError} token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
         break;
-      case "schedule":
+      case 'schedule':
         DashboardComponent = <ScheduleComp weeklyTimetableReq={this.weeklyTimetableReq.bind(this)} monthlyTimetableReq={this.monthlyTimetableReq.bind(this)} weeklyTimetable={this.state.weeklyTimetable} monthlyTimetable={this.state.monthlyTimetable} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></ScheduleComp>;
         break;
-      case "template":
+      case 'template':
         DashboardComponent = <OneWeekTemplate templateReq={this.lessonTemplateReq.bind(this)} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></OneWeekTemplate>;
         break;
-      case "editProfile":
+      case 'editProfile':
         //TODO:  add edit profile page.
         break;
       default:
@@ -311,7 +197,7 @@ class THomepage extends React.Component {
 
   }
 
-  componentDidMount () {
+  componentDidMount() {
     var self = this;
 
     if (!this.props.token) {
@@ -323,10 +209,9 @@ class THomepage extends React.Component {
     this.weeklyTimetableReq();
 
     this.monthlyTimetableReq();
-
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // profileRequest.abort();
   }
 

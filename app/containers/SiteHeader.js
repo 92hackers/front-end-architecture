@@ -1,29 +1,24 @@
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { notificationActions, dashboardActions } from '../actions';
 import SiteHeaderComp from '../components/SiteHeader';
 
 const mapStateToProps = (state) => {
+  const { user, pendingCounter } = state
+  const { token, profile } = user
+  const { status, examined } = profile
   return {
-    token: state.user.token,
-    pendingCounter: state.pendingCounter,
-    status: state.user.profile.status,
-    examined: state.user.profile.examined
+    token,
+    pendingCounter,
+    status,
+    examined,
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    showNotification: (message) => {
-      dispatch(notificationActions.showNotification(message));
-    },
-    networkError: () => {
-      dispatch(notificationActions.networkError());
-    },
-    dashboardDisplay: (comp) => {
-      dispatch(dashboardActions.dashboardDisplay(comp));
-    }
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  showNotification: message => dispatch(notificationActions.showNotification(message)),
+  networkError: () => dispatch(notificationActions.networkError()),
+  dashboardDisplay: comp => dispatch(dashboardActions.dashboardDisplay(comp)),
+})
 
 const SiteHeader = connect(mapStateToProps, mapDispatchToProps)(SiteHeaderComp);
 

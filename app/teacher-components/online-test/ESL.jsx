@@ -1,36 +1,15 @@
 import React from 'react';
 import Quiz from './Quiz';
-import api from '../../network/api';
 
 class ESL extends React.Component {
 
-  constructor (props) {
-    super (props);
-    this.state = {
-      questions: []
-    };
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    this.props.getTestQuestions(2)
   }
 
- componentWillMount () {
-   var self = this;
-   api.OnlineTestQuestion("",
-   { "Authorization": self.props.token},
-   2,
-   (resp) => {
-     if (resp.success) {
-       var data = resp.data;
-       self.setState({
-         questions: data
-       });
-     }
-   },
-   (err) => {
-     console.error("something wrong.");
-   }
-  )
- }
-
-  render () {
+  /* eslint max-len: [0] */
+  render() {
     return (
       <div>
         <h1>ESL Teaching Concepts and Principles</h1>
@@ -64,15 +43,10 @@ class ESL extends React.Component {
         <p>For example, after reading a passage from a story containing the sentence, “The boy was famished,” you may want to test the student’s understanding of the word “famished.” You may do this by asking the student, “Had the boy eaten recently?” (No.) Alternatively, you may tell the student, “Please give me another word for “famished.”</p>
         <h2>Post-reading Quiz</h2>
         <p>Please take a moment to answer the following questions to ensure a basic grasp on the material presented above.</p>
-        <Quiz questions={this.state.questions}></Quiz>
+        <Quiz questions={this.state.questions} />
       </div>
     )
   }
-
-  componentDidMount () {
-    window.scrollTo(0,0);
-  }
-
 }
 
 export default ESL;

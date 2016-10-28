@@ -7,6 +7,8 @@ import pendingCounter from './pendingCounter';
 import dashboardDisplay from './dashboardDisplay';
 import geoResources from './geoResources';
 import payeeInfo from './payeeInfo';
+import onlineTest from './onlineTest';
+import timetable from './timetable';
 
 const allReducers = combineReducers({
   pendingCounter,
@@ -16,6 +18,8 @@ const allReducers = combineReducers({
   form: formReducer,
   geoResources,
   payeeInfo,
+  onlineTest,
+  timetable,
 });
 
 export default allReducers

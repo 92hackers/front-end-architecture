@@ -1,30 +1,32 @@
-import {connect} from 'react-redux';
-import { notificationActions, userActions, dashboardActions } from '../actions';
+import { connect } from 'react-redux';
+import { notificationActions, apiActions, userActions, dashboardActions } from '../actions';
 import THomepageComp from '../teacher-components/THomepage';
 
-const mapStateToProps =  (state) => {
+const mapStateToProps = (state) => {
+  const { user, dashboardDisplay } = state
+  const { profile } = user
+  const { comp } = dashboardDisplay
   return {
-    token: state.user.token,
-    profile: state.user.profile,
-    dashboard: state.dashboardDisplay.comp
+    profile,
+    dashboard: comp,
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    showNotification: (message) => {
-      dispatch(notificationActions.showNotification(message));
-    },
-    networkError: () => {
-      dispatch(notificationActions.networkError());
-    },
-    signOut: () => {
-      dispatch(userActions.signOut());
-      dispatch(dashboardActions.dashboardDisplay(""));
-    }
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  getNationalityList: () => dispatch(apiActions.getNationalityList()),
+  getCountryList: () => dispatch(apiActions.getCountryList()),
+  getRegionList: () => dispatch(apiActions.getRegionList()),
+  getCityList: () => dispatch(apiActions.getCityList()),
+  getTimezoneList: () => dispatch(apiActions.getTimezoneList()),
+  updatePassword: () => dispatch(apiActions.updatePassword()),
+  showNotification: message => dispatch(notificationActions.showNotification(message)),
+  networkError: () => dispatch(notificationActions.networkError()),
+  signOut: () => {
+    dispatch(userActions.signOut());
+    dispatch(dashboardActions.dashboardDisplay(''));
+  },
+})
 
-const THomepage  = connect(mapStateToProps, mapDispatchToProps)(THomepageComp);
+const THomepage = connect(mapStateToProps, mapDispatchToProps)(THomepageComp);
 
 export default THomepage;

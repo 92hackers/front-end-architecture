@@ -1,59 +1,54 @@
 
 import React from 'react';
+import FormValidate from 'validate-js';
+import { autobind } from 'core-decorators'
+
 import EmailInputBox from '../universal/EmailInputBox';
-import api from '../network/api';
-import formValidate from 'validate-js';
 
 class ForgetPasswordComp extends React.Component {
 
-  constructor (props) {
-    super (props);
-  }
-
-  handleSubmit (e) {
+  @autobind
+  handleSubmit(e) {
     e.preventDefault();
 
-    var self = this;
-    var notification = "";
-    var email = document.getElementById("forget-password-email-box").value;
+    let notification = '';
+    const email = document.getElementById('forget-password-email-box').value;
+    const { showNotification, resetPassword } = this.props
 
-    var validator = new formValidate(document.forms[0], [
+    const validator = new FormValidate(document.forms[0], [
       {
-        name: "Email",
-        rules: "required|valid_email"
-      }
+        name: 'Email',
+        rules: 'required|valid_email',
+      },
     ], (errors) => {
       if (errors.length > 0) {
         notification = errors[0].message;
       }
     });
+
+    /* eslint no-underscore-dangle: 0 */
     validator._validateForm();
 
-    if (!!notification.length) {
-      self.props.showNotification(notification);
+    if (notification.length > 0) {
+      showNotification(notification);
       return;
     }
 
-    api.TReqReset({email: email}, "", "",
-      (resp) => {
-        if (resp.success) {
-          self.props.showNotification("We have just sent you an email. Please click the link within it to reset.");
-        } else {
-          self.props.showNotification("An issue occured, please confirm your email address.");
-        }
-      },
-      (err) => {
-        self.props.networkError();
+    resetPassword({ emai: email }).then((res) => {
+      if (res.payload.success) {
+        showNotification('We have just sent you an email. Please click the link within it to reset.');
+      } else {
+        showNotification('An issue occured, please confirm your email address.');
       }
-    )
+    })
   }
 
-  render () {
+  render() {
     return (
       <div className="forget-password">
         <h1 className="text-center">Enter your email address</h1>
         <h1 className="text-center">and we will send you a link to reset your password</h1>
-        <EmailInputBox submitText="Send password reset email" id="forget-password-email-box" handle={this.handleSubmit.bind(this)}></EmailInputBox>
+        <EmailInputBox submitText="Send password reset email" id="forget-password-email-box" handle={this.handleSubmit} />
       </div>
     )
   }
