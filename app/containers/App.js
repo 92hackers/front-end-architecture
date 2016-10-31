@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import AppContainer from '../teacher-components/AppContainer';
+import AppContainer from '../components/AppContainer';
 import { notificationActions, userActions, apiActions, pendingCounterActions } from '../actions';
 
 const mapStateToProps = (state) => {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { notificationActions, apiActions } from '../actions';
-import { default as Comp } from '../teacher-components/PayeeInfo';
+import { default as Comp } from '../components/PayeeInfo';
 
 const mapStateToProps = (state) => {
   const { geoResources, payeeInfo } = state

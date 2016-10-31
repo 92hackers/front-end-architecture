@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { applyRouterMiddleware, Router, Route, browserHistory } from 'react-router';
+import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { userActions } from './actions';
@@ -9,10 +9,10 @@ import { userActions } from './actions';
 import InputNewEmail from './containers/InputNewEmail';
 import ForgetPassword from './containers/ForgetPassword';
 import VerifyYourEmail from './containers/VerifyYourEmail';
-import TAboutSchool from './teacher-components/TAboutSchool';
-import TAboutJob from './teacher-components/TAboutJob';
-import StepToSignUp from './containers/StepToSignUp';
-import ScheduleCourse from './teacher-components/ScheduleCourse';
+import TAboutSchool from './components/AboutSchool';
+import TAboutJob from './components/AboutJob';
+import StepToSignUp from './containers/application-steps/StepToSignUp';
+import  from './teacher-components/ScheduleCourse';
 import TIndex from './teacher-components/TIndex';
 
 import App from './containers/App';
@@ -50,16 +50,20 @@ const routes = {
     { path: "sign-in", component: SignIn },
     { path: "teacher-homepage",         //    add  router to dashboard components.
       component: THomepage
-      // childRoutes: [
-      //   {
-      //     path: 'timetable',
-      //     component: PayeeInfo
-      //   },
-      //   {
-      //     path: 'timetable-template',
-      //     component:    //TODO: add component.
-      //   }
-      // ]
+      childRoutes: [
+        {
+          path: 'timetables',
+          component: Timetables,
+        },
+        {
+          path: 'weekly-template',
+          component: WeeklyTemplate,
+        },
+        {
+          path: 'settings',
+          component: Settings,
+        },
+      ]
     },
     { path: "complete-payee-info", component: PayeeInfo },
     { path: "edit-profile", component: EditProfile },
@@ -78,23 +82,10 @@ const routes = {
 
 ReactDom.render((
   <Provider store={store.store}>
-    <Router routes={routes} render={applyRouterMiddleware(useScroll(scrollBehavior))}  history={browserHistory}>
-      {/* <Route path="/" component={App}>
-        <Route path="/sign-up" component={TSignUp}></Route>
-        <Route path="/sign-in" component={TSignIn}></Route>
-        <Route path="/teacher-homepage" component={THomepage}></Route>
-        <Route path="/active-email" name="activeEmail" component={ActivateEmail}></Route>
-        <Route path="/input-new-email" component={InputNewEmail}></Route>
-        <Route path="/forget-password" component={ForgetPassword}></Route>
-        <Route path="/reset-password" component={TInputNewPassword}></Route>
-        <Route path="/activate-your-account" component={VerifyYourEmail}></Route>
-        <Route path="/about-job" component={TAboutJob}></Route>
-        <Route path="/about-school" component={TAboutSchool}></Route>
-        <Route path="/step-to-sign-up" component={StepToSignUp}></Route>
-        <Route path="/c" component={ScheduleCourse}></Route>
-        <Route path="/t" component={DateTab}></Route>
-        <Route path="*" component={NotFound}></Route>
-      </Route> */}
-    </Router>
+    <Router
+      routes={routes}
+      render={applyRouterMiddleware(useScroll(scrollBehavior))}
+      history={browserHistory}
+    />
   </Provider>
 ), document.getElementById("app"));

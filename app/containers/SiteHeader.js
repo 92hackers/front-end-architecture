@@ -1,25 +1,16 @@
-import { connect } from 'react-redux';
-import { notificationActions, dashboardActions } from '../actions';
-import SiteHeaderComp from '../components/SiteHeader';
+import { connect } from 'react-redux'
+import { default as Comp } from '../components/SiteHeader'
 
 const mapStateToProps = (state) => {
-  const { user, pendingCounter } = state
-  const { token, profile } = user
-  const { status, examined } = profile
+  const { loggedIn, profile } = state.user
   return {
-    token,
-    pendingCounter,
-    status,
-    examined,
+    loggedIn,
+    profile,
   }
 };
 
-const mapDispatchToProps = dispatch => ({
-  showNotification: message => dispatch(notificationActions.showNotification(message)),
-  networkError: () => dispatch(notificationActions.networkError()),
-  dashboardDisplay: comp => dispatch(dashboardActions.dashboardDisplay(comp)),
-})
+const mapDispatchToProps = null
 
-const SiteHeader = connect(mapStateToProps, mapDispatchToProps)(SiteHeaderComp);
+const SiteHeader = connect(mapStateToProps, mapDispatchToProps)(Comp);
 
 export default SiteHeader;

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { notificationActions, apiActions } from '../actions';
-import InputNewEmailComp from '../teacher-components/InputNewEmail';
+import { default as Comp } from '../components/InputNewEmail';
 
 const mapStateToProps = () => ({})
 
@@ -10,6 +10,6 @@ const mapDispatchToProps = dispatch => ({
   networkError: () => dispatch(notificationActions.networkError()),
 })
 
-const InputNewEmail = connect(mapStateToProps, mapDispatchToProps)(InputNewEmailComp);
+const InputNewEmail = connect(mapStateToProps, mapDispatchToProps)(Comp);
 
 export default InputNewEmail;

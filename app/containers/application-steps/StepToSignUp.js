@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { apiActions } from '../actions';
-import { default as Comp } from '../components/EditProfileForm';
+import { notificationActions, apiActions } from '../actions';
+import StepToSignUpComp from '../teacher-components/StepToSignUp';
 
 const generateList = (list, rawData) => {
   if (rawData.length > 0) {
@@ -11,9 +11,10 @@ const generateList = (list, rawData) => {
 }
 
 const mapStateToProps = (state) => {
-  const { geoResources, user } = state
+  const { user, geoResources } = state
   const { profile } = user
-  const { residence_n, residence_p, residence_c, timezone, zoomid, tel_code, tel_num } = profile
+
+  // const {}        //  初始化哪些数据很关键， 是否要把三个 form 分开来。
 
   const countryListRaw = geoResources.countryList
   const regionListRaw = geoResources.regionList
@@ -41,23 +42,17 @@ const mapStateToProps = (state) => {
     cityList,
     timezoneList,
     initialValues: {
-      residence_n,
-      residence_p,
-      residence_c,
-      timezone,
-      zoomid,
-      tel_code,
-      tel_num,
+
     },
   }
-}
+};
 
 const mapDispatchToProps = dispatch => ({
-  getCountryList: () => dispatch(apiActions.getCountryList()),
-  getRegionList: countryCode => dispatch(apiActions.getRegionList(countryCode)),
-  getCityList: regionCode => dispatch(apiActions.getCityList(regionCode)),
-  getTimezoneList: () => dispatch(apiActions.getTimezoneList()),
+  getProfile: () => dispatch(apiActions.getProfile()),
+  showNotification: message => dispatch(notificationActions.showNotification(message)),
+  networkError: () => dispatch(notificationActions.networkError()),
 })
 
-const EditProfileForm = connect(mapStateToProps, mapDispatchToProps)(Comp);
-export default EditProfileForm;
+const StepToSignUp = connect(mapStateToProps, mapDispatchToProps)(StepToSignUpComp);
+
+export default StepToSignUp;

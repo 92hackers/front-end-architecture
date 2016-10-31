@@ -1,17 +1,16 @@
 import { connect } from 'react-redux';
-import { notificationActions, userActions } from '../actions';
-import TSignInComp from '../teacher-components/TSignIn';
+import { notificationActions, apiActions } from '../actions';
+import { default as Comp } from '../components/SignIn';
 
-const mapStateToProps = state => ({
-  examined: state.user.profile.examined,
-})
+const mapStateToProps = null
 
 const mapDispatchToProps = dispatch => ({
-  signIn: token => dispatch(userActions.signIn(token)),
+  signIn: data => dispatch(apiActions.signIn(data)),
+  resendActivationEmail: data => dispatch(apiActions.resendActivationEmail(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })
 
-const SignIn = connect(mapStateToProps, mapDispatchToProps)(TSignInComp);
+const SignIn = connect(mapStateToProps, mapDispatchToProps)(Comp);
 
 export default SignIn;

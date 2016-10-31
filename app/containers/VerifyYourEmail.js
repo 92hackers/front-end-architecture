@@ -1,24 +1,23 @@
 import { connect } from 'react-redux';
-import { notificationActions, userActions, pendingCounterActions } from '../actions';
-import VerifyYourEmailComp from '../teacher-components/VerifyYourEmail';
+import { notificationActions, apiActions, pendingCounterActions } from '../actions';
+import { default as Comp } from '../components/VerifyYourEmail';
 
 const mapStateToProps = (state) => {
   const { user } = state
-  const { token, loggedIn } = user
+  const { loggedIn } = user
   return {
-    token,
     loggedIn,
   }
 };
 
 const mapDispatchToProps = dispatch => ({
-  getProfile: profile => dispatch(userActions.getProfile(profile)),
+  activateAccount: activeCode => dispatch(apiActions.activateAccount(activeCode)),
+  getProfile: () => dispatch(apiActions.getProfile()),
   increaseCounter: () => dispatch(pendingCounterActions.increaseCounter()),
   decreaseCounter: () => dispatch(pendingCounterActions.decreaseCounter()),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
-  networkError: () => dispatch(notificationActions.networkError()),
 })
 
-const VerifyYourEmail = connect(mapStateToProps, mapDispatchToProps)(VerifyYourEmailComp);
+const VerifyYourEmail = connect(mapStateToProps, mapDispatchToProps)(Comp);
 
 export default VerifyYourEmail;

@@ -1,6 +1,11 @@
 module.exports = {
     "extends": "airbnb",
     "installedESLint": true,
+    "env": {
+      "es6": true,
+      "browser": true,
+      "node": true,
+    },
     "parserOptions": {
       "ecmaVersion": 6,
       "ecmaFeatures": {
@@ -19,6 +24,9 @@ module.exports = {
       "jsx-a11y/href-no-hash": [0],
       "react/no-string-refs": 0,
       "no-class-assign": 0,
+      "import/extensions": [0],
+      "no-underscore-dangle": 0,
+      "camelcase": 0,
     },
     "env": {
       "browser": true
@@ -27,5 +35,18 @@ module.exports = {
         "react",
         "jsx-a11y",
         "import"
-    ]
+    ],
+    "settings": {
+      "import/ignore": [
+        "node_modules",
+        "\\.json$"
+      ],
+      "import/extensions": [
+        ".js",
+        ".jsx"
+      ]
+    },
+    "globals": {
+      "window": true
+    }
 };

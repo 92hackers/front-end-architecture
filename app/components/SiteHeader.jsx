@@ -1,5 +1,4 @@
 // site Header.
-
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import { autobind } from 'core-decorators';
@@ -7,9 +6,9 @@ import { List, ListItem } from 'material-ui/List';
 import { Stepper } from 'material-ui/Stepper';
 import Popover from 'material-ui/Popover';
 import Dialog from 'material-ui/Dialog';
-import SignOutButton from '../universal/SignOutButton';
+import SignOutButton from './universal/SignOutButton';
 
-class SiteHeaderComp extends React.Component {
+export default class SiteHeader extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,8 +16,6 @@ class SiteHeaderComp extends React.Component {
       open: false,
       settingsOpen: false,
       inviteDialogOpen: false,
-      token: this.props.token,
-      userStatus: '',
       welcomeOpen: false,
       stepIndex: 0,
     };
@@ -208,9 +205,12 @@ class SiteHeaderComp extends React.Component {
   }
 
   render() {
-    const { token: isUserLoggedIn, status: userStatus, examined } = this.props;
+    const { profile, loggedIn } = this.props;
+    const { status, examined } = profile
 
-    let dynamicComponent = '';
+    const { settingsOpen, settingsAnchorEl, open, anchorEl } = this.state
+
+    let dynamicContent = '';
 
     const settingsMenu = (
       <li className="header-item">
@@ -220,8 +220,8 @@ class SiteHeaderComp extends React.Component {
         </a>
         <span className="nav-border-line" />
         <Popover
-          open={this.state.settingsOpen}
-          anchorEl={this.state.settingsAnchorEl}
+          open={settingsOpen}
+          anchorEl={settingsAnchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           onRequestClose={this.handleSettingsRequestClose}
@@ -230,7 +230,7 @@ class SiteHeaderComp extends React.Component {
             <ListItem primaryText="Change Password" leftIcon={<i className="fa fa-key" />} onTouchTap={this.handleSettingClick} />
             <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit" />} onTouchTap={() => { browserHistory.replace('/edit-profile') }} />
             {
-              userStatus >= 10 ? (
+              status >= 10 ? (
                 <ListItem
                   primaryText="Payee Info"
                   leftIcon={<i className="fa fa-credit-card" />}
@@ -243,9 +243,9 @@ class SiteHeaderComp extends React.Component {
       </li>
     );
 
-    if (isUserLoggedIn) {
-      if (userStatus === 2) {
-        dynamicComponent = (
+    if (loggedIn) {
+      if (status === 2) {
+        dynamicContent = (
           <ul className="right">
             <li className="header-item">
               <Link to="/step-to-sign-up">Application</Link>
@@ -255,12 +255,13 @@ class SiteHeaderComp extends React.Component {
             <SignOutButton />
           </ul>
        );
-      } else if (userStatus > 2) {
-        switch (userStatus) {
+      } else if (status > 2) {
+        switch (status) {
           case 3:
           case 4:
+          case 5:
             if (examined) {
-              dynamicComponent = (
+              dynamicContent = (
                 <ul className="right">
                   <li className="header-item">
                     <Link to="teacher-homepage" onClick={this.handleHomepageClick}>Homepage</Link>
@@ -271,7 +272,7 @@ class SiteHeaderComp extends React.Component {
                 </ul>
               );
             } else {
-              dynamicComponent = (
+              dynamicContent = (
                 <ul className="right">
                   <li className="header-item">
                     <Link to="teacher-online-test">Online Test</Link>
@@ -284,7 +285,7 @@ class SiteHeaderComp extends React.Component {
             }
             break;
           case 8:
-            dynamicComponent = (
+            dynamicContent = (
               <ul className="right">
                 {settingsMenu}
                 <SignOutButton />
@@ -294,7 +295,7 @@ class SiteHeaderComp extends React.Component {
           case 10:
           case 11:
           case 15:
-            dynamicComponent = (
+            dynamicContent = (
               <ul className="right">
                 <li className="header-item">
                   <Link to="teacher-homepage" onClick={this.handleHomepageClick}>Homepage</Link>
@@ -308,8 +309,8 @@ class SiteHeaderComp extends React.Component {
                   <a href="#" className="dashboard" onTouchTap={this.handleTouchTap}><i className="fa fa-table" />Lessons</a>
                   <span className="nav-border-line" />
                   <Popover
-                    open={this.state.open}
-                    anchorEl={this.state.anchorEl}
+                    open={open}
+                    anchorEl={anchorEl}
                     anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                     onRequestClose={this.handleRequestClose}
@@ -330,11 +331,11 @@ class SiteHeaderComp extends React.Component {
             );
             break;
           default:
-            dynamicComponent = <ul className="right"><SignOutButton /></ul>;
+            dynamicContent = <ul className="right"><SignOutButton /></ul>;
         }
       }
     } else {
-      dynamicComponent = (
+      dynamicContent = (
         <ul className="header-item-right">
           <li className="button-wrap">
             <Link to="/sign-up" className="sign-up button">Sign up</Link>
@@ -346,13 +347,13 @@ class SiteHeaderComp extends React.Component {
       );
     }
 
-    const { stepIndex } = this.state
+    const { stepIndex, welcomeOpen, handleWelcomeClose } = this.state
 
     return (
       <header className="site-header">
         <div className="container">
           <span className="brand"><Link to="/" style={{ color: '#fff', fontSize: '20px' }}>WeTeach</Link></span>
-          {dynamicComponent}
+          {dynamicContent}
         </div>
         <Dialog
           modal={false}
@@ -360,8 +361,8 @@ class SiteHeaderComp extends React.Component {
           bodyClassName="welcomeBody"
           autoScrollBodyContent
           contentClassName="welcomeContent"
-          open={this.state.welcomeOpen}
-          onRequestClose={this.handleWelcomeClose}
+          open={welcomeOpen}
+          onRequestClose={handleWelcomeClose}
           contentStyle={{ width: '100%', maxWidth: '100%', transform: 0 }}
           overlayStyle={{ backgroundColor: 'transparent' }}
           bodyStyle={{ padding: 0 }}
@@ -380,5 +381,3 @@ class SiteHeaderComp extends React.Component {
     )
   }
 }
-
-export default SiteHeaderComp;
