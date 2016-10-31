@@ -59,7 +59,7 @@ class TInputNewPasswordComp extends React.Component {
         api.TReset(data, "", "",
           (resp) => {
             if (resp.success) {
-              self.props.showNotification("Reset password successfully! wait to refresh.");
+              self.props.showNotification("Your password has been updated. Please log in with new password.");
               var timeId = setTimeout(() => {
                 clearTimeout(timeId);
                 browserHistory.push("/sign-in");
