@@ -1,14 +1,36 @@
-
+/* eslint-disable */
 import React from 'react';
 
-class Day extends React.Component {
+export default class Day extends React.Component {
 
-  constructor(props) {
-    super (props);
+  componentDidMount() {
+    const self = this;
+    const targetBox = document.getElementById('gday-time-box');
+    targetBox.scrollTop = 17.5 * 100;
+
+    var timeData = ["10:30 PM", "6:30 PM", "1:30 PM", "4:30 AM"];
+
+    //TODO:  fetch data from server.
+
+    var timeLineElems = document.getElementsByClassName("time-line");
+
+    var count = 0;
+
+    for (let i = 0; i < timeLineElems.length; i++) {
+      for (let j = 0; j < timeData.length; j++) {
+        if (timeLineElems[i].dataset.time === timeData[j]){
+          count++;
+          timeLineElems[i].style.backgroundColor = "#ddd";
+          break;
+        }
+      }
+      if (count === timeData.length) {
+        break;
+      }
+    }
   }
 
-  render () {
-
+  render() {
     const times = [
       "12 AM", "12:30 AM", "1 AM", "1:30 AM", "2 AM", "2:30 AM", "3 AM", "3:30 AM", "4 AM", "4:30 AM", "5 AM", "5:30 AM", "6 AM", "6:30 AM", "7 AM", "7:30 AM",
       "8 AM", "8:30 AM", "9 AM", "9:30 AM", "10 AM", "10:30 AM", "11 AM", "11:30 AM", "12:00", "12:30", "1 PM", "1:30 PM", "2 PM", "2:30 PM", "3 PM", "3:30 PM", "4 PM", "4:30 PM",
@@ -64,34 +86,4 @@ class Day extends React.Component {
       </section>
     )
   }
-
-  componentDidMount () {
-    var self = this;
-    var targetBox = document.getElementById("day-time-box");
-    targetBox.scrollTop =  17.5 * 100;
-
-    var timeData = ["10:30 PM", "6:30 PM", "1:30 PM", "4:30 AM"];
-
-    //TODO:  fetch data from server.
-
-    var timeLineElems = document.getElementsByClassName("time-line");
-
-    var count = 0;
-
-    for (let i = 0; i < timeLineElems.length; i++) {
-      for (let j = 0; j < timeData.length; j++) {
-        if (timeLineElems[i].dataset.time === timeData[j]){
-          count++;
-          timeLineElems[i].style.backgroundColor = "#ddd";
-          break;
-        }
-      }
-      if (count === timeData.length) {
-        break;
-      }
-    }
-  }
-
 }
-
-export default Day;

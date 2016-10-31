@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  Creator: Maelig GOHIN For ARCA-Computing - www.arca-computing.fr
  Creation date: October 2015

@@ -3,31 +3,21 @@
 import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
 
-class Notification extends React.Component {
+export default function Notification(props) {
+  const style = {
+    fontWeight: 'bold',
+    textAlign: 'center',
+  };
 
-  constructor (props) {
-    super (props);
-  }
+  const { isShow, message, hideNotification } = props;
 
-  render () {
-
-    var style = {
-      fontWeight: "bold",
-      textAlign: "center"
-    };
-
-    const { isShow, message } = this.props;
-
-    return (
-      <Snackbar
-        open={isShow}
-        bodyStyle={style}
-        message={message}
-        autoHideDuration={3000}
-        onRequestClose={this.props.hideNotification}
-      />
-    )
-  }
+  return (
+    <Snackbar
+      open={isShow}
+      bodyStyle={style}
+      message={message}
+      autoHideDuration={3000}
+      onRequestClose={hideNotification}
+    />
+  )
 }
-
-export default Notification;

@@ -1,4 +1,3 @@
-
 /*
   props:
     id.
@@ -9,27 +8,31 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
+export default function EmailInputBox(props) {
+  const labelStyle = {
+    color: '#666666',
+    fontWeight: 'bold',
+  };
 
-class EmailInputBox extends React.Component {
+  const { id, submitText, handle } = props
 
-  constructor (props) {
-    super (props);
-  }
-
-  render () {
-    var labelStyle = {
-      color: "#666666",
-      fontWeight: "bold"
-    };
-    return (
-      <form>
-        <TextField floatingLabelStyle={labelStyle} name="Email" id={this.props.id} type="email" floatingLabelText="Enter your email address"></TextField>
-        <br/>
-        <br/>
-        <RaisedButton type="submit" label={this.props.submitText} primary={true} onClick={this.props.handle} style={{width: "100%"}}></RaisedButton>
-      </form>
-    )
-  }
+  return (
+    <form>
+      <TextField
+        floatingLabelStyle={labelStyle}
+        name="Email"
+        id={id}
+        type="email"
+        floatingLabelText="Enter your email address"
+      />
+      <br />
+      <br />
+      <RaisedButton
+        type="submit"
+        label={submitText}
+        primary onClick={handle}
+        style={{ width: '100%' }}
+      />
+    </form>
+  )
 }
-
-export default EmailInputBox;

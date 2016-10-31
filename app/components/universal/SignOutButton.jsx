@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 import { userActions, dashboardActions } from '../actions';
 
 class SignOutButtonClass extends React.Component {
