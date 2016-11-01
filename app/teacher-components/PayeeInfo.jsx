@@ -75,7 +75,7 @@ class PayeeInfo extends React.Component {
      warn = "Please input payee's account number."
    } else if (!swiftCode) {
      warn = "Please input payee's bank's SWIFT code."
-   } else if (swiftCode.trim().length < 8 || swiftCode.trim().length > 11) {
+   } else if (!(swiftCode.trim().length === 8) || !(swiftCode.trim().length === 11)) {
      warn = "Please input correct SWIFT code."
    } else if (!bankName) {
      warn = "Please click Confirm button to complete payee's bank full name."
