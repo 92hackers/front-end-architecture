@@ -22,11 +22,14 @@ module.exports = {
       "class-methods-use-this": [0],
       "indent": ["error", 2, { "SwitchCase": 1 }],
       "jsx-a11y/href-no-hash": [0],
+      "jsx-a11y/no-static-element-interactions": [0],
       "react/no-string-refs": 0,
       "no-class-assign": 0,
       "import/extensions": [0],
       "no-underscore-dangle": 0,
       "camelcase": 0,
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "radix": [0],
     },
     "env": {
       "browser": true

@@ -1,34 +1,23 @@
-
 import React from 'react';
-import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { userActions, dashboardActions } from '../actions';
 
-class SignOutButtonClass extends React.Component {
+export default class SignOutButton extends React.Component {
 
-  constructor (props) {
-    super (props);
+  handleSignOut(e) {
+    e.preventDefault()
+    this.props.signOut()
+    browserHistory.push('/')
   }
 
-  render () {
-    var className = "header-item " + this.props.className;
+  render() {
+    const { className, style } = this.props
+    const classNames = `header-item ${className}`
     return (
-      <li className={className} style={this.props.style}>
-        <a href="javascript:;" className="sign-out" onTouchTap={this.handleSignOut.bind(this)}><i className="fa fa-sign-out"></i> Sign out</a>
-        <span className="nav-border-line"></span>
+      <li className={classNames} style={style}>
+        <a href="#" className="sign-out" onTouchTap={this.handleSignOut}><i className="fa fa-sign-out" /> Sign out</a>
+        <span className="nav-border-line" />
       </li>
     )
   }
 
-  handleSignOut (e) {
-    e.preventDefault();
-    this.props.dispatch(userActions.signOut());
-    this.props.dispatch(dashboardActions.dashboardDisplay(""));
-    browserHistory.push("/");
-  }
-
 }
-
-var SignOutButton = connect()(SignOutButtonClass);
-
-export default SignOutButton;

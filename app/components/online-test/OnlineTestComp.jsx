@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import { blue500, red500 } from 'material-ui/styles/colors';
 
-import WaitForSubmit from '../../universal/WaitForSubmit';
+import WaitForSubmit from '../universal/WaitForSubmit';
 
 import OnlineClassroomGuide from './OnlineClassroomGuide';
 import ESL from './ESL';

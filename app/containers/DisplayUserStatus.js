@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import DisplayUserStatusComp from '../teacher-components/DisplayUserStatus';
+import { default as Comp } from '../components/homepage/DisplayUserStatus';
 
 const mapStateToProps = state => ({
   profile: state.user.profile,
@@ -10,6 +10,6 @@ const mapDispatchToProps = () => ({
 
 })
 
-const DisplayUserStatus = connect(mapStateToProps, mapDispatchToProps)(DisplayUserStatusComp);
+const DisplayUserStatus = connect(mapStateToProps, mapDispatchToProps)(Comp);
 
 export default DisplayUserStatus;

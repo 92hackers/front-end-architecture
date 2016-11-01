@@ -8,97 +8,90 @@
     // 3, failMessage,
     // 4, style       //  optional   style.
 
-
-    //Usage:
-
     // show  loader :     this.refs.loader.displayLoader
     // hide  loader :     this.refs.loader.hideLoader
 
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
-import {red500} from 'material-ui/styles/colors';
-import {green500} from 'material-ui/styles/colors';
+import { red500, green500 } from 'material-ui/styles/colors';
 
 class WaitForSubmit extends React.Component {
-  constructor (props) {
-    super (props);
+
+  hideSubmitBtn() {
+    document.querySelector('.submit-btn').className += ' hide';
   }
 
-  render () {
-    const loadingStyle = {
-      marginTop: -7
-    };
-
-    const {successMessage, failMessage, style} = this.props;
-
-    return (
-      <div className="wait-for-submit-wrap text-center">
-        <div className="wait-for-submit" style={style}>
-          <CircularProgress className="circle-progress" size={0.5} style={loadingStyle}></CircularProgress>
-          <span className="result success" style={{color: green500}}><i className="fa fa-check"></i>{successMessage}</span>
-          <span className="result fail" style={{color: red500}}><i className="fa fa-close"></i>{failMessage}</span>
-        </div>
-      </div>
-    )
+  showSubmitBtn() {
+    const submitBtn = document.querySelector('.submit-btn');
+    const submitClass = submitBtn.className;
+    submitBtn.className = submitClass.replace(/\shide/, '');
   }
 
-  hideSubmitBtn () {
-    document.querySelector(".submit-btn").className += " hide";
+  noLoader() {
+    const loader = document.querySelector('.wait-for-submit');
+    const loaderClass = loader.className;
+    loader.className = loaderClass.replace(/\sshow-inline/, '');
   }
 
-  showSubmitBtn () {
-    var submitBtn = document.querySelector(".submit-btn");
-    var submitClass = submitBtn.className;
-    submitBtn.className = submitClass.replace(/\shide/, "");
+  showLoader() {
+    document.querySelector('.wait-for-submit').className += ' show-inline';
   }
 
-  noLoader () {
-    var loader = document.querySelector(".wait-for-submit");
-    var loaderClass = loader.className;
-    loader.className = loaderClass.replace(/\sshow-inline/, "");
-  }
-
-  showLoader () {
-    document.querySelector(".wait-for-submit").className += " show-inline";
-  }
-
-  displayLoader () {
+  displayLoader() {
     this.hideSubmitBtn();
     this.showLoader();
   }
 
-  hideLoader () {
+  hideLoader() {
     this.showSubmitBtn();
     this.noLoader();
   }
 
-  displayResult (elem, callback, context) {
-    var circleProgress = document.querySelector(".circle-progress");
-    var circleProgressClass = circleProgress.className;
-    circleProgress.className += " hide";
-    var resultElem = elem;
-    var elemClass = resultElem.className;
-    resultElem.className += " show-inline";
-    var timeId = setTimeout (() => {
+  displayResult(elem, callback, context) {
+    const circleProgress = document.querySelector('.circle-progress');
+    const circleProgressClass = circleProgress.className;
+    circleProgress.className += ' hide';
+    const resultElem = elem;
+    const elemClass = resultElem.className;
+    resultElem.className += ' show-inline';
+    const timeId = setTimeout(() => {
       clearTimeout(timeId);
-      resultElem.className = elemClass.replace(/\sshow-inline/, "");
+      resultElem.className = elemClass.replace(/\sshow-inline/, '');
       this.hideLoader();
       this.showSubmitBtn();
-      circleProgress.className = circleProgressClass.replace(/\shide/, "");
-      if (typeof callback === "function") {
+      circleProgress.className = circleProgressClass.replace(/\shide/, '');
+      if (typeof callback === 'function') {
         callback.call(context);
       }
     }, 2000);
   }
 
-  displaySuccess (callback, context) {
-    var successWords = document.querySelector(".success");
+  displaySuccess(callback, context) {
+    const successWords = document.querySelector('.success');
     this.displayResult(successWords, callback, context);
   }
 
-  displayError (callback, context) {
-    var failWords = document.querySelector(".fail");
+  displayError(callback, context) {
+    const failWords = document.querySelector('.fail');
     this.displayResult(failWords, callback, context);
+  }
+
+  render() {
+    const loadingStyle = {
+      marginTop: -7,
+    };
+
+    const { successMessage, failMessage, style } = this.props;
+
+    return (
+      <div className="wait-for-submit-wrap text-center">
+        <div className="wait-for-submit" style={style}>
+          <CircularProgress className="circle-progress" size={0.5} style={loadingStyle} />
+          <span className="result success" style={{ color: green500 }}><i className="fa fa-check" />{successMessage}</span>
+          <span className="result fail" style={{ color: red500 }}><i className="fa fa-close" />{failMessage}</span>
+        </div>
+      </div>
+    )
   }
 
 }

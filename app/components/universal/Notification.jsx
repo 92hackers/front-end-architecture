@@ -4,12 +4,12 @@ import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
 
 export default function Notification(props) {
+  const { isShow, message, hideNotification } = props;
+
   const style = {
     fontWeight: 'bold',
     textAlign: 'center',
   };
-
-  const { isShow, message, hideNotification } = props;
 
   return (
     <Snackbar

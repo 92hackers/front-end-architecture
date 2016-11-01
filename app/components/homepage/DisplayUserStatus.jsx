@@ -1,7 +1,7 @@
 import React from 'react';
-import SiteLoading from '../containers/SiteLoading';
+import SiteLoading from '../../containers/SiteLoading';
 
-class DisplayUserStatusComp extends React.Component {
+export default class DisplayUserStatus extends React.Component {
 
   getOutput(profile) {
     const { status } = profile
@@ -47,5 +47,3 @@ class DisplayUserStatusComp extends React.Component {
     )
   }
 }
-
-export default DisplayUserStatusComp;
