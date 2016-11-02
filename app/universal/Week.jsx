@@ -58,7 +58,8 @@ class WeekComp extends React.Component {
     beginTime: self.hoursRawData.indexOf(time),
        status: item.status || "",
            id: item.id || "",
-  studentName: item.studentName || ""
+  studentName: item.studentName || "",
+    trailFlag: item.trailFlag || '',
         };
 
       });
@@ -117,9 +118,14 @@ class WeekComp extends React.Component {
               }
               elem.style.backgroundColor = backgroundColor;
 
-              let children = elem.children[1];
-              children.innerText = oneTpl.studentName;
-              children.style.color = "#ffffff";
+              const star = elem.children[1];
+              if (parseInt(oneTpl.trailFlag) === 1) {
+                star.style.display = 'inline'
+              }
+
+              const student = elem.children[2];
+              student.innerText = oneTpl.studentName;
+              student.style.color = "#ffffff";
             } else {
               elem.style.backgroundColor = "#a8d8ff";
             }
@@ -342,13 +348,13 @@ class WeekComp extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
                     </TableRow>
                   )
                 })
