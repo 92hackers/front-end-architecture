@@ -134,16 +134,24 @@
             }
           }
 
-          .work-background {
-            .education-background();
-            .fa-briefcase {
-              padding-right: 2px;
+          .certs-box {
+            margin-bottom: 30px;
+
+            .inner-content {
+              .Select {
+                width: 436px;
+                display: inline-block;
+                vertical-align: middle;
+              }
+              .caption {
+                color: #999;
+                margin-left: 20px;
+                vertical-align: middle;
+                display: inline-block;
+              }
             }
           }
-        }
-        .teaching-experience {
-          width: 750px;
-          margin: 0 auto;
+
           .select-years {
             margin-bottom: 46px;
             .title {
@@ -154,6 +162,18 @@
               color: @shallow_base_color;
             }
           }
+
+          .work-background {
+            .education-background();
+            padding-top: 0;
+            .fa-briefcase {
+              padding-right: 2px;
+            }
+          }
+        }
+        .teaching-experience {
+          width: 750px;
+          margin: 0 auto;
           .words-item {
             .caption {
               margin-bottom: 20px;

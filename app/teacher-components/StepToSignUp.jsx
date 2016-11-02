@@ -1,6 +1,7 @@
 // step page to complete sign up process.
 import React from 'react';
 import {browserHistory, Link} from 'react-router';
+import Select from 'react-select';
 
 import CircularProgress from 'material-ui/CircularProgress';
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
@@ -68,8 +69,19 @@ class BasicInfo extends React.Component {
       workExpSelectedIndex: '',
       workExpSelectedDialogOpen: false,
 
+      teachExpValue: this.props.teachExpValue || null,
+
+      selectedCerts: [],
     };
     this.token = this.props.token;
+    this.handleCertsChange = this.handleCertsChange.bind(this);
+    this.defaultCerts = [
+      { label: "TEFL certificate", value: "TEFL certificate", },
+      { label: "TESL certificate", value: "TESL certificate", },
+      { label: "TESOL certificate", value: "TESOL certificate", },
+      { label: "CELTA", value: "CELTA", },
+      { label: "DELTA", value: "DELTA", },
+    ];
   }
 
   componentWillMount () {
@@ -78,6 +90,19 @@ class BasicInfo extends React.Component {
     } else {
       this.setProfile(this.state.profile);
     }
+  }
+
+  handleCertsChange(value) {
+    const self = this;
+    this.setState({
+      selectedCerts: value,
+    });
+  }
+
+  handleTeachExpChange (e, index) {
+    this.setState({
+      teachExpValue: index
+    });
   }
 
   setProfile (profile) {
@@ -89,13 +114,42 @@ class BasicInfo extends React.Component {
         eduList: eduExp.length
       });
     }
-    const { workexp } = profile
+
+    let experience = "";
+
+    switch (profile.experience) {
+      case 3 :
+        experience = 2;
+        break;
+      case 2 :
+        experience = 1;
+        break;
+      case 1 :
+        experience = 0;
+        break;
+      default:
+      experience = "";
+    }
+
+    this.setState({
+      teachExpValue: experience,
+    });
+
+    const { workexp, certs } = profile
     if (!!workexp) {
       this.setState({
         workListItems: workexp,
         workExpList: workexp.length,
       });
     }
+
+    if (certs.length > 0) {
+      const options = certs.map(item => ({ label: item, value: item }));
+      this.setState({
+        selectedCerts: options,
+      });
+    }
+
     if (profile.avatar) {
       this.setState({
         avatarUrl: profile.avatar,
@@ -890,6 +944,34 @@ class BasicInfo extends React.Component {
           </Table>
         </div>
 
+        {/* addedAT: 2016-11-02 :  增加了教育经历选择以及工作经验。  */}
+
+        <div className="certs-box">
+          <h1 className="primary-color">Certificates</h1>
+          <div className="inner-content">
+            <Select.Creatable
+              options={this.defaultCerts}
+              onChange={this.handleCertsChange}
+              value={this.state.selectedCerts}
+              multi
+            />
+            <p className="caption">Select listed item or type your custom certificates.</p>
+          </div>
+        </div>
+        <div className="select-years">
+          <span className="title">Teaching Experience</span>
+          <SelectField
+            style={{verticalAlign: "middle"}}
+            id="teach-experience"
+            value={this.state.teachExpValue}
+            onChange={this.handleTeachExpChange.bind(this)}
+            floatingLabelText="Select..."
+          >
+            <MenuItem style={{cursor: "pointer"}} value={0} primaryText="Less than 5 years" />
+            <MenuItem style={{cursor: "pointer"}} value={1} primaryText="Between 5 to 15 years" />
+            <MenuItem style={{cursor: "pointer"}} value={2} primaryText="More than 15 years" />
+          </SelectField>
+        </div>
 
         <div className="work-background">
           <div className="title">
@@ -1073,6 +1155,10 @@ class BasicInfo extends React.Component {
     let phoneNum = document.querySelector("[name='tel_num']").value;
     let eduExperienceList = this.state.eduListItems;
 
+    let workExperienceList = this.state.workListItems;
+    let teachExperience = document.getElementById("teach-experience").innerText.trim();
+    let certs = this.state.selectedCerts;
+
     let numericP = /^[0-9]+$/;
 
     if (!firstName.length) {
@@ -1093,6 +1179,12 @@ class BasicInfo extends React.Component {
       notification = "Please enter your phone number.";
     } else if (!eduExperienceList.length) {
       notification = "Please complete Education Background.";
+    } else if (!certs.length) {
+      notification = 'Please select or input your certificates.'
+    } else if (!teachExperience.length) {
+        notification = "Please select the number of years that you have taught.";
+    } else if (!workExperienceList.length) {
+      notification = 'Please complete Working Experience.'
     } else if (!numericP.test(phoneNum)) {
       notification = "Phone number should be numbers.";
     } else if (!!nationCode.length && !numericP.test(nationCode)) {
@@ -1102,6 +1194,22 @@ class BasicInfo extends React.Component {
     if (!!notification.length) {
       self.props.showNotification(notification);
       return;
+    }
+
+    let experience = 0;
+
+    switch (teachExperience) {
+      case "More than 15 years":
+        experience = 3;
+        break;
+      case "Between 5 to 15 years":
+        experience = 2;
+        break;
+      case "Less than 5 years":
+        experience = 1;
+        break;
+      default:
+        experience = 0;
     }
 
     var data = {
@@ -1116,31 +1224,29 @@ class BasicInfo extends React.Component {
       "timezone": timezone,
       eduexp: eduExperienceList,
       "tel_code": nationCode,
-      "tel_num": phoneNum
+      "tel_num": phoneNum,
+      experience,
+      workexp: workExperienceList,
+      certs: certs.map(item => item.value),
     };
 
-    if (JSON.stringify(data) !== JSON.stringify(this.state.oldProfile)) {
+    this.props.displayLoader();
 
-      this.props.displayLoader();
-
-      api.TApplyStep1(data,
-        {"Authorization": self.token},
-        "",
-        (resp) => {
-          if (resp.success) {
-            this.props.displaySuccess();
-          } else {
-            this.props.displayError();
-          }
-        },
-        (err) => {
+    api.TApplyStep1(data,
+      {"Authorization": self.token},
+      "",
+      (resp) => {
+        if (resp.success) {
+          this.props.displaySuccess();
+        } else {
           this.props.displayError();
         }
-      );
+      },
+      (err) => {
+        this.props.displayError();
+      }
+    );
 
-    } else {
-      this.props.stepToNext();
-    }
   }
 }
 
@@ -1152,31 +1258,13 @@ class TeachingExperience extends React.Component {
       notification: "",
       profile: this.props.profile || {},
       oldProfile: {},
-      teachExpValue: this.props.teachExpValue || null
     };
     this.token = this.props.token;
   }
 
   setProfile (profile) {
-    var experience = "";
-
-    switch (profile.experience) {
-      case 3 :
-        experience = 2;
-        break;
-      case 2 :
-        experience = 1;
-        break;
-      case 1 :
-        experience = 0;
-        break;
-      default:
-      experience = "";
-    }
-
     this.setState({
       profile: profile,
-      teachExpValue: experience
     });
   }
 
@@ -1214,12 +1302,6 @@ class TeachingExperience extends React.Component {
     }
   }
 
-  handleChange (e, index) {
-    this.setState({
-      teachExpValue: index
-    });
-  }
-
   handleValueChange (e) {
     var ele = e.target;
     var profile = this.state.profile;
@@ -1246,14 +1328,6 @@ class TeachingExperience extends React.Component {
 
     return (
       <div className="teaching-experience">
-        <div className="select-years">
-          <span className="title">Teaching Experience</span>
-          <SelectField style={{verticalAlign: "middle"}} id="teach-experience" value={this.state.teachExpValue} onChange={this.handleChange.bind(this)} floatingLabelText="Select...">
-            <MenuItem style={{cursor: "pointer"}} value={0} primaryText="Less than 5 years" />
-            <MenuItem style={{cursor: "pointer"}} value={1} primaryText="Between 5 to 15 years" />
-            <MenuItem style={{cursor: "pointer"}} value={2} primaryText="More than 15 years" />
-          </SelectField>
-        </div>
         <ul>
           <li className="words-item">
             <div className="caption">
@@ -1300,15 +1374,12 @@ class TeachingExperience extends React.Component {
     var self = this;
     var notification = "";
 
-    let teachExperience = document.getElementById("teach-experience").innerText.trim();
     let selfIntro = document.getElementById("self-intro").value;
     let teachStyle = document.getElementById("teach-style").value;
     let whyATeacher = document.getElementById("why-a-teacher").value;
     let addition = document.getElementById("addition").value;
 
-    if (!teachExperience.length) {
-        notification = "Please select the number of years that you have taught.";
-    } else if (!selfIntro.length) {
+    if (!selfIntro.length) {
         notification = "Please answer Question 1.";
     } else if (!teachStyle.length) {
         notification = "Please answer Question 2.";
@@ -1329,24 +1400,7 @@ class TeachingExperience extends React.Component {
       return;
     }
 
-    var experience = 0;
-
-    switch (teachExperience) {
-      case "More than 15 years":
-        experience = 3;
-        break;
-      case "Between 5 to 15 years":
-        experience = 2;
-        break;
-      case "Less than 5 years":
-        experience = 1;
-        break;
-      default:
-        experience = 0;
-    }
-
     var data = {
-      experience: experience,
       intro: selfIntro,
       style: teachStyle,
       whyteach: whyATeacher,
@@ -1608,7 +1662,7 @@ class StepToSignUpComp extends React.Component {
 
     switch (stepIndex) {
       case 0:
-        return <BasicInfo stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
+        return <BasicInfo teachExpValue={experience} stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
       case 1:
         var experience = "";
 
@@ -1626,7 +1680,7 @@ class StepToSignUpComp extends React.Component {
             experience = "";
         }
 
-        return <TeachingExperience stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} parent={this} showNotification={this.props.showNotification} profile={profile} teachExpValue={experience} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
+        return <TeachingExperience stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} parent={this} showNotification={this.props.showNotification} profile={profile} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
       case 2:
         return <ScheduleInterview getProfile={this.props.getProfile} showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
       default:
