@@ -125,7 +125,7 @@ class PayeeInfo extends React.Component {
            <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
              <ul className="fields-list">
                <li className="select">
-                 <span className="label">Region of found collection:</span>
+                 <span className="label">Region of fund collection:</span>
                  <Field
                    className="field"
                    name="region"
@@ -135,7 +135,7 @@ class PayeeInfo extends React.Component {
                  />
                </li>
                <li className="select">
-                 <span className="label">Payee's country(region) of residence:</span>
+                 <span className="label">Payee's country (region) of residence:</span>
                  <Field
                    className="field"
                    name="country"
@@ -196,7 +196,7 @@ class PayeeInfo extends React.Component {
                  </div>
                </li>
                <li>
-                 <span className="label">Payee's bank full name:</span>
+                 <span className="label">Payee's bank's full name:</span>
                  <Field
                    data-for="payee-info"
                    data-tip="The full name of the receiving bank must<br />contain branch name. Maximum length<br />is 105 characters."

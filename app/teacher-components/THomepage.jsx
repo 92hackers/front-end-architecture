@@ -318,11 +318,15 @@ class THomepage extends React.Component {
       return;
     }
 
-    this.lessonTemplateReq();
+    const { status } = this.props.profile
 
-    this.weeklyTimetableReq();
+    if (status >= 10) {
+      this.lessonTemplateReq();
 
-    this.monthlyTimetableReq();
+      this.weeklyTimetableReq();
+
+      this.monthlyTimetableReq();
+    }
 
   }
 

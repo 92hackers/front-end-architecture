@@ -948,6 +948,9 @@ class BasicInfo extends React.Component {
 
         <div className="certs-box">
           <h1 className="primary-color">Certificates</h1>
+          <p className="caption">Select all certificate(s) you currently hold.
+            Is yours not there? Add it by typing it in.
+          </p>
           <div className="inner-content">
             <Select.Creatable
               options={this.defaultCerts}
@@ -955,7 +958,6 @@ class BasicInfo extends React.Component {
               value={this.state.selectedCerts}
               multi
             />
-            <p className="caption">Select listed item or type your custom certificates.</p>
           </div>
         </div>
         <div className="select-years">

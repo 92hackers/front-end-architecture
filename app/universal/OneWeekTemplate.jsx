@@ -458,7 +458,7 @@ class OneWeekTemplateComp extends React.Component {
 
   }
 
-  componentDidMount () {
+  componentDidMount() {
 
     if (this.props.newUser) {
       this.setState({
