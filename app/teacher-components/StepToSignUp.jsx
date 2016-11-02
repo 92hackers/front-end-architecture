@@ -136,7 +136,7 @@ class BasicInfo extends React.Component {
     });
 
     const { workexp, certs } = profile
-    if (!!workexp) {
+    if (!!workexp && workexp.length > 0) {
       this.setState({
         workListItems: workexp,
         workExpList: workexp.length,
