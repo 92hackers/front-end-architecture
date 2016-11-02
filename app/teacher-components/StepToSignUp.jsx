@@ -61,6 +61,13 @@ class BasicInfo extends React.Component {
       eduExpSelectedIndex: "",
       eduExpSelectedDialogOpen: false,
 
+      workExpDialogOpen: false,
+      workExpList: 0,
+      workListItems: [],
+      workExpSelected: '',
+      workExpSelectedIndex: '',
+      workExpSelectedDialogOpen: false,
+
     };
     this.token = this.props.token;
   }
@@ -80,6 +87,13 @@ class BasicInfo extends React.Component {
       this.setState({
         eduListItems: eduExp,
         eduList: eduExp.length
+      });
+    }
+    const { workexp } = profile
+    if (!!workexp) {
+      this.setState({
+        workListItems: workexp,
+        workExpList: workexp.length,
       });
     }
     if (profile.avatar) {
@@ -304,9 +318,30 @@ class BasicInfo extends React.Component {
     }
   }
 
-  handleUpdateDiaOpen () {
+  showWorkFullDetail(index) {
+    const { workListItems } = this.state
+    if (index && !!workListItems) {
+      let expData = workListItems[index[0]]
+
+      this.setState({
+        workExpSelectedIndex: index[0],
+        workExpSelected: expData,
+      }, () => {
+        this.handleWorkUpdateDiaOpen()
+      })
+    }
+  }
+
+
+  handleUpdateDiaOpen() {
     this.setState({
-      eduExpSelectedDialogOpen: true
+      eduExpSelectedDialogOpen: true,
+    });
+  }
+
+  handleWorkUpdateDiaOpen() {
+    this.setState({
+      workExpSelectedDialogOpen: true,
     });
   }
 
@@ -362,10 +397,70 @@ class BasicInfo extends React.Component {
 
   }
 
+  addWorkExp(e) {
+    e.preventDefault();
+
+    const { workListItems, workExpList } = this.state
+
+    let warn = "";
+    let temp = workListItems
+    let tempEduList = workExpList;
+
+    var getValue = (ele) => {
+      return document.getElementById(ele).value;
+    }
+
+    const startYear = getValue("work-start-year");
+    const endYear = getValue("work-end-year");
+    const company = getValue("company");
+    const position = getValue("position");
+
+    const { showNotification } = this.props
+
+    if (!!startYear && !!endYear && !!company && !!position) {
+
+      var regExp = /^[0-9]+$/;
+
+      if (startYear.length !== 4 || endYear.length !== 4 || !regExp.test(startYear) || !regExp.test(endYear)) {
+        warn = "Year should be exactly 4 numbers.";
+      }
+
+      if (warn.length > 0) {
+        showNotification(warn);
+        return ;
+      }
+
+      let data = {
+        timefrom: startYear,
+        timeto: endYear,
+        company,
+        position,
+      };
+
+      temp.push(data);
+      tempEduList++;
+
+      this.setState({
+        workListItems: temp,
+        workExpDialogOpen: false,
+        workExpList: tempEduList
+      });
+
+    } else {
+      showNotification("Please complete all required details.");
+    }
+  }
+
   handleEduDialogOpen () {
     this.setState({
       eduDialogOpen: true
     });
+  }
+
+  handleWorkDialogOpen() {
+    this.setState({
+      workExpDialogOpen: true
+    })
   }
 
   handleEduDialogClose () {
@@ -374,7 +469,13 @@ class BasicInfo extends React.Component {
     });
   }
 
-  handleEduUpdate (e) {
+  handleWorkDialogClose() {
+    this.setState({
+      workExpDialogOpen: false
+    });
+  }
+
+  handleEduUpdate(e) {
     e.preventDefault();
     this.handleUpdateDiaClose();
 
@@ -423,7 +524,54 @@ class BasicInfo extends React.Component {
     } else {
       this.props.showNotification("Please Complete All Fields.");
     }
+  }
 
+  handleWorkUpdate(e) {
+    this.handleWorkUpdateDiaClose()
+
+    const { workListItems, workExpSelectedIndex } = this.state
+
+    var tmp = workListItems;
+    var updateIndex = workExpSelectedIndex;
+    var self = this;
+    var notification = "";
+
+    var getValue = (ele) => {
+      return document.getElementById(ele).value;
+    };
+
+    var startYear = getValue("work-start-year-m");
+    var endYear = getValue("work-end-year-m");
+    var company = getValue("company-m");
+    var position = getValue("position-m");
+
+    if (!!startYear && !!endYear && !!company && !!position) {
+      var regExp = /^[0-9]+$/;
+
+      if (startYear.length !== 4 || endYear.length !== 4 || !regExp.test(startYear) || !regExp.test(endYear)) {
+        notification = "Year should be exactly 4 numbers.";
+      }
+
+      if (notification.length > 0) {
+        this.props.showNotification(notification);
+        return ;
+      }
+
+      let data = {
+        timefrom: startYear,
+        timeto: endYear,
+        company,
+        position,
+      };
+
+      tmp[updateIndex] = data;
+
+      this.setState({
+        workListItems: tmp,
+      });
+    } else {
+      this.props.showNotification("Please Complete All Fields.");
+    }
   }
 
   handleEduExpDel (e) {
@@ -441,9 +589,27 @@ class BasicInfo extends React.Component {
     });
   }
 
+  handleWorkExpDel(e) {
+    e.preventDefault()
+    let { workExpList, workListItems, workExpSelectedIndex } = this.state
+    workExpList -= 1;
+    this.handleWorkUpdateDiaClose()
+    workListItems.splice(workExpSelectedIndex, 1)
+    this.setState({
+      workListItems,
+      workExpList,
+    });
+  }
+
   handleUpdateDiaClose (e) {
     this.setState({
       eduExpSelectedDialogOpen: false
+    });
+  }
+
+  handleWorkUpdateDiaClose() {
+    this.setState({
+      workExpSelectedDialogOpen: false,
     });
   }
 
@@ -488,6 +654,10 @@ class BasicInfo extends React.Component {
       display: this.state.eduList ? "table" : "none"
     };
 
+    const workTableStyle = {
+      display: this.state.workExpList ? "table" : "none"
+    }
+
     const updateActions = [
       <RaisedButton
         className="dialog-button"
@@ -524,6 +694,45 @@ class BasicInfo extends React.Component {
         label="Add"
         primary={true}
         onTouchTap={this.addEduExp.bind(this)}
+      />
+    ];
+
+    const updateWorkActions = [
+      <RaisedButton
+        className="dialog-button"
+        label="Delete"
+        default={true}
+        onTouchTap={this.handleWorkExpDel.bind(this)}
+        style={{ float: "left" }}
+      />,
+      <RaisedButton
+        className="dialog-button"
+        label="Cancel"
+        default={true}
+        onTouchTap={this.handleWorkUpdateDiaClose.bind(this)}
+      />,
+      <RaisedButton
+        className="dialog-button"
+        id="submitEdu"
+        label="Update"
+        primary={true}
+        onTouchTap={this.handleWorkUpdate.bind(this)}
+      />
+    ];
+
+    const addWorkExpActions = [
+      <RaisedButton
+        className="dialog-button"
+        label="Cancel"
+        default={true}
+        onTouchTap={this.handleWorkDialogClose.bind(this)}
+      />,
+      <RaisedButton
+        className="dialog-button"
+        id="submitEdu"
+        label="Add"
+        primary={true}
+        onTouchTap={this.addWorkExp.bind(this)}
       />
     ];
 
@@ -680,6 +889,64 @@ class BasicInfo extends React.Component {
             </TableBody>
           </Table>
         </div>
+
+
+        <div className="work-background">
+          <div className="title">
+            <h1 className="primary-color">Working Experience</h1>
+            <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-briefcase"></i>} primary={true} onClick={this.handleWorkDialogOpen.bind(this)}></RaisedButton>
+            <span className="education-background-tooltip" style={{display: this.state.workExpList ? "inline-block" : "none"}}>Click The Item To Edit!</span>
+            <Dialog title="Add Your Working Experience" actions={addWorkExpActions} modal={false} open={this.state.workExpDialogOpen} onRequestClose={this.handleWorkDialogClose.bind(this)}>
+              <div className="t-edu-form-wrap">
+                <div className="clearfix">
+                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="work-start-year" floatingLabelText="Start Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="work-end-year" floatingLabelText="End Year"></TextField>
+                </div>
+                <TextField floatingLabelStyle={labelStyle} id="company" type="text" floatingLabelText="Company"></TextField>
+                <br/>
+                <TextField floatingLabelStyle={labelStyle} id="position" type="text" floatingLabelText="Position"></TextField>
+              </div>
+            </Dialog>
+            <Dialog title="Modify Your Working Experience" actions={updateWorkActions} modal={false} open={this.state.workExpSelectedDialogOpen} onRequestClose={this.handleWorkUpdateDiaClose.bind(this)}>
+              <div className="t-edu-form-wrap">
+                <div className="clearfix">
+                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="work-start-year-m" defaultValue={this.state.workExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="work-end-year-m" defaultValue={this.state.workExpSelected.timeto} floatingLabelText="End Year"></TextField>
+                </div>
+                <TextField floatingLabelStyle={labelStyle} id="company-m" defaultValue={this.state.workExpSelected.company} type="text" floatingLabelText="Company"></TextField>
+                <br/>
+                <TextField floatingLabelStyle={labelStyle} id="position-m" defaultValue={this.state.workExpSelected.position} type="text" floatingLabelText="Position"></TextField>
+              </div>
+            </Dialog>
+          </div>
+          <Table style={workTableStyle} onRowSelection={this.showWorkFullDetail.bind(this)}>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+              <TableRow>
+                <TableHeaderColumn>Start Time</TableHeaderColumn>
+                <TableHeaderColumn>End Time</TableHeaderColumn>
+                <TableHeaderColumn>Company</TableHeaderColumn>
+                <TableHeaderColumn>Position</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false} showRowHover={true}>
+              {
+                this.state.workListItems.map((item, index) => {
+                  return (
+                    <TableRow key={index} data-index={index} hoverable={true} style={{cursor: "pointer"}}>
+                      <TableRowColumn>{item.timefrom}</TableRowColumn>
+                      <TableRowColumn>{item.timeto}</TableRowColumn>
+                      <TableRowColumn>{item.company}</TableRowColumn>
+                      <TableRowColumn>{item.position}</TableRowColumn>
+                    </TableRow>
+                  )
+                })
+              }
+            </TableBody>
+          </Table>
+        </div>
+
+
+
       </div>
     )
   }
