@@ -136,14 +136,14 @@ class BasicInfo extends React.Component {
     });
 
     const { workexp, certs } = profile
-    if (!!workexp && workexp.length > 0) {
+    if (!!workexp) {
       this.setState({
         workListItems: workexp,
         workExpList: workexp.length,
       });
     }
 
-    if (certs.length > 0) {
+    if (!!certs) {
       const options = certs.map(item => ({ label: item, value: item }));
       this.setState({
         selectedCerts: options,
