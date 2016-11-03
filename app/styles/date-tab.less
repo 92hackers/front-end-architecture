@@ -48,11 +48,15 @@
           padding-right: 5px;
           cursor: pointer;
           font-size: 12px;
-          .fa-circle {
+
+          .fa-circle,
+          .fa-star
+          {
             margin-right: 10px;
             line-height: 18px;
             float: left;
           }
+
           .name {
             float: left;
             max-width: 55px;
@@ -61,12 +65,18 @@
             text-overflow: ellipsis;
             color: #333;
           }
+
           .time {
             float: right;
             color: #bbb;
           }
+
           &:hover {
-            .time, .fa-circle, .name {
+            .time,
+            .fa-circle,
+            .fa-star,
+            .name,
+            {
               color: #fff;
             }
           }
@@ -81,7 +91,9 @@
           font-size: 12px;
         }
         .lesson-status-0 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @unBook;
           }
           &:hover {
@@ -89,7 +101,9 @@
           }
         }
         .lesson-status-1 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @unPay;
           }
           &:hover {
@@ -97,7 +111,9 @@
           }
         }
         .lesson-status-2 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @booked;
           }
           &:hover {
@@ -105,7 +121,9 @@
           }
         }
         .lesson-status-3 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @cancle;
           }
           &:hover {
@@ -113,7 +131,9 @@
           }
         }
         .lesson-status-4 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @cancle;
           }
           &:hover {
@@ -121,7 +141,9 @@
           }
         }
         .lesson-status-5 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @cancle;
           }
           &:hover {
@@ -131,7 +153,9 @@
         }
         .lesson-status-6 {
 
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @cancle;
           }
           &:hover {
@@ -142,7 +166,9 @@
           .lesson-status-0()
         }
         .lesson-status-10 {
-          .fa-circle {
+          .fa-circle,
+          .fa-star
+          {
             color: @completed;
           }
           &:hover {

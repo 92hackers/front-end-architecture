@@ -182,64 +182,70 @@ class TIndexComp extends React.Component {
             </li>
           </ul>
         </section>
-        <section className="video container-wrap">
-          <div className="section-wrap">
-            <h1 className="title primary-color">Why WeTeach ?</h1>
-            <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
-            <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/iM6AGrZTbbQ?rel=0" frameBorder="0" allowFullScreen></iframe>
+        <section className="video">
+          <div className="container-wrap">
+            <div className="section-wrap">
+              <h1 className="title primary-color">Why WeTeach ?</h1>
+              <p className="sub-title">A vignette from the life of one of our great WeTeach teachers.</p>
+              <iframe scrolling="no" width="1024" height="576" src="https://www.youtube.com/embed/iM6AGrZTbbQ?rel=0" frameBorder="0" allowFullScreen></iframe>
+            </div>
           </div>
         </section>
-        <section className="teachers-thoughts container-wrap">
-          <div className="section-wrap">
-            <h1 className="title primary-color">Teachers’ Thoughts</h1>
-            <ul>
-              <li className="teacher-item clearfix">
-                <div className="left avatar">
-                  <i className="icon icon-Patty-Harte"></i>
-                  <div>
-                    <p className="name">Patty Harte</p>
-                    <p className="country">England</p>
+        <section className="teachers-thoughts">
+          <div className="container-wrap">
+            <div className="section-wrap">
+              <h1 className="title primary-color">Teachers’ Thoughts</h1>
+              <ul>
+                <li className="teacher-item clearfix">
+                  <div className="left avatar">
+                    <i className="icon icon-Patty-Harte"></i>
+                    <div>
+                      <p className="name">Patty Harte</p>
+                      <p className="country">England</p>
+                    </div>
                   </div>
-                </div>
-                <div className="left thoughts">
-                  <div className="icon icon-dialogue-left"><p className="thoughts-content">"It's such a privilege to join the children in their homes and to share much-loved stories with them. Their reactions as they see the pages are priceless and utterly enchanting. In teaching you are often giving out so much energy, after story time with WeTeach it is like getting that energy back again.”</p></div>
-                </div>
-              </li>
-              <li className="teacher-item clearfix">
-                <div className="right avatar">
-                  <i className="icon icon-Paul-Clutterbuck"></i>
-                  <p className="name">Paul Clutterbuck</p>
-                  <p className="country">Australia</p>
-                </div>
-                <div className="right thoughts">
-                  <div className="right icon icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
-                </div>
-              </li>
-              <li className="teacher-item clearfix">
-                <div className="left avatar">
-                  <i className="icon icon-hallette"></i>
-                  <div>
-                    <p className="name">Peggy Hallett</p>
-                    <p className="country">Canada</p>
+                  <div className="left thoughts">
+                    <div className="icon icon-dialogue-left"><p className="thoughts-content">"It's such a privilege to join the children in their homes and to share much-loved stories with them. Their reactions as they see the pages are priceless and utterly enchanting. In teaching you are often giving out so much energy, after story time with WeTeach it is like getting that energy back again.”</p></div>
                   </div>
-                </div>
-                <div className="left thoughts">
-                  <div className="icon icon-dialogue-left">
-                    <p className="thoughts-content">"I have found the WeTeach platform to be an excellent way to make a real connection with young learners. We start our time together with some chitchat and then dive into a book. The stories and adventures lead to plenty of language extensions and inference questions. Success and progress is apparent!"</p>
+                </li>
+                <li className="teacher-item clearfix">
+                  <div className="right avatar">
+                    <i className="icon icon-Paul-Clutterbuck"></i>
+                    <p className="name">Paul Clutterbuck</p>
+                    <p className="country">Australia</p>
                   </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="buttons">
-            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutSchool} label="About the School" primary={true} onClick={this.aboutSchool.bind(this)}></RaisedButton>
-            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About the Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
+                  <div className="right thoughts">
+                    <div className="right icon icon-dialogue-right"><p className="thoughts-content">"This has to be one of the best uses of social media on the planet! To bring together students and teachers across the globe, and via the medium of children's literature, is so imaginative and creative, it's joyful!"</p></div>
+                  </div>
+                </li>
+                <li className="teacher-item clearfix">
+                  <div className="left avatar">
+                    <i className="icon icon-hallette"></i>
+                    <div>
+                      <p className="name">Peggy Hallett</p>
+                      <p className="country">Canada</p>
+                    </div>
+                  </div>
+                  <div className="left thoughts">
+                    <div className="icon icon-dialogue-left">
+                      <p className="thoughts-content">"I have found the WeTeach platform to be an excellent way to make a real connection with young learners. We start our time together with some chitchat and then dive into a book. The stories and adventures lead to plenty of language extensions and inference questions. Success and progress is apparent!"</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div className="buttons">
+              <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutSchool} label="About the School" primary={true} onClick={this.aboutSchool.bind(this)}></RaisedButton>
+              <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About the Job" primary={true} onClick={this.aboutJob.bind(this)}></RaisedButton>
+            </div>
           </div>
         </section>
-        <section className="section-wrap contact-us container-wrap">
-          <h1 className="title primary-color">Contact Us</h1>
-          <p>If you have any queries, suggestions, or would like to be involved.</p>
-          <p>please don't hesitate to contact us at <a href="mailto:teacher@weteach.info" className="primary-color">teacher@weteach.info</a></p>
+        <section className="section-wrap contact-us">
+          <div className="container-wrap">
+            <h1 className="title primary-color">Contact Us</h1>
+            <p>If you have any queries, suggestions, or would like to be involved.</p>
+            <p>please don't hesitate to contact us at <a href="mailto:teacher@weteach.info" className="primary-color">teacher@weteach.info</a></p>
+          </div>
         </section>
       </div>
     )

@@ -55,14 +55,16 @@ class DateTab extends React.Component {
 
         for (let i = 0; i < monthlyTimetable.length; i++) {
             let tmp = monthlyTimetable[i];
+            const { lessonDate, status, studentName, studentId, lessonTime, trialFlag } = tmp
             let lessonData = {
-                status: tmp.status,
-                studentName: tmp.studentName,
-                studentId: tmp.studentId,
-                lessonTime: tmp.lessonTime
+              status,
+              studentName,
+              studentId,
+              lessonTime,
+              trialFlag,
             };
             let data = {
-                date: tmp.lessonDate,
+                date: lessonDate,
                 lessons: [lessonData]
             };
             if (filteredData.length === 0) {

@@ -1526,7 +1526,7 @@ class ScheduleInterview extends React.Component {
     return (
       <div className="schedule-interview">
         <div className="wrap">
-          <h1 className="title">Schedule Video Interview</h1>
+          <h1 className="title">Propose interview time (all times are in your local time)</h1>
           {
             this.state.dataIsReady ? (
               <div className="input-box">

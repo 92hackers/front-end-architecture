@@ -59,7 +59,7 @@ class WeekComp extends React.Component {
        status: item.status || "",
            id: item.id || "",
   studentName: item.studentName || "",
-    trailFlag: item.trailFlag || '',
+    trialFlag: item.trialFlag || '',
         };
 
       });
@@ -110,6 +110,9 @@ class WeekComp extends React.Component {
                 case 6 :
                   backgroundColor = "#ed391d";
                   break;
+                case 9 :
+                  backgroundColor = "#ff9c00";
+                  break;
                 case 10 :
                   backgroundColor = "#6ca4f8";
                   break;
@@ -119,7 +122,7 @@ class WeekComp extends React.Component {
               elem.style.backgroundColor = backgroundColor;
 
               const star = elem.children[1];
-              if (parseInt(oneTpl.trailFlag) === 1) {
+              if (parseInt(oneTpl.trialFlag) === 1) {
                 star.style.display = 'inline'
               }
 
@@ -150,7 +153,8 @@ class WeekComp extends React.Component {
         item.dataset.status = "";
         item.dataset.id = "";
         item.style.backgroundColor = "transparent";
-        item.children[1].innerText = "";
+        item.children[1].style.display = 'none';
+        item.children[2].innerText = '';
         count++;
       }
       if (count === elems.length) {

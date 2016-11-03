@@ -48,7 +48,7 @@ var MultipleDatePickerDay = React.createClass({
           lessons.map((item, index) => {
             var classNames = "lesson-student" + " clearfix" + " lesson-status-" + item.status;
               var studentInfoDisplay = <li className={classNames} key={index}>
-                <i className="fa fa-circle"></i>
+                {parseInt(item.trialFlag) === 1 ? <i className="fa fa-star" /> : <i className="fa fa-circle" />}
                 <span className="name">{item.studentName}</span>
                 <span className="time">{item.lessonTime}</span>
               </li>;
