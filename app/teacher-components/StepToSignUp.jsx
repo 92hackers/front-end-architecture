@@ -334,21 +334,40 @@ class BasicInfo extends React.Component {
   profilePictureSelect (e) {
     e.preventDefault();
 
-    let files;
+    const { showNotification } = this.props
+
+    let files, file;
     if (e.dataTransfer) {
       files = e.dataTransfer.files;
     } else if (e.target) {
       files = e.target.files;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.setState({
-        profilePictureSrc: reader.result
-      }, () => {
-        this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
-      });
-    };
-    reader.readAsDataURL(files[0]);
+
+    file = files[0]
+
+    if (!!file) {
+      if (file.type.split('/')[0] !== 'image') {
+        showNotification('Please choose an image file.')
+        return ;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        console.log(reader);
+        this.setState({
+          profilePictureSrc: reader.result
+        }, () => {
+          this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
+        });
+      };
+
+      reader.onerror = () => {
+        showNotification('Read your image file failed, please try again later.')
+      }
+
+      reader.readAsDataURL(file);
+    }
 
   }
 
@@ -677,6 +696,12 @@ class BasicInfo extends React.Component {
     });
   }
 
+  clearSrc() {
+    this.setState({
+      profilePictureSrc: ''
+    });
+  }
+
   render () {
 
     const styles = {
@@ -866,7 +891,7 @@ class BasicInfo extends React.Component {
                 <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect.bind(this)}/>
               </label>
             </a>
-            <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
+            <AvatarUpload ref="avatarUpload" clearSrc={this.clearSrc.bind(this)} src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)} />
           </div>
         </div>
         <div className="residence-timezone clearfix">
@@ -886,14 +911,14 @@ class BasicInfo extends React.Component {
         </div>
         <div className="education-background">
           <div className="title">
-            <h1 className="primary-color">Education Background</h1>
+            <h1 className="primary-color">Education background</h1>
             <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-graduation-cap"></i>} primary={true} onClick={this.handleEduDialogOpen.bind(this)}></RaisedButton>
-            <span className="education-background-tooltip" style={{display: this.state.eduList ? "inline-block" : "none"}}>Click The Item To Edit!</span>
-            <Dialog title="Add Your Education Experience" actions={addEduExpActions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleEduDialogClose.bind(this)}>
+            <span className="education-background-tooltip" style={{display: this.state.eduList ? "inline-block" : "none"}}>Click the item to edit!</span>
+            <Dialog title="Add your education experience" actions={addEduExpActions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleEduDialogClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
-                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
-                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="t-edu-end-year" floatingLabelText="End Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year" floatingLabelText="Start year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="t-edu-end-year" floatingLabelText="End year"></TextField>
                 </div>
                 <TextField floatingLabelStyle={labelStyle} id="t-edu-school" type="text" floatingLabelText="School"></TextField>
                 <br/>
@@ -902,7 +927,7 @@ class BasicInfo extends React.Component {
                 <TextField floatingLabelStyle={labelStyle} id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
               </div>
             </Dialog>
-            <Dialog title="Modify Your Education Experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
+            <Dialog title="Modify your education experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
                   <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
@@ -919,8 +944,8 @@ class BasicInfo extends React.Component {
           <Table style={eduTableStyle} onRowSelection={this.showFullDetail.bind(this)}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
-                <TableHeaderColumn>Start Time</TableHeaderColumn>
-                <TableHeaderColumn>End Time</TableHeaderColumn>
+                <TableHeaderColumn>Start time</TableHeaderColumn>
+                <TableHeaderColumn>End time</TableHeaderColumn>
                 <TableHeaderColumn>School</TableHeaderColumn>
                 <TableHeaderColumn>Major</TableHeaderColumn>
                 <TableHeaderColumn>Degree</TableHeaderColumn>
@@ -961,7 +986,7 @@ class BasicInfo extends React.Component {
           </div>
         </div>
         <div className="select-years">
-          <span className="title">Teaching Experience</span>
+          <span className="title">Teaching experience</span>
           <SelectField
             style={{verticalAlign: "middle"}}
             id="teach-experience"
@@ -977,10 +1002,10 @@ class BasicInfo extends React.Component {
 
         <div className="work-background">
           <div className="title">
-            <h1 className="primary-color">Working Experience</h1>
+            <h1 className="primary-color">Working experience</h1>
             <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-briefcase"></i>} primary={true} onClick={this.handleWorkDialogOpen.bind(this)}></RaisedButton>
-            <span className="education-background-tooltip" style={{display: this.state.workExpList ? "inline-block" : "none"}}>Click The Item To Edit!</span>
-            <Dialog title="Add Your Working Experience" actions={addWorkExpActions} modal={false} open={this.state.workExpDialogOpen} onRequestClose={this.handleWorkDialogClose.bind(this)}>
+            <span className="education-background-tooltip" style={{display: this.state.workExpList ? "inline-block" : "none"}}>Click the item to edit!</span>
+            <Dialog title="Add your working experience" actions={addWorkExpActions} modal={false} open={this.state.workExpDialogOpen} onRequestClose={this.handleWorkDialogClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
                   <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="work-start-year" floatingLabelText="Start Year"></TextField>
@@ -991,11 +1016,11 @@ class BasicInfo extends React.Component {
                 <TextField floatingLabelStyle={labelStyle} id="position" type="text" floatingLabelText="Position"></TextField>
               </div>
             </Dialog>
-            <Dialog title="Modify Your Working Experience" actions={updateWorkActions} modal={false} open={this.state.workExpSelectedDialogOpen} onRequestClose={this.handleWorkUpdateDiaClose.bind(this)}>
+            <Dialog title="Modify your working experience" actions={updateWorkActions} modal={false} open={this.state.workExpSelectedDialogOpen} onRequestClose={this.handleWorkUpdateDiaClose.bind(this)}>
               <div className="t-edu-form-wrap">
                 <div className="clearfix">
-                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="work-start-year-m" defaultValue={this.state.workExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
-                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="work-end-year-m" defaultValue={this.state.workExpSelected.timeto} floatingLabelText="End Year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="work-start-year-m" defaultValue={this.state.workExpSelected.timefrom} floatingLabelText="Start year"></TextField>
+                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="work-end-year-m" defaultValue={this.state.workExpSelected.timeto} floatingLabelText="End year"></TextField>
                 </div>
                 <TextField floatingLabelStyle={labelStyle} id="company-m" defaultValue={this.state.workExpSelected.company} type="text" floatingLabelText="Company"></TextField>
                 <br/>
@@ -1006,8 +1031,8 @@ class BasicInfo extends React.Component {
           <Table style={workTableStyle} onRowSelection={this.showWorkFullDetail.bind(this)}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
-                <TableHeaderColumn>Start Time</TableHeaderColumn>
-                <TableHeaderColumn>End Time</TableHeaderColumn>
+                <TableHeaderColumn>Start time</TableHeaderColumn>
+                <TableHeaderColumn>End time</TableHeaderColumn>
                 <TableHeaderColumn>Company</TableHeaderColumn>
                 <TableHeaderColumn>Position</TableHeaderColumn>
               </TableRow>

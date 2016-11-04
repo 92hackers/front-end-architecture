@@ -28,6 +28,8 @@ class AvatarUploadClass extends React.Component {
     this.setState({
       open: false
     });
+
+    this.props.clearSrc();
   }
 
   uploadToServer (e) {
@@ -37,7 +39,7 @@ class AvatarUploadClass extends React.Component {
     if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
       return;
     } else {
-      let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL("image/jpeg", 0.5);
+      let cropResult = this.refs.cropper.getCroppedCanvas().toDataURL("image/jpeg");
 
       this.setState({
         uploadStatus: "uploading"
@@ -58,7 +60,8 @@ class AvatarUploadClass extends React.Component {
             self.setState({
               uploadStatus: "uploadSuccess"
             });
-            self.props.setAvatarUrl(resp.data.imgurl);
+            const imgUrl = `${resp.data.imgurl}?timestamp=${Date.now()}`
+            self.props.setAvatarUrl(imgUrl);
           } else {
             self.setState({
               uploadStatus: "uploadFail"
@@ -83,7 +86,7 @@ class AvatarUploadClass extends React.Component {
 
     switch (this.state.uploadStatus) {
       case "uploading":
-        label = "Uploading";
+        label = "Uploading...";
         uploading = true;
         break;
       case "uploadSuccess":
@@ -99,7 +102,14 @@ class AvatarUploadClass extends React.Component {
         break;
     }
 
+    const cropCaptionStyle = {
+      padding: '16px',
+      textAlign: 'left',
+      color: '#999',
+    }
+
     const actions = [
+      <p style={cropCaptionStyle} className="crop-caption">This is what your students will see.</p>,
       <RaisedButton
         className="dialog-button"
         label="Cancel"
@@ -123,24 +133,29 @@ class AvatarUploadClass extends React.Component {
 
     return (
       <div className="container">
-        <Dialog title="Crop your picture" actions={actions} modal={false} open={this.state.open} onRequestClose={this.handleClose.bind(this)}>
+        <Dialog
+          title="Crop your picture"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose.bind(this)}
+        >
           <div id="crop-picture">
             <Cropper
               ref='cropper'
               src={this.props.src}
-              style={{height: 400, width: '100%'}}
-              movable={false}
+              dragmode='move'
+              viewMode={3}
               scalable={false}
-              rotatable={false}
               zoomable={false}
-              viewMode={2}
+              zoomOnTouch={false}
+              zoomOnWheel={false}
+              autoCropArea={0.3}
               aspectRatio={1/1}
-              cropBoxData={cropboxData}
-              cropBoxResizable={false}
-              minCropBoxWidth={256}
-              minCropBoxHeight={256}
-              toggleDragModeOnDblclick={false}
-              crop={this._crop} />
+              minCropBoxWidth={128}
+              minCropBoxHeight={128}
+              crop={this._crop}
+            />
           </div>
         </Dialog>
       </div>
