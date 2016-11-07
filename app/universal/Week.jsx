@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import {notificationActions} from '../actions';
 
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -193,9 +194,9 @@ class WeekComp extends React.Component {
     });
     nprogress.start();
     this.cleanData();
-    this.renderMetaData(new Date(prevWeek));
+    this.renderMetaData(prevWeek);
     this.props.weeklyTimetableReq(prevWeek);
-    if (new Date(prevWeek) < new Date()) {
+    if (moment(prevWeek) < moment()) {
       this.setState({
         historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
       });
@@ -220,9 +221,9 @@ class WeekComp extends React.Component {
     });
     nprogress.start();
     this.cleanData();
-    this.renderMetaData(new Date(nextWeek));
+    this.renderMetaData(nextWeek);
     this.props.weeklyTimetableReq(nextWeek);
-    if (new Date(nextWeek) > new Date()) {
+    if (moment(nextWeek) > moment()) {
       this.setState({
         historyData: false
       });
@@ -233,7 +234,7 @@ class WeekComp extends React.Component {
 
   renderMetaData (date) {
 
-    var today = date || new Date();     // default today.
+    var today = moment(date).toDate() || moment().toDate();     // default today.
 
     const months = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
@@ -570,7 +571,7 @@ class WeekComp extends React.Component {
       nprogress.done();
 
       if (!this.state.prevWeek && !this.state.nextWeek) {
-        this.renderMetaData();
+        this.renderMetaData(nextProps.weeklyTimetable.weekFrom);
       }
 
       var weeklyTimetable = nextProps.weeklyTimetable.timetable || [];
@@ -588,7 +589,7 @@ class WeekComp extends React.Component {
         this.renderData(existedTemplate);
         existedTemplate.forEach((item, index) => {
           var date = self.weekDays[parseInt(item.weekday)];
-          if (new Date(date + " " + item.beginTime) > new Date()) {
+          if (moment(date + " " + item.beginTime) > moment()) {
             self.lessonsAdded.push({
               lessonDate: date,
               lessonTime: item.beginTime,
@@ -627,7 +628,7 @@ class WeekComp extends React.Component {
 
     var weeklyData = this.props.weeklyTimetable;
 
-    this.renderMetaData(new Date(weeklyData.weekFrom));
+    this.renderMetaData(weeklyData.weekFrom);
 
     this.setState({
       prevWeek: weeklyData.pervWeek,
@@ -677,7 +678,7 @@ class WeekComp extends React.Component {
 
     existedTemplate.forEach((item, index) => {
       var date = self.weekDays[parseInt(item.weekday)];
-      if (new Date(date + " " + item.beginTime) > new Date()) {
+      if (moment(date + " " + item.beginTime) > moment()) {
         self.lessonsAdded.push({
           lessonDate: date,
           lessonTime: item.beginTime,
