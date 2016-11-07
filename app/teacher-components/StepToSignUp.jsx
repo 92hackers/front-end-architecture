@@ -332,7 +332,6 @@ class BasicInfo extends React.Component {
   }
 
   profilePictureSelect (e) {
-    e.preventDefault();
 
     const { showNotification } = this.props
 
@@ -354,11 +353,13 @@ class BasicInfo extends React.Component {
       const reader = new FileReader();
 
       reader.onload = () => {
-        console.log(reader);
         this.setState({
           profilePictureSrc: reader.result
         }, () => {
-          this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
+          var timeId = setTimeout(() => {
+            this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
+            clearTimeout(timeId)
+          }, 200)
         });
       };
 
@@ -697,6 +698,19 @@ class BasicInfo extends React.Component {
   }
 
   clearSrc() {
+    const fileInputLabel = document.querySelector('label[for=upload-profile-picture]')
+    const fileInput = fileInputLabel.children[0]
+
+    const clonedFileInput = fileInput.cloneNode()
+
+    fileInputLabel.removeChild(fileInput)
+
+    fileInputLabel.appendChild(clonedFileInput)
+
+    const newFileInput = document.querySelector('#upload-profile-picture')
+
+    newFileInput.addEventListener('change', this.profilePictureSelect.bind(this))
+
     this.setState({
       profilePictureSrc: ''
     });
@@ -884,11 +898,11 @@ class BasicInfo extends React.Component {
               <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
             </div>
             <br/>
-            <a href="#" className="btn button-change-avatar">
+            <a href="javascript:;" className="btn button-change-avatar">
               <i className="fa fa-camera" style={{fontSize: 20, color: "#fff"}}></i>
               <label htmlFor="upload-profile-picture">
                 Upload profile picture
-                <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect.bind(this)}/>
+                <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect.bind(this)} />
               </label>
             </a>
             <AvatarUpload ref="avatarUpload" clearSrc={this.clearSrc.bind(this)} src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)} />
@@ -1196,8 +1210,8 @@ class BasicInfo extends React.Component {
       notification = "Please select your nationality.";
     } else if (!gender.length) {
       notification = "Please select your gender.";
-    } else if (!avatar.length) {
-      notification = "Please upload your profile picture.";
+    // } else if (!avatar.length) {                   //  头像非必填。
+    //   notification = "Please upload your profile picture.";
     } else if (!country) {
       notification = "Please select your country of residence.";
     } else if (!timezone) {

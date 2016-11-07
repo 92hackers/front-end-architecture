@@ -126,11 +126,6 @@ class AvatarUploadClass extends React.Component {
       />
     ];
 
-    const cropboxData = {
-      width: 256,
-      height: 256
-    };
-
     return (
       <div className="container">
         <Dialog
@@ -139,6 +134,11 @@ class AvatarUploadClass extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose.bind(this)}
+          contentStyle={{width: 720, height: 440, transform: 'initial'}}
+          overlayStyle={{paddingTop: 70}}
+          bodyStyle={{transform: 'intial'}}
+          repositionOnUpdate
+          autoDetectWindowHeight
         >
           <div id="crop-picture">
             <Cropper
