@@ -1519,6 +1519,7 @@ class ScheduleInterview extends React.Component {
         var data = resp.data;
         if (!data.timetable.length) {
           showNotification('The interview time have all been booking, please try again later.')
+          return ;
         }
         var interviewTime = data["timetable"].map((date, index) => {
           return {
