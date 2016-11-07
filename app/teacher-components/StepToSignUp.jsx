@@ -268,11 +268,11 @@ class BasicInfo extends React.Component {
           cityValue: null
         });
       } else {
-        console.log("error fetching");
+        alert('error fetching data.')
       }
     },
     (err) => {
-      console.log(err);
+      alert('network is busy, try again later.')
     }
   );
 
@@ -303,11 +303,11 @@ class BasicInfo extends React.Component {
           cityId: ""
         });
       } else {
-        console.log("error fetching");
+        alert("Error fetching.")
       }
     },
     (err) => {
-      console.log(err);
+      alert('Network is busy, please try again later.')
     }
   );
 
@@ -1097,11 +1097,11 @@ class BasicInfo extends React.Component {
             nationalityList: nationalityList
           });
         } else {
-          console.log("error fetching");
+          alert("Error fetching data.")
         }
       },
       (err) => {
-        console.log(err);
+        alert('Network is busy, please try again later.')
       }
     );
 
@@ -1120,11 +1120,11 @@ class BasicInfo extends React.Component {
             countryList: countryList
           });
         } else {
-          console.log("error fetching");
+          alert("Error fetching.")
         }
       },
       (err) => {
-        console.log(err);
+        alert("Network is Busy, try again later.")
       }
     );
 
@@ -1167,11 +1167,11 @@ class BasicInfo extends React.Component {
           }
 
         } else {
-          console.log("error fetching");
+          alert("Error fetching.")
         }
       },
       (err) => {
-        console.log(err);
+        alert("Network is busy.")
       }
     );
 
@@ -1509,6 +1509,8 @@ class ScheduleInterview extends React.Component {
 
     var token = self.props.token;
 
+    const { showNotification } = this.props
+
     this.interviewDateTimeRequest = api.TInterview("",
     { "Authorization": token },
     TimezoneId,
@@ -1551,11 +1553,11 @@ class ScheduleInterview extends React.Component {
           availableTime: time[0] || []
         });
       } else {
-        console.log("fetch interview time data error.");
+        showNotification('Fetching interview time data error, please try again later.')
       }
     },
     (err) => {
-      console.log("interview request error.");
+      showNotification('Network is busy, please try again later.')
     }
   )
 
