@@ -213,6 +213,10 @@ class SiteHeaderComp extends React.Component {
                   <Link to="teacher-online-test">Online Test</Link>
                   <span className="nav-border-line"></span>
                 </li>
+                <li className="header-item">
+                  <Link to="teacher-homepage" onClick={this.handleHomepageClick.bind(this)}>Homepage</Link>
+                  <span className="nav-border-line"></span>
+                </li>
                 {settingsMenu}
                 <SignOutButton></SignOutButton>
               </ul>
