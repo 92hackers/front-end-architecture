@@ -38,7 +38,7 @@ class IndexHeaderComp extends React.Component {
           } else {
             dynamicContent = (
               <ul className="right">
-                <li><Link to="/teacher-homepage" className="primary-button">My Homepage</Link></li>
+                <li style={{marginRight: 10}}><Link to="/teacher-homepage" className="primary-button">My Homepage</Link></li>
                 <li><Link to="/teacher-online-test" className="primary-button">Online Test</Link></li>
                 <SignOutButton className="primary-button" style={{lineHeight: "39px", marginTop: "10px"}}></SignOutButton>
               </ul>

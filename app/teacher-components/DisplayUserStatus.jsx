@@ -1,11 +1,18 @@
 import React from 'react';
 import api from '../network/api';
+import { browserHistory } from 'react-router'
+import RaisedButton from 'material-ui/RaisedButton'
 import SiteLoading from '../containers/SiteLoading';
 
 class DisplayUserStatusComp extends React.Component {
 
   constructor (props) {
     super (props);
+  }
+
+  handleReschedule(e) {
+    e.preventDefault()
+    browserHistory.replace('/step-to-sign-up?reschedule=true')
   }
 
   getOutput (profile) {
@@ -20,6 +27,7 @@ class DisplayUserStatusComp extends React.Component {
             <small><span>{profile["timezone_name"]}</span></small>
             <p>{profile.interview}</p>
           </div>
+          <div className="reschedule">If you would like to propose a different time, please click <RaisedButton style={{marginLeft: 10}} primary label='Reschedule' onClick={this.handleReschedule.bind(this)}/></div>
         </div>
       );
         break;
