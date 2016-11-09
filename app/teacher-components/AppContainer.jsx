@@ -19,7 +19,7 @@ class AppContainer extends React.Component {
     super(props);
   }
 
-  routerByStatus (status, examined) {
+  routerByStatus (status, examined, rescheduleInterview) {
     switch (parseInt(status)) {
       case 1:
         let url = "/active-email?user_name=" + "s@x^nil*@(<)";
@@ -31,7 +31,9 @@ class AppContainer extends React.Component {
       case 3:
       case 4:
       case 5:
-        if (!!examined) {               // if teacher pass the online test, route to teacher homepage, or to do the test.
+        if (rescheduleInterview) {
+          browserHistory.replace('/step-to-sign-up?reschedule=true')
+        } else if (!!examined) {               // if teacher pass the online test, route to teacher homepage, or to do the test.
           browserHistory.push("/teacher-homepage");
         } else {
           browserHistory.push("/teacher-online-test");
@@ -48,19 +50,20 @@ class AppContainer extends React.Component {
     }
   }
 
-  router (path, status, examined) {
+  router (path, status, examined, rescheduleInterview) {
     let requestRoute = path;
     var routersArray = ["","sign-up", "sign-in", "teacher-homepage", "teacher-online-test",
     "input-new-email", "forget-password", "step-to-sign-up", "edit-profile", "complete-payee-info"];
 
     if (routersArray.indexOf(requestRoute) !== -1) {
-      this.routerByStatus(status, examined);
+      this.routerByStatus(status, examined, rescheduleInterview);
     }
   }
 
   auth (token) {
     const self = this;
     const requestRoute = this.props.location.pathname.replace(/\//, "");
+    const queryParam = this.props.location.query.reschedule;
 
     if (!!token) {
 
@@ -74,7 +77,7 @@ class AppContainer extends React.Component {
           if (resp.success) {
             const profile = resp.data;
             self.props.getProfile(profile);
-            self.router(requestRoute, profile.status, profile.examined);
+            self.router(requestRoute, profile.status, profile.examined, queryParam === 'true');
             self.props.decreaseCounter();
           }
         },
@@ -92,7 +95,7 @@ class AppContainer extends React.Component {
         // 不需要 token 的路径有: 1，reset-password,  2, activate-your-account, 这里留待以后扩充。
 
         let tokenlessRoutes = ["reset-password", "activate-your-account"];
-        if (!tokenlessRoutes.includes(requestRoute)) {
+        if (!(tokenlessRoutes.includes(requestRoute))) {
           browserHistory.push("/sign-in");
         }
       } else {

@@ -1518,7 +1518,7 @@ class ScheduleInterview extends React.Component {
       if (resp.success) {
         var data = resp.data;
         if (!data.timetable.length) {
-          showNotification('The interview time have all been booking, please try again later.')
+          showNotification('All interview times are currently booked. Please contact support: teacher@weteach.info.')
           return ;
         }
         var interviewTime = data["timetable"].map((date, index) => {
@@ -1557,7 +1557,7 @@ class ScheduleInterview extends React.Component {
           availableTime: time[0] || []
         });
       } else {
-        showNotification('Fetching interview time data error, please try again later.')
+        showNotification('Fetching interview time data error. Please contact supprt: teacher@weteach.info.')
       }
     },
     (err) => {
@@ -1604,8 +1604,9 @@ class ScheduleInterview extends React.Component {
     )
   }
 
-  componentDidMount () {
-    this.fetchInterviewData(this.props.timezoneId);
+  componentDidMount() {
+    const timezoneId = this.props.timezoneId || this.props.profile.timezone
+    if (!!timezoneId) this.fetchInterviewData(timezoneId);
   }
 
   handleSubmit () {
@@ -1665,8 +1666,9 @@ class StepToSignUpComp extends React.Component {
 
   constructor (props) {
     super (props);
+    const queryParam = this.props.location.query.reschedule;
     this.state = {
-      stepIndex: 0,
+      stepIndex: queryParam === 'true' ? 2 : 0,       //TODO:  根据是否有 ?reschedule=true 判断是为 0 还是 2.
       timezoneId: "",
       confirmDialogueOpen: false,
       isFinished: false,
@@ -1705,11 +1707,25 @@ class StepToSignUpComp extends React.Component {
 
   getContent (stepIndex) {
 
-    const profile = this.props.profile;
+    const { profile } = this.props
 
     switch (stepIndex) {
       case 0:
-        return <BasicInfo teachExpValue={experience} stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} showNotification={this.props.showNotification} profile={profile} setTimezoneId={this.setTimezoneId.bind(this)} ref="basicInfo" token={this.props.token}></BasicInfo>;
+        return (
+          <BasicInfo
+            teachExpValue={experience}
+            stepToNext={this.handleNext.bind(this)}
+            displayLoader={this.displayLoader.bind(this)}
+            displaySuccess={this.displaySuccess.bind(this)}
+            displayError={this.displayError.bind(this)}
+            showNotification={this.props.showNotification}
+            networkError={this.props.networkError}
+            profile={profile}
+            setTimezoneId={this.setTimezoneId.bind(this)}
+            ref="basicInfo"
+            token={this.props.token}
+          />
+        )
       case 1:
         var experience = "";
 
@@ -1727,9 +1743,33 @@ class StepToSignUpComp extends React.Component {
             experience = "";
         }
 
-        return <TeachingExperience stepToNext={this.handleNext.bind(this)} displayLoader={this.displayLoader.bind(this)} displaySuccess={this.displaySuccess.bind(this)} displayError={this.displayError.bind(this)} parent={this} showNotification={this.props.showNotification} profile={profile} ref="teachingExperience" token={this.props.token}></TeachingExperience>;
+        return (
+         <TeachingExperience
+           stepToNext={this.handleNext.bind(this)}
+           displayLoader={this.displayLoader.bind(this)}
+           displaySuccess={this.displaySuccess.bind(this)}
+           displayError={this.displayError.bind(this)}
+           parent={this}
+           showNotification={this.props.showNotification}
+           networkError={this.props.networkError}
+           profile={profile}
+           ref="teachingExperience"
+           token={this.props.token}
+         />
+        )
       case 2:
-        return <ScheduleInterview getProfile={this.props.getProfile} showNotification={this.props.showNotification} timezoneId={this.state.timezoneId} displaySuccessWorlds={this.displaySuccessWorlds.bind(this)} ref="scheduleInterview" token={this.props.token}></ScheduleInterview>;
+        return (
+         <ScheduleInterview
+           getProfile={this.props.getProfile}
+           profile={profile}
+           showNotification={this.props.showNotification}
+           networkError={this.props.networkError}
+           timezoneId={this.state.timezoneId}
+           displaySuccessWorlds={this.displaySuccessWorlds.bind(this)}
+           ref="scheduleInterview"
+           token={this.props.token}
+         />
+        )
       default:
         return (<h1>some thing wrong.</h1>);
     }

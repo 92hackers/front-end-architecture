@@ -14,7 +14,7 @@ export default function notification(state = initState, action) {
       return {...state, isShow: false, message: ""};
 
     case notificationActions.NETWORK_ERROR:
-      return {...state, isShow: true, message: "Network error. Please try again later or contact support."};
+      return {...state, isShow: true, message: "Network error. Please try again later or contact support: teacher@weteach.info."};
 
     default:
       return state;
