@@ -3,6 +3,7 @@ import api from '../network/api';
 import { browserHistory } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import SiteLoading from '../containers/SiteLoading';
+import {blue500} from 'material-ui/styles/colors';
 
 class DisplayUserStatusComp extends React.Component {
 
@@ -18,22 +19,28 @@ class DisplayUserStatusComp extends React.Component {
   getOutput (profile) {
     var status = profile.status;
 
+    console.log(status);
     switch(status) {
-      case 3 :
-      return (
-        <div className="show-interview-time">
-          <p>Your interview is scheduled for: </p>
-          <div className="content">
-            <small><span>{profile["timezone_name"]}</span></small>
-            <p>{profile.interview}</p>
+      case 3:
+      case 4:
+        return (
+          <div className="show-interview-time">
+            <p>Your interview is scheduled for: </p>
+            <div className="content">
+              <small><span>{profile["timezone_name"]}</span></small>
+              <p>{profile.interview}</p>
+            </div>
+            <div className="reschedule">If you would like to propose a different time, please click <RaisedButton style={{marginLeft: 10}} primary label='Reschedule' onClick={this.handleReschedule.bind(this)}/></div>
           </div>
-          <div className="reschedule">If you would like to propose a different time, please click <RaisedButton style={{marginLeft: 10}} primary label='Reschedule' onClick={this.handleReschedule.bind(this)}/></div>
-        </div>
-      );
-        break;
-      case 4 :
-        return (<div><p>You have passed the interview. Please wait for your final approval!</p></div>);
-        break;
+        );
+      case 5:
+        return (
+          <div>
+            <p>You have passed your interview.</p>
+            <p>We look forward to seeing you at the New Teacher Orientation.</p>
+            <p>Please <a style={{color: blue500, textDecoration: 'underline'}} href="https://docs.google.com/forms/d/e/1FAIpQLSft67hXHtMU5mh5EyuY9lT_gynzLb3uotwoUciTyBkWIYYDuw/viewform" target="_blank">RSVP</a>.</p>
+          </div>
+        );
       case 8 :
         return (<div><p>Thanks again for joining us for the interview. We appreciate your time.</p><p>The field was very competitive and, unfortunately, we will not be able to match you with students at this time.</p></div>);
         break;
