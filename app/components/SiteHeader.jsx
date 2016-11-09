@@ -194,6 +194,7 @@ class SiteHeaderComp extends React.Component {
        switch (userStatus) {
          case 3:
          case 4:
+         case 5:
           if (!!examined) {
             dynamicComponent = (
               <ul className="right">

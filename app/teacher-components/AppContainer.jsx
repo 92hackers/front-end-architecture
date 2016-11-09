@@ -20,6 +20,7 @@ class AppContainer extends React.Component {
   }
 
   routerByStatus (status, examined, rescheduleInterview) {
+    let jumped = false;
     switch (parseInt(status)) {
       case 1:
         let url = "/active-email?user_name=" + "s@x^nil*@(<)";
@@ -30,13 +31,17 @@ class AppContainer extends React.Component {
         break;
       case 3:
       case 4:
-      case 5:
         if (rescheduleInterview) {
+          jumped = true
           browserHistory.replace('/step-to-sign-up?reschedule=true')
-        } else if (!!examined) {               // if teacher pass the online test, route to teacher homepage, or to do the test.
-          browserHistory.push("/teacher-homepage");
-        } else {
-          browserHistory.push("/teacher-online-test");
+        }
+      case 5:
+        if (!jumped) {
+          if (!!examined) {               // if teacher pass the online test, route to teacher homepage, or to do the test.
+            browserHistory.push("/teacher-homepage");
+          } else {
+            browserHistory.push("/teacher-online-test");
+          }
         }
         break;
       case 8:

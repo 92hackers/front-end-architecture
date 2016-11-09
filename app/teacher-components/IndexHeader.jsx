@@ -27,6 +27,7 @@ class IndexHeaderComp extends React.Component {
           break;
         case 3:
         case 4:
+        case 5:
           if (!!examined) {
             dynamicContent = (
               <ul className="right">
