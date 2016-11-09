@@ -3,6 +3,7 @@ import { userActions } from '../actions';
 let initState = {
   token: '',
   loggedIn: false,
+  signOutFlag: false,
   profile: {
     email: "",
     status: 0,
@@ -49,7 +50,7 @@ export default function auth(state = initState, action) {
 
     case userActions.SIGN_OUT:
       localStorage.removeItem('user_token');
-      return {token: '', loggedIn: false, profile: {}};
+      return {token: '', loggedIn: false, profile: {}, signOutFlag: true};
 
     default:
       return state;

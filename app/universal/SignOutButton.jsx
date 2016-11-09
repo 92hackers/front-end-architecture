@@ -20,11 +20,10 @@ class SignOutButtonClass extends React.Component {
     )
   }
 
-  handleSignOut (e) {
+  handleSignOut(e) {
     e.preventDefault();
     this.props.dispatch(userActions.signOut());
     this.props.dispatch(dashboardActions.dashboardDisplay(""));
-    browserHistory.push("/");
   }
 
 }

@@ -3,9 +3,11 @@ import AppContainer from '../teacher-components/AppContainer';
 import { notificationActions, userActions, pendingCounterActions } from '../actions';
 
 const mapStateToProps = (state) => {
+  const { token, signOutFlag } = state.user
   return {
-    token: state.user.token,
-    pendingCounter: state.pendingCounter
+    token,
+    pendingCounter: state.pendingCounter,
+    signOutFlag,
   }
 }
 

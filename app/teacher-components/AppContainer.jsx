@@ -60,7 +60,7 @@ class AppContainer extends React.Component {
     }
   }
 
-  auth (token) {
+  auth (token, signOutFlag) {
     const self = this;
     const requestRoute = this.props.location.pathname.replace(/\//, "");
     const queryParam = this.props.location.query.reschedule;
@@ -91,12 +91,17 @@ class AppContainer extends React.Component {
 
     } else {
       if (!!requestRoute.length) {
+        // 不需要 token 的路径有: 1，reset-password,  2, activate-your-account, 3, sign-up, 4, sign-in 这里留待以后扩充。
+        const tokenlessRoutes = ["reset-password", "activate-your-account", 'sign-up', ''];
 
-        // 不需要 token 的路径有: 1，reset-password,  2, activate-your-account, 这里留待以后扩充。
-
-        let tokenlessRoutes = ["reset-password", "activate-your-account"];
-        if (!(tokenlessRoutes.includes(requestRoute))) {
-          browserHistory.push("/sign-in");
+        if (signOutFlag) {
+          browserHistory.replace('/')
+        } else if (!(tokenlessRoutes.includes(requestRoute))) {
+          if (queryParam === 'true') {
+            browserHistory.push('/sign-in?reschedule=true')
+          } else {
+            browserHistory.push("/sign-in");
+          }
         }
       } else {
         browserHistory.push("/");
@@ -105,13 +110,14 @@ class AppContainer extends React.Component {
   }
 
   componentDidMount () {
-    this.auth(this.props.token);
+    const { token, signOutFlag} = this.props
+    this.auth(token, signOutFlag);
   }
 
   componentWillReceiveProps (nextProps) {
-    var token = nextProps.token;
-    if (token !== this.props.token) {
-      this.auth(token);
+    const { token, signOutFlag } = nextProps
+    if (token !== this.props.token || signOutFlag !== this.props.signOutFlag) {
+      this.auth(token, signOutFlag);
     }
   }
 
