@@ -1534,19 +1534,10 @@ class ScheduleInterview extends React.Component {
         });
         var date = [];
         var time = [];
-        var timeToIdMapping = [];
+        var timeToIdMapping = data.timetable;
         for (let i = 0; i < interviewTime.length; i++) {
           date.push(interviewTime[i].date);
           time.push(interviewTime[i].timeList);
-        }
-
-        for (let j = 0; j < time.length; j++) {
-          for (let k = 0; k < time[j].length; k++) {
-            timeToIdMapping.push({
-              id: time[j][k].id,
-              period: time[j][k].period
-            });
-          }
         }
 
         self.setState({
@@ -1577,7 +1568,7 @@ class ScheduleInterview extends React.Component {
               <div className="input-box">
                 <div className="input-item">
                   <span className="interview-icon"><i className="fa fa-calendar"></i></span>
-                  <SelectField style={{verticalAlign: "middle"}} value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
+                  <SelectField style={{verticalAlign: "middle"}} id="interview-date" value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
                     {
                       this.state.availableDate.map((item, index) => {
                         return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
@@ -1611,9 +1602,12 @@ class ScheduleInterview extends React.Component {
 
   handleSubmit () {
     var self = this;
-    var interviewPeriod = document.getElementById("interview-time").innerText.trim();
+    const interviewDate = document.getElementById('interview-date').innerText.trim();
+    const interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
-    if (!interviewPeriod) {
+    if (!interviewDate) {
+      this.props.showNotification('Please select an interview date.')
+    } else if (!interviewPeriod) {
       self.props.showNotification("Please select an interview time.");
       return;
     }
@@ -1622,8 +1616,16 @@ class ScheduleInterview extends React.Component {
     var timeToIdMapping = this.state.timeToIdMapping;
 
     for (let i = 0; i < timeToIdMapping.length; i++) {
-      if (timeToIdMapping[i].period === interviewPeriod) {
-        interviewId = timeToIdMapping[i].id;
+      let tmp1 = timeToIdMapping[i]
+      if (tmp1.inter_date === interviewDate) {
+        for (let j = 0; j < tmp1.inter_time.length; j++) {
+          let tmp2 = tmp1.inter_time[j]
+          if (tmp2.period === interviewPeriod) {
+            interviewId = tmp2.id;
+            break;
+          }
+        }
+        break;
       }
     }
 
