@@ -308,6 +308,16 @@ class WeekComp extends React.Component {
       color: "#333"
     };
 
+    const tableCellStyles = {
+      overflow: 'visible',
+      whiteSpace: 'pre-line',
+      textOverflow: 'inherit',
+      wordWrap: 'break-word',
+      // position: 'relative',
+      paddingLeft: 20,
+      paddingRight: 0,
+    }
+
     const currentWeekDays = this.state.currentWeekDays;
 
     var month = this.state.month || "";
@@ -353,13 +363,27 @@ class WeekComp extends React.Component {
                 toRenderTableColums.map((item, index) => {
                   return (
                     <TableRow key={index} hoverable={true}>
-                      <TableRowColumn className="cell" data-x="0" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="1" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="2" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="3" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="4" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="5" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
-                      <TableRowColumn className="cell" data-x="6" data-y={index} onMouseEnter={this.cellHover.bind(this)} onMouseLeave={this.cellLeave}><span className="unselected">Unavailable</span><i className="fa fa-star" /><span className="student-name"></span></TableRowColumn>
+                      {
+                        [0,1,2,3,4,5,6].map((innerItem, innerKey) => {
+                          return (
+                            <TableRowColumn
+                              key={innerKey}
+                              style={tableCellStyles}
+                              className="cell"
+                              data-x={innerItem}
+                              data-y={index}
+                              onMouseEnter={this.cellHover.bind(this)}
+                              onMouseLeave={this.cellLeave}
+                            >
+                              <span className="unselected">Unavailable</span>
+                              <span className="star-wrap">
+                                <i className="fa fa-star" />
+                              </span>
+                              <span className="student-name"></span>
+                            </TableRowColumn>
+                          )
+                        })
+                      }
                     </TableRow>
                   )
                 })
@@ -398,7 +422,7 @@ class WeekComp extends React.Component {
       if (!data.clicked) {
         ele.style.backgroundColor = "#ecf0f1";
       }
-    } else if (!data.status) {
+    } else if (!data.status && ele.children[0]) {
       ele.children[0].style.display = "block";
     }
 
