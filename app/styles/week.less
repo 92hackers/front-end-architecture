@@ -56,22 +56,43 @@
         border: 1px solid #ddd;
         height: 50px !important;
         cursor: pointer;
+
         .unselected {
           display: none;
           color: #999;
+          text-align: center;
         }
+
         .star-wrap {
-          position: relative;
+          display: none;
+          width: 20px;
+          height: 100%;
+          float: left;
+          text-align: center;
+
           .fa-star {
-            position: absolute;
-            top: 14px;
-            left: -15px;
             color: #fff;
-            display: none;
+            line-height: 48px;
           }
         }
         .student-name {
-          width: 100%;
+          display: none;
+          float: left;
+          color: #fff;
+          padding: 5px 0;
+          width: 90px;
+
+          .no-wrap {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .en-name,
+          .cn-name {
+            .no-wrap()
+          }
+
         }
       }
     }

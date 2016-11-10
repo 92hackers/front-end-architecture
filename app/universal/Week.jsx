@@ -123,13 +123,24 @@ class WeekComp extends React.Component {
               elem.style.backgroundColor = backgroundColor;
 
               const star = elem.children[1];
+              const student = elem.children[2];
+
               if (parseInt(oneTpl.trialFlag) === 1) {
-                star.style.display = 'inline'
+                star.children[0].style.display = 'inline-block'
+              } else {
+                student.style.paddingLeft = '20px'
               }
 
-              const student = elem.children[2];
-              student.innerText = oneTpl.studentName;
-              student.style.color = "#ffffff";
+              const enName = student.children[0]
+              const cnName  = student.children[1]
+
+              const { studentName } = oneTpl
+              if (studentName.length > 0) {
+                student.style.display = 'inline-block'
+                const nameArr = studentName.split('(')
+                enName.innerText = nameArr[0]
+                cnName.innerText = `(${nameArr[1]}`
+              }
             } else {
               elem.style.backgroundColor = "#a8d8ff";
             }
@@ -155,7 +166,8 @@ class WeekComp extends React.Component {
         item.dataset.id = "";
         item.style.backgroundColor = "transparent";
         item.children[1].style.display = 'none';
-        item.children[2].innerText = '';
+        item.children[2].children[0].innerText = '';
+        item.children[2].children[1].innerText = '';
         count++;
       }
       if (count === elems.length) {
@@ -314,7 +326,7 @@ class WeekComp extends React.Component {
       textOverflow: 'inherit',
       wordWrap: 'break-word',
       // position: 'relative',
-      paddingLeft: 20,
+      paddingLeft: 0,
       paddingRight: 0,
     }
 
@@ -379,7 +391,10 @@ class WeekComp extends React.Component {
                               <span className="star-wrap">
                                 <i className="fa fa-star" />
                               </span>
-                              <span className="student-name"></span>
+                              <div className="student-name">
+                                <div className="en-name"></div>
+                                <div className="cn-name"></div>
+                              </div>
                             </TableRowColumn>
                           )
                         })
