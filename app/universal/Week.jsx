@@ -36,7 +36,6 @@ class WeekComp extends React.Component {
       prevWeek: "",
       nextWeek: "",
       reqParam: "",
-      timetableClicked: false
     };
 
     this.hoursRawData = [
@@ -193,8 +192,8 @@ class WeekComp extends React.Component {
   goPrevWeek () {
     var prevWeek = this.state.prevWeek;
 
-    if (this.state.timetableClicked) {
-      this.props.showNotification("Please enter and save your availability before moving on to the next week.");
+    if (this.lessonsAdded.length > 0 || this.lessonsDeleted.length > 0) {         //  判断 add, delete 数组 是否为空。
+      this.props.showNotification("Please enter and save your availability before moving on to the previous week.");
       return;
     }
 
@@ -213,14 +212,12 @@ class WeekComp extends React.Component {
         historyData: true         // 因为有历史数据为空的情况，未来数据为空的情况，只能设置这样一个标记来进行区分，历史数据为空的情况可以不予考虑,但是未来数据为空需要加载周模板。
       });
     }
-    this.highlightToday();
-
   }
 
   goNextWeek () {
     var nextWeek = this.state.nextWeek;
 
-    if (this.state.timetableClicked) {
+    if (this.lessonsAdded.length > 0 || this.lessonsDeleted.length > 0) {
       this.props.showNotification("Please enter and save your availability before moving on to the next week.");
       return;
     }
@@ -240,8 +237,6 @@ class WeekComp extends React.Component {
         historyData: false
       });
     }
-    this.highlightToday();
-
   }
 
   renderMetaData (date) {
@@ -286,6 +281,8 @@ class WeekComp extends React.Component {
 
     const month = months[today.getMonth()];
     const year = today.getFullYear();
+
+    this.highlightToday(this.weekDays)
 
     this.setState({
       year: year,
@@ -475,7 +472,7 @@ class WeekComp extends React.Component {
     var lessonsAdded = this.lessonsAdded;
     var lessonsDeleted = this.lessonsDeleted;
 
-    if (!lessonsAdded.length && !lessonsDeleted.length) {
+    if (!lessonsAdded.length && !lessonsDeleted.length) {         //  判断 add, delete 数组 是否为空。
       this.props.showNotification("Please enter your availability in the timetable before saving.");
       return;
     }
@@ -499,10 +496,6 @@ class WeekComp extends React.Component {
           self.props.monthlyTimetableReq(param);
           self.lessonsAdded = [];
           self.lessonsDeleted = [];
-
-          self.setState({
-            timetableClicked: false
-          });
         } else {
           self.props.showNotification("Please select future date and time correctly.");
         }
@@ -516,7 +509,7 @@ class WeekComp extends React.Component {
   }
 
   cellClick (rowNumber, columnId, e) {
-
+    const self = this;
     var target = e.currentTarget;
     var dataset = target.dataset;
     var fullHours = this.timesData;
@@ -578,11 +571,6 @@ class WeekComp extends React.Component {
       target.style.backgroundColor = "#ecf0f1";
       target.dataset.clicked = "";
     }
-
-    this.setState({
-      timetableClicked: true
-    });
-
   }
 
   tableScroll (e) {
@@ -637,14 +625,13 @@ class WeekComp extends React.Component {
           }
         });
       }
-      self.highlightToday();
     }
   }
 
-  highlightToday () {
+  highlightToday(weekDays) {
     var today = new Date();
 
-    if (this.state.weekDays.indexOf(today.toDateString()) === -1) {
+    if (weekDays.indexOf(today.toDateString()) === -1) {
       return ;
     }
 
@@ -673,9 +660,6 @@ class WeekComp extends React.Component {
       prevWeek: weeklyData.pervWeek,
       nextWeek: weeklyData.nextWeek
     });
-
-    //  hightlight today.
-    this.highlightToday();
 
     // scroll the scrollbar to recommended time range.
     var tableWrap = document.getElementsByClassName("table-wrap")[0];
