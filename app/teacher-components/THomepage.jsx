@@ -104,7 +104,7 @@ class ScheduleComp extends React.Component {
     super (props);
   }
 
-  render () {
+  render() {
     return (
       <section className="schedule-dashboard dashboard">
         <ScheduleCourse
@@ -247,16 +247,20 @@ class THomepage extends React.Component {
             <li><span className="profile-icon"><i className="fa fa-pencil"></i></span><span className="profile-meta-data">{teachingExperience}</span></li>
           </ul>
           <hr/>
-          <div className="timetable-annotation">
-            <h3 className="title">Key</h3>
-            <ul className="annotations">
-              <li><span className="color-circle template"></span><span className="text">To be timetabled</span></li>
-              <li><span className="color-circle not-booked"></span><span className="text">Timetabled</span></li>
-              <li><span className="color-circle confirmed"></span><span className="text">Booked</span></li>
-              <li><span className="color-circle completed"></span><span className="text">Completed</span></li>
-              <li><span className="color-circle cancel"></span><span className="text">Cancelled</span></li>
-            </ul>
-          </div>
+          {
+            profile.status > 9 ? (
+              <div className="timetable-annotation">
+                <h3 className="title">Key</h3>
+                <ul className="annotations">
+                  <li><span className="color-circle template"></span><span className="text">To be timetabled</span></li>
+                  <li><span className="color-circle not-booked"></span><span className="text">Timetabled</span></li>
+                  <li><span className="color-circle confirmed"></span><span className="text">Booked</span></li>
+                  <li><span className="color-circle completed"></span><span className="text">Completed</span></li>
+                  <li><span className="color-circle cancel"></span><span className="text">Cancelled</span></li>
+                </ul>
+              </div>
+            ) : <div></div>
+          }
         </div>
         <div className="col-9">
           {DashboardComponent}
