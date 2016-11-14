@@ -17,9 +17,9 @@ class DisplayUserStatusComp extends React.Component {
   }
 
   getOutput (profile) {
-    var status = profile.status;
+    const { status, interview } = profile
+    const interviewArr = interview.split(';')
 
-    console.log(status);
     switch(status) {
       case 3:
       case 4:
@@ -27,8 +27,8 @@ class DisplayUserStatusComp extends React.Component {
           <div className="show-interview-time">
             <p>Your interview is scheduled for: </p>
             <div className="content">
-              <small><span>{profile["timezone_name"]}</span></small>
-              <p>{profile.interview}</p>
+              <small><span>{interviewArr[1]}</span></small>
+              <p>{interviewArr[0]}</p>
             </div>
             <div className="reschedule">If you would like to propose a different time, please click <RaisedButton style={{marginLeft: 10}} primary label='Reschedule' onClick={this.handleReschedule.bind(this)}/></div>
           </div>
@@ -45,7 +45,6 @@ class DisplayUserStatusComp extends React.Component {
         return (<div><p>Thanks again for joining us for the interview. We appreciate your time.</p><p>The field was very competitive and, unfortunately, we will not be able to match you with students at this time.</p></div>);
         break;
     }
-
   }
 
   render () {

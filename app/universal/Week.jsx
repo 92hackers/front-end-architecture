@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { isEqual } from 'lodash';
 import moment from 'moment';
 import {notificationActions} from '../actions';
 
@@ -22,6 +23,7 @@ class WeekComp extends React.Component {
 
     this.lessonsAdded = [];
     this.lessonsDeleted = [];
+    this.templateData = [];
 
     this.state = {
       defaultScrollTop: "",
@@ -192,13 +194,21 @@ class WeekComp extends React.Component {
   goPrevWeek () {
     var prevWeek = this.state.prevWeek;
 
-    if (this.lessonsAdded.length > 0 || this.lessonsDeleted.length > 0) {         //  判断 add, delete 数组 是否为空。
-      this.props.showNotification("Please enter and save your availability before moving on to the previous week.");
-      return;
+    if (this.templateData.length > 0) {
+      if (this.isTemplateDataChanged()) {
+        this.props.showNotification("Please enter and save your availability before moving on to the next week.");
+        return;
+      }
+    } else {
+      if (this.lessonsAdded.length > 0 || this.lessonsDeleted.length > 0) {
+        this.props.showNotification("Please enter and save your availability before moving on to the next week.");
+        return;
+      }
     }
 
     this.lessonsAdded = [];
     this.lessonsDeleted = [];
+    this.templateData = [];
 
     this.setState({
       reqParam: prevWeek
@@ -217,13 +227,21 @@ class WeekComp extends React.Component {
   goNextWeek () {
     var nextWeek = this.state.nextWeek;
 
-    if (this.lessonsAdded.length > 0 || this.lessonsDeleted.length > 0) {
-      this.props.showNotification("Please enter and save your availability before moving on to the next week.");
-      return;
+    if (this.templateData.length > 0) {
+      if (this.isTemplateDataChanged()) {
+        this.props.showNotification("Please enter and save your availability before moving on to the next week.");
+        return;
+      }
+    } else {
+      if (this.lessonsAdded.length > 0 || this.lessonsDeleted.length > 0) {
+        this.props.showNotification("Please enter and save your availability before moving on to the next week.");
+        return;
+      }
     }
 
     this.lessonsAdded = [];
     this.lessonsDeleted = [];
+    this.templateData = [];
 
     this.setState({
       reqParam: nextWeek
@@ -236,6 +254,21 @@ class WeekComp extends React.Component {
       this.setState({
         historyData: false
       });
+    }
+  }
+
+  isTemplateDataChanged() {
+    const lessonsAdded = this.lessonsAdded;
+    const weeklyData = this.props.weeklyTimetable;
+    const weeklyTimetable = weeklyData.timetable || [];
+    const existedTemplate = this.state.existedTemplate || [];
+
+    const dateCompare = (a, b) => {
+      return new Date(`${a.lessonDate} ${a.lessonTime}`) - new Date(`${b.lessonDate} ${b.lessonTime}`)
+    }
+
+    if (!weeklyTimetable.length && existedTemplate.length > 0) {
+      return !(isEqual(lessonsAdded.sort(dateCompare), this.templateData.sort(dateCompare)));
     }
   }
 
@@ -352,8 +385,10 @@ class WeekComp extends React.Component {
           }
         </ul>
         <Table selectable={false} multiSelectable={false}>
-          <TableHeader displaySelectAll={false}
-            adjustForCheckbox={false}>
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+          >
             <TableRow>
               <TableHeaderColumn style={tableHeaderStyles}>Mon <span className="week-date">{currentWeekDays[0]}</span></TableHeaderColumn>
               <TableHeaderColumn style={tableHeaderStyles}>Tue <span className="week-date">{currentWeekDays[1]}</span></TableHeaderColumn>
@@ -452,22 +487,18 @@ class WeekComp extends React.Component {
     } else if ( ele.className === "cell" && ele.children[0].style.display === "block") {
       ele.children[0].style.display = "none";
     }
-
   }
 
   scrollBack () {
-
     var tableWrap = document.getElementsByClassName("table-wrap")[0];
     var timeLabel = document.getElementsByClassName("time-labels")[0];
 
     var scrollY = this.state.defaultScrollTop;
     tableWrap.scrollTop = scrollY;
     timeLabel.scrollTop = scrollY;
-
   }
 
   handleSubmit () {
-
     var self = this;
     var lessonsAdded = this.lessonsAdded;
     var lessonsDeleted = this.lessonsDeleted;
@@ -482,29 +513,30 @@ class WeekComp extends React.Component {
       "delete": lessonsDeleted
     };
 
-    nprogress.start();
-
-    api.NewLessonTimeTable(data,
-      { "Authorization": self.props.token },
-      "",
-      (resp) => {
-        nprogress.done();
-        if (resp.success) {
-          self.props.showNotification("Timetable saved successfully.");
-          let param = self.state.reqParam;
-          self.props.weeklyTimetableReq(param);
-          self.props.monthlyTimetableReq(param);
-          self.lessonsAdded = [];
-          self.lessonsDeleted = [];
-        } else {
-          self.props.showNotification("Please select future date and time correctly.");
-        }
-      },
-      (err) => {
-        nprogress.done();
-        self.props.networkError();
-      }
-    );
+    // nprogress.start();
+    //
+    // api.NewLessonTimeTable(data,
+    //   { "Authorization": self.props.token },
+    //   "",
+    //   (resp) => {
+    //     nprogress.done();
+    //     if (resp.success) {
+    //       self.props.showNotification("Timetable saved successfully.");
+    //       let param = self.state.reqParam;
+    //       self.props.weeklyTimetableReq(param);
+    //       self.props.monthlyTimetableReq(param);
+    //       self.lessonsAdded = [];
+    //       self.lessonsDeleted = [];
+    //       self.templateData = [];
+    //     } else {
+    //       self.props.showNotification("Please select future date and time correctly.");
+    //     }
+    //   },
+    //   (err) => {
+    //     nprogress.done();
+    //     self.props.networkError();
+    //   }
+    // );
 
   }
 
@@ -518,7 +550,6 @@ class WeekComp extends React.Component {
     if (!this.validTime(rowNumber, columnId - 1)) {
       return;
     }
-
     // if status > 0, the lesson had been booked.
 
     if (dataset.immutable === "immutable" && dataset.status > 0) {
@@ -541,7 +572,6 @@ class WeekComp extends React.Component {
     };
 
     if (!dataset.clicked) {           //  select the item.
-
       if (!dataset.immutable) {          //  only add  new lesson.
         this.lessonsAdded.push(selectedLesson);
       }
@@ -617,11 +647,13 @@ class WeekComp extends React.Component {
         existedTemplate.forEach((item, index) => {
           var date = self.weekDays[parseInt(item.weekday)];
           if (moment(date + " " + item.beginTime) > moment()) {
-            self.lessonsAdded.push({
+            const data = {
               lessonDate: date,
               lessonTime: item.beginTime,
               "student_id": 0
-            });
+            }
+            self.lessonsAdded.push(data);
+            self.templateData.push(data);
           }
         });
       }
@@ -702,11 +734,13 @@ class WeekComp extends React.Component {
     existedTemplate.forEach((item, index) => {
       var date = self.weekDays[parseInt(item.weekday)];
       if (moment(date + " " + item.beginTime) > moment()) {
-        self.lessonsAdded.push({
+        const data = {
           lessonDate: date,
           lessonTime: item.beginTime,
           "student_id": 0
-        });
+        }
+        self.lessonsAdded.push(data);
+        self.templateData.push(data);
       }
     });
 

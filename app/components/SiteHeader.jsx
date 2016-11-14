@@ -170,7 +170,7 @@ class SiteHeaderComp extends React.Component {
             <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit"></i>} onTouchTap={this.handleEditProfile}></ListItem>
             {
               userStatus >= 10 ? (
-                <ListItem primaryText="Payee Info" leftIcon={<i className="fa fa-credit-card"></i>} onTouchTap={this.handlePayeeInfoClick}></ListItem>
+                <ListItem primaryText="Payee Information" leftIcon={<i className="fa fa-credit-card"></i>} onTouchTap={this.handlePayeeInfoClick}></ListItem>
                   ) : (<div></div>)
             }
           </List>

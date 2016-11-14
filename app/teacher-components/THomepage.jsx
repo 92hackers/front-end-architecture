@@ -1,5 +1,4 @@
 // teacher's homepage.
-
 import React from 'react';
 import {browserHistory} from 'react-router';
 import AppBar from 'material-ui/AppBar';
@@ -10,13 +9,11 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-
 import ScheduleCourse from './ScheduleCourse';
 import OneWeekTemplate from '../universal/OneWeekTemplate';
 import DisplayUserStatus from '../containers/DisplayUserStatus';
 
 import api from '../network/api';
-import SiteLoading from '../containers/SiteLoading';
 
 class SettingComp extends React.Component {
 
@@ -110,7 +107,15 @@ class ScheduleComp extends React.Component {
   render () {
     return (
       <section className="schedule-dashboard dashboard">
-        <ScheduleCourse weeklyTimetableReq={this.props.weeklyTimetableReq} monthlyTimetableReq={this.props.monthlyTimetableReq} weeklyTimetable={this.props.weeklyTimetable} monthlyTimetable={this.props.monthlyTimetable} token={this.props.token} tpl={this.props.tpl} dispatch={this.props.dispatch}></ScheduleCourse>
+        <ScheduleCourse
+          weeklyTimetableReq={this.props.weeklyTimetableReq}
+          monthlyTimetableReq={this.props.monthlyTimetableReq}
+          weeklyTimetable={this.props.weeklyTimetable}
+          monthlyTimetable={this.props.monthlyTimetable}
+          token={this.props.token}
+          tpl={this.props.tpl}
+          dispatch={this.props.dispatch}
+        />
       </section>
     )
   }
@@ -124,12 +129,11 @@ class THomepage extends React.Component {
       tpl: {},
       hasTemplate: false,
       weeklyTimetable: {},
-      monthlyTimetable: {}
+      monthlyTimetable: {},
     };
   }
 
   render () {
-
     const appbarStyles = {
       backgroundColor: "#2196f3",    // teacher base color.
       boxShadow: "none"
@@ -166,16 +170,38 @@ class THomepage extends React.Component {
 
     switch (dynamicDashboardComp) {
       case "setting":
-        DashboardComponent = <SettingComp signOut={this.props.signOut} showNotification={this.props.showNotification} networkError={this.props.networkError} token={this.props.token} dispatch={this.props.dispatch}></SettingComp>;
+        DashboardComponent = (
+          <SettingComp
+            signOut={this.props.signOut}
+            showNotification={this.props.showNotification}
+            networkError={this.props.networkError}
+            token={this.props.token}
+            dispatch={this.props.dispatch}
+          />
+        )
         break;
       case "schedule":
-        DashboardComponent = <ScheduleComp weeklyTimetableReq={this.weeklyTimetableReq.bind(this)} monthlyTimetableReq={this.monthlyTimetableReq.bind(this)} weeklyTimetable={this.state.weeklyTimetable} monthlyTimetable={this.state.monthlyTimetable} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></ScheduleComp>;
+        DashboardComponent = (
+          <ScheduleComp
+            weeklyTimetableReq={this.weeklyTimetableReq.bind(this)}
+            monthlyTimetableReq={this.monthlyTimetableReq.bind(this)}
+            weeklyTimetable={this.state.weeklyTimetable}
+            monthlyTimetable={this.state.monthlyTimetable}
+            token={this.props.token}
+            tpl={this.state.tpl}
+            dispatch={this.props.dispatch}
+          />
+        )
         break;
       case "template":
-        DashboardComponent = <OneWeekTemplate templateReq={this.lessonTemplateReq.bind(this)} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></OneWeekTemplate>;
-        break;
-      case "editProfile":
-        //TODO:  add edit profile page.
+        DashboardComponent = (
+          <OneWeekTemplate
+            templateReq={this.lessonTemplateReq.bind(this)}
+            token={this.props.token}
+            tpl={this.state.tpl}
+            dispatch={this.props.dispatch}
+          />
+        )
         break;
       default:
         switch (profile.status) {
@@ -183,20 +209,28 @@ class THomepage extends React.Component {
           case 4:
           case 5:
           case 8:
-          DashboardComponent = <DisplayUserStatus></DisplayUserStatus>;
+          DashboardComponent = <DisplayUserStatus />
           break;
           case 10:
           case 11:
           case 15:
           if (newUser) {
-            DashboardComponent = <OneWeekTemplate newUser={true} templateReq={this.lessonTemplateReq.bind(this)} token={this.props.token} tpl={this.state.tpl} dispatch={this.props.dispatch}></OneWeekTemplate>;
+            DashboardComponent = (
+              <OneWeekTemplate
+                newUser={true}
+                templateReq={this.lessonTemplateReq.bind(this)}
+                token={this.props.token}
+                tpl={this.state.tpl}
+                dispatch={this.props.dispatch}
+              />
+            )
           } else {
             DashboardComponent = <h1 className="text-center">Congratulations! You passed the interview.</h1>;
           }
         }
     }
 
-    var content = !this.props.pendingCounter ? <main className="container">
+    var content = <main className="container">
       <div className="row">
         <div className="col-3">
           <div className="avatar-profile">
@@ -212,12 +246,23 @@ class THomepage extends React.Component {
             <li><span className="profile-icon"><i className="fa fa-envelope-o"></i></span><span className="profile-meta-data">{profile.email}</span></li>
             <li><span className="profile-icon"><i className="fa fa-pencil"></i></span><span className="profile-meta-data">{teachingExperience}</span></li>
           </ul>
+          <hr/>
+          <div className="timetable-annotation">
+            <h3 className="title">Key</h3>
+            <ul className="annotations">
+              <li><span className="color-circle template"></span><span className="text">To be timetabled</span></li>
+              <li><span className="color-circle not-booked"></span><span className="text">Timetabled</span></li>
+              <li><span className="color-circle confirmed"></span><span className="text">Booked</span></li>
+              <li><span className="color-circle completed"></span><span className="text">Completed</span></li>
+              <li><span className="color-circle cancel"></span><span className="text">Cancelled</span></li>
+            </ul>
+          </div>
         </div>
         <div className="col-9">
           {DashboardComponent}
         </div>
       </div>
-    </main> : <SiteLoading></SiteLoading>;
+    </main>
 
     return (
       <div className="t-homepage">
@@ -227,7 +272,6 @@ class THomepage extends React.Component {
   }
 
   lessonTemplateReq () {
-
     var self = this;
 
     var lessonTemplateReq = api.LessonTemplateInfo(
@@ -259,11 +303,9 @@ class THomepage extends React.Component {
         console.log("Something wrong.");
       }
     );
-
   }
 
   weeklyTimetableReq () {
-
     var self = this;
 
     var weeklyTimetableReq = api.WeeklyTimeTable(
@@ -288,7 +330,6 @@ class THomepage extends React.Component {
   }
 
   monthlyTimetableReq () {
-
     var self = this;
 
     var monthlyTimetableReq = api.MonthlyTimeTable(
@@ -309,7 +350,6 @@ class THomepage extends React.Component {
         console.log("network is busy, please try again later.");
       }
     );
-
   }
 
   componentDidMount () {
@@ -334,7 +374,6 @@ class THomepage extends React.Component {
   componentWillUnmount () {
     // profileRequest.abort();
   }
-
 }
 
 export default THomepage;

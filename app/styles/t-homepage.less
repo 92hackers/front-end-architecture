@@ -19,6 +19,7 @@
       border-top: 1px solid #e5e5e5;
     }
     .profile-data {
+      margin-bottom: 15px;
       li {
         & + li {
           margin-top: 10px;
@@ -34,6 +35,56 @@
           }
           .fa-map-marker {
             font-size: 20px !important;
+          }
+        }
+      }
+    }
+
+    .timetable-annotation {
+      color: #666;
+      padding-top: 5px;
+      .title {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 16px;
+      }
+      .annotations {
+        li {
+          .clearfix();
+          &:not(:last-child) {
+            margin-bottom: 16px;
+          }
+
+          .text {
+            line-height: 16px;
+            float: left;
+          }
+
+          .color-circle {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            margin-right: 10px;
+            float: left;
+          }
+          .template {
+            background-color: rgb(168, 216, 255);
+          }
+          .not-booked {
+            background-color: rgb(255, 156, 0);
+          }
+          .unconfirmed {
+            background-color: #b7b7b7;
+          }
+          .confirmed {
+            background-color: rgb(92, 201, 43);
+          }
+          .completed {
+            background-color: rgb(108, 164, 248);
+          }
+          .cancel {
+            background-color: #ed391d;
           }
         }
       }
