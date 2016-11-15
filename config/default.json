@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "useCdn": false,
   "cdnHost": "",
-  "devHost": "http://api.yiyouabc.com",
+  "devHost": "https://api.yiyouabc.com",
   "productionHost": "https://api.weteach.info",
   "apiVersion": "/v1/",
   "devPort": 3001,
