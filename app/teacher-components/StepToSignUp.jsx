@@ -1565,7 +1565,6 @@ class ScheduleInterview extends React.Component {
 }
 
   render () {
-    console.log(this.state.allTimeBooked)
     return (
       <div className="schedule-interview">
         <div className="wrap">
