@@ -1616,6 +1616,11 @@ class ScheduleInterview extends React.Component {
 
   handleSubmit () {
     var self = this;
+
+    if (this.state.allTimeBooked) {
+      return;
+    }
+
     const interviewDate = document.getElementById('interview-date').innerText.trim();
     const interviewPeriod = document.getElementById("interview-time").innerText.trim();
 
