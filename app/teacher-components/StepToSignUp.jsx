@@ -1485,7 +1485,8 @@ class ScheduleInterview extends React.Component {
       allAvailableTime: [],
       timeToIdMapping: [],
       dataIsReady: false,
-      notification: ""
+      notification: "",
+      allTimeBooked: false,
     };
     this.token = this.props.token;
   }
@@ -1516,8 +1517,15 @@ class ScheduleInterview extends React.Component {
     TimezoneId,
     (resp) => {
       if (resp.success) {
+        self.setState({
+          dataIsReady: true,
+        })
+
         var data = resp.data;
         if (!data.timetable.length) {
+          self.setState({
+            allTimeBooked: true,
+          })
           showNotification('All interview times are currently booked. Please contact support: teacher@weteach.info.')
           return ;
         }
@@ -1541,7 +1549,6 @@ class ScheduleInterview extends React.Component {
         }
 
         self.setState({
-          dataIsReady: true,
           availableDate: date || [],
           allAvailableTime: time || [],
           timeToIdMapping: timeToIdMapping || [],
@@ -1555,10 +1562,10 @@ class ScheduleInterview extends React.Component {
       showNotification('Network is busy, please try again later.')
     }
   )
-
 }
 
   render () {
+    console.log(this.state.allTimeBooked)
     return (
       <div className="schedule-interview">
         <div className="wrap">
@@ -1566,27 +1573,35 @@ class ScheduleInterview extends React.Component {
           {
             this.state.dataIsReady ? (
               <div className="input-box">
-                <div className="input-item">
-                  <span className="interview-icon"><i className="fa fa-calendar"></i></span>
-                  <SelectField style={{verticalAlign: "middle"}} id="interview-date" value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
-                    {
-                      this.state.availableDate.map((item, index) => {
-                        return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
-                      })
-                    }
-                  </SelectField>
-                </div>
-                <br/>
-                <div className="input-item">
-                  <span className="interview-icon"><i className="fa fa-clock-o"></i></span>
-                  <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
-                    {
-                      this.state.availableTime.map((item, index) => {
-                        return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item.period}></MenuItem>;
-                      })
-                    }
-                  </SelectField>
-                </div>
+                {
+                  this.state.allTimeBooked ? (
+                    <p className="all-time-booked">All interview times are currently booked. Please contact support: teacher@weteach.info.</p>
+                  ) : (
+                    <div>
+                      <div className="input-item">
+                        <span className="interview-icon"><i className="fa fa-calendar"></i></span>
+                        <SelectField style={{verticalAlign: "middle"}} id="interview-date" value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
+                          {
+                            this.state.availableDate.map((item, index) => {
+                              return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
+                            })
+                          }
+                        </SelectField>
+                      </div>
+                      <br/>
+                      <div className="input-item">
+                        <span className="interview-icon"><i className="fa fa-clock-o"></i></span>
+                        <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
+                          {
+                            this.state.availableTime.map((item, index) => {
+                              return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item.period}></MenuItem>;
+                            })
+                          }
+                        </SelectField>
+                      </div>
+                    </div>
+                  )
+                }
               </div>
                 ) : <CircularProgress></CircularProgress>
           }
