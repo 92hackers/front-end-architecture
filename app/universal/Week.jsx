@@ -513,30 +513,30 @@ class WeekComp extends React.Component {
       "delete": lessonsDeleted
     };
 
-    // nprogress.start();
-    //
-    // api.NewLessonTimeTable(data,
-    //   { "Authorization": self.props.token },
-    //   "",
-    //   (resp) => {
-    //     nprogress.done();
-    //     if (resp.success) {
-    //       self.props.showNotification("Timetable saved successfully.");
-    //       let param = self.state.reqParam;
-    //       self.props.weeklyTimetableReq(param);
-    //       self.props.monthlyTimetableReq(param);
-    //       self.lessonsAdded = [];
-    //       self.lessonsDeleted = [];
-    //       self.templateData = [];
-    //     } else {
-    //       self.props.showNotification("Please select future date and time correctly.");
-    //     }
-    //   },
-    //   (err) => {
-    //     nprogress.done();
-    //     self.props.networkError();
-    //   }
-    // );
+    nprogress.start();
+
+    api.NewLessonTimeTable(data,
+      { "Authorization": self.props.token },
+      "",
+      (resp) => {
+        nprogress.done();
+        if (resp.success) {
+          self.props.showNotification("Timetable saved successfully.");
+          let param = self.state.reqParam;
+          self.props.weeklyTimetableReq(param);
+          self.props.monthlyTimetableReq(param);
+          self.lessonsAdded = [];
+          self.lessonsDeleted = [];
+          self.templateData = [];
+        } else {
+          self.props.showNotification("Please select future date and time correctly.");
+        }
+      },
+      (err) => {
+        nprogress.done();
+        self.props.networkError();
+      }
+    );
 
   }
 
