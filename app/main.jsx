@@ -75,7 +75,8 @@ const routes = {
     { path: "activate-your-account", component: VerifyYourEmail },
     { path: "about-job", component: TAboutJob },
     { path: "about-school", component: TAboutSchool },
-    { path: "step-to-sign-up", component: StepToSignUp },
+    { path: "step-to-sign-up",
+     component: StepToSignUp },
     { path: "*", component: NotFound }
   ]
 };

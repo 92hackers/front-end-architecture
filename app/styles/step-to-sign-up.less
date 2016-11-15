@@ -1,70 +1,93 @@
 .step-to-sign-up {
   background-color: #e5f2fb;
   padding-bottom: 100px;
+
   .icon-color {
     color: @shallow_base_color;
     font-size: 24px;
   }
-  h1,h2,h3,h4,h5,h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin-top: 0;
   }
+
   .stepper-wrap {
     // width: 960px;
     margin: 0 auto;
     margin-top: 60px;
+
     .step-label {
       span {
         padding-right: 0 !important;
         margin-right: 8px !important;
       }
     }
+
     .step-content {
       // margin: 0 16px;
       padding-left: 74px;
       padding-right: 74px;
       background-color: #fff;
+
       .content {
         margin: 0 16px;
         padding-top: 40px;
         padding-bottom: 100px;
+
         .basic-info {
           .Dropdown-root {
             display: inline-block;
             vertical-align: middle;
+
             .Dropdown-control {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
             }
           }
+
           .nationality {
             padding-top: 33px;
+
             .Dropdown-root {
               width: 301px;
             }
           }
+
           .residence {
             padding-top: 20px;
             padding-bottom: 20px;
+
             .Dropdown-root {
               width: 130px;
+
               &:nth-child(8n+2) {
                 margin-right: 14px;
               }
+
               &:nth-child(8n+4) {
                 margin-left: 14px;
                 margin-right: 14px;
               }
+
               &:nth-child(8n+6) {
                 margin-left: 14px;
               }
             }
           }
+
           .timezone {
             padding-top: 12px;
+
             .Dropdown-root {
               width: 301px;
             }
+
             .tooltip {
               display: inline-block;
               vertical-align: middle;
@@ -72,6 +95,7 @@
               margin-left: 18px;
             }
           }
+
           .icon-wrap {
             display: inline-block;
             margin-right: 14px;
@@ -80,34 +104,45 @@
             height: 72px;
             width: 20px;
             vertical-align: top;
+
             .fa {
               .icon-color();
+
               margin-top: 35px;
             }
           }
+
           .dropdown-icon-wrap {
             .icon-wrap();
+
             height: 39px;
             vertical-align: middle;
+
             .fa {
               .icon-color();
+
               margin-top: 7.5px !important;
             }
           }
+
           .meta-data-picture {
             .meta-data {
               width: 50%;
               float: left;
             }
+
             .picture {
               width: 50%;
               float: left;
+
               .avatar {
                 width: 140px;
                 height: 140px;
                 margin: 0 auto;
+
                 .t-avatar {
                   height: 100%;
+
                   img {
                     height: 100%;
                     border-radius: 50%;
@@ -116,9 +151,11 @@
               }
             }
           }
+
           .education-background {
             padding-top: 50px;
             padding-bottom: 50px;
+
             .title {
               h1 {
                 display: inline-block;
@@ -126,6 +163,7 @@
                 vertical-align: middle;
                 margin-right: 20px;
               }
+
               .education-background-tooltip {
                 color: #999;
                 line-height: 42px;
@@ -134,11 +172,14 @@
             }
           }
         }
+
         .teaching-experience {
           width: 750px;
           margin: 0 auto;
+
           .select-years {
             margin-bottom: 46px;
+
             .title {
               display: inline-block;
               vertical-align: middle;
@@ -147,12 +188,16 @@
               color: @shallow_base_color;
             }
           }
+
           .words-item {
             .caption {
               margin-bottom: 20px;
-              .index, .title {
+
+              .index,
+              .title {
                 display: inline-block;
               }
+
               .index {
                 width: 30px;
                 height: 30px;
@@ -163,6 +208,7 @@
                 color: #fff;
                 font-size: 18px;
               }
+
               .title {
                 margin-left: 10px;
                 font-size: 16px;
@@ -170,19 +216,24 @@
                 color: @shallow_base_color;
               }
             }
+
             .input-box {
               margin-left: 40px;
             }
           }
         }
+
         .schedule-interview {
           text-align: center;
+
           .wrap {
             display: inline-block;
+
             .title {
               color: @shallow_base_color;
               margin-bottom: 30px;
             }
+
             .input-box {
               .input-item {
                 .interview-icon {
@@ -198,22 +249,28 @@
             }
           }
         }
+
         .btn-group {
           display: inline-block;
         }
+
         .two-buttons {
           padding-top: 50px;
         }
+
         .successful-words {
           padding-top: 50px;
           text-align: center;
+
           p {
             color: @teacher_base;
             font-size: 20px;
             line-height: 2;
+
             .go-to-test {
               margin-left: 20px;
               font-size: 30px;
+
               &:hover {
                 text-decoration: underline;
               }
@@ -223,8 +280,10 @@
       }
     }
   }
+
   .country-code-wrap {
     display: inline-block;
+
     .plus-icon {
       display: inline-block;
       vertical-align: middle;
@@ -254,8 +313,9 @@
     -moz-appearance: none;
     overflow: hidden;
     text-decoration: none;
+
     &:hover {
-      box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.12);
     }
 
     #upload-profile-picture {
@@ -277,7 +337,5 @@
       vertical-align: middle;
       margin-right: 10px;
     }
-
   }
-
 }
