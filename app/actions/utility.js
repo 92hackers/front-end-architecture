@@ -1,0 +1,11 @@
+import { createAction } from './lib';
+
+export const APPLICATION_CHANGE_TIMEZONE = 'APPLICATION_CHANGE_TIMEZONE'
+/* eslint max-len: 0 */
+export const changeTimezoneAtApplication = timezoneId => createAction(APPLICATION_CHANGE_TIMEZONE, { timezoneId })
+
+export const DISPLAY_HELP_BOX = 'DISPLAY_HELP_BOX'
+export const HIDE_HELP_BOX = 'HIDE_HELP_BOX'
+
+export const displayHelpBox = () => createAction(DISPLAY_HELP_BOX)
+export const hideHelpBox = () => createAction(HIDE_HELP_BOX)

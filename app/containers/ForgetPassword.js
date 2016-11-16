@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { notificationActions, apiActions } from '../actions';
-import ForgetPasswordComp from '../teacher-components/ForgetPassword';
+import ForgetPasswordComp from '../components/ForgetPassword';
 
 const mapStateToProps = () => ({
 

@@ -13,6 +13,7 @@ const initialState = {
 const {
   GEO_CONTINENT,
   GEO_CONTINENTCOUNTRY,
+  GEO_NATIONALITY,
   GEO_COUNTRY,
   GEO_REGION,
   GEO_CITY,
@@ -21,6 +22,7 @@ const {
 
 const { REQUEST: gctr, SUCCESS: gcts, FAILURE: gctf } = GEO_CONTINENT
 const { REQUEST: gctcr, SUCCESS: gctcs, FAILURE: gctcf } = GEO_CONTINENTCOUNTRY
+const { REQUEST: gnr, SUCCESS: gns, FAILURE: gnf } = GEO_NATIONALITY
 const { REQUEST: gcr, SUCCESS: gcs, FAILURE: gcf } = GEO_COUNTRY
 const { REQUEST: grr, SUCCESS: grs, FAILURE: grf } = GEO_REGION
 const { REQUEST: gcir, SUCCESS: gcis, FAILURE: gcif } = GEO_CITY
@@ -47,6 +49,15 @@ export default function countryList(state = initialState, action) {
 
     case gctcf:
       return { ...state, isFetching: false }
+
+    case gnr:
+      return { ...state, isFetching: true }
+
+    case gns:
+      return { ...state, isFetching: false, nationalityList: data }
+
+    case gnf:
+      return { ...state, isFetching: false, nationalityList: payload }
 
     case gcr:
       return { ...state, isFetching: true }

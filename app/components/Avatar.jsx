@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const TAvatar = (props) => {
+const Avatar = (props) => {
   const { avatarUrl } = props
 
   return (
@@ -11,4 +11,4 @@ const TAvatar = (props) => {
   )
 }
 
-export default TAvatar;
+export default Avatar;

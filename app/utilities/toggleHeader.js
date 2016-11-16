@@ -1,42 +1,41 @@
-var temp = 0;
-var set = (scrollTop) => {
+let temp = 0;
 
-  var header = document.getElementsByClassName("site-header")[0];
-  var body = document.body;
-
-  header.style.display = "none";
-
-  body.style.paddingTop = "0";
-
-  temp = scrollTop;
-
-  window.addEventListener("scroll", handleScroll);
-};
-
-var handleScroll = (e) => {
-  var header = document.getElementsByClassName("site-header")[0];
+const handleScroll = () => {
+  const header = document.getElementsByClassName('site-header')[0];
 
   if (window.scrollY > temp) {
-    header.style.display = "block";
+    header.style.display = 'block';
   } else {
-    header.style.display = "none";
+    header.style.display = 'none';
   }
 }
 
-var reset = () => {
+const set = (scrollTop) => {
+  const header = document.getElementsByClassName('site-header')[0];
+  const body = document.body;
 
-  var header = document.getElementsByClassName("site-header")[0];
-  var body = document.body;
+  header.style.display = 'none';
 
-  header.style.display = "block";
-  body.style.paddingTop = "60px";
+  body.style.paddingTop = '0';
+
+  temp = scrollTop;
+
+  window.addEventListener('scroll', handleScroll);
+};
+
+const reset = () => {
+  const header = document.getElementsByClassName('site-header')[0];
+  const body = document.body;
+
+  header.style.display = 'block';
+  body.style.paddingTop = '60px';
 
   window.removeEventListener('scroll', handleScroll);
 }
 
-var toggleHeader = {
-  set: set,
-  reset: reset
-};
+const toggleHeader = {
+  set,
+  reset,
+}
 
 export default toggleHeader;

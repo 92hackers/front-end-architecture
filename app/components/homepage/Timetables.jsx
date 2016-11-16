@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Week from '../universal/Week';
+import Week from './Week';
 import DateTab from '../universal/DateTab';
 
 const ScheduleCourse = (props) => {

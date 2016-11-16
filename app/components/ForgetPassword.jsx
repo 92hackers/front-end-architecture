@@ -13,7 +13,7 @@ class ForgetPasswordComp extends React.Component {
 
     let notification = '';
     const email = document.getElementById('forget-password-email-box').value;
-    const { showNotification, resetPassword } = this.props
+    const { showNotification, resetPassword, networkError } = this.props
 
     const validator = new FormValidate(document.forms[0], [
       {
@@ -40,7 +40,7 @@ class ForgetPasswordComp extends React.Component {
       } else {
         showNotification('An issue occured, please confirm your email address.');
       }
-    })
+    }).catch(() => networkError())
   }
 
   render() {

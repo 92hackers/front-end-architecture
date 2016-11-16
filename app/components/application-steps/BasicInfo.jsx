@@ -1,120 +1,56 @@
 import React from 'react'
+import { Field, reduxForm } from 'redux-form'
+import { browserHistory } from 'react-router'
+import { autobind } from 'core-decorators'
+
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton'
+import RadioButton from 'material-ui/RadioButton'
+import Dialog from 'material-ui/Dialog';
+import {
+  TextField,
+  RadioButtonGroup,
+} from 'redux-form-material-ui'
+
+import WrappedSelect from '../universal/WrappedSelect';
+import Avatar from '../Avatar'
+import AvatarUpload from '../universal/AvatarUpload'
 
 class BasicInfo extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      profilePictureSrc: '',
+      avatarUrl: '',
+
+      eduExpSelectedIndex: 0,
+      eduExpSelected: '',
+      eduExpSelectedDialogOpen: false,
+    }
+  }
+
   componentWillMount() {
-    if (!this.token) {
-      browserHistory.push("/sign-in");
-    } else {
-      this.setProfile(this.state.profile);
-    }
-  }
+    /* eslint max-len: 0 */
+    const { timezoneList } = this.props // todo: 最好是放在 redux form 的那个 initialValues里面。优先 profile里面的数据。
+    const localDate = new Date();
+    let defaultTimezone = '';
+    let defaultTimezoneId = '';
+    const localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
+    const regExpTimezone = localTimezone.replace('+', '\\+');
 
-  componentWillReceiveProps (nextProps) {
-    var profile = nextProps.profile;
-    if (nextProps.profile !== this.props.profile) {
-      this.setProfile(profile);
-    }
-  }
-
-  changeNationality (value) {
-    this.setState({
-      nationalityValue: value.label,
-      nationalityId: value.value
-    });
-  }
-
-  changeCountry (value) {
-    var self = this;
-    this.setState({
-      countryValue: value.label,
-      countryId: value.value
-    });
-
-    this.regionListRequest = api.TRegionList("",
-    { "Authorization": self.token },
-    value.value,
-    (resp) => {
-      if (resp.success) {
-
-        const regionList = resp.data.map((region) => {
-          return {
-            value: region.id,
-            label: region.name
-          };
-        });
-        self.setState({
-          regionList: regionList,
-          regionValue: null,
-          regionId: "",
-          cityId: "",
-          cityValue: null
-        });
-      } else {
-        console.log("error fetching");
+    for (let i = 0; i < timezoneList.length; i++) {
+      if (timezoneList[i].label.search(new RegExp(regExpTimezone)) !== -1) {
+        defaultTimezone = timezoneList[i].label;
+        defaultTimezoneId = timezoneList[i].value;
+        break;
       }
-    },
-    (err) => {
-      console.log(err);
     }
-  );
-
   }
 
-
-  changeRegion (value) {
-    var self = this;
-    this.setState({
-      regionValue: value.label,
-      regionId: value.value
-    });
-
-    this.cityListRequest = api.TCityList("",
-    { "Authorization": self.token },
-    value.value,
-    (resp) => {
-      if (resp.success) {
-        const cityList = resp.data.map((city) => {
-          return {
-            value: city.id,
-            label: city.name
-          };
-        });
-        self.setState({
-          cityList: cityList,
-          cityValue: null,
-          cityId: ""
-        });
-      } else {
-        console.log("error fetching");
-      }
-    },
-    (err) => {
-      console.log(err);
-    }
-  );
-
-  }
-
-  changeCity (value) {
-    var self = this;
-
-    this.setState({
-      cityValue: value.label,
-      cityId: value.value
-    });
-
-  }
-
-  changeTimezone (value) {
-    this.setState({
-      timezoneValue: value.label,
-      timezoneId: value.value
-    });
-    this.props.setTimezoneId(value.value);
-  }
-
-  profilePictureSelect (e) {
+  @autobind
+  profilePictureSelect(e) {
     e.preventDefault();
 
     let files;
@@ -123,607 +59,617 @@ class BasicInfo extends React.Component {
     } else if (e.target) {
       files = e.target.files;
     }
+
     const reader = new FileReader();
     reader.onload = () => {
       this.setState({
-        profilePictureSrc: reader.result
+        profilePictureSrc: reader.result,
       }, () => {
         this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
       });
     };
-    reader.readAsDataURL(files[0]);
 
+    reader.readAsDataURL(files[0]);
   }
 
-  setAvatarUrl (url) {
+  @autobind
+  setAvatarUrl(url) {
     this.setState({
-      avatarUrl: url
+      avatarUrl: url,
     });
   }
 
-  showFullDetail (index) {
+  @autobind
+  showFullDetail(index) {
     if (!!index && !!this.state.eduListItems) {
-      let expData = this.state.eduListItems[index[0]];
+      const expData = this.state.eduListItems[index[0]];
 
       this.setState({
         eduExpSelectedIndex: index[0],
-        eduExpSelected: expData
+        eduExpSelected: expData,
       }, () => {
         this.handleUpdateDiaOpen();
       });
-
     }
   }
 
-  handleUpdateDiaOpen () {
+  handleUpdateDiaOpen() {
     this.setState({
-      eduExpSelectedDialogOpen: true
+      eduExpSelectedDialogOpen: true,
     });
   }
 
-  addEduExp (e) {
+  addEduExp(e) {
     e.preventDefault();
 
-    var notification = "";
-    var temp = this.state.eduListItems;
-    var tempEduList = this.state.eduList;
+    let notification = '';
+    const temp = this.state.eduListItems;
+    let tempEduList = this.state.eduList;
 
-    var getValue = (ele) => {
-      return document.getElementById(ele).value;
-    }
+    const getValue = ele => document.getElementById(ele).value
 
-    var startYear = getValue("t-edu-start-year");
-    var endYear = getValue("t-edu-end-year");
-    var school = getValue("t-edu-school");
-    var major = getValue("t-edu-major");
-    var degree = getValue("t-edu-degree");
+    const startYear = getValue('t-edu-start-year');
+    const endYear = getValue('t-edu-end-year');
+    const school = getValue('t-edu-school');
+    const major = getValue('t-edu-major');
+    const degree = getValue('t-edu-degree');
 
 
     if (!!startYear && !!endYear && !!school && !!major && !!degree) {
+      const regExp = /^[0-9]+$/;
 
-      var regExp = /^[0-9]+$/;
-
-      if (startYear.length !== 4 || endYear.length !== 4 || !regExp.test(startYear) || !regExp.test(endYear)) {
-        notification = "Year should be exactly 4 numbers.";
+      if (startYear.length !== 4
+        || endYear.length !== 4
+        || !regExp.test(startYear)
+        || !regExp.test(endYear)
+      ) {
+        notification = 'Year should be exactly 4 numbers.';
       }
 
-      if (!!notification.length) {
+      if (notification.length > 0) {
         this.props.showNotification(notification);
-        return ;
+        return
       }
 
-      let data = {
+      const data = {
         timefrom: startYear,
         timeto: endYear,
         institution: school,
-        major: major,
-        degree: degree
+        major,
+        degree,
       };
 
       temp.push(data);
-      tempEduList++;
+      tempEduList += 1;
       this.setState({
         eduListItems: temp,
         eduDialogOpen: false,
-        eduList: tempEduList
+        eduList: tempEduList,
       });
     } else {
-      this.props.showNotification("Please complete all required details.");
+      this.props.showNotification('Please complete all required details.');
     }
-
   }
 
-  handleEduDialogOpen () {
+  @autobind
+  handleEduDialogOpen() {
     this.setState({
-      eduDialogOpen: true
+      eduDialogOpen: true,
     });
   }
 
-  handleEduDialogClose () {
+  handleEduDialogClose() {
     this.setState({
-      eduDialogOpen: false
+      eduDialogOpen: false,
     });
   }
 
-  handleEduUpdate (e) {
+  handleEduUpdate(e) {
     e.preventDefault();
     this.handleUpdateDiaClose();
 
-    var tmp = this.state.eduListItems;
-    var updateIndex = this.state.eduExpSelectedIndex;
-    var self = this;
-    var notification = "";
+    const tmp = this.state.eduListItems;
+    const updateIndex = this.state.eduExpSelectedIndex;
+    const self = this;
+    let notification = '';
 
-    var getValue = (ele) => {
-      return document.getElementById(ele).value;
-    };
+    const getValue = ele => document.getElementById(ele).value;
 
-    var startYear = getValue("t-edu-start-year-m");
-    var endYear = getValue("t-edu-end-year-m");
-    var school = getValue("t-edu-school-m");
-    var major = getValue("t-edu-major-m");
-    var degree = getValue("t-edu-degree-m");
+    const startYear = getValue('t-edu-start-year-m');
+    const endYear = getValue('t-edu-end-year-m');
+    const school = getValue('t-edu-school-m');
+    const major = getValue('t-edu-major-m');
+    const degree = getValue('t-edu-degree-m');
 
     if (!!startYear && !!endYear && !!school && !!major && !!degree) {
+      const regExp = /^[0-9]+$/;
 
-      var regExp = /^[0-9]+$/;
-
-      if (startYear.length !== 4 || endYear.length !== 4 || !regExp.test(startYear) || !regExp.test(endYear)) {
-        notification = "Year should be exactly 4 numbers.";
+      if (startYear.length !== 4
+        || endYear.length !== 4
+        || !regExp.test(startYear)
+        || !regExp.test(endYear)
+      ) {
+        notification = 'Year should be exactly 4 numbers.';
       }
 
-      if (!!notification.length) {
+      if (notification.length > 0) {
         this.props.showNotification(notification);
-        return ;
+        return
       }
 
-      let data = {
+      const data = {
         timefrom: startYear,
         timeto: endYear,
         institution: school,
-        major: major,
-        degree: degree
+        major,
+        degree,
       };
 
       tmp[updateIndex] = data;
 
       this.setState({
-        eduListItems: tmp
+        eduListItems: tmp,
       });
-
     } else {
-      this.props.showNotification("Please Complete All Fields.");
+      this.props.showNotification('Please Complete All Fields.');
     }
-
   }
 
-  handleEduExpDel (e) {
+  handleEduExpDel(e) {
     e.preventDefault();
 
-    var tempEduList = this.state.eduList;
-    tempEduList--;
+    let tempEduList = this.state.eduList;
+    tempEduList -= 1;
 
     this.handleUpdateDiaClose();
-    var tmp = this.state.eduListItems;
+    const tmp = this.state.eduListItems;
     tmp.splice(this.state.eduExpSelectedIndex, 1);
     this.setState({
       eduListItems: tmp,
-      eduList: tempEduList
+      eduList: tempEduList,
     });
   }
 
-  handleUpdateDiaClose (e) {
+  handleUpdateDiaClose(e) {
     this.setState({
-      eduExpSelectedDialogOpen: false
+      eduExpSelectedDialogOpen: false,
     });
   }
 
-  handleValueChange (e) {
-    var profile = this.state.profile;
-
-    profile[e.target.name] = e.target.value;
-
-    this.setState({
-      profile: profile
-    });
+  @autobind
+  changeTimezone(...args) {
+    const { changeTimezoneAtApplication } = this.props
+    changeTimezoneAtApplication(args[0])      //  设置 schedule interview 要用的时区。
   }
 
-  render () {
-
+  render() {
     const styles = {
       radioButtonGroup: {
-        marginBottom: -20
+        marginBottom: -20,
       },
       radioButton: {
-        width: "initial",
-        display: "inline-block",
-        "marginRight": 50
-      }
-    };
-
-    const uploadPictureStyle = {
-      cursor: 'pointer',
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      right: 0,
-      left: 0,
-      width: '100%',
-      opacity: 0,
-      zIndex: 1000,
-      fontSize: 20,
-      height: "100%"
+        width: 'initial',
+        display: 'inline-block',
+        marginRight: 50,
+      },
     };
 
     const eduTableStyle = {
-      display: this.state.eduList ? "table" : "none"
+      display: this.state.eduList ? 'table' : 'none',
     };
 
     const updateActions = [
       <RaisedButton
         className="dialog-button"
         label="Delete"
-        default={true}
-        onTouchTap={this.handleEduExpDel.bind(this)}
-        style={{ float: "left" }}
+        default
+        onTouchTap={this.handleEduExpDel}
+        style={{ float: 'left' }}
       />,
       <RaisedButton
         className="dialog-button"
         label="Cancel"
-        default={true}
-        onTouchTap={this.handleUpdateDiaClose.bind(this)}
+        default
+        onTouchTap={this.handleUpdateDiaClose}
       />,
       <RaisedButton
         className="dialog-button"
         id="submitEdu"
         label="Update"
-        primary={true}
-        onTouchTap={this.handleEduUpdate.bind(this)}
-      />
+        primary
+        onTouchTap={this.handleEduUpdate}
+      />,
     ];
 
     const addEduExpActions = [
       <RaisedButton
         className="dialog-button"
         label="Cancel"
-        default={true}
-        onTouchTap={this.handleEduDialogClose.bind(this)}
+        default
+        onTouchTap={this.handleEduDialogClose}
       />,
       <RaisedButton
         className="dialog-button"
         id="submitEdu"
         label="Add"
-        primary={true}
-        onTouchTap={this.addEduExp.bind(this)}
-      />
+        primary
+        onTouchTap={this.addEduExp}
+      />,
     ];
 
-    var profile = this.state.profile;
+    const {
+      profile,
+      /* eslint no-unused-vars: 0 */
+      initialValues,
+      handleSubmit,
+      nationalityList,
+      countryList,
+      regionList,
+      cityList,
+      timezoneList,
+      getRegionList,
+      getCityList,
+    } = this.props
 
-    var gender = profile.gender;
-    var defaultGender = "";
-
-    switch (gender) {
-      case 0:
-        defaultGender = "female";
-        break;
-      case "female":
-        defaultGender = "female";
-        break;
-      case 1:
-        defaultGender = "male";
-        break;
-      case "male":
-        defaultGender = "male";
-        break;
-      default:
-        defaultGender = "male";
-    }
-
-    var labelStyle = { color: "#666666", fontWeight: "bold"};
+    const labelStyle = { color: '#666666', fontWeight: 'bold' }
 
     return (
       <div className="basic-info">
-        <div className="meta-data-picture clearfix">
-          <div className="meta-data">
-            <ul>
-              <li className="data-item">
-                <div className="name">
-                  <div className="icon-wrap"><i className="fa fa-user"></i></div>
-                  <TextField floatingLabelStyle={labelStyle} value={profile.firstname} name="firstname" floatingLabelText="FirstName" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
-                  <i className="vertical-line"></i>
-                  <TextField floatingLabelStyle={labelStyle} value={profile.lastname} name="lastname" floatingLabelText="LastName" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
-                </div>
-              </li>
-              <li className="data-item">
-                <div className="gender">
-                  <p id="gender-caption" className="primary-color">Gender</p>
-                  <RadioButtonGroup valueSelected={defaultGender} name="gender" style={styles.RadioButtonGroup} onChange={this.handleValueChange.bind(this)}>
-                    <RadioButton labelStyle={{color: "#999"}} value="male" label="Male" style={styles.radioButton}/>
-                    <RadioButton labelStyle={{color: "#999"}} value="female" label="Female" style={styles.radioButton}/>
-                  </RadioButtonGroup>
-                </div>
-              </li>
-              <li className="data-item">
-                <div className="nationality">
-                  <div className="dropdown-icon-wrap"><i className="fa fa-globe"></i></div>
-                  <Dropdown options={this.state.nationalityList} onChange={this.changeNationality.bind(this)} value={this.state.nationalityValue} placeholder="Your Nationality"></Dropdown>
-                </div>
-              </li>
-              <li className="data-item">
-                <div className="phone-num">
-                  <div className="icon-wrap"><i className="fa fa-phone"></i></div>
-                  <div className="country-code-wrap">
-                    <span className="plus-icon">+</span><TextField floatingLabelStyle={labelStyle} value={profile["tel_code"] ? profile["tel_code"] : ""} name="tel_code" floatingLabelText="Country Code" style={{width: 130, marginRight: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
+        <form onSubmit={handleSubmit(this.handleSubmit)}>
+          <div className="meta-data-picture clearfix">
+            <div className="meta-data">
+              <ul>
+                <li className="data-item">
+                  <div className="name">
+                    <div className="icon-wrap"><i className="fa fa-user" /></div>
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      name="firstname"
+                      floatingLabelText="FirstName"
+                      style={{ width: 130, marginRight: 20 }}
+                    />
+                    <i className="vertical-line" />
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      name="lastname"
+                      floatingLabelText="LastName"
+                      style={{ width: 130, marginLeft: 20 }}
+                    />
                   </div>
-                  <i className="vertical-line"></i>
-                  <TextField floatingLabelStyle={labelStyle} value={profile["tel_num"] ? profile["tel_num"] : ""} name="tel_num" floatingLabelText="Phone Number" style={{width: 130, marginLeft: 20}} onChange={this.handleValueChange.bind(this)}></TextField>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="picture text-center">
-            <div className="avatar">
-              <TAvatar avatarUrl={this.state.avatarUrl}></TAvatar>
+                </li>
+                <li className="data-item">
+                  <div className="gender">
+                    <p id="gender-caption" className="primary-color">Gender</p>
+                    <Field name="gender" component={RadioButtonGroup}>
+                      <RadioButton
+                        labelStyle={{ color: '#999' }}
+                        value="1"
+                        label="Male"
+                        style={styles.radioButton}
+                      />
+                      <RadioButton
+                        labelStyle={{ color: '#999' }}
+                        value="0"
+                        label="Female"
+                        style={styles.radioButton}
+                      />
+                    </Field>
+                  </div>
+                </li>
+                <li className="data-item">
+                  <div className="nationality">
+                    <div className="dropdown-icon-wrap"><i className="fa fa-globe" /></div>
+                    <Field
+                      name="nationality"
+                      component={WrappedSelect}
+                      options={nationalityList}
+                      placeholder="Your Nationality"
+                    />
+                  </div>
+                </li>
+                <li className="data-item">
+                  <div className="phone-num">
+                    <div className="icon-wrap"><i className="fa fa-phone" /></div>
+                    <div className="country-code-wrap">
+                      <span className="plus-icon">+</span>
+                      <TextField
+                        floatingLabelStyle={labelStyle}
+                        name="tel_code"
+                        floatingLabelText="Country Code"
+                        style={{ width: 130, marginRight: 20 }}
+                      />
+                    </div>
+                    <i className="vertical-line" />
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      name="tel_num"
+                      floatingLabelText="Phone Number"
+                      style={{ width: 130, marginLeft: 20 }}
+                    />
+                  </div>
+                </li>
+              </ul>
             </div>
-            <br/>
-            <a href="#" className="btn button-change-avatar">
-              <i className="fa fa-camera" style={{fontSize: 20, color: "#fff"}}></i>
-              <label htmlFor="upload-profile-picture">
-                Upload profile picture
-                <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect.bind(this)}/>
-              </label>
-            </a>
-            <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl.bind(this)}></AvatarUpload>
-          </div>
-        </div>
-        <div className="residence-timezone clearfix">
-          <div className="residence">
-            <div className="dropdown-icon-wrap"><i className="fa fa-map-marker"></i></div>
-            <Dropdown options={this.state.countryList} onChange={this.changeCountry.bind(this)} value={this.state.countryValue} placeholder="Country"></Dropdown>
-            <i className="vertical-line"></i>
-            <Dropdown options={this.state.regionList} onChange={this.changeRegion.bind(this)} value={this.state.regionValue} placeholder="Region"></Dropdown>
-            <i className="vertical-line"></i>
-            <Dropdown options={this.state.cityList} onChange={this.changeCity.bind(this)} value={this.state.cityValue} placeholder="City"></Dropdown>
-          </div>
-          <div className="timezone">
-            <div className="dropdown-icon-wrap"><i className="fa fa-clock-o"></i></div>
-            <Dropdown options={this.state.timezoneList} onChange={this.changeTimezone.bind(this)} value={this.state.timezoneValue} placeholder="Your Time Zone"></Dropdown>
-            <p className="tooltip">This is the local time on your device. Is this timezone correct ?</p>
-          </div>
-        </div>
-        <div className="education-background">
-          <div className="title">
-            <h1 className="primary-color">Education Background</h1>
-            <RaisedButton label="Add" style={{verticalAlign: "middle"}} icon={<i style={{color: "#ffffff", fontSize: 18}} className="fa fa-graduation-cap"></i>} primary={true} onClick={this.handleEduDialogOpen.bind(this)}></RaisedButton>
-            <span className="education-background-tooltip" style={{display: this.state.eduList ? "inline-block" : "none"}}>Click The Item To Edit!</span>
-            <Dialog title="Add Your Education Experience" actions={addEduExpActions} modal={false} open={this.state.eduDialogOpen} onRequestClose={this.handleEduDialogClose.bind(this)}>
-              <div className="t-edu-form-wrap">
-                <div className="clearfix">
-                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year" floatingLabelText="Start Year"></TextField>
-                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="t-edu-end-year" floatingLabelText="End Year"></TextField>
-                </div>
-                <TextField floatingLabelStyle={labelStyle} id="t-edu-school" type="text" floatingLabelText="School"></TextField>
-                <br/>
-                <TextField floatingLabelStyle={labelStyle} id="t-edu-major" type="text" floatingLabelText="Major"></TextField>
-                <br/>
-                <TextField floatingLabelStyle={labelStyle} id="t-edu-degree" type="text" floatingLabelText="Degree"></TextField>
+            <div className="picture text-center">
+              <div className="avatar">
+                <Avatar avatarUrl={this.state.avatarUrl} />
               </div>
-            </Dialog>
-            <Dialog title="Modify Your Education Experience" actions={updateActions} modal={false} open={this.state.eduExpSelectedDialogOpen} onRequestClose={this.handleUpdateDiaClose.bind(this)}>
-              <div className="t-edu-form-wrap">
-                <div className="clearfix">
-                  <TextField floatingLabelStyle={labelStyle} className="left" style={{width: "40%"}} id="t-edu-start-year-m" defaultValue={this.state.eduExpSelected.timefrom} floatingLabelText="Start Year"></TextField>
-                  <TextField floatingLabelStyle={labelStyle} className="right" style={{width: "40%"}} id="t-edu-end-year-m" defaultValue={this.state.eduExpSelected.timeto} floatingLabelText="End Year"></TextField>
-                </div>
-                <TextField floatingLabelStyle={labelStyle} id="t-edu-school-m" defaultValue={this.state.eduExpSelected.institution} type="text" floatingLabelText="School"></TextField>
-                <br/>
-                <TextField floatingLabelStyle={labelStyle} id="t-edu-major-m" defaultValue={this.state.eduExpSelected.major} type="text" floatingLabelText="Major"></TextField>
-                <br/>
-                <TextField floatingLabelStyle={labelStyle} id="t-edu-degree-m" defaultValue={this.state.eduExpSelected.degree} type="text" floatingLabelText="Degree"></TextField>
-              </div>
-            </Dialog>
+              <br />
+              <a href="#" className="btn button-change-avatar">
+                <i className="fa fa-camera" style={{ fontSize: 20, color: '#fff' }} />
+                <label htmlFor="upload-profile-picture">
+                  Upload profile picture
+                  <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect} />
+                </label>
+              </a>
+              <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl} />
+            </div>
           </div>
-          <Table style={eduTableStyle} onRowSelection={this.showFullDetail.bind(this)}>
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-              <TableRow>
-                <TableHeaderColumn>Start Time</TableHeaderColumn>
-                <TableHeaderColumn>End Time</TableHeaderColumn>
-                <TableHeaderColumn>School</TableHeaderColumn>
-                <TableHeaderColumn>Major</TableHeaderColumn>
-                <TableHeaderColumn>Degree</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody displayRowCheckbox={false} showRowHover={true}>
-              {
-                this.state.eduListItems.map((item, index) => {
-                  return (
-                    <TableRow key={index} data-index={index} hoverable={true} style={{cursor: "pointer"}}>
+          <div className="residence-timezone clearfix">
+            <div className="residence">
+              <div className="dropdown-icon-wrap"><i className="fa fa-map-marker" /></div>
+              <Field
+                name="residence_n"
+                component={WrappedSelect}
+                options={countryList}
+                onChange={getRegionList}
+                placeholder="Country"
+              />
+              <i className="vertical-line" />
+              <Field
+                name="residence_p"
+                component={WrappedSelect}
+                options={regionList}
+                onChange={getCityList}
+                placeholder="Region/State"
+              />
+              <i className="vertical-line" />
+              <Field
+                name="residence_c"
+                component={WrappedSelect}
+                options={cityList}
+                placeholder="City"
+              />
+            </div>
+            <div className="timezone">
+              <div className="dropdown-icon-wrap"><i className="fa fa-clock-o" /></div>
+              <Field
+                name="timezone"
+                component={WrappedSelect}
+                options={timezoneList}
+                onChange={this.changeTimezone}
+                placeholder="Your Time Zone"
+              />
+              <p className="tooltip">This is the local time on your device. Is this timezone correct ?</p>
+            </div>
+          </div>
+          <div className="education-background">
+            <div className="title">
+              <h1 className="primary-color">Education Background</h1>
+              <RaisedButton
+                label="Add"
+                style={{ verticalAlign: 'middle' }}
+                icon={<i style={{ color: '#ffffff', fontSize: 18 }} className="fa fa-graduation-cap" />}
+                primary
+                onClick={this.handleEduDialogOpen}
+              />
+              <span className="education-background-tooltip" style={{ display: this.state.eduList ? 'inline-block' : 'none' }}>Click The Item To Edit!</span>
+              <Dialog
+                title="Add Your Education Experience"
+                actions={addEduExpActions}
+                modal={false}
+                open={this.state.eduDialogOpen}
+                onRequestClose={this.handleEduDialogClose}
+              >
+                <div className="t-edu-form-wrap">
+                  <div className="clearfix">
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      className="left"
+                      style={{ width: '40%' }}
+                      id="t-edu-start-year"
+                      floatingLabelText="Start Year"
+                    />
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      className="right"
+                      style={{ width: '40%' }}
+                      id="t-edu-end-year"
+                      floatingLabelText="End Year"
+                    />
+                  </div>
+                  <TextField
+                    floatingLabelStyle={labelStyle}
+                    id="t-edu-school"
+                    type="text"
+                    floatingLabelText="School"
+                  />
+                  <br />
+                  <TextField
+                    floatingLabelStyle={labelStyle}
+                    id="t-edu-major"
+                    type="text"
+                    floatingLabelText="Major"
+                  />
+                  <br />
+                  <TextField
+                    floatingLabelStyle={labelStyle}
+                    id="t-edu-degree"
+                    type="text"
+                    floatingLabelText="Degree"
+                  />
+                </div>
+              </Dialog>
+              <Dialog
+                title="Modify Your Education Experience"
+                actions={updateActions}
+                modal={false}
+                open={this.state.eduExpSelectedDialogOpen}
+                onRequestClose={this.handleUpdateDiaClose}
+              >
+                <div className="t-edu-form-wrap">
+                  <div className="clearfix">
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      className="left"
+                      style={{ width: '40%' }}
+                      id="t-edu-start-year-m"
+                      defaultValue={this.state.eduExpSelected.timefrom}
+                      floatingLabelText="Start Year"
+                    />
+                    <TextField
+                      floatingLabelStyle={labelStyle}
+                      className="right"
+                      style={{ width: '40%' }}
+                      id="t-edu-end-year-m"
+                      defaultValue={this.state.eduExpSelected.timeto}
+                      floatingLabelText="End Year"
+                    />
+                  </div>
+                  <TextField
+                    floatingLabelStyle={labelStyle}
+                    id="t-edu-school-m"
+                    defaultValue={this.state.eduExpSelected.institution}
+                    type="text"
+                    floatingLabelText="School"
+                  />
+                  <br />
+                  <TextField
+                    floatingLabelStyle={labelStyle}
+                    id="t-edu-major-m"
+                    defaultValue={this.state.eduExpSelected.major}
+                    type="text"
+                    floatingLabelText="Major"
+                  />
+                  <br />
+                  <TextField
+                    floatingLabelStyle={labelStyle}
+                    id="t-edu-degree-m"
+                    defaultValue={this.state.eduExpSelected.degree}
+                    type="text"
+                    floatingLabelText="Degree"
+                  />
+                </div>
+              </Dialog>
+            </div>
+            <Table style={eduTableStyle} onRowSelection={this.showFullDetail}>
+              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <TableRow>
+                  <TableHeaderColumn>Start Time</TableHeaderColumn>
+                  <TableHeaderColumn>End Time</TableHeaderColumn>
+                  <TableHeaderColumn>School</TableHeaderColumn>
+                  <TableHeaderColumn>Major</TableHeaderColumn>
+                  <TableHeaderColumn>Degree</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false} showRowHover>
+                {
+                  this.state.eduListItems.map((item, index) => (
+                    <TableRow key={index} data-index={index} hoverable style={{ cursor: 'pointer' }}>
                       <TableRowColumn>{item.timefrom}</TableRowColumn>
                       <TableRowColumn>{item.timeto}</TableRowColumn>
                       <TableRowColumn>{item.institution}</TableRowColumn>
                       <TableRowColumn>{item.major}</TableRowColumn>
                       <TableRowColumn>{item.degree}</TableRowColumn>
                     </TableRow>
-                  )
-                })
-              }
-            </TableBody>
-          </Table>
-        </div>
+                  ))
+                }
+              </TableBody>
+            </Table>
+          </div>
+        </form>
       </div>
     )
   }
 
-  componentDidMount () {
-    var self = this;
+  handleSubmit() {
+    const self = this;
+    let notification = '';
 
-    if (!self.token) {
-      browserHistory.push("/sign-in");
-      return;
-    }
+    const {
+      updateBasicInfo,
+      showNotification,
+      networkError,
+      displaySuccess,
+      displayError,
+    } = this.props
 
-    this.nationalityRequest = api.TNationalityList("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          const nationalityList = resp.data.map((nationality) => {
-            return {
-              value: nationality.id,
-              label: nationality.name
-            };
-          });
-          self.setState({
-            nationalityList: nationalityList
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    const firstName = document.querySelector("input[name='firstname']").value;
+    const lastName = document.querySelector("input[name='lastname']").value;
+    const checkedElem = document.querySelector('input[name="gender"]:checked');
+    const nationality = this.state.nationalityId;
+    const gender = checkedElem ? checkedElem.value : '';
+    const avatar = this.state.avatarUrl;
+    const country = this.state.countryId;
+    const region = this.state.regionId;
+    const city = this.state.cityId;
+    const timezone = this.state.timezoneId;
+    const nationCode = document.querySelector("[name='tel_code']").value;
+    const phoneNum = document.querySelector("[name='tel_num']").value;
+    const eduExperienceList = this.state.eduListItems;
 
-    this.countryListRequest = api.TCountryList("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          const countryList = resp.data.map((country) => {
-            return {
-              value: country.id,
-              label: country.name
-            };
-          });
-          self.setState({
-            countryList: countryList
-          });
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-
-    this.timezoneListRequest = api.TTimezone("",
-      { "Authorization": self.token },
-      "",
-      (resp) => {
-        if (resp.success) {
-          const timezoneList = resp.data.map((timezone) => {
-            return {
-              value: timezone.id,
-              label: timezone["en_name"]
-            };
-          });
-
-          var localDate = new Date();
-          var defaultTimezone = "";
-          var defaultTimezoneId = "";
-          var localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
-          var regExpTimezone = localTimezone.replace("+", "\\+");
-
-          for (let i = 0; i < timezoneList.length; i++) {
-            if (timezoneList[i].label.search(new RegExp(regExpTimezone)) !== -1) {
-              defaultTimezone = timezoneList[i].label;
-              defaultTimezoneId = timezoneList[i].value;
-              break;
-            }
-          }
-
-          self.setState({
-            timezoneList: timezoneList,
-          });
-
-          if (!self.state.timezoneValue && !self.state.timezoneId) {      //  如果已经设置了值，就不需要这里再设置值了。
-            self.props.setTimezoneId(defaultTimezoneId);
-            self.setState({
-              timezoneValue: defaultTimezone,
-              timezoneId: defaultTimezoneId
-            });
-          }
-
-        } else {
-          console.log("error fetching");
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-
-  }
-
-  handleSubmit () {
-
-    var self = this;
-    var notification = "";
-
-    let firstName = document.querySelector("input[name='firstname']").value;
-    let lastName = document.querySelector("input[name='lastname']").value;
-    let checkedElem = document.querySelector('input[name="gender"]:checked');
-    let nationality = this.state.nationalityId;
-    let gender = checkedElem ? checkedElem.value : "";
-    let avatar = this.state.avatarUrl;
-    let country = this.state.countryId;
-    let region = this.state.regionId;
-    let city = this.state.cityId;
-    let timezone = this.state.timezoneId;
-    let nationCode = document.querySelector("[name='tel_code']").value;
-    let phoneNum = document.querySelector("[name='tel_num']").value;
-    let eduExperienceList = this.state.eduListItems;
-
-    let numericP = /^[0-9]+$/;
+    const numericP = /^[0-9]+$/;
 
     if (!firstName.length) {
-      notification = "Please enter your first name.";
+      notification = 'Please enter your first name.';
     } else if (!lastName.length) {
-      notification = "Please enter your last name.";
+      notification = 'Please enter your last name.';
     } else if (!nationality) {
-      notification = "Please select your nationality.";
+      notification = 'Please select your nationality.';
     } else if (!gender.length) {
-      notification = "Please select your gender.";
+      notification = 'Please select your gender.';
     } else if (!avatar.length) {
-      notification = "Please upload your profile picture.";
+      notification = 'Please upload your profile picture.';
     } else if (!country) {
-      notification = "Please select your country of residence.";
+      notification = 'Please select your country of residence.';
     } else if (!timezone) {
-      notification = "Please select your location timezone.";
+      notification = 'Please select your location timezone.';
     } else if (!phoneNum.length) {
-      notification = "Please enter your phone number.";
+      notification = 'Please enter your phone number.';
     } else if (!eduExperienceList.length) {
-      notification = "Please complete Education Background.";
+      notification = 'Please complete Education Background.';
     } else if (!numericP.test(phoneNum)) {
-      notification = "Phone number should be numbers.";
+      notification = 'Phone number should be numbers.';
     } else if (!!nationCode.length && !numericP.test(nationCode)) {
-      notification = "Country code should be numbers.";
+      notification = 'Country code should be numbers.';
     }
 
-    if (!!notification.length) {
-      self.props.showNotification(notification);
+    if (notification.length > 0) {
+      showNotification(notification);
       return;
     }
 
-    var data = {
+    const data = {
       firstname: firstName,
       lastname: lastName,
-      gender: gender === "male" ? 1 : 0,
-      avatar: avatar,
-      nationality: nationality,
-      "residence_n": country,
-      "residence_p": region,
-      "residence_c": city,
-      "timezone": timezone,
+      gender: gender === 'male' ? 1 : 0,
+      residence_n: country,
+      residence_p: region,
+      residence_c: city,
       eduexp: eduExperienceList,
-      "tel_code": nationCode,
-      "tel_num": phoneNum
+      tel_code: nationCode,
+      tel_num: phoneNum,
+      avatar,
+      nationality,
+      timezone,
     };
 
-    if (JSON.stringify(data) !== JSON.stringify(this.state.oldProfile)) {
-      this.props.displayLoader();
-
-      api.TApplyStep1(data,
-        {"Authorization": self.token},
-        "",
-        (resp) => {
-          if (resp.success) {
-            this.props.displaySuccess();
-          } else {
-            this.props.displayError();
-          }
-        },
-        (err) => {
-          this.props.displayError();
-        }
-      );
-    } else {
-      this.props.stepToNext();
-    }
+    updateBasicInfo(data).then((res) => {
+      if (res.payload.success) {
+        displaySuccess()
+      } else {
+        displayError()
+      }
+    }).catch(() => networkError())
   }
 }
+
+console.log(BasicInfo);     // TODO:  是否这里可以用 BasicInfo 取得他的里面的 props.
+BasicInfo = reduxForm({
+  form: 'applicationBasicInfo',
+  initialValues: {
+
+  },
+})(BasicInfo)
 
 export default BasicInfo

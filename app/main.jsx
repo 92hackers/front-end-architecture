@@ -3,6 +3,8 @@ import ReactDom from 'react-dom';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
+// tap event plugin initialization.
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import { userActions } from './actions';
 
 // import TInfo from './teacher-components/TInfo';
@@ -11,45 +13,44 @@ import ForgetPassword from './containers/ForgetPassword';
 import VerifyYourEmail from './containers/VerifyYourEmail';
 import TAboutSchool from './components/AboutSchool';
 import TAboutJob from './components/AboutJob';
-import StepToSignUp from './containers/application-steps/StepToSignUp';
-import  from './teacher-components/ScheduleCourse';
-import TIndex from './teacher-components/TIndex';
+import StepToSignUp from './containers/StepToSignUp';
+// import  from './teacher-components/ScheduleCourse';
+import Index from './components/Index';
+import Timetables from './components/homepage/Timetables'
 
 import App from './containers/App';
 import OnlineTest from './containers/OnlineTest';
 import SignIn from './containers/SignIn';
-import THomepage from './containers/TeacherHomepage';
-import TSignUp from './containers/TSignUp';
+import Homepage from './components/homepage/Homepage';
+import SignUp from './containers/SignUp';
 import ActivateEmail from './containers/ActivateEmail';
-import TInputNewPassword from './containers/TInputNewPassword';
+import InputNewPassword from './containers/InputNewPassword';
 import EditProfile from './containers/editProfile';
 import PayeeInfo from './containers/payeeInfo';
+import WeeklyTemplate from './containers/homepage/weeklyTemplate'
+import Settings from './containers/homepage/settings'
 
-import NotFound from './universal/NotFound';
-import {store} from './config';
+import NotFound from './components/universal/NotFound';
+import { store } from './config';
 
-// tap event plugin initialization.
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+injectTapEventPlugin();         // todo: 急需做 Authorization.
 
-const token = localStorage.getItem("user_token") || "";
-if (!!token) {
+const token = localStorage.getItem('user_token') || '';
+if (token) {
   store.store.dispatch(userActions.signIn(token));
 }
 
-const scrollBehavior = (prevRouterProps, { routes }) => {
-  return [0,0];
-};
+const scrollBehavior = () => [0, 0]
 
 const routes = {
-  path: "/",
+  path: '/',
   component: App,
-  indexRoute: { component: TIndex },
+  indexRoute: { component: Index },
   childRoutes: [
-    { path: "sign-up", component: TSignUp },
-    { path: "sign-in", component: SignIn },
-    { path: "teacher-homepage",         //    add  router to dashboard components.
-      component: THomepage
+    { path: 'sign-up', component: SignUp },
+    { path: 'sign-in', component: SignIn },
+    { path: 'teacher-homepage',         //    add  router to dashboard components.
+      component: Homepage,
       childRoutes: [
         {
           path: 'timetables',
@@ -63,22 +64,21 @@ const routes = {
           path: 'settings',
           component: Settings,
         },
-      ]
+      ],
     },
-    { path: "complete-payee-info", component: PayeeInfo },
-    { path: "edit-profile", component: EditProfile },
-    { path: "teacher-online-test", component: OnlineTest },
-    { path: "active-email", component: ActivateEmail },
-    { path: "input-new-email", component: InputNewEmail },
-    { path: "forget-password", component: ForgetPassword },
-    { path: "reset-password", component: TInputNewPassword },
-    { path: "activate-your-account", component: VerifyYourEmail },
-    { path: "about-job", component: TAboutJob },
-    { path: "about-school", component: TAboutSchool },
-    { path: "step-to-sign-up",
-     component: StepToSignUp },
-    { path: "*", component: NotFound }
-  ]
+    { path: 'complete-payee-info', component: PayeeInfo },
+    { path: 'edit-profile', component: EditProfile },
+    { path: 'teacher-online-test', component: OnlineTest },
+    { path: 'active-email', component: ActivateEmail },
+    { path: 'input-new-email', component: InputNewEmail },
+    { path: 'forget-password', component: ForgetPassword },
+    { path: 'reset-password', component: InputNewPassword },
+    { path: 'activate-your-account', component: VerifyYourEmail },
+    { path: 'about-job', component: TAboutJob },
+    { path: 'about-school', component: TAboutSchool },
+    { path: 'step-to-sign-up', component: StepToSignUp },
+    { path: '*', component: NotFound },
+  ],
 };
 
 ReactDom.render((
@@ -89,4 +89,4 @@ ReactDom.render((
       history={browserHistory}
     />
   </Provider>
-), document.getElementById("app"));
+), document.getElementById('app'));

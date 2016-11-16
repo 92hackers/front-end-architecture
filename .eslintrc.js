@@ -30,6 +30,7 @@ module.exports = {
       "camelcase": 0,
       "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
       "radix": [0],
+      "react/sort-comp": 0,
     },
     "env": {
       "browser": true

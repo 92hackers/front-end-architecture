@@ -91,7 +91,7 @@ class PayeeInfo extends React.Component {
       } else {
         networkError()
       }
-    })
+    }).catch(() => networkError())
   }
 
   sendSwiftCode() {

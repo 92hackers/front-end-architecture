@@ -3,13 +3,11 @@ import React from 'react';
 import { browserHistory, Link } from 'react-router';
 import { autobind } from 'core-decorators';
 import { List, ListItem } from 'material-ui/List';
-import { Stepper } from 'material-ui/Stepper';
 import Popover from 'material-ui/Popover';
-import Dialog from 'material-ui/Dialog';
 import SignOutButton from './universal/SignOutButton';
+import DisplayHelp from '../containers/displayHelp'
 
 export default class SiteHeader extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -21,49 +19,6 @@ export default class SiteHeader extends React.Component {
     };
     this.handleEditProfile = this.handleEditProfile.bind(this)
     this.handlePayeeInfoClick = this.handlePayeeInfoClick.bind(this)
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.handleGuideImgResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleGuideImgResize);
-  }
-
-  getStepContent(stepIndex) {
-    const styles = {
-      width: '100%',
-      height: '100%',
-    };
-
-    switch (stepIndex) {
-      case 0:
-        return (<div className="step step-one" style={styles}>
-          <img style={styles} src="/images/guide-1.jpg" alt="guide img." />
-        </div>)
-
-      case 1:
-        return (<div className="step step-two" style={styles}>
-          <img style={styles} src="/images/guide-2.jpg" alt="step two img." />
-        </div>)
-
-      case 2:
-        return (<div className="step step-three text-center" style={styles}>
-          <img style={styles} src="/images/guide-3.jpg" alt="guide 3" />
-        </div>)
-
-      default:
-        return <h1>Something Wrong.</h1>;
-    }
-  }
-
-  handleGuideImgResize() {
-    const elem = document.querySelector('.step');
-    if (elem) {
-      document.querySelector('.step').style.height = `${window.innerHeight}px`
-      document.querySelector('.step').style.width = `${window.innerWidth}px`
-    }
   }
 
   @autobind
@@ -146,24 +101,6 @@ export default class SiteHeader extends React.Component {
   }
 
   @autobind
-  handleHomepageClick() {
-    this.props.dashboardDisplay('');
-  }
-
-  @autobind
-  handleHelpClick() {
-    this.setState({
-      welcomeOpen: true,
-    }, () => {
-      const elem = document.querySelector('.step');
-      if (elem) {
-        document.querySelector('.step').style.height = `${window.innerHeight}px`
-        document.querySelector('.step').style.width = `${window.innerWidth}px`
-      }
-    });
-  }
-
-  @autobind
   handleSettingsTouchTap(e) {
     e.preventDefault();
     this.setState({
@@ -180,28 +117,6 @@ export default class SiteHeader extends React.Component {
   handlePayeeInfoClick() {
     this.handleSettingsRequestClose()
     browserHistory.replace('/complete-payee-info')
-  }
-
-  @autobind
-  handleNext() {
-    const index = this.state.stepIndex;
-    if (index < 2) {
-      this.setState({
-        stepIndex: index + 1,
-      });
-    } else {
-      this.handleWelcomeClose();
-    }
-  }
-
-  @autobind
-  handlePrev() {
-    const index = this.state.stepIndex;
-    if (index > 0) {
-      this.setState({
-        stepIndex: index - 1,
-      });
-    }
   }
 
   render() {
@@ -347,36 +262,15 @@ export default class SiteHeader extends React.Component {
       );
     }
 
-    const { stepIndex, welcomeOpen, handleWelcomeClose } = this.state
-
     return (
       <header className="site-header">
         <div className="container">
           <span className="brand"><Link to="/" style={{ color: '#fff', fontSize: '20px' }}>WeTeach</Link></span>
           {dynamicContent}
         </div>
-        <Dialog
-          modal={false}
-          className="welcomeDialog"
-          bodyClassName="welcomeBody"
-          autoScrollBodyContent
-          contentClassName="welcomeContent"
-          open={welcomeOpen}
-          onRequestClose={handleWelcomeClose}
-          contentStyle={{ width: '100%', maxWidth: '100%', transform: 0 }}
-          overlayStyle={{ backgroundColor: 'transparent' }}
-          bodyStyle={{ padding: 0 }}
-        >
-          <a href="#" onClick={this.handleWelcomeClose}>
-            <i className="fa fa-times" style={{ position: 'absolute', right: 24, top: 14, cursor: 'pointer', fontSize: '50px', color: '#fff' }} />
-          </a>
-          <Stepper activeStep={stepIndex} />
-          <a href="#" className="back-arrow" onClick={this.handlePrev} disabled={stepIndex === 0}><i className="fa fa-angle-left fa-3" /></a>
-          <div className="step-content" style={{ width: '100%', height: '100%', display: 'inline-block', verticalAlign: 'top', overflow: 'hidden', borderRadius: 3 }}>
-            {this.getStepContent(stepIndex)}
-          </div>
-          <a href="#" className="next-arrow" onClick={this.handleNext}>{stepIndex === 2 ? <span className="finish-btn">End</span> : <i className="fa fa-angle-right fa-3" />}</a>
-        </Dialog>
+        {
+          status > 9 ? <DisplayHelp /> : null
+        }
       </header>
     )
   }

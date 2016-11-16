@@ -2,8 +2,8 @@ import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import { Field, reduxForm } from 'redux-form'
 import { TextField } from 'redux-form-material-ui'
-import WaitForSubmit from './universal/WaitForSubmit'
 import WrappedSelect from './universal/WrappedSelect';
+import WaitForSubmit from './universal/WaitForSubmit'
 
 class EditProfileForm extends React.Component {
 
@@ -102,7 +102,15 @@ class EditProfileForm extends React.Component {
         </div>
         <div className="submit text-center">
           <div className="btn">
-            <RaisedButton disabled={pristine} className="submit-btn" label="Save" labelStyle={{ fontSize: 26 }} style={{ width: 200, height: 48 }} primary type="submit" />
+            <RaisedButton
+              disabled={pristine}
+              className="submit-btn"
+              label="Save"
+              labelStyle={{ fontSize: 26 }}
+              style={{ width: 200, height: 48 }}
+              primary
+              type="submit"
+            />
             <WaitForSubmit ref="loader" />
           </div>
         </div>

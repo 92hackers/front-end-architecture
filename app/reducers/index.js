@@ -8,6 +8,8 @@ import geoResources from './geoResources';
 import payeeInfo from './payeeInfo';
 import onlineTest from './onlineTest';
 import timetable from './timetable';
+import utility from './utility'
+import application from './application'
 
 const allReducers = combineReducers({
   pendingCounter,
@@ -18,6 +20,8 @@ const allReducers = combineReducers({
   payeeInfo,
   onlineTest,
   timetable,
+  utility,
+  application,
 });
 
 export default allReducers
