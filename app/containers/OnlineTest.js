@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { notificationActions, apiActions } from '../actions';
-import OnlineTestComp from '../teacher-components/online-test/OnlineTestComp';
+import { default as Comp } from '../components/online-test/OnlineTest';
 
 const mapStateToProps = state => ({
   pendingCounter: state.pendingCounter,
@@ -16,6 +16,6 @@ const mapDispatchToProps = dispatch => ({
   showNotification: message => dispatch(notificationActions.showNotification(message)),
 })
 
-const OnlineTest = connect(mapStateToProps, mapDispatchToProps)(OnlineTestComp);
+const OnlineTest = connect(mapStateToProps, mapDispatchToProps)(Comp);
 
 export default OnlineTest;

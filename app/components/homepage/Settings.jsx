@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-class UserSettings extends React.Component {
+export default class UserSettings extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
@@ -72,5 +72,3 @@ class UserSettings extends React.Component {
     )
   }
 }
-
-export default UserSettings

@@ -17,7 +17,7 @@ import BestPracitices from './BestPracitices';
 import LessonGuide from './LessonGuide';
 import SpecialConsiderations from './SpecialConsiderations';
 
-class OnlineTestComp extends React.Component {
+export default class OnlineTest extends React.Component {
 
   constructor(props) {
     super(props);
@@ -189,5 +189,3 @@ class OnlineTestComp extends React.Component {
     )
   }
 }
-
-export default OnlineTestComp;

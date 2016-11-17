@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { notificationActions, apiActions } from '../actions';
-import { default as Comp } from '../teacher-components/UserSettings';
+import { default as Comp } from '../components/homepage/Settings';
 
 const mapStateToProps = () => ({
 

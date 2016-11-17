@@ -9,6 +9,8 @@ import gulpUtil from 'gulp-util'
 import eslint from 'gulp-eslint'
 import styleLint from 'gulp-stylelint'
 
+/* eslint global-require: 0 */
+
 gulp.task('clean', () => {
   gulpUtil.log('cleaning...')
   del(['build', 'builg.tar.gz'])
@@ -34,68 +36,68 @@ gulp.task('sprites', () => {
   return sprity.src({
     src: './app/sprites-source/*.{png,jpg}',
     style: './sprite.css',
-    engine: "lwip",
+    engine: 'lwip',
     margin: 0,
-    cssPath: "/images"        //   url path in css file.
+    cssPath: '/images',      //   url path in css file.
   })
   .pipe(gulpif('*.png', gulp.dest('./app/sprites/images/'), gulp.dest('./app/sprites/css/')))
 });
 
-gulp.task("webpack-dev", () => {
-  gulpUtil.log("\n");
-  gulpUtil.log("If you has add images, you should exec 'gulp sprites' first. ");
-  gulpUtil.log("\n");
+gulp.task('webpack-dev', () => {
+  gulpUtil.log('\n');
+  gulpUtil.log('If you has add images, you should exec "gulp sprites" first. ');
+  gulpUtil.log('\n');
 
-  var webpackDevServer = require("webpack-dev-server");
-  var webpackDev = require("./packing/webpack-dev");
+  const WebpackDevServer = require('webpack-dev-server');
+  const webpackDev = require('./packing/webpack-dev');
 
-  webpackDev.entry.unshift("webpack-dev-server/client?http://localhost:3001/");
+  webpackDev.entry.unshift('webpack-dev-server/client?http://localhost:3001/');
 
-  var webpackServerOptions = {
+  const webpackServerOptions = {
     publicPath: '/',
     contentBase: '/',
-    historyApiFallback: false,
     hot: true,
     proxy: {
-      "**": "http://localhost:3000"
+      '**': 'http://localhost:3000',
     },
     historyApiFallback: true,
     stats: {
-      colos: true
+      colos: true,
     },
-    compress: true
+    compress: true,
   };
 
-  var devServer = new webpackDevServer(webpack(webpackDev), webpackServerOptions);
+  const devServer = new WebpackDevServer(webpack(webpackDev), webpackServerOptions);
 
-  devServer.listen(config.devPort, "localhost", (err) => {
+  devServer.listen(config.devPort, 'localhost', (err) => {
     if (err) {
-      throw new gulpUtil.PluginError("webpack-dev-server", err);
+      throw new gulpUtil.PluginError('webpack-dev-server', err);
     }
-    gulpUtil.log("[webpack-dev-server] is listening on Port: " + config.devPort );
+    gulpUtil.log(`[webpack-dev-server] is listening on Port: ${config.devPort}`)
   });
 });
 
-gulp.task("webpack-build", () => {
-  gulpUtil.log("\n");
-  gulpUtil.log("If you has add images, you should exec 'gulp sprites' first. ");
-  gulpUtil.log("\n");
-  var webpackBuild = require("./packing/webpack-build");
-	webpack(webpackBuild, (err, stats) => {
-		if (err)
-			throw new gulpUtil.PluginError("webpack", err);
+gulp.task('webpack-build', () => {
+  gulpUtil.log('\n');
+  gulpUtil.log('If you has add images, you should exec "gulp sprites" first. ');
+  gulpUtil.log('\n');
+  const webpackBuild = require('./packing/webpack-build');
+  webpack(webpackBuild, (err, stats) => {
+    if (err) {
+      throw new gulpUtil.PluginError('webpack', err);
+    }
 
-    var assets = JSON.stringify(stats.toJson().assetsByChunkName);
+    const assets = JSON.stringify(stats.toJson().assetsByChunkName);
 
-    fs.writeFileSync("build/assets.json",assets);
-		gulpUtil.log("[webpack]", stats.toString());
-	});
+    fs.writeFileSync('build/assets.json', assets);
+    gulpUtil.log('[webpack]', stats.toString());
+  });
 });
 
-gulp.task("dev", () => {
-  runSequence("clean", "webpack-dev", (err) => {
+gulp.task('dev', () => {
+  runSequence('clean', 'webpack-dev', (err) => {
     if (err) {
-      throw new gulpUtil.PluginError("gulp dev", err);
+      throw new gulpUtil.PluginError('gulp dev', err);
     }
   });
 });
@@ -108,12 +110,12 @@ gulp.task('lint', () => {
   })
 })
 
-gulp.task("build", () => {
-	runSequence("clean", "webpack-build", (err) => {
-		if (err) {
-      gulpUtil.log("error: ", err);
-		} else {
-      gulpUtil.log(new Date(), "build successfully");
-		}
-	});
+gulp.task('build', () => {
+  runSequence('clean', 'webpack-build', (err) => {
+    if (err) {
+      gulpUtil.log('error: ', err);
+    } else {
+      gulpUtil.log(new Date(), 'build successfully');
+    }
+  });
 });

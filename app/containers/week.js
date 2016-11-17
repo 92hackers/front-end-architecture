@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { notificationActions, apiActions } from '../actions';
-import { default as Comp } from '../components/universal/Week';
+import { default as Comp } from '../components/homepage/Week';
 
 const mapStateToProps = () => ({
 
