@@ -13,16 +13,16 @@ import SiteLoading from '../containers/SiteLoading';
 
 class AppContainer extends React.Component {
 
-  componentDidMount() {
-    this.auth();
+  componentWillMount() {
+    const { loggedIn } = this.props
+    this.auth(loggedIn)
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('updateing app.');
     const { profile, loggedIn } = nextProps
     const { status } = profile
     if (loggedIn !== this.props.loggedIn || status !== this.props.profile.status) {
-      this.auth();
+      this.auth(loggedIn);
     }
   }
 
@@ -79,18 +79,25 @@ class AppContainer extends React.Component {
     }
   }
 
-  auth() {
+  auth(loggedIn) {
     const requestRoute = this.props.location.pathname.replace(/\//, '');
-    const { loggedIn, getProfile, showNotification, clearCounter, signOut } = this.props
+    const {
+      getProfile,
+      showNotification,
+      increaseCounter,
+      decreaseCounter,
+      clearCounter,
+      signOut,
+    } = this.props
 
     if (loggedIn) {
-      self.props.increaseCounter();
+      increaseCounter();
 
       getProfile().then((res) => {
         const { success, data } = res.payload
         if (success) {
-          self.router(requestRoute, data.status, data.examined);
-          self.props.decreaseCounter();
+          this.router(requestRoute, data.status, data.examined);
+          decreaseCounter();
         } else {
           showNotification('Your session has expired, Please sign in again.')
           clearCounter()

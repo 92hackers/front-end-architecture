@@ -50,7 +50,8 @@ export default class InputNewPassword extends React.Component {
     };
 
     if (resetToken.length) {
-      resetPassword(data).then((res) => {
+      resetPassword(data)
+      .then((res) => {
         if (res.payload.success) {
           showNotification('Your password has been updated. Please log in with new password.')
           const timeId = setTimeout(() => {
@@ -61,6 +62,7 @@ export default class InputNewPassword extends React.Component {
           networkError()
         }
       })
+      .catch(() => networkError())
     } else {
       showNotification('Something wrong. Try again later.');
     }

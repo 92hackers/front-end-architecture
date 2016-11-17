@@ -17,4 +17,4 @@ import './gestures.png';
 import './guide-1.jpg';
 import './guide-2.jpg';
 import './guide-3.jpg';
-import './weteach.ico';
+import './icon-teach.ico';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import FormValidate from 'validate-js';
-import nprogress from 'nprogress';
 import { autobind } from 'core-decorators'
 
 import TextField from 'material-ui/TextField';
@@ -47,7 +46,6 @@ export default class SignIn extends React.Component {
       return;
     }
 
-    nprogress.start();
     this.refs.loader.displayLoader();
 
     const data = {
@@ -56,8 +54,7 @@ export default class SignIn extends React.Component {
     }
 
     signIn(data).then((res) => {
-      self.refs.loader.hideLoader();
-      nprogress.done();
+      console.log('sign in successed.');
       if (res.payload.success) {
         const queryParam = self.props.location.query.action
         if (res.payload.data.status === 1 && queryParam === 'resendEmail') {

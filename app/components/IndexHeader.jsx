@@ -5,9 +5,10 @@ import SignOutButton from './universal/SignOutButton';
 const IndexHeader = (props) => {
   let dynamicContent = ''
   const { loggedIn, profile } = props
-  const { status, examined } = profile
 
   if (loggedIn) {
+    const { status, examined } = profile
+
     switch (status) {
       case 2:
         dynamicContent = (

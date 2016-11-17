@@ -47,6 +47,22 @@ class BasicInfo extends React.Component {
         break;
       }
     }
+
+    const {
+      getNationalityList,
+      getCountryList,
+      getTimezoneList,
+      getRegionList,
+      getCityList,
+
+      residence_n,
+      residence_p,
+    } = this.props
+    if (residence_n) getRegionList(residence_n)
+    if (residence_p) getCityList(residence_p)
+    getNationalityList()
+    getCountryList()
+    getTimezoneList()
   }
 
   @autobind
@@ -664,7 +680,7 @@ class BasicInfo extends React.Component {
   }
 }
 
-console.log(BasicInfo);     // TODO:  是否这里可以用 BasicInfo 取得他的里面的 props.
+
 BasicInfo = reduxForm({
   form: 'applicationBasicInfo',
   initialValues: {

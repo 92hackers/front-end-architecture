@@ -57,7 +57,7 @@ class PayeeInfo extends React.Component {
 
     let warn = ''
     if (!region) {
-      warn = "Please select payee's region of found collection."
+      warn = "Please select payee's region of fund collection."
     } else if (!country) {
       warn = "Please select payee's country of residence."
     } else if (!name) {
@@ -72,8 +72,6 @@ class PayeeInfo extends React.Component {
       warn = "Please input payee's account number."
     } else if (!swiftCode) {
       warn = "Please input payee's bank's SWIFT code."
-    } else if (swiftCode.trim().length < 8 || swiftCode.trim().length > 11) {
-      warn = 'Please input correct SWIFT code.'
     } else if (!bankName) {
       warn = "Please click Confirm button to complete payee's bank full name."
     } else if (country === 2036 && !bankCode) {
@@ -127,7 +125,7 @@ class PayeeInfo extends React.Component {
             <form onSubmit={handleSubmit(this.handleSubmit)}>
               <ul className="fields-list">
                 <li className="select">
-                  <span className="label">Region of found collection:</span>
+                  <span className="label">Region of fund collection:</span>
                   <Field
                     className="field"
                     name="region"
@@ -137,7 +135,7 @@ class PayeeInfo extends React.Component {
                   />
                 </li>
                 <li className="select">
-                  <span className="label">Payee&apos;s country(region) of residence:</span>
+                  <span className="label">Payee&apos;s country (region) of residence:</span>
                   <Field
                     className="field"
                     name="country"
@@ -198,7 +196,7 @@ class PayeeInfo extends React.Component {
                   </div>
                 </li>
                 <li>
-                  <span className="label">Payee&apos;s bank full name:</span>
+                  <span className="label">Payee&apos;s bank&apos;s full name:</span>
                   <Field
                     data-for="payee-info"
                     data-tip="The full name of the receiving bank must<br />contain branch name. Maximum length<br />is 105 characters."

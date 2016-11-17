@@ -15,9 +15,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   signOut: () => dispatch(userActions.signOut()),
   getProfile: () => dispatch(apiActions.getProfile()),
+
   increaseCounter: () => dispatch(pendingCounterActions.increaseCounter()),
   decreaseCounter: () => dispatch(pendingCounterActions.decreaseCounter()),
   clearCounter: () => dispatch(pendingCounterActions.clearCounter()),
+
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })

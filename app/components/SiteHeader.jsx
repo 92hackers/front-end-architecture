@@ -121,7 +121,6 @@ export default class SiteHeader extends React.Component {
 
   render() {
     const { profile, loggedIn } = this.props;
-    const { status, examined } = profile
 
     const { settingsOpen, settingsAnchorEl, open, anchorEl } = this.state
 
@@ -159,6 +158,8 @@ export default class SiteHeader extends React.Component {
     );
 
     if (loggedIn) {
+      const { status, examined } = profile
+
       if (status === 2) {
         dynamicContent = (
           <ul className="right">

@@ -6,13 +6,15 @@ const REQUEST = 'REQUEST'
 const SUCCESS = 'SUCCESS'
 const FAILURE = 'FAILURE'
 
+/* eslint no-param-reassign: ["error", { "props": false }] */
+
 export function createRequestTypes(base) {
   return [REQUEST, SUCCESS, FAILURE].reduce((acc, type) => {
-    const tmp = {}
-    tmp[type] = `${base}_${type}`
-    return tmp
+    acc[type] = `${base}_${type}`
+    return acc
   }, { type: base })
 }
+
 
 export function createAction(type, payload = {}) {
   return { type, ...payload }

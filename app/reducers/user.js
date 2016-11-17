@@ -42,10 +42,10 @@ const initialState = {
 const { SIGNIN, PROFILE, UPLOAD_TOKEN } = apiActions
 
 export default function user(state = initialState, action) {
-  const { payload } = action
+  const { payload, type } = action
   const data = payload ? payload.data : []
 
-  switch (action.type) {
+  switch (type) {
     case SIGNIN.REQUEST:
       return { ...state, isFetching: true };
 
@@ -53,6 +53,10 @@ export default function user(state = initialState, action) {
       const { token } = data
       localStorage.setItem('user_token', token)
       return { ...state, isFetching: false, token, loggedIn: true }
+    }
+
+    case userActions.SIGN_IN_SESSION: {
+      return { ...state, token: action.token, loggedIn: true }
     }
 
     case SIGNIN.FAILURE:

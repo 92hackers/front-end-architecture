@@ -12,38 +12,17 @@ import { red500 } from 'material-ui/styles/colors';
 import SiteLoading from '../../containers/SiteLoading';
 import WaitForSubmit from '../universal/WaitForSubmit';
 
-import BasicInfo from './BasicInfo'
-import TeachingExperience from './TeachingExperience'
-import ScheduleInterview from './ScheduleInterview'
-
 export default class StepToSignUp extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       stepIndex: 0,
       timezoneId: '',
       confirmDialogueOpen: false,
       isFinished: false,
     }
-  }
-
-  componentDidMount() {
-    const {
-      getNationalityList,
-      getCountryList,
-      getTimezoneList,
-      getRegionList,
-      getCityList,
-
-      residence_n,
-      residence_p,
-    } = this.props
-    if (residence_n) getRegionList(residence_n)
-    if (residence_p) getCityList(residence_p)
-    getNationalityList()
-    getCountryList()
-    getTimezoneList()
   }
 
   handleNext() {
@@ -61,112 +40,6 @@ export default class StepToSignUp extends React.Component {
       this.setState({
         stepIndex: stepIndex - 1,
       });
-    }
-  }
-
-  setTimezoneId(id) {
-    this.setState({
-      timezoneId: id,
-    })
-  }
-
-  getContent(stepIndex) {
-    const {
-      profile,
-      timezoneId,
-      showNotification,
-      networkError,
-      getProfile,
-      nationalityList,
-      countryList,
-      regionList,
-      cityList,
-      timezoneList,
-      getRegionList,
-      getCityList,
-      updateBasicInfo,
-      updateInterview,
-      updateTeachingExp,
-      changeTimezoneAtApplication,
-      getInterviewList,
-      interviewTimeList,
-    } = this.props
-
-    switch (stepIndex) {
-      case 0: {
-        let experience = '';
-
-        switch (profile.experience) {
-          case 3 :
-            experience = 2;
-            break;
-          case 2 :
-            experience = 1;
-            break;
-          case 1 :
-            experience = 0;
-            break;
-          default:
-            experience = '';
-        }
-
-        return (
-          <BasicInfo
-            {...{
-              profile,
-              showNotification,
-              networkError,
-              nationalityList,
-              countryList,
-              regionList,
-              cityList,
-              timezoneList,
-              getRegionList,
-              getCityList,
-              timezoneId,
-              updateBasicInfo,
-              changeTimezoneAtApplication,
-            }}
-            stepToNext={this.handleNext}
-            displayLoader={this.displayLoader}
-            displaySuccess={this.displaySuccess}
-            displayError={this.displayError}
-            teachExpValue={experience}
-            ref="basicInfo"
-          />
-        )
-      }
-      case 1:
-        return (
-          <TeachingExperience
-            stepToNext={this.handleNext}
-            displayLoader={this.displayLoader}
-            displaySuccess={this.displaySuccess}
-            displayError={this.displayError}
-            parent={this}
-            showNotification={showNotification}
-            networkError={networkError}
-            profile={profile}
-            updateTeachingExp={updateTeachingExp}
-            ref="teachingExperience"
-          />
-        )
-      case 2:
-        return (
-          <ScheduleInterview
-            getProfile={getProfile}
-            showNotification={showNotification}
-            networkError={networkError}
-            timezoneId={timezoneId}
-            displaySuccessWorlds={this.displaySuccessWorlds}
-            updateInterview={updateInterview}
-            getInterviewList={getInterviewList}
-            interviewTimeList={interviewTimeList}
-            ref="scheduleInterview"
-          />
-        )
-      default:
-        return (<h1>some thing wrong.</h1>);
     }
   }
 
@@ -260,6 +133,8 @@ export default class StepToSignUp extends React.Component {
       />
     )
 
+    const { children, profile } = this.props
+
     /* eslint max-len: 0 */
     const content = this.state.isFinished ? (
       <div className="successful-words">
@@ -274,7 +149,9 @@ export default class StepToSignUp extends React.Component {
       </div>
     ) : (
       <div>
-        {this.getContent(stepIndex)}
+        {
+          React.cloneElement(children, { profile })
+        }
         <div className="text-center two-buttons">
           <div className="btn-group">
             <FlatButton

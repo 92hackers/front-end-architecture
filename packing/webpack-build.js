@@ -91,7 +91,10 @@ module.exports = {
   plugins: process.env.NODE_ENV === 'production' ? [
     new ExtractTextPlugin('css/[name].[hash:8].css'),
     new HtmlWebpackPlugin(htmlOptions),
-    new webpack.DefinePlugin({          //   modify
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
       ENV: JSON.stringify('production'),
       API_HOST: JSON.stringify(config.productionHost),
       API_VERSION: JSON.stringify(config.apiVersion),
@@ -103,10 +106,15 @@ module.exports = {
     new ExtractTextPlugin('css/[name].[hash:8].css'),
     new HtmlWebpackPlugin(htmlOptions),
     new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
       ENV: JSON.stringify('dev'),
       API_HOST: JSON.stringify(config.devHost),
       API_VERSION: JSON.stringify(config.apiVersion),
     }),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin(uglifyOptions),
   ],
   postcss: () => {

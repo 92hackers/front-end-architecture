@@ -13,7 +13,7 @@ import ForgetPassword from './containers/ForgetPassword';
 import VerifyYourEmail from './containers/VerifyYourEmail';
 import TAboutSchool from './components/AboutSchool';
 import TAboutJob from './components/AboutJob';
-import StepToSignUp from './containers/StepToSignUp';
+import StepToSignUp from './components/application-steps/StepToSignUp';
 // import  from './teacher-components/ScheduleCourse';
 import Index from './components/Index';
 import Timetables from './components/homepage/Timetables'
@@ -29,16 +29,19 @@ import EditProfile from './containers/editProfile';
 import PayeeInfo from './containers/payeeInfo';
 import WeeklyTemplate from './containers/homepage/weeklyTemplate'
 import Settings from './containers/homepage/settings'
+import BasicInfo from './containers/application-steps/basicInfo'
+import ScheduleInterview from './containers/application-steps/scheduleInterview'
+import TeachingExperience from './components/application-steps/TeachingExperience'
 
 import NotFound from './components/universal/NotFound';
 import { store } from './config';
 
-injectTapEventPlugin();         // todo: 急需做 Authorization.
-
-const token = localStorage.getItem('user_token') || '';
+const token = localStorage.getItem('user_token')
 if (token) {
-  store.store.dispatch(userActions.signIn(token));
+  store.default.dispatch(userActions.signInSession(token))
 }
+
+injectTapEventPlugin();         // todo: 急需做 Authorization.
 
 const scrollBehavior = () => [0, 0]
 
@@ -49,6 +52,23 @@ const routes = {
   childRoutes: [
     { path: 'sign-up', component: SignUp },
     { path: 'sign-in', component: SignIn },
+    { path: 'step-to-sign-up',
+      component: StepToSignUp,
+      childRoutes: [
+        {
+          path: 'basic-information',
+          component: BasicInfo,
+        },
+        {
+          path: 'teaching-experience',
+          component: TeachingExperience,
+        },
+        {
+          path: 'schedule-interview',
+          component: ScheduleInterview,
+        },
+      ],
+    },
     { path: 'teacher-homepage',         //    add  router to dashboard components.
       component: Homepage,
       childRoutes: [
@@ -76,13 +96,12 @@ const routes = {
     { path: 'activate-your-account', component: VerifyYourEmail },
     { path: 'about-job', component: TAboutJob },
     { path: 'about-school', component: TAboutSchool },
-    { path: 'step-to-sign-up', component: StepToSignUp },
     { path: '*', component: NotFound },
   ],
 };
 
 ReactDom.render((
-  <Provider store={store.store}>
+  <Provider store={store.default}>
     <Router
       routes={routes}
       render={applyRouterMiddleware(useScroll(scrollBehavior))}

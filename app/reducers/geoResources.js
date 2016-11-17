@@ -2,6 +2,7 @@ import { apiActions } from '../actions'
 
 const initialState = {
   isFetching: false,
+  nationalityList: [],
   countryList: [],
   regionList: [],
   cityList: [],
