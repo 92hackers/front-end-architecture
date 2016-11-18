@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, applicationActions } from '../actions';
 import { default as Comp } from '../components/universal/AvatarUpload';
 
 const mapStateToProps = () => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  uploadFileData: data => dispatch(apiActions.uploadFileData(data)),
+  uploadFileData: data => dispatch(applicationActions.uploadFileData(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
 })
 

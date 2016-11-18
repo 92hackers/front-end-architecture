@@ -1,8 +1,9 @@
-import { userActions, apiActions } from '../actions';
+import { userActions } from '../actions';
 
 const initialState = {
   token: '',
-  isFetching: false,
+  signInPending: '',
+  profileIsFetching: '',
   loggedIn: false,
   uploadToken: '',
   profile: {
@@ -39,7 +40,12 @@ const initialState = {
   },
 };
 
-const { SIGNIN, PROFILE, UPLOAD_TOKEN } = apiActions
+const {
+  SIGNIN,
+  SIGN_IN_SESSION,
+  PROFILE,
+  SIGN_OUT,
+} = userActions
 
 export default function user(state = initialState, action) {
   const { payload, type } = action
@@ -47,43 +53,34 @@ export default function user(state = initialState, action) {
 
   switch (type) {
     case SIGNIN.REQUEST:
-      return { ...state, isFetching: true };
+      return { ...state, signInPending: true };
 
     case SIGNIN.SUCCESS: {
       const { token } = data
       localStorage.setItem('user_token', token)
-      return { ...state, isFetching: false, token, loggedIn: true }
-    }
-
-    case userActions.SIGN_IN_SESSION: {
-      return { ...state, token: action.token, loggedIn: true }
+      return { ...state, signInPending: false, token, loggedIn: true }
     }
 
     case SIGNIN.FAILURE:
-      return { ...state, isFetching: false, error: true }
+      return { ...state, signInPending: false }
 
-    case userActions.SIGN_OUT: {
+    case SIGN_IN_SESSION: {
+      return { ...state, token: action.token, loggedIn: true }
+    }
+
+    case SIGN_OUT: {
       localStorage.removeItem('user_token');
-      return { ...state, token: '', profile: '', isFetching: false, loggedIn: false }
+      return { ...state, token: '', profile: '', loggedIn: false }
     }
 
     case PROFILE.REQUEST:
-      return { ...state, isFetching: true }
+      return { ...state, profileIsFetching: true }
 
     case PROFILE.SUCCESS:
-      return { ...state, isFetching: false, profile: data }
+      return { ...state, profileIsFetching: false, profile: data }
 
     case PROFILE.FAILURE:
-      return { ...state, isFetching: false, error: true }
-
-    case UPLOAD_TOKEN.REQUEST:
-      return { ...state, isFetching: true }
-
-    case UPLOAD_TOKEN.SUCCESS:
-      return { ...state, isFetching: false, uploadToken: data.up_token }
-
-    case UPLOAD_TOKEN.FAILURE:
-      return { ...state, isFetching: false, error: true }
+      return { ...state, profileIsFetching: false }
 
     default:
       return state;

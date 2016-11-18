@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, userActions, onlineTestActions } from '../actions';
 import { default as Comp } from '../components/online-test/OnlineTest';
 
 const mapStateToProps = state => ({
@@ -9,11 +9,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getProfile: () => dispatch(apiActions.getProfile()),
-  getTestQuestions: step => dispatch(apiActions.getTestQuestions(step)),
-  clearTestQuestions: () => dispatch(apiActions.clearTestQuestions()),
-  checkAnswer: (step, data) => dispatch(apiActions.checkAnswer(step, data)),
+  getProfile: () => dispatch(userActions.getProfile()),
+  getTestQuestions: step => dispatch(onlineTestActions.getTestQuestions(step)),
+  clearTestQuestions: () => dispatch(onlineTestActions.clearTestQuestions()),
+  checkAnswer: (step, data) => dispatch(onlineTestActions.checkAnswer(step, data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
+  networkError: () => dispatch(notificationActions.networkError()),
 })
 
 const OnlineTest = connect(mapStateToProps, mapDispatchToProps)(Comp);

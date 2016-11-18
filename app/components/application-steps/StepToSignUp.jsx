@@ -9,7 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import { red500 } from 'material-ui/styles/colors';
 
-import SiteLoading from '../../containers/SiteLoading';
+import { default as SiteLoading } from '../universal/Loading';
 import WaitForSubmit from '../universal/WaitForSubmit';
 
 export default class StepToSignUp extends React.Component {

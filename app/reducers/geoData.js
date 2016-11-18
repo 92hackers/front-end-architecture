@@ -1,7 +1,7 @@
-import { apiActions } from '../actions'
+import { geoDataActions } from '../actions'
 
 const initialState = {
-  isFetching: false,
+  isFetching: '',
   nationalityList: [],
   countryList: [],
   regionList: [],
@@ -9,6 +9,7 @@ const initialState = {
   timezoneList: [],
   continentList: [],
   continentCountryList: [],
+  failed: false,
 }
 
 const {
@@ -19,7 +20,7 @@ const {
   GEO_REGION,
   GEO_CITY,
   GEO_TIMEZONE,
-} = apiActions
+} = geoDataActions
 
 const { REQUEST: gctr, SUCCESS: gcts, FAILURE: gctf } = GEO_CONTINENT
 const { REQUEST: gctcr, SUCCESS: gctcs, FAILURE: gctcf } = GEO_CONTINENTCOUNTRY
@@ -29,7 +30,7 @@ const { REQUEST: grr, SUCCESS: grs, FAILURE: grf } = GEO_REGION
 const { REQUEST: gcir, SUCCESS: gcis, FAILURE: gcif } = GEO_CITY
 const { REQUEST: gtr, SUCCESS: gts, FAILURE: gtf } = GEO_TIMEZONE
 
-export default function countryList(state = initialState, action) {
+export default function geoData(state = initialState, action) {
   const { type, payload } = action
   const data = payload ? payload.data : []
   switch (type) {

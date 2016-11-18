@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, timetableActions } from '../actions';
 import { default as Comp } from '../components/homepage/Week';
 
 const mapStateToProps = () => ({
@@ -7,7 +7,7 @@ const mapStateToProps = () => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateWeekTimetable: data => dispatch(apiActions.updateWeekTimetable(data)),
+  updateWeekTimetable: data => dispatch(timetableActions.updateWeekTimetable(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })

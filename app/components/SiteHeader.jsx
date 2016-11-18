@@ -4,7 +4,7 @@ import { browserHistory, Link } from 'react-router';
 import { autobind } from 'core-decorators';
 import { List, ListItem } from 'material-ui/List';
 import Popover from 'material-ui/Popover';
-import SignOutButton from './universal/SignOutButton';
+import SignOutButton from '../containers/signOutButton';
 import DisplayHelp from '../containers/displayHelp'
 
 export default class SiteHeader extends React.Component {
@@ -17,8 +17,6 @@ export default class SiteHeader extends React.Component {
       welcomeOpen: false,
       stepIndex: 0,
     };
-    this.handleEditProfile = this.handleEditProfile.bind(this)
-    this.handlePayeeInfoClick = this.handlePayeeInfoClick.bind(this)
   }
 
   @autobind
@@ -32,7 +30,6 @@ export default class SiteHeader extends React.Component {
   @autobind
   handleTouchTap(e) {
     e.preventDefault();
-
     this.setState({
       open: true,
       anchorEl: e.currentTarget,
@@ -54,69 +51,12 @@ export default class SiteHeader extends React.Component {
   }
 
   @autobind
-  handleInvite() {
-    this.handleInviteDialogOpen();
-  }
-
-  @autobind
-  handleInviteDialogClose() {
-    this.setState({
-      inviteDialogOpen: false,
-    });
-  }
-
-  @autobind
-  handleInviteDialogOpen() {
-    this.setState({
-      inviteDialogOpen: true,
-    });
-  }
-
-  @autobind
-  handleEditProfileClick() {
-    this.handleRequestClose();
-    browserHistory.push('/teacher-homepage');
-    this.props.dashboardDisplay('editProfile');
-  }
-
-  @autobind
-  handleSettingClick() {
-    this.handleSettingsRequestClose();
-    browserHistory.push('/teacher-homepage');
-    this.props.dashboardDisplay('setting');
-  }
-
-  @autobind
-  handleScheduleClick() {
-    this.handleRequestClose();
-    browserHistory.push('/teacher-homepage');
-    this.props.dashboardDisplay('schedule');
-  }
-
-  @autobind
-  handleTemplateClick() {
-    this.handleRequestClose();
-    browserHistory.push('/teacher-homepage');
-    this.props.dashboardDisplay('template');
-  }
-
-  @autobind
   handleSettingsTouchTap(e) {
     e.preventDefault();
     this.setState({
       settingsOpen: true,
       settingsAnchorEl: e.currentTarget,
     });
-  }
-
-  handleEditProfile() {
-    this.handleSettingsRequestClose();
-    browserHistory.replace('/edit-profile')
-  }
-
-  handlePayeeInfoClick() {
-    this.handleSettingsRequestClose()
-    browserHistory.replace('/complete-payee-info')
   }
 
   render() {
@@ -197,7 +137,7 @@ export default class SiteHeader extends React.Component {
                   {settingsMenu}
                   <SignOutButton />
                 </ul>
-              );
+              )
             }
             break;
           case 8:

@@ -88,7 +88,7 @@
     "react-infinite-calendar": "^1.1.17",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
-    "react-router-redux": "^4.0.6",
+    "react-router-redux": "^4.0.7",
     "react-router-scroll": "^0.3.2",
     "react-select": "^1.0.0-rc.2",
     "react-tap-event-plugin": "^1.0.0",

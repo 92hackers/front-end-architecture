@@ -8,8 +8,8 @@ import { blue500 } from 'material-ui/styles/colors';
 import SiteHeader from '../components/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
 
-import SiteNotification from '../containers/SiteNotification';
-import SiteLoading from '../containers/SiteLoading';
+import SiteNotification from '../containers/siteNotification';
+import { default as SiteLoading } from '../components/universal/Loading';
 
 class AppContainer extends React.Component {
 
@@ -136,10 +136,10 @@ class AppContainer extends React.Component {
             {
               !pendingCounter ? (
                 <div>
-                  <SiteHeader />
+                  <SiteHeader profile={profile} loggedIn={loggedIn} />
                   { React.cloneElement(children, { loggedIn, profile }) }
                 </div>
-                  ) : <SiteLoading />
+                  ) : <SiteLoading pendingCounter={pendingCounter} />
             }
           </MuiThemeProvider>
           <MuiThemeProvider muiTheme={muiTheme}>

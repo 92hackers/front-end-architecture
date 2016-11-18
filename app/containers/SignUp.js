@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, userActions } from '../actions';
 import { default as Comp } from '../components/SignUp'
 
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = dispatch => ({
-  signUp: data => dispatch(apiActions.signUp(data)),
+  signUp: data => dispatch(userActions.signUp(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
 })
 

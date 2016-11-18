@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, userActions } from '../actions';
 import ForgetPasswordComp from '../components/ForgetPassword';
 
 const mapStateToProps = () => ({
@@ -7,7 +7,7 @@ const mapStateToProps = () => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  resetPassword: data => dispatch(apiActions.resetPassword(data)),
+  resetPassword: data => dispatch(userActions.resetPassword(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })

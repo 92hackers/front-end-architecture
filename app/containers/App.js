@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppContainer from '../components/AppContainer';
-import { notificationActions, userActions, apiActions, pendingCounterActions } from '../actions';
+import { notificationActions, userActions, pendingCounterActions } from '../actions';
 
 const mapStateToProps = (state) => {
   const { pendingCounter, user } = state
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   signOut: () => dispatch(userActions.signOut()),
-  getProfile: () => dispatch(apiActions.getProfile()),
+  getProfile: () => dispatch(userActions.getProfile()),
 
   increaseCounter: () => dispatch(pendingCounterActions.increaseCounter()),
   decreaseCounter: () => dispatch(pendingCounterActions.decreaseCounter()),

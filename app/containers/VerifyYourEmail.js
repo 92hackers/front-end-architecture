@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions, pendingCounterActions } from '../actions';
+import { notificationActions, userActions, pendingCounterActions } from '../actions';
 import { default as Comp } from '../components/VerifyYourEmail';
 
 const mapStateToProps = (state) => {
@@ -11,8 +11,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  activateAccount: activeCode => dispatch(apiActions.activateAccount(activeCode)),
-  getProfile: () => dispatch(apiActions.getProfile()),
+  activateAccount: activeCode => dispatch(userActions.activateAccount(activeCode)),
+  getProfile: () => dispatch(userActions.getProfile()),
   increaseCounter: () => dispatch(pendingCounterActions.increaseCounter()),
   decreaseCounter: () => dispatch(pendingCounterActions.decreaseCounter()),
   showNotification: message => dispatch(notificationActions.showNotification(message)),

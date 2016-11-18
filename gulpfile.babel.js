@@ -41,7 +41,7 @@ gulp.task('sprites', () => {
     cssPath: '/images',      //   url path in css file.
   })
   .pipe(gulpif('*.png', gulp.dest('./app/sprites/images/'), gulp.dest('./app/sprites/css/')))
-});
+})
 
 gulp.task('webpack-dev', () => {
   gulpUtil.log('\n');
@@ -75,7 +75,7 @@ gulp.task('webpack-dev', () => {
     }
     gulpUtil.log(`[webpack-dev-server] is listening on Port: ${config.devPort}`)
   });
-});
+})
 
 gulp.task('webpack-build', () => {
   gulpUtil.log('\n');
@@ -92,7 +92,7 @@ gulp.task('webpack-build', () => {
     fs.writeFileSync('build/assets.json', assets);
     gulpUtil.log('[webpack]', stats.toString());
   });
-});
+})
 
 gulp.task('dev', () => {
   runSequence('clean', 'webpack-dev', (err) => {
@@ -100,7 +100,7 @@ gulp.task('dev', () => {
       throw new gulpUtil.PluginError('gulp dev', err);
     }
   });
-});
+})
 
 gulp.task('lint', () => {
   runSequence('jslint', 'csslint', (err) => {
@@ -118,4 +118,4 @@ gulp.task('build', () => {
       gulpUtil.log(new Date(), 'build successfully');
     }
   });
-});
+})

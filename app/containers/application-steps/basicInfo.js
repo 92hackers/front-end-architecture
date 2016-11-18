@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { notificationActions, apiActions, utilityActions } from '../../actions'
+import { notificationActions, geoDataActions, applicationActions } from '../../actions'
 import { default as Comp } from '../../components/application-steps/BasicInfo'
 
 const generateList = (list, rawData) => {
@@ -11,13 +11,13 @@ const generateList = (list, rawData) => {
 }
 
 const mapStateToProps = (state) => {
-  const { geoResources } = state
+  const { geoData } = state
 
-  const nationalityListRaw = geoResources.nationalityList
-  const countryListRaw = geoResources.countryList
-  const regionListRaw = geoResources.regionList
-  const cityListRaw = geoResources.cityList
-  const timezoneListRaw = geoResources.timezoneList
+  const nationalityListRaw = geoData.nationalityList
+  const countryListRaw = geoData.countryList
+  const regionListRaw = geoData.regionList
+  const cityListRaw = geoData.cityList
+  const timezoneListRaw = geoData.timezoneList
 
   /* eslint-disable */
   let nationalityList = []
@@ -46,15 +46,15 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getNationalityList: () => dispatch(apiActions.getNationalityList()),
-  getCountryList: () => dispatch(apiActions.getCountryList()),
-  getRegionList: () => dispatch(apiActions.getRegionList()),
-  getCityList: () => dispatch(apiActions.getCityList()),
-  getTimezoneList: () => dispatch(apiActions.getTimezoneList()),
+  getNationalityList: () => dispatch(geoDataActions.getNationalityList()),
+  getCountryList: () => dispatch(geoDataActions.getCountryList()),
+  getRegionList: () => dispatch(geoDataActions.getRegionList()),
+  getCityList: () => dispatch(geoDataActions.getCityList()),
+  getTimezoneList: () => dispatch(geoDataActions.getTimezoneList()),
 
-  updateBasicInfo: data => dispatch(apiActions.updateBasicInfo(data)),
+  updateBasicInfo: data => dispatch(applicationActions.updateBasicInfo(data)),
   /* eslint max-len: 0 */
-  changeTimezoneAtApplication: timezoneId => dispatch(utilityActions.changeTimezoneAtApplication(timezoneId)),
+  changeTimezone: timezoneId => dispatch(applicationActions.changeTimezone(timezoneId)),
 
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),

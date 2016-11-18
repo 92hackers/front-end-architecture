@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, userActions } from '../actions';
 import { default as Comp } from '../components/InputNewEmail';
 
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = dispatch => ({
-  resendActivationEmail: data => dispatch(apiActions.resendActivationEmail(data)),
+  resendActivationEmail: data => dispatch(userActions.resendActivationEmail(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })

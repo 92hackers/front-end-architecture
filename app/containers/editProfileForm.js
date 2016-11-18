@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { apiActions } from '../actions';
+import { geoDataActions } from '../actions';
 import { default as Comp } from '../components/EditProfileForm';
 
 const generateList = (list, rawData) => {
@@ -11,14 +11,14 @@ const generateList = (list, rawData) => {
 }
 
 const mapStateToProps = (state) => {
-  const { geoResources, user } = state
+  const { geoData, user } = state
   const { profile } = user
   const { residence_n, residence_p, residence_c, timezone, zoomid, tel_code, tel_num } = profile
 
-  const countryListRaw = geoResources.countryList
-  const regionListRaw = geoResources.regionList
-  const cityListRaw = geoResources.cityList
-  const timezoneListRaw = geoResources.timezoneList
+  const countryListRaw = geoData.countryList
+  const regionListRaw = geoData.regionList
+  const cityListRaw = geoData.cityList
+  const timezoneListRaw = geoData.timezoneList
 
   /* eslint-disable */
   let countryList = []
@@ -53,10 +53,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getCountryList: () => dispatch(apiActions.getCountryList()),
-  getRegionList: countryCode => dispatch(apiActions.getRegionList(countryCode)),
-  getCityList: regionCode => dispatch(apiActions.getCityList(regionCode)),
-  getTimezoneList: () => dispatch(apiActions.getTimezoneList()),
+  getCountryList: () => dispatch(geoDataActions.getCountryList()),
+  getRegionList: countryCode => dispatch(geoDataActions.getRegionList(countryCode)),
+  getCityList: regionCode => dispatch(geoDataActions.getCityList(regionCode)),
+  getTimezoneList: () => dispatch(geoDataActions.getTimezoneList()),
 })
 
 const EditProfileForm = connect(mapStateToProps, mapDispatchToProps)(Comp);

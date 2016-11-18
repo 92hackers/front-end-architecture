@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, userActions } from '../actions';
 import { default as Comp } from '../components/SignIn';
 
 const mapStateToProps = null
 
 const mapDispatchToProps = dispatch => ({
-  signIn: data => dispatch(apiActions.signIn(data)),
-  resendActivationEmail: data => dispatch(apiActions.resendActivationEmail(data)),
+  signIn: data => dispatch(userActions.signIn(data)),
+  resendActivationEmail: data => dispatch(userActions.resendActivationEmail(data)),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })

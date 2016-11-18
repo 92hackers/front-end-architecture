@@ -1,13 +1,15 @@
-import { apiActions } from '../actions'
+import { timetableActions } from '../actions'
 
 const initialState = {
-  isFetching: false,
-  template: '',
+  templateIsFetching: '',
+  weekTimetableIsFetching: '',
+  monthTimetableIsFetching: '',
+  template: [],
   weekTimetable: [],
   monthTimetable: [],
 }
 
-const { WEEK_TEMPLATE, WEEK_TIMETABLE, MONTH_TIMETABLE } = apiActions
+const { WEEK_TEMPLATE, WEEK_TIMETABLE, MONTH_TIMETABLE } = timetableActions
 
 export default function timetable(state = initialState, action) {
   const { payload } = action
@@ -15,25 +17,31 @@ export default function timetable(state = initialState, action) {
 
   switch (action.type) {
     case WEEK_TEMPLATE.REQUEST:
-      return { ...state, isFetching: true }
+      return { ...state, templateIsFetching: true }
 
     case WEEK_TEMPLATE.SUCCESS:
-      return { ...state, isFetching: false, weekTemplate: data }
+      return { ...state, templateIsFetching: false, weekTemplate: data }
 
     case WEEK_TEMPLATE.FAILURE:
-      return { ...state, isFetching: false, weekTemplate: 'error' }
+      return { ...state, templateIsFetching: false, weekTemplate: 'error' }
 
     case WEEK_TIMETABLE.REQUEST:
-      return { ...state, isFetching: true }
+      return { ...state, weekTimetableIsFetching: true }
 
     case WEEK_TIMETABLE.SUCCESS:
-      return { ...state, isFetching: false, weekTimetable: data }
+      return { ...state, weekTimetableIsFetching: false, weekTimetable: data }
+
+    case WEEK_TIMETABLE.FAILURE:
+      return { ...state, weekTimetableIsFetching: false }
 
     case MONTH_TIMETABLE.REQUEST:
-      return { ...state, isFetching: true }
+      return { ...state, monthTimetableIsFetching: true }
 
     case MONTH_TIMETABLE.SUCCESS:
-      return { ...state, isFetching: false, monthTimetable: data }
+      return { ...state, monthTimetableIsFetching: false, monthTimetable: data }
+
+    case MONTH_TIMETABLE.FAILURE:
+      return { ...state, monthTimetableIsFetching: false }
 
     default:
       return state

@@ -1,11 +1,10 @@
 import { connect } from 'react-redux'
-import { notificationActions, apiActions } from '../../actions'
+import { notificationActions, userActions, applicationActions } from '../../actions'
 import { default as Comp } from '../../components/application-steps/ScheduleInterview'
 
 const mapStateToProps = (state) => {
-  const { utility, application } = state
-  const { timezoneId } = utility
-  const { interviewTimeList } = application
+  const { application } = state
+  const { timezoneId, interviewTimeList } = application
 
   return {
     timezoneId,
@@ -14,10 +13,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getProfile: () => dispatch(apiActions.getProfile()),
-  getInterviewList: timezoneId => dispatch(apiActions.getInterviewList(timezoneId)),
+  getProfile: () => dispatch(userActions.getProfile()),
 
-  updateInterview: data => dispatch(apiActions.updateInterview(data)),
+  getInterviewList: timezoneId => dispatch(applicationActions.getInterviewList(timezoneId)),
+  updateInterview: data => dispatch(applicationActions.updateInterview(data)),
 
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),

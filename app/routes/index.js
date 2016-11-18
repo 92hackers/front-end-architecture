@@ -1,15 +1,15 @@
-import InputNewEmail from '../containers/InputNewEmail';
-import ForgetPassword from '../containers/ForgetPassword';
-import VerifyYourEmail from '../containers/VerifyYourEmail';
+import InputNewEmail from '../containers/inputNewEmail';
+import ForgetPassword from '../containers/forgetPassword';
+import VerifyYourEmail from '../containers/verifyYourEmail';
 import AboutSchool from '../components/AboutSchool';
 import AboutJob from '../components/AboutJob';
 import Index from '../components/Index';
-import App from '../containers/App';
-import OnlineTest from '../containers/OnlineTest';
-import SignIn from '../containers/SignIn';
-import SignUp from '../containers/SignUp';
-import ActivateEmail from '../containers/ActivateEmail';
-import InputNewPassword from '../containers/InputNewPassword';
+import App from '../containers/app';
+import OnlineTest from '../containers/onlineTest';
+import SignIn from '../containers/signIn';
+import SignUp from '../containers/signUp';
+import ActivateEmail from '../containers/activateEmail';
+import InputNewPassword from '../containers/inputNewPassword';
 import NotFound from '../components/universal/NotFound';
 
 import { default as applicationRouters } from './application-steps'

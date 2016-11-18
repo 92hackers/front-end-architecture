@@ -1,5 +1,6 @@
 // teacher's homepage. just a container.
 import React from 'react'
+import Default from './default'
 import Avatar from '../Avatar'
 
 export default function Homepage(props) {
@@ -64,7 +65,7 @@ export default function Homepage(props) {
           </div>
           <div className="col-9">
             {
-              React.cloneElement(children, { loggedIn, profile })
+              children ? React.cloneElement(children, { loggedIn, profile }) : <Default />
             }
           </div>
         </div>

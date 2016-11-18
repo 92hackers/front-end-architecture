@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
-import { notificationActions, apiActions } from '../actions';
+import { notificationActions, payeeInfoActions, geoDataActions } from '../actions';
 import { default as Comp } from '../components/PayeeInfo';
 
 const mapStateToProps = (state) => {
-  const { geoResources, payeeInfo } = state
+  const { geoData, payeeInfo } = state
   const { bankNameData, accountInfo } = payeeInfo
   const { region, country, name, address, accountNum, swiftCode, bankName, bankCode } = accountInfo
 
-  const continentListRaw = geoResources.continentList
-  const continentCountryListRaw = geoResources.continentCountryList
+  const continentListRaw = geoData.continentList
+  const continentCountryListRaw = geoData.continentCountryList
 
   let continentList = []
   let continentCountryList = []
@@ -43,11 +43,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   const {
     getPayeeInfo,
-    getContinentList,
-    getContinentCountryList,
     queryBySwiftcode,
     updatePayeeInfo,
-  } = apiActions
+  } = payeeInfoActions
+  const {
+    getContinentList,
+    getContinentCountryList,
+  } = geoDataActions
 
   return {
     getPayeeInfo: () => dispatch(getPayeeInfo()),

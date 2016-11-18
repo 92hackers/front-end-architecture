@@ -1,14 +1,15 @@
-import { apiActions } from '../actions';
+import { payeeInfoActions } from '../actions';
 
 const {
   PAYEEINFO,
   SWIFT_CODE,
-} = apiActions
+} = payeeInfoActions
 
 const initialState = {
-  isFetching: false,
+  payeeInfoIsFetching: '',
+  swiftCodeIsFetching: '',
   accountInfo: { region: '', country: '', name: '', address: '', accountNum: '', swiftCode: '', bankName: '', bankCode: '' },
-  isSuccess: false,
+  failed: false,
   bankNameData: '',
 }
 
@@ -17,22 +18,22 @@ export default function payeeInfo(state = initialState, action) {
   const data = payload ? payload.data : []
   switch (type) {
     case PAYEEINFO.REQUEST:
-      return { ...state, isFetching: true }
+      return { ...state, payeeInfoIsFetching: true }
 
     case PAYEEINFO.SUCCESS:
-      return { ...state, isFetching: false, isSuccess: true, accountInfo: data }
+      return { ...state, payeeInfoIsFetching: false, accountInfo: data }
 
     case PAYEEINFO.FAILURE:
-      return { ...state, isFetching: false, isSuccess: false }
+      return { ...state, payeeInfoIsFetching: false, failed: true }
 
     case SWIFT_CODE.REQUEST:
-      return { ...state, isFetching: true }
+      return { ...state, swiftCodeIsFetching: true }
 
     case SWIFT_CODE.SUCCESS:
-      return { ...state, isFetching: false, isSuccess: true, bankNameData: data.length > 0 ? data[0].bankName : '' }
+      return { ...state, swiftCodeIsFetching: false, bankNameData: data.length > 0 ? data[0].bankName : '' }
 
     case SWIFT_CODE.FAILURE:
-      return { ...state, isFetching: false, isSuccess: false }
+      return { ...state, swiftCodeIsFetching: false, failed: true }
 
     default:
       return state
