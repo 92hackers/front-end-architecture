@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function SignOutButton(props) {
-  console.log(props);
   const { className, style, signOut } = props
   const classNames = `header-item ${className}`
 

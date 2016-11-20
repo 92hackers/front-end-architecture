@@ -1,4 +1,5 @@
 //  a page tells user to activate the account.
+
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { browserHistory } from 'react-router';

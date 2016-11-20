@@ -19,7 +19,11 @@ const htmlOptions = {
 };
 
 module.exports = {
-  entry: [main],
+  entry: [
+    'webpack-dev-server/client?http://0.0.0.0:3001',
+    'webpack/hot/only-dev-server',
+    main,
+  ],
   debug: true,
   devtool: 'eval-source-map',
   errorDetails: true,
