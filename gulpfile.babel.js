@@ -49,9 +49,10 @@ gulp.task('webpack-dev', () => {
   gulpUtil.log('\n');
 
   const WebpackDevServer = require('webpack-dev-server');
-  const webpackDev = require('./packing/webpack-dev');
+  const webpackDev = require('./packing/webpack-dev').default;
 
   webpackDev.entry.unshift('webpack-dev-server/client?http://localhost:3001/');
+  console.log(webpackDev);
 
   const webpackServerOptions = {
     publicPath: '/',
@@ -81,7 +82,7 @@ gulp.task('webpack-build', () => {
   gulpUtil.log('\n');
   gulpUtil.log('If you has add images, you should exec "gulp sprites" first. ');
   gulpUtil.log('\n');
-  const webpackBuild = require('./packing/webpack-build');
+  const webpackBuild = require('./packing/webpack-build').default;
   webpack(webpackBuild, (err, stats) => {
     if (err) {
       throw new gulpUtil.PluginError('webpack', err);

@@ -1,9 +1,9 @@
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoPrefixer = require('autoprefixer');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const config = require('config');
+import path from 'path'
+import config from 'config'
+import webpack from 'webpack'
+import autoPrefixer from 'autoprefixer'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 // const imageName = 'images/[name].[hash:8].[ext]';
 // const fontName = 'fonts/[name].[hash:8].[ext]';
@@ -12,23 +12,56 @@ const imageName = 'images/[name].[ext]';
 const fontName = 'fonts/[name].[ext]';
 
 const rootDir = path.join(__dirname, '..');
-
 const main = path.join(rootDir, 'app/entry');
-
-// const localTestEntry = path.join(rootDir, 'local-test/index');
-
 const outputPath = path.join(rootDir, 'build/');
 
 const htmlOptions = {
   template: path.join(rootDir, 'app/template.html'),
   hash: true,
 };
-
 const uglifyOptions = {
   comments: false,
 };
 
-module.exports = {
+const { apiVersion, productionHost, devHost } = config
+let env = ''
+let apiHost = ''
+if (process.env.NODE_ENV === 'production') {
+  env = 'production'
+  apiHost = productionHost
+} else {
+  env = 'dev'
+  apiHost = devHost
+}
+
+const { optimize, DefinePlugin } = webpack
+const {
+  DedupePlugin,
+  OccurrenceOrderPlugin,
+  UglifyJsPlugin,
+} = optimize
+const plugins = [
+  new DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production'),
+    },
+    ENV: JSON.stringify(env),
+    API_HOST: JSON.stringify(apiHost),
+    API_VERSION: JSON.stringify(apiVersion),
+  }),
+  new ExtractTextPlugin('css/[name].[hash:8].css'),
+  new HtmlWebpackPlugin(htmlOptions),
+  new DedupePlugin(),
+  new OccurrenceOrderPlugin(),
+  new UglifyJsPlugin(uglifyOptions),
+]
+
+const jsPlugins = [
+  'transform-decorators-legacy',
+  'transform-object-rest-spread',
+]
+
+export default {
   entry: [main],
   output: {
     path: outputPath,
@@ -45,35 +78,11 @@ module.exports = {
     loaders: [
       { test: /\.jsx$/,
         loader: 'babel',
-        query: {
-          presets: [
-            'es2015',
-            {
-              plugins: [
-                'transform-decorators-legacy',
-                'transform-object-rest-spread',
-              ],
-            },
-            'react',
-          ],
-        },
-        exclude: /node_modules/,
+        query: { presets: ['es2015', { plugins: jsPlugins }, 'react'] },
       },
       { test: /\.js$/,
         loader: 'babel',
-        query: {
-          presets: [
-            'es2015',
-            {
-              plugins:
-              [
-                'transform-decorators-legacy',
-                'transform-object-rest-spread',
-              ],
-            },
-          ],
-        },
-        exclude: /node_modules/,
+        query: { presets: ['es2015', { plugins: jsPlugins }] },
       },
       { test: /\.coffee$/, loader: 'coffee' },
       { test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!postcss!less') },
@@ -88,35 +97,7 @@ module.exports = {
       { test: /\.svg(\?\S*)?$/, loader: 'url', query: { limit: 10000, mimetype: 'image/svg+xml', name: fontName } },
     ],
   },
-  plugins: process.env.NODE_ENV === 'production' ? [
-    new ExtractTextPlugin('css/[name].[hash:8].css'),
-    new HtmlWebpackPlugin(htmlOptions),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-      ENV: JSON.stringify('production'),
-      API_HOST: JSON.stringify(config.productionHost),
-      API_VERSION: JSON.stringify(config.apiVersion),
-    }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin(uglifyOptions),
-  ] : [
-    new ExtractTextPlugin('css/[name].[hash:8].css'),
-    new HtmlWebpackPlugin(htmlOptions),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-      ENV: JSON.stringify('dev'),
-      API_HOST: JSON.stringify(config.devHost),
-      API_VERSION: JSON.stringify(config.apiVersion),
-    }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin(uglifyOptions),
-  ],
+  plugins,
   postcss: () => {
     autoPrefixer({ browsers: ['last 2 versions', '> 1%'] })
   },
