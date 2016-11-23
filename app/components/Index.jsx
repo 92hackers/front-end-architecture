@@ -1,9 +1,11 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import { browserHistory } from 'react-router';
+import { Link } from 'react-router';
+import { autobind } from 'core-decorators'
 import IndexHeader from './IndexHeader';
 import toggleHeader from '../utilities/toggleHeader';
 
+@autobind
 export default class Index extends React.Component {
 
   constructor(props) {
@@ -18,28 +20,16 @@ export default class Index extends React.Component {
     let viewHeight = window.innerHeight;
 
     viewHeight = viewHeight > minHeight ? viewHeight : minHeight;
-
     /* eslint-disable */
     this.setState({
-      viewHeight: viewHeight
+      viewHeight,
     });
     /* eslint-enable */
-
     toggleHeader.set(viewHeight);
   }
 
   componentWillUnmount() {
     toggleHeader.reset();
-  }
-
-  aboutSchool(e) {
-    e.preventDefault();
-    browserHistory.push('/about-school');
-  }
-
-  aboutJob(e) {
-    e.preventDefault();
-    browserHistory.push('/about-job');
   }
 
   scrollDown(e) {
@@ -65,11 +55,6 @@ export default class Index extends React.Component {
     }
   }
 
-  handleStart(e) {
-    e.preventDefault();
-    browserHistory.push('/sign-up');
-  }
-
   render() {
     const viewHeight = this.state.viewHeight;
 
@@ -82,21 +67,21 @@ export default class Index extends React.Component {
       height: 62,
     };
 
-    const aboutSchool = {
-      fontSize: 30,
+    const aboutBtns = {
       width: 300,
       height: 70,
-      marginRight: 50,
       borderRadius: 40,
-    };
+    }
+
+    const aboutSchool = {
+      marginRight: 50,
+      ...aboutBtns,
+    }
 
     const aboutJob = {
-      fontSize: 30,
-      width: 300,
-      height: 70,
       marginLeft: 50,
-      borderRadius: 40,
-    };
+      ...aboutBtns,
+    }
 
     return (
       <div className="weteach-index text-center">
@@ -108,14 +93,15 @@ export default class Index extends React.Component {
               <h2 className="sub-title">Online English teaching as it should be!</h2>
               {
                 this.props.loggedIn ? <div /> : (
-                  <RaisedButton
-                    className="index-start-btn"
-                    style={startStyle}
-                    labelStyle={labelStyle}
-                    label="Start Teaching"
-                    primary
-                    onTouchTap={this.handleStart}
-                  />
+                  <Link to="/sign-up">
+                    <RaisedButton
+                      className="index-start-btn"
+                      style={startStyle}
+                      labelStyle={labelStyle}
+                      label="Start Teaching"
+                      primary
+                    />
+                  </Link>
                 )
               }
             </div>
@@ -236,8 +222,24 @@ export default class Index extends React.Component {
             </ul>
           </div>
           <div className="buttons">
-            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutSchool} label="About the School" primary onClick={this.aboutSchool} />
-            <RaisedButton className="about-button" labelStyle={labelStyle} style={aboutJob} label="About the Job" primary onClick={this.aboutJob} />
+            <Link to="/about-school">
+              <RaisedButton
+                className="about-button"
+                labelStyle={labelStyle}
+                style={aboutSchool}
+                label="About the School"
+                primary
+              />
+            </Link>
+            <Link to="/about-job">
+              <RaisedButton
+                className="about-button"
+                labelStyle={labelStyle}
+                style={aboutJob}
+                label="About the Job"
+                primary
+              />
+            </Link>
           </div>
         </section>
         <section className="section-wrap contact-us container-wrap">

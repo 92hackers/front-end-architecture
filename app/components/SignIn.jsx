@@ -27,7 +27,7 @@ export default class SignIn extends React.Component {
       notification = 'Password incorrect.';
     }
 
-    const validator = new FormValidate(document.getElementsByClassName('sign-in-form')[0], [
+    const validator = new FormValidate(document.querySelector('.sign-in-form'), [
       {
         name: 'Email',
         rules: 'required|valid_email',
@@ -54,7 +54,6 @@ export default class SignIn extends React.Component {
     }
 
     signIn(data).then((res) => {
-      console.log('sign in successed.');
       if (res.payload.success) {
         const queryParam = self.props.location.query.action
         if (res.payload.data.status === 1 && queryParam === 'resendEmail') {

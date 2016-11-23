@@ -21,6 +21,13 @@ const htmlOptions = {
 };
 const uglifyOptions = {
   comments: false,
+  beautify: false,
+  compress: {
+    unused: true,
+    dead_code: true,
+    warnings: false,
+    drop_console: true,
+  },
 };
 
 const { apiVersion, productionHost, devHost } = config

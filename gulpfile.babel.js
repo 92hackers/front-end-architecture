@@ -50,22 +50,20 @@ gulp.task('webpack-dev', () => {
 
   const WebpackDevServer = require('webpack-dev-server');
   const webpackDev = require('./packing/webpack-dev').default;
-
-  webpackDev.entry.unshift('webpack-dev-server/client?http://localhost:3001/');
-  console.log(webpackDev);
+  const { entry } = webpackDev
+  entry.unshift('webpack-dev-server/client?http://localhost:3001/');
+  entry.push('webpack/hot/dev-server');
 
   const webpackServerOptions = {
     publicPath: '/',
     contentBase: '/',
     hot: true,
-    proxy: {
-      '**': 'http://localhost:3000',
-    },
-    historyApiFallback: true,
+    inline: true,
     stats: {
       colos: true,
     },
     compress: true,
+    historyApiFallback: true,
   };
 
   const devServer = new WebpackDevServer(webpack(webpackDev), webpackServerOptions);
