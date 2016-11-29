@@ -2,12 +2,12 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import FormValidate from 'validate-js';
 import Dialog from 'material-ui/Dialog';
 import nprogress from 'nprogress';
 import { autobind } from 'core-decorators'
 
 import WaitForSubmit from './universal/WaitForSubmit';
+import { emailValidate } from '../utilities/filter'
 
 export default class SignUp extends React.Component {
 
@@ -34,37 +34,35 @@ export default class SignUp extends React.Component {
     const lastName = document.getElementById('t-last-name').value;
     const emailValue = document.getElementById('t-email').value;
     const passwordValue = document.getElementById('t-password').value;
+    const rePassword = document.querySelector('#t-re-password').value;
 
-    const validator = new FormValidate(document.getElementById('t-sign-up-form'), [
-      {
-        name: 'FirstName',
-        rules: 'required|min_length[2]|max_length[30]',
-      },
-      {
-        name: 'LastName',
-        rules: 'required|min_length[2]|max_length[30]',
-      },
-      {
-        name: 'Email',
-        rules: 'required|valid_email',
-      },
-      {
-        name: 'Password',
-        rules: 'required|min_length[6]|max_length[20]',
-      },
-      {
-        name: 'Confirm-Password',
-        rules: 'required|matches[Password]',
-      },
-    ], (errors) => {
-      if (errors.length > 0) {
-        warn = errors[0].message;
+    if (!firstName) {
+      warn = 'Please enter your first name.'
+    } else if (firstName.length < 2 || firstName.length > 30) {
+      warn = 'First name must be between 2 and 30 characters in length.'
+    } else if (!lastName) {
+      warn = 'Please enter your last name.'
+    } else if (lastName.length < 2 || lastName.length > 30) {
+      warn = 'Last name must be between 2 and 30 characters in length.'
+    }
+
+    if (!warn) {
+      warn = emailValidate(emailValue)
+    }
+
+    if (!warn) {
+      if (!passwordValue || !rePassword) {
+        warn = 'Please input correct password.'
+      } else if (passwordValue.length < 6 || rePassword.length < 6
+        || passwordValue.length > 20 || rePassword.length > 20
+      ) {
+        warn = 'Passwords must be between 6 and 20 characters in length.'
+      } else if (passwordValue !== rePassword) {
+        warn = 'New passwords do not match.'
       }
-    });
+    }
 
-    validator._validateForm();
-
-    if (warn.length) {
+    if (warn.length > 0) {
       showNotification(warn);
       return;
     }

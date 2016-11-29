@@ -57,8 +57,11 @@ export default function user(state = initialState, action) {
 
     case SIGNIN.SUCCESS: {
       const { token } = data
-      localStorage.setItem('user_token', token)
-      return { ...state, signInPending: false, token, loggedIn: true }
+      if (token) {
+        localStorage.setItem('user_token', token)
+        return { ...state, signInPending: false, token, loggedIn: true }
+      }
+      return { ...state, signInPending: false }
     }
 
     case SIGNIN.FAILURE:
@@ -76,8 +79,13 @@ export default function user(state = initialState, action) {
     case PROFILE.REQUEST:
       return { ...state, profileIsFetching: true }
 
-    case PROFILE.SUCCESS:
-      return { ...state, profileIsFetching: false, profile: data }
+    case PROFILE.SUCCESS: {
+      const { status } = data
+      if (status) {
+        return { ...state, profileIsFetching: false, profile: data }
+      }
+      return { ...state, profileIsFetching: false }
+    }
 
     case PROFILE.FAILURE:
       return { ...state, profileIsFetching: false }

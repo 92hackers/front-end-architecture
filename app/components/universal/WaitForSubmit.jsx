@@ -78,7 +78,7 @@ class WaitForSubmit extends React.Component {
 
   render() {
     const loadingStyle = {
-      marginTop: -7,
+      // marginTop: -7,
     };
 
     const { successMessage, failMessage, style } = this.props;
@@ -86,7 +86,7 @@ class WaitForSubmit extends React.Component {
     return (
       <div className="wait-for-submit-wrap text-center">
         <div className="wait-for-submit" style={style}>
-          <CircularProgress className="circle-progress" size={30} style={loadingStyle} />
+          <CircularProgress className="circle-progress" size={36} style={loadingStyle} />
           <span className="result success" style={{ color: green500 }}><i className="fa fa-check" />{successMessage}</span>
           <span className="result fail" style={{ color: red500 }}><i className="fa fa-close" />{failMessage}</span>
         </div>

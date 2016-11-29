@@ -46,3 +46,16 @@
 //     numericDashRegex = /^[\d\-\s]+$/,
 //     urlRegex = /^((http|https):\/\/(\w+:{0,1}\w*@)?(\S+)|)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
 //     dateRegex = /\d{4}-\d{1,2}-\d{1,2}/;
+
+export const emailValidate = (value) => {
+  let result = ''
+  if (value.length > 0) {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+    if (!emailRegex.test(value)) {
+      result = 'The email field must contain a valid email address.'
+    }
+  } else {
+    result = 'Please enter your email address.'
+  }
+  return result
+}

@@ -1,7 +1,5 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import FormValidate from 'validate-js';
-
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -17,30 +15,24 @@ export default class InputNewPassword extends React.Component {
     e.preventDefault();
 
     const { resetPassword, showNotification, networkError } = this.props
-    let warn = '';
-    const password = document.getElementById('new-password').value;
+    let warning = '';
+    const password = document.getElementById('new-password').value
+    const rePassword = document.querySelector('#confirm-password').value
 
-    const validator = new FormValidate(document.getElementById('t-input-new-password-form'), [
-      {
-        name: 'Password',
-        rules: 'required|min_length[6]|max_length[20]',
-      },
-      {
-        name: 'Confirm-Password',
-        rules: 'required|match[Password]',
-      },
-    ], (errors) => {
-      if (errors.length > 0) {
-        warn = errors[0].message;
-      }
-    });
-
-    validator._validateForm();
+    if (!password || !rePassword) {
+      warning = 'Please input correct password.'
+    } else if (password.length < 6 || rePassword.length < 6
+      || password.length > 20 || rePassword.length > 20
+    ) {
+      warning = 'Passwords must be between 6 and 20 characters in length.'
+    } else if (password !== rePassword) {
+      warning = 'New passwords do not match.'
+    }
 
     const resetToken = this.props.location.query.token;
 
-    if (warn.length > 0) {
-      showNotification(warn);
+    if (warning.length > 0) {
+      showNotification(warning);
       return;
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import FormValidate from 'validate-js';
+import { emailValidate } from '../utilities/filter'
 
 import EmailInputBox from './universal/EmailInputBox';
 
@@ -11,22 +11,9 @@ export default class InputNewEmail extends React.Component {
 
     let notification = '';
     const email = document.getElementById('email-address').value;
-
     const { resendActivationEmail, showNotification, networkError } = this.props
 
-    const validator = new FormValidate(document.forms[0], [
-      {
-        name: 'Email',
-        rules: 'required|valid_email',
-      },
-    ], (errors) => {
-      if (errors.length > 0) {
-        notification = errors[0].message;
-      }
-    });
-
-    /* eslint no-underscore-dangle: 0 */
-    validator._validateForm();
+    notification = emailValidate(email)
 
     if (notification.length > 0) {
       showNotification(notification);

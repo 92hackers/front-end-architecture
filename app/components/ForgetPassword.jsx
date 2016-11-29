@@ -1,9 +1,7 @@
-
 import React from 'react';
-import FormValidate from 'validate-js';
 import { autobind } from 'core-decorators'
-
-import EmailInputBox from './universal/EmailInputBox';
+import { emailValidate } from '../utilities/filter'
+import EmailInputBox from './universal/EmailInputBox'
 
 class ForgetPasswordComp extends React.Component {
 
@@ -12,29 +10,17 @@ class ForgetPasswordComp extends React.Component {
     e.preventDefault();
 
     let notification = '';
-    const email = document.getElementById('forget-password-email-box').value;
+    const emailValue = document.getElementById('forget-password-email-box').value;
     const { showNotification, resetPassword, networkError } = this.props
 
-    const validator = new FormValidate(document.forms[0], [
-      {
-        name: 'Email',
-        rules: 'required|valid_email',
-      },
-    ], (errors) => {
-      if (errors.length > 0) {
-        notification = errors[0].message;
-      }
-    });
-
-    /* eslint no-underscore-dangle: 0 */
-    validator._validateForm();
+    notification = emailValidate(emailValue)
 
     if (notification.length > 0) {
       showNotification(notification);
       return;
     }
 
-    resetPassword({ emai: email }).then((res) => {
+    resetPassword({ email: emailValue }).then((res) => {
       if (res.payload.success) {
         showNotification('We have just sent you an email. Please click the link within it to reset.');
       } else {

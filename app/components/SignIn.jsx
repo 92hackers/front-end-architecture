@@ -1,12 +1,12 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import FormValidate from 'validate-js';
 import { autobind } from 'core-decorators'
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import WaitForSubmit from './universal/WaitForSubmit';
+import { emailValidate } from '../utilities/filter'
 
 export default class SignIn extends React.Component {
 
@@ -23,23 +23,15 @@ export default class SignIn extends React.Component {
     const email = document.getElementById('t-email').value;
     const password = document.getElementById('t-password').value;
 
-    if (!!password && (password.length < 6 || password.length > 20)) {
-      notification = 'Password incorrect.';
-    }
+    notification = emailValidate(email)
 
-    const validator = new FormValidate(document.querySelector('.sign-in-form'), [
-      {
-        name: 'Email',
-        rules: 'required|valid_email',
-      },
-    ], (errors) => {
-      if (errors.length > 0) {
-        notification = errors[0].message;
+    if (!notification) {
+      if (!password) {
+        notification = 'Please enter your password.'
+      } else if (!!password && (password.length < 6 || password.length > 20)) {
+        notification = 'Password incorrect.';
       }
-    });
-
-    /* eslint no-underscore-dangle: [0] */
-    validator._validateForm();
+    }
 
     if (notification.length > 0) {
       showNotification(notification);
@@ -54,6 +46,7 @@ export default class SignIn extends React.Component {
     }
 
     signIn(data).then((res) => {
+      this.refs.loader.hideLoader()
       if (res.payload.success) {
         const queryParam = self.props.location.query.action
         if (res.payload.data.status === 1 && queryParam === 'resendEmail') {
@@ -116,7 +109,7 @@ export default class SignIn extends React.Component {
             onClick={this.handleSubmit}
             style={style}
           />
-          <WaitForSubmit ref="loader" />
+          <WaitForSubmit ref="loader" style={{ marginBottom: 10 }} />
           <RaisedButton
             labelStyle={labelStyle}
             label="Forgot your password ?"
