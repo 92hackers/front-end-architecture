@@ -1,7 +1,7 @@
 {
   "rules": {
     "max-empty-lines": 1,
-    "no-eol-whitespace": 1,
+    "rule-nested-empty-line-before": "always"
   },
   "extends": "stylelint-config-standard"
 }
