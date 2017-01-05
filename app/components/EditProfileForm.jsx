@@ -2,11 +2,19 @@ import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import { Field, reduxForm } from 'redux-form'
 import { TextField } from 'redux-form-material-ui'
+
+import FaUser from 'react-icons/lib/fa/user'
+import FaGlobe from 'react-icons/lib/fa/globe'
+import FaPhone from 'react-icons/lib/fa/phone'
+import FaCamera from 'react-icons/lib/fa/camera'
+import FaMapMarker from 'react-icons/lib/fa/map-marker'
+import FaClockO from 'react-icons/lib/fa/clock-o'
+import FaDesktop from 'react-icons/lib/fa/desktop'
+
 import WrappedSelect from './universal/WrappedSelect';
 import WaitForSubmit from './universal/WaitForSubmit'
 
 class EditProfileForm extends React.Component {
-
   componentDidMount() {
     const {
       getCountryList,
@@ -41,7 +49,7 @@ class EditProfileForm extends React.Component {
         <div className="location-wrap">
           <div className="caption">Location of Residence</div>
           <div className="input-wrap">
-            <span className="dropdown-icon-wrap"><i className="fa fa-map-marker" /></span>
+            <span className="dropdown-icon-wrap"><FaUser className="fa fa-map-marker" /></span>
             <Field
               name="residence_n"
               placeholder="Country"
@@ -69,7 +77,7 @@ class EditProfileForm extends React.Component {
         <div className="timezone">
           <div className="caption">Time Zone</div>
           <div className="input-wrap">
-            <span className="dropdown-icon-wrap"><i className="fa fa-clock-o" /></span>
+            <span className="dropdown-icon-wrap"><FaClockO className="fa fa-clock-o" /></span>
             <Field
               name="timezone"
               placeholder="Time Zone"
@@ -81,7 +89,7 @@ class EditProfileForm extends React.Component {
         <div className="zoom-id">
           <div className="caption">Zoom Personal Meeting ID</div>
           <div className="input-wrap">
-            <span className="dropdown-icon-wrap"><i className="fa fa-desktop" /></span>
+            <span className="dropdown-icon-wrap"><FaDesktop className="fa fa-desktop" /></span>
             <Field name="zoomid" component={TextField} type="text" />
           </div>
         </div>
@@ -91,7 +99,7 @@ class EditProfileForm extends React.Component {
             <span className="number">Telephone Number</span>
           </div>
           <div className="input-wrap">
-            <span className="dropdown-icon-wrap"><i className="fa fa-phone" /></span>
+            <span className="dropdown-icon-wrap"><FaPhone className="fa fa-phone" /></span>
             <div className="country-code-wrap">
               <span className="plus-icon">+</span>
               <Field name="tel_code" style={{ width: 60 }} component={TextField} type="text" />
@@ -118,22 +126,6 @@ class EditProfileForm extends React.Component {
     )
   }
 }
-
-// EditProfileForm.propTypes = {
-//   countryList: PropTypes.array.isRequired,
-//   regionList: PropTypes.array.isRequired,
-//   cityList: PropTypes.array.isRequired,
-//   timezoneList: PropTypes.array.isRequired,
-//   initialValues: PropTypes.shape({
-//     country: PropTypes.string.isRequired,
-//     region: PropTypes.string.isRequired,
-//     city: PropTypes.string.isRequired,
-//     timezoneName: PropTypes.string.isRequired,
-//     zoomId: PropTypes.string.isRequired,
-//     countryCode: PropTypes.string.isRequired,
-//     phoneNumber: PropTypes.string.isRequired,
-//   }).isRequired
-// }
 
 EditProfileForm = reduxForm({
   form: 'editProfile',

@@ -3,6 +3,8 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import CircularProgress from 'material-ui/CircularProgress'
 import { autobind } from 'core-decorators'
+import FaCalendar from 'react-icons/lib/fa/calendar'
+import FaClockO from 'react-icons/lib/fa/clock-o'
 
 class ScheduleInterview extends React.Component {
   constructor(props) {
@@ -20,7 +22,6 @@ class ScheduleInterview extends React.Component {
 
   componentWillMount() {
     const { timezoneId, getInterviewList } = this.props
-
     getInterviewList(timezoneId)        // 这个地方有问题，如何判断是否 timetable 是空的，已经被排满了？
     .then(() => this.setState({ dataIsReady: true }))
     .catch(() => this.setState({ dataIsReady: true }))
@@ -65,7 +66,7 @@ class ScheduleInterview extends React.Component {
             this.state.dataIsReady ? (
               <div className="input-box">
                 <div className="input-item">
-                  <span className="interview-icon"><i className="fa fa-calendar" /></span>
+                  <span className="interview-icon"><FaCalendar className="fa fa-calendar" /></span>
                   <SelectField
                     style={{ verticalAlign: 'middle' }}
                     value={this.state.dateValue}
@@ -78,7 +79,7 @@ class ScheduleInterview extends React.Component {
                 </div>
                 <br />
                 <div className="input-item">
-                  <span className="interview-icon"><i className="fa fa-clock-o" /></span>
+                  <span className="interview-icon"><FaClockO className="fa fa-clock-o" /></span>
                   <SelectField
                     style={{ verticalAlign: 'middle' }}
                     id="interview-time"

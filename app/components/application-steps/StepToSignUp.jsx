@@ -16,7 +16,6 @@ export default class StepToSignUp extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       stepIndex: 0,
       timezoneId: '',

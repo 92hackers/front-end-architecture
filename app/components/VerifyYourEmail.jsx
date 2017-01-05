@@ -1,9 +1,9 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import { browserHistory } from 'react-router';
+import FaCheckCircle from 'react-icons/lib/fa/check-circle'
 
 export default class VerifyYourEmail extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -65,10 +65,9 @@ export default class VerifyYourEmail extends React.Component {
       <div className="verify-your-email" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
         <h1 style={{ display: verify }} className="text-center">Verifying <CircularProgress /></h1>
         <h1 style={{ display: success }} className="text-center">
-          <i className="fa fa-check-circle" />Account activated! Please {this.props.loggedIn ? <span>complete your personal profile.</span> : <span>sign in to continue.</span>}
+          <FaCheckCircle className="fa fa-check-circle" />Account activated! Please {this.props.loggedIn ? <span>complete your personal profile.</span> : <span>sign in to continue.</span>}
         </h1>
       </div>
     )
   }
-
 }

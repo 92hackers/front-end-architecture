@@ -10,6 +10,7 @@
 
  import React from 'react';
  import moment from 'moment';
+ import FaCircle from 'react-icons/lib/fa/circle'
 
 var MultipleDatePickerDay = React.createClass({
 	componentWillMount: function(){
@@ -49,7 +50,7 @@ var MultipleDatePickerDay = React.createClass({
           lessons.map((item, index) => {
             var classNames = "lesson-student" + " clearfix" + " lesson-status-" + item.status;
               var studentInfoDisplay = <li className={classNames} key={index}>
-                <i className="fa fa-circle"></i>
+                <FaCircle className="fa fa-circle" />
                 <span className="name">{item.studentName}</span>
                 <span className="time">{item.lessonTime}</span>
               </li>;

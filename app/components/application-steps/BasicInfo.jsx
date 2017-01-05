@@ -7,10 +7,13 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import RaisedButton from 'material-ui/RaisedButton'
 import RadioButton from 'material-ui/RadioButton'
 import Dialog from 'material-ui/Dialog';
-import {
-  TextField,
-  RadioButtonGroup,
-} from 'redux-form-material-ui'
+import { TextField, RadioButtonGroup } from 'redux-form-material-ui'
+import FaUser from 'react-icons/lib/fa/user'
+import FaGlobe from 'react-icons/lib/fa/globe'
+import FaPhone from 'react-icons/lib/fa/phone'
+import FaCamera from 'react-icons/lib/fa/camera'
+import FaMapMarker from 'react-icons/lib/fa/map-marker'
+import FaClockO from 'react-icons/lib/fa/clock-o'
 
 import WrappedSelect from '../universal/WrappedSelect';
 import Avatar from '../Avatar'
@@ -337,7 +340,7 @@ class BasicInfo extends React.Component {
               <ul>
                 <li className="data-item">
                   <div className="name">
-                    <div className="icon-wrap"><i className="fa fa-user" /></div>
+                    <div className="icon-wrap"><FaUser className="fa fa-user" /></div>
                     <TextField
                       floatingLabelStyle={labelStyle}
                       name="firstname"
@@ -374,7 +377,7 @@ class BasicInfo extends React.Component {
                 </li>
                 <li className="data-item">
                   <div className="nationality">
-                    <div className="dropdown-icon-wrap"><i className="fa fa-globe" /></div>
+                    <div className="dropdown-icon-wrap"><FaGlobe className="fa fa-globe" /></div>
                     <Field
                       name="nationality"
                       component={WrappedSelect}
@@ -385,7 +388,7 @@ class BasicInfo extends React.Component {
                 </li>
                 <li className="data-item">
                   <div className="phone-num">
-                    <div className="icon-wrap"><i className="fa fa-phone" /></div>
+                    <div className="icon-wrap"><FaPhone className="fa fa-phone" /></div>
                     <div className="country-code-wrap">
                       <span className="plus-icon">+</span>
                       <TextField
@@ -412,7 +415,7 @@ class BasicInfo extends React.Component {
               </div>
               <br />
               <a href="#" className="btn button-change-avatar">
-                <i className="fa fa-camera" style={{ fontSize: 20, color: '#fff' }} />
+                <FaCamera className="fa fa-camera" style={{ fontSize: 20, color: '#fff' }} />
                 <label htmlFor="upload-profile-picture">
                   Upload profile picture
                   <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect} />
@@ -423,7 +426,7 @@ class BasicInfo extends React.Component {
           </div>
           <div className="residence-timezone clearfix">
             <div className="residence">
-              <div className="dropdown-icon-wrap"><i className="fa fa-map-marker" /></div>
+              <div className="dropdown-icon-wrap"><FaMapMarker className="fa fa-map-marker" /></div>
               <Field
                 name="residence_n"
                 component={WrappedSelect}
@@ -448,7 +451,7 @@ class BasicInfo extends React.Component {
               />
             </div>
             <div className="timezone">
-              <div className="dropdown-icon-wrap"><i className="fa fa-clock-o" /></div>
+              <div className="dropdown-icon-wrap"><FaClockO className="fa fa-clock-o" /></div>
               <Field
                 name="timezone"
                 component={WrappedSelect}

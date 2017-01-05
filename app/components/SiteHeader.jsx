@@ -4,6 +4,15 @@ import { browserHistory, Link } from 'react-router';
 import { autobind } from 'core-decorators';
 import { List, ListItem } from 'material-ui/List';
 import Popover from 'material-ui/Popover';
+import FaBars from 'react-icons/lib/fa/bars'
+import FaKey from 'react-icons/lib/fa/key'
+import FaEdit from 'react-icons/lib/fa/edit'
+import FaCreditCard from 'react-icons/lib/fa/credit-card'
+import FaQuestion from 'react-icons/lib/fa/question'
+import FaTable from 'react-icons/lib/fa/table'
+import FaCalendarPlusO from 'react-icons/lib/fa/calendar-plus-o'
+import FaNewspaperO from 'react-icons/lib/fa/newspaper-o'
+
 import SignOutButton from '../containers/signOutButton';
 import DisplayHelp from '../containers/displayHelp'
 
@@ -69,7 +78,7 @@ export default class SiteHeader extends React.Component {
     const settingsMenu = (
       <li className="header-item">
         <a href="#" className="dashboard" onTouchTap={this.handleSettingsTouchTap}>
-          <i className="fa fa-bars" />
+          <FaBars className="fa fa-bars" />
           Settings
         </a>
         <span className="nav-border-line" />
@@ -81,13 +90,13 @@ export default class SiteHeader extends React.Component {
           onRequestClose={this.handleSettingsRequestClose}
         >
           <List className="dashboard-dropdown">
-            <ListItem primaryText="Change Password" leftIcon={<i className="fa fa-key" />} onTouchTap={this.handleSettingClick} />
-            <ListItem primaryText="Edit Profile" leftIcon={<i className="fa fa-edit" />} onTouchTap={() => { browserHistory.replace('/edit-profile') }} />
+            <ListItem primaryText="Change Password" leftIcon={<FaKey className="fa fa-key" />} onTouchTap={this.handleSettingClick} />
+            <ListItem primaryText="Edit Profile" leftIcon={<FaEdit className="fa fa-edit" />} onTouchTap={() => { browserHistory.replace('/edit-profile') }} />
             {
               status >= 10 ? (
                 <ListItem
                   primaryText="Payee Info"
-                  leftIcon={<i className="fa fa-credit-card" />}
+                  leftIcon={<FaCreditCard className="fa fa-credit-card" />}
                   onTouchTap={() => { browserHistory.replace('/complete-payee-info') }}
                 />
                   ) : (<div />)
@@ -158,11 +167,11 @@ export default class SiteHeader extends React.Component {
                   <span className="nav-border-line" />
                 </li>
                 <li className="header-item">
-                  <a href="#" onTouchTap={this.handleHelpClick}><i className="fa fa-question" /> Help</a>
+                  <a href="#" onTouchTap={this.handleHelpClick}><FaQuestion className="fa fa-question" /> Help</a>
                   <span className="nav-border-line" />
                 </li>
                 <li className="header-item">
-                  <a href="#" className="dashboard" onTouchTap={this.handleTouchTap}><i className="fa fa-table" />Lessons</a>
+                  <a href="#" className="dashboard" onTouchTap={this.handleTouchTap}><FaTable className="fa fa-table" />Lessons</a>
                   <span className="nav-border-line" />
                   <Popover
                     open={open}
@@ -172,12 +181,8 @@ export default class SiteHeader extends React.Component {
                     onRequestClose={this.handleRequestClose}
                   >
                     <List className="dashboard-dropdown">
-                      {/* <ListItem
-                        primaryText="Profile"
-                        leftIcon={<i className="fa fa-user"></i>}
-                      onTouchTap={this.handleProfileClick.bind(this)} /> */}
-                      <ListItem primaryText="Timetable" leftIcon={<i className="fa fa-calendar-plus-o" />} onTouchTap={this.handleScheduleClick} />
-                      <ListItem primaryText="Template" leftIcon={<i className="fa fa-newspaper-o" />} onTouchTap={this.handleTemplateClick} />
+                      <ListItem primaryText="Timetable" leftIcon={<FaCalendarPlusO className="fa fa-calendar-plus-o" />} onTouchTap={this.handleScheduleClick} />
+                      <ListItem primaryText="Template" leftIcon={<FaNewspaperO className="fa fa-newspaper-o" />} onTouchTap={this.handleTemplateClick} />
                     </List>
                   </Popover>
                 </li>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import FaCheckCircle from 'react-icons/lib/fa/check-circle'
 import { browserHistory } from 'react-router';
 import { autobind } from 'core-decorators';
 
@@ -50,7 +51,7 @@ export default class ActivateEmail extends React.Component {
 
     return (
       <div className="t-activate-email">
-        <p><i className="fa fa-check-circle" /> Thank you!</p>
+        <p><FaCheckCircle className="fa fa-check-circle" /> Thank you!</p>
         <p>We have sent an email to your registered email address.</p>
         <p>Please check your email for the verification link.</p>
         <p style={{ marginTop: '50px' }}>If you did not receive the email:</p>

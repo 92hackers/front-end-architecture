@@ -46,6 +46,7 @@ export default class SignIn extends React.Component {
     }
 
     signIn(data).then((res) => {
+      console.log(this.refs)
       this.refs.loader.hideLoader()
       if (res.payload.success) {
         const queryParam = self.props.location.query.action

@@ -14,6 +14,8 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import { red500, green500 } from 'material-ui/styles/colors';
+import FaCheck from 'react-icons/lib/fa/check'
+import FaClose from 'react-icons/lib/fa/close'
 
 class WaitForSubmit extends React.Component {
 
@@ -87,8 +89,8 @@ class WaitForSubmit extends React.Component {
       <div className="wait-for-submit-wrap text-center">
         <div className="wait-for-submit" style={style}>
           <CircularProgress className="circle-progress" size={36} style={loadingStyle} />
-          <span className="result success" style={{ color: green500 }}><i className="fa fa-check" />{successMessage}</span>
-          <span className="result fail" style={{ color: red500 }}><i className="fa fa-close" />{failMessage}</span>
+          <span className="result success" style={{ color: green500 }}><FaCheck className="fa fa-check" />{successMessage}</span>
+          <span className="result fail" style={{ color: red500 }}><FaClose className="fa fa-close" />{failMessage}</span>
         </div>
       </div>
     )
