@@ -7,12 +7,7 @@
     font-size: 24px;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
   }
 
@@ -106,22 +101,19 @@
             vertical-align: top;
 
             .fa {
-              .icon-color();
-
               margin-top: 35px;
+              .icon-color();
             }
           }
 
           .dropdown-icon-wrap {
-            .icon-wrap();
-
             height: 39px;
             vertical-align: middle;
+            .icon-wrap();
 
             .fa {
-              .icon-color();
-
               margin-top: 7.5px !important;
+              .icon-color();
             }
           }
 
@@ -193,8 +185,7 @@
             .caption {
               margin-bottom: 20px;
 
-              .index,
-              .title {
+              .index, .title {
                 display: inline-block;
               }
 
@@ -303,14 +294,16 @@
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
+    // stylelint-disable
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
     background-color: @teacher_base;
     border-radius: 2px;
     -webkit-appearance: none;
-    -moz-appearance: none;
+       -moz-appearance: none;
+    // stylelint-enable
     overflow: hidden;
     text-decoration: none;
 

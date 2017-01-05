@@ -6,14 +6,13 @@
 }
 
 .container {
-  .clearfix();
-
   padding-left: 15px;
   padding-right: 15px;
   margin-left: auto;
   margin-right: auto;
   width: 1170px;
   overflow-x: hidden;
+  .clearfix();
 
   &::before {
     display: table;
@@ -44,12 +43,7 @@
   padding-right: 15px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 
@@ -59,24 +53,12 @@ img {
 }
 
 .row {
-  .clearfix();
-
   margin-left: -15px;
   margin-right: -15px;
+  .clearfix();
 }
 
-.col-1,
-.col-2,
-.col-3,
-.col-4,
-.col-5,
-.col-6,
-.col-7,
-.col-8,
-.col-9,
-.col-10,
-.col-11,
-.col-12 {
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
   position: relative;
   float: left;
   padding-left: 15px;
@@ -105,75 +87,63 @@ img {
 }
 
 .col-1 {
-  .col-wrap();
-
   width: (1 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-2 {
-  .col-wrap();
-
   width: (2 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-3 {
-  .col-wrap();
-
   width: (3 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-4 {
-  .col-wrap();
-
   width: (4 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-5 {
-  .col-wrap();
-
   width: (5 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-6 {
-  .col-wrap();
-
   width: (6 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-7 {
-  .col-wrap();
-
   width: (7 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-8 {
-  .col-wrap();
-
   width: (8 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-9 {
-  .col-wrap();
-
   width: (9 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-10 {
-  .col-wrap();
-
   width: (10 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-11 {
-  .col-wrap();
-
   width: (11 / 12) * 100%;
+  .col-wrap();
 }
 
 .col-12 {
-  .col-wrap();
-
   width: 100%;
+  .col-wrap();
 }
 
 .text-center {
@@ -210,15 +180,13 @@ input {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: "Open Sans", sans-serif !important;
   font-size: 14px;
   line-height: 1.5;
   padding-top: 60px;
 }
 
 .site-header {
-  .appbar-box-shadow();
-
   position: fixed;
   top: 0;
   left: 0;
@@ -226,6 +194,7 @@ body {
   z-index: 1000;
   width: 100%;
   background-color: @teacher_base;
+  .appbar-box-shadow();
 
   .header-item {
     display: inline-block;
@@ -233,7 +202,6 @@ body {
     position: relative;
 
     &:hover {
-
       .nav-border-line {
         display: inline-block;
       }
@@ -266,7 +234,6 @@ body {
 }
 
 .dashboard-dropdown {
-
   .fa {
     font-size: 20px;
     line-height: 24px;
@@ -282,7 +249,6 @@ body {
 }
 
 .header-item-right {
-
   li {
     display: inline-block;
 
@@ -492,7 +458,6 @@ form {
 }
 
 .verify-your-email {
-
   h1 {
     height: 70px;
   }
@@ -505,9 +470,7 @@ form {
 }
 
 .t-homepage {
-
   .profile-data {
-
     .profile-meta-data {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -530,16 +493,13 @@ form {
 }
 
 .dialog-button {
-
   & + & {
     margin-left: 20px;
   }
 }
 
 .privacy-content {
-
-  h2,
-  h3 {
+  h2, h3 {
     margin-bottom: 20px;
     margin-top: 20px;
     color: #333;
@@ -550,8 +510,7 @@ form {
     color: #333;
   }
 
-  p,
-  li {
+  p, li {
     line-height: 1.7;
   }
 
@@ -618,7 +577,7 @@ form {
   border-color: #999 transparent transparent;
   border-style: solid;
   border-width: 5px 5px 0;
-  content: ' ';
+  content: " ";
   display: block;
   height: 0;
   margin-top: -ceil(2.5);
@@ -727,9 +686,8 @@ form {
 
 .next-arrow {
   right: 20px;
-  .guide-image-arrow();
-
   text-align: right;
+  .guide-image-arrow();
 
   .finish-btn {
     font-size: 40px;
@@ -755,9 +713,7 @@ form {
 }
 
 .Select-control {
-
   .Select-input {
-
     input {
       height: 16px !important;
     }

@@ -2,37 +2,46 @@
   height: 60px;
   line-height: 60px;
   margin-bottom: 168px;
+
   .logo {
     font-size: 24px;
     color: #fff;
+
     &:hover {
       color: @teacher_base;
     }
   }
+
   .sign-buttons {
     top: 12.5px;
     right: 30px;
+
     a {
       color: #fff;
       padding: 10px 26px;
     }
+
     .primary-button {
       background-color: @teacher_base;
+      border: 1px solid transparent;
+      border-radius: 4px;
+
       &:hover {
         background-color: transparent;
         border: 1px solid #fff;
       }
-      border: 1px solid transparent;
-      border-radius: 4px;
     }
+
     #sign-in {
       &:hover {
         text-decoration: underline;
       }
     }
+
     ul {
       li {
         float: left;
+
         &:last-child {
           margin-left: 10px;
         }

@@ -6,12 +6,14 @@
  * 3. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
 
+/* stylelint-disable */
 html {
   font-family: sans-serif; /* 1 */
   line-height: 1.15; /* 2 */
-  -ms-text-size-adjust: 100%; /* 3 */
   -webkit-text-size-adjust: 100%; /* 3 */
+      -ms-text-size-adjust: 100%; /* 3 */
 }
+/* stylelint-enable */
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -30,18 +32,7 @@ body {
  * 2. Add the correct display in IE.
  */
 
-article,
-aside,
-details, /* 1 */
-figcaption,
-figure,
-footer,
-header,
-main, /* 2 */
-menu,
-nav,
-section,
-summary { /* 1 */
+article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
   display: block;
 }
 
@@ -49,10 +40,7 @@ summary { /* 1 */
  * Add the correct display in IE 9-.
  */
 
-audio,
-canvas,
-progress,
-video {
+audio, canvas, progress, video {
   display: inline-block;
 }
 
@@ -78,8 +66,7 @@ progress {
  * 1. Add the correct display in IE.
  */
 
-template, /* 1 */
-[hidden] {
+template, [hidden] {
   display: none;
 }
 
@@ -101,8 +88,7 @@ a {
  * in all browsers (opinionated).
  */
 
-a:active,
-a:hover {
+a:active, a:hover {
   outline-width: 0;
 }
 
@@ -124,8 +110,7 @@ abbr[title] {
  * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
  */
 
-b,
-strong {
+b, strong {
   font-weight: inherit;
 }
 
@@ -133,8 +118,7 @@ strong {
  * Add the correct font weight in Chrome, Edge, and Safari.
  */
 
-b,
-strong {
+b, strong {
   font-weight: bolder;
 }
 
@@ -178,8 +162,7 @@ small {
  * all browsers.
  */
 
-sub,
-sup {
+sub, sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
@@ -221,10 +204,7 @@ svg:not(:root) {
  * 2. Correct the odd `em` font sizing in all browsers.
  */
 
-code,
-kbd,
-pre,
-samp {
+code, kbd, pre, samp {
   font-family: monospace, monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
@@ -256,11 +236,7 @@ hr {
  * 2. Remove the margin in Firefox and Safari.
  */
 
-button,
-input,
-optgroup,
-select,
-textarea {
+button, input, optgroup, select, textarea {
   font: inherit; /* 1 */
   margin: 0; /* 2 */
 }
@@ -278,8 +254,8 @@ optgroup {
  * 1. Show the overflow in Edge.
  */
 
-button,
-input { /* 1 */
+button, input {
+  /* 1 */
   overflow: visible;
 }
 
@@ -288,8 +264,8 @@ input { /* 1 */
  * 1. Remove the inheritance of text transform in Firefox.
  */
 
-button,
-select { /* 1 */
+button, select {
+  /* 1 */
   text-transform: none;
 }
 
@@ -299,9 +275,7 @@ select { /* 1 */
  * 2. Correct the inability to style clickable types in iOS and Safari.
  */
 
-button,
-[type="reset"],
-[type="submit"] {
+button, [type="reset"], [type="submit"] {
   -webkit-appearance: button; /* 2 */
 }
 
@@ -309,10 +283,7 @@ button,
  * Remove the inner border and padding in Firefox.
  */
 
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
+button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
@@ -321,10 +292,7 @@ button::-moz-focus-inner,
  * Restore the focus styles unset by the previous rule.
  */
 
-button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
+button:-moz-focusring, [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -367,8 +335,7 @@ textarea {
  * 2. Remove the padding in IE 10-.
  */
 
-[type="checkbox"],
-[type="radio"] {
+[type="checkbox"], [type="radio"] {
   box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
 }
@@ -377,8 +344,7 @@ textarea {
  * Correct the cursor style of increment and decrement buttons in Chrome.
  */
 
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
+[type="number"]::-webkit-inner-spin-button, [type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -396,8 +362,7 @@ textarea {
  * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.
  */
 
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
+[type="search"]::-webkit-search-cancel-button, [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 

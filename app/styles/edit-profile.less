@@ -6,12 +6,15 @@
   .wrap {
     width: 900px;
     margin: 0 auto;
+
     @media (min-width: 768px) {
       width: 700px;
     }
+
     @media (min-width: 992px) {
       width: 800px;
     }
+
     @media (min-width: 1200px) {
       width: 900px;
     }
@@ -21,6 +24,7 @@
       color: @shallow_base_color;
       padding-bottom: 48px;
     }
+
     .content {
       padding: 70px 192px;
       background-color: #fff;
@@ -46,23 +50,27 @@
 
         .input-wrap {
           .dropdown-icon-wrap {
-            .inline-block();
             width: 24px;
             text-align: center;
             margin-right: 10px;
+            .inline-block();
+
             .fa {
               font-size: 24px;
               color: @shallow_base_color;
             }
+
             .fa-desktop {
               font-size: 20px;
             }
           }
+
           .Select {
-            .inline-block();
             text-overflow: ellipsis;
             white-space: nowrap;
+            .inline-block();
           }
+
           .vertical-line {
             margin-left: 20px;
             margin-right: 20px;
@@ -72,10 +80,12 @@
         .location-wrap {
           .Select {
             width: 130px !important;
+
             input {
               width: 100%;
             }
           }
+
           .input-wrap {
             padding-top: 10px;
           }
@@ -85,6 +95,7 @@
           .input-wrap {
             padding-top: 10px;
           }
+
           .Select {
             width: 256px;
           }
@@ -94,6 +105,7 @@
           .input-wrap {
             .country-code-wrap {
               .inline-block();
+
               .plus-icon {
                 font-size: 24px;
                 color: #999;
@@ -101,9 +113,9 @@
               }
             }
           }
+
           margin-bottom: 50px;
         }
-
       }
     }
   }

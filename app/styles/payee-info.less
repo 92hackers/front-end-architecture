@@ -6,12 +6,15 @@
   .wrap {
     width: 900px;
     margin: 0 auto;
+
     @media (min-width: 768px) {
       width: 700px;
     }
+
     @media (min-width: 992px) {
       width: 800px;
     }
+
     @media (min-width: 1200px) {
       width: 900px;
     }
@@ -21,6 +24,7 @@
       color: @shallow_base_color;
       padding-bottom: 48px;
     }
+
     .content {
       padding: 70px 222px 70px 162px;
       background-color: #fff;
@@ -38,45 +42,52 @@
         .fields-list {
           text-align: right;
           margin-bottom: 50px;
+
           .select {
             .label {
-              .inline-block();
               line-height: 36px;
+              .inline-block();
             }
           }
+
           .address {
             .label {
-              .inline-block();
               margin-top: 12px;
+              .inline-block();
             }
           }
+
           .swift-code {
             .field {
               display: inline-block;
+
               .input-box {
                 width: 156px !important;
                 margin-right: 12px;
               }
             }
           }
+
           li {
             &:not(:last-child) {
               margin-bottom: 30px;
             }
+
             .label {
               color: @shallow_base_color;
             }
+
             .field {
               width: 256px;
               margin-left: 20px;
             }
+
             .Select {
               text-align: left;
               display: inline-block;
             }
           }
         }
-
       }
     }
   }

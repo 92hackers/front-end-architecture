@@ -1,37 +1,45 @@
 .t-homepage {
   .t-homepage-header {
-    .appbar-box-shadow();
     background-color: @teacher_base;
+    .appbar-box-shadow();
   }
+
   main {
     padding-top: 30px;
+
     .avatar-profile {
       img {
         border-radius: 5px;
       }
     }
+
     .name-gender {
       line-height: 50px;
     }
+
     hr {
       margin-bottom: 10px;
       border: none;
       border-top: 1px solid #e5e5e5;
     }
+
     .profile-data {
       li {
         & + li {
           margin-top: 10px;
         }
+
         .profile-icon {
           display: inline-block;
           width: 20px;
           text-align: center;
           margin-right: 5px;
+
           .fa {
             font-size: 16px;
             color: #999;
           }
+
           .fa-map-marker {
             font-size: 20px !important;
           }

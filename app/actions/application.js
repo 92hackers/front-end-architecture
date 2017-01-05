@@ -1,9 +1,5 @@
 import { createAction, createRequestTypes, apicall } from './lib';
 
-// TODO:  目前对于 POST 的请求，不要设置相对应的 reducer, 因为不需要保存，我可以用 promise 直接取到数据来用。redux-saga.
-
-// TODO: 下面的代码都是一样的，有什么办法能够减少？
-
 export const UPLOAD_TOKEN = createRequestTypes('UPLOAD_TOKEN')
 export const getUploadToken = () => apicall('file/token', UPLOAD_TOKEN)
 
@@ -23,5 +19,4 @@ export const APPLY_INTERVIEW = createRequestTypes('APPLY_INTERVIEW')
 export const updateInterview = data => apicall('apply/step3', APPLY_INTERVIEW, { data })
 
 export const CHANGE_TIMEZONE = 'CHANGE_TIMEZONE'
-/* eslint max-len: 0 */
 export const changeTimezone = timezoneId => createAction(CHANGE_TIMEZONE, { timezoneId })
