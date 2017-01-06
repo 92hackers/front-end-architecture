@@ -34,7 +34,7 @@ class AppContainer extends React.Component {
         break;
       }
       case 2:
-        browserHistory.push('/step-to-sign-up');
+        browserHistory.push('/step-to-sign-up/basic-information');
         break;
       case 3:
       case 4:

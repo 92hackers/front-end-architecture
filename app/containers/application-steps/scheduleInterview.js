@@ -15,7 +15,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   getProfile: () => dispatch(userActions.getProfile()),
 
-  getInterviewList: timezoneId => dispatch(applicationActions.getInterviewList(timezoneId)),
   updateInterview: data => dispatch(applicationActions.updateInterview(data)),
 
   showNotification: message => dispatch(notificationActions.showNotification(message)),

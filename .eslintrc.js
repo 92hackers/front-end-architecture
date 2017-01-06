@@ -31,6 +31,10 @@ module.exports = {
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "radix": [0],
     "react/sort-comp": 0,
+    "no-trailing-spaces": ["error", { "skipBlankLines": true }],
+    "consistent-return": 0,
+    "max-len": 0,
+    "object-property-newline": 0,
   },
   "env": {
     "browser": true

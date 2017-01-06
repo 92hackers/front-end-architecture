@@ -1,31 +1,34 @@
 // step page to complete sign up process.
-import React from 'react'
-import { Link } from 'react-router'
+import React from 'react';
+import { browserHistory } from 'react-router';
 import { autobind } from 'core-decorators'
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import { blue500 } from 'material-ui/styles/colors';
 import Dialog from 'material-ui/Dialog';
-import { red500 } from 'material-ui/styles/colors';
+import FaCheckCircle from 'react-icons/lib/fa/check-circle'
 
-import { default as SiteLoading } from '../universal/Loading';
 import WaitForSubmit from '../universal/WaitForSubmit';
 
-export default class StepToSignUp extends React.Component {
-
+@autobind
+class StepToSignUpComp extends React.Component {
   constructor(props) {
     super(props);
+    const queryParam = this.props.location.query.reschedule;
     this.state = {
-      stepIndex: 0,
-      timezoneId: '',
+      stepIndex: queryParam === 'true' ? 2 : 0,
       confirmDialogueOpen: false,
       isFinished: false,
-    }
+    };
+    this.clickNextBtn = this.clickNextBtn.bind(this)
   }
 
+  @autobind
   handleNext() {
     const { stepIndex } = this.state;
+
     if (stepIndex < 2) {
       this.setState({
         stepIndex: stepIndex + 1,
@@ -33,8 +36,10 @@ export default class StepToSignUp extends React.Component {
     }
   }
 
+  @autobind
   handlePrev() {
     const { stepIndex } = this.state;
+
     if (stepIndex > 0) {
       this.setState({
         stepIndex: stepIndex - 1,
@@ -42,64 +47,74 @@ export default class StepToSignUp extends React.Component {
     }
   }
 
-  @autobind
   displayLoader() {
     this.refs.loader.displayLoader();
   }
 
-  @autobind
   displaySuccess() {
     this.refs.loader.displaySuccess(this.handleNext, this);
   }
 
-  @autobind
   displayError() {
     this.refs.loader.displayError();
   }
 
-  @autobind
   handleClose() {
     this.setState({
       confirmDialogueOpen: false,
     });
   }
 
-  @autobind
   handleOpen() {
     this.setState({
       confirmDialogueOpen: true,
     });
   }
 
-  @autobind
   displaySuccessWorlds() {
-    const stepIndex = this.state.stepIndex;
+    const { stepIndex } = this.state
     this.setState({
       isFinished: true,
       stepIndex: stepIndex + 1,
-    })
+    });
   }
 
-  @autobind
   handleYes() {
-    // submit interview data.
-    this.refs.scheduleInterview.handleSubmit();
+    this.refs.scheduleInterview.getWrappedInstance().handleSubmit();
     this.handleClose();
   }
 
-  @autobind
   clickNextBtn() {
     const { stepIndex } = this.state
     switch (stepIndex) {
-      case 0:
-        this.refs.basicInfo.handleSubmit();
+      case 0: {
+        const basicInfoForm = this.refs.basicInfo.getWrappedInstance()
+        basicInfoForm.wrappedInstance.handleSubmit(basicInfoForm.values)
         break;
-      case 1:
-        this.refs.teachingExperience.handleSubmit();
+      }
+      default: {
+        const teachingExperienceForm = this.refs.teachingExperience.getWrappedInstance()
+        teachingExperienceForm.wrappedInstance.handleSubmit(teachingExperienceForm.values)
         break;
-      default:
-        return
+      }
     }
+  }
+
+  setProposedTime({ timeCN, timeLoc }) {
+    this.setState({
+      timeCN,
+      timeLoc,
+    })
+  }
+
+  componentDidUpdate() {
+    const { isFinished } = this.state
+    /* eslint no-undef: 0 */
+    if (isFinished) {
+      addthis.init()
+      addthis.toolbox('.addthis_inline_share_toolbox')
+    }
+      /* eslint no-undef: 1 */
   }
 
   render() {
@@ -107,10 +122,10 @@ export default class StepToSignUp extends React.Component {
       width: '100%',
       paddingLeft: 74,
       paddingRight: 74,
-      marginBottom: 60,
-    }
+      marginBottom: 20,
+    };
 
-    const { stepIndex } = this.state
+    const { stepIndex, isFinished } = this.state
 
     const rightButton = stepIndex !== 2 ? (
       <RaisedButton
@@ -128,29 +143,39 @@ export default class StepToSignUp extends React.Component {
         style={{ width: 176, height: 50 }}
         primary
         label="Finish"
-        onTouchTap={this.handleOpen}
+        onTouchTap={this.handleClose()}
       />
     )
 
-    const { children, profile } = this.props
+    const { timeCN, timeLoc } = this.state
 
-    /* eslint max-len: 0 */
-    const content = this.state.isFinished ? (
+    const content = isFinished ? (
       <div className="successful-words">
-        <p>Thanks for completing the Personal Details Form!</p>
-        <p>We will review the form within 24hrs and provide you with an interview invitation via email.</p>
-        <p>In preparation for your interview,</p>
-        <p>Please complete a few self-study moduals: <Link style={{ color: red500 }} to="/teacher-online-test" className="go-to-test">Here</Link></p>
-        <br />
-        <p>Regards!</p>
-        <br />
-        <p>WeTeach Team</p>
+        <div id="toolbox" />
+        <p className="thank-you text-center"><FaCheckCircle className="fa fa-check-circle" /><span style={{ color: blue500, fontSize: '30px', fontWeight: 'bold', marginLeft: 10 }}>Thank you!</span></p>
+        <p>You proposed an interview time for:</p>
+        <div className="two-times">
+          <p><span className="title">China standard time</span><span className="time">{timeCN}</span></p>
+          <p><span className="title">Your local time</span><span className="time">{timeLoc}</span></p>
+        </div>
+        <p className="note">
+          We are now reviewing your application. We will let you know if we can proceed at least 24 hours before your proposed interview time.
+          We have sent you an email with the details of your proposed interview and a link in case you need to reschedule.
+        </p>
+        <div className="self-study-link">Please complete a few self-study moduals: <RaisedButton style={{ marginLeft: 50 }} label="Here" primary className="go-to-test" onClick={() => browserHistory.push('/teacher-online-test')} /></div>
+        <p>In the meantime, if you would like to invite a friend to apply as a teacher to WeTeach, please click share bttons below.</p>
+        <div className="text-center share-btns">
+          <div style={{ display: 'inline-block' }} className="addthis_inline_share_toolbox addthis_toolbox addthis_default_style addthis_32x32_style">
+            <a className="addthis_button_email" style={{ cursor: 'pointer' }}></a>
+            <a className="addthis_button_facebook" style={{ cursor: 'pointer' }}></a>
+            <a className="addthis_button_twitter" style={{ cursor: 'pointer' }}></a>
+            <a className="addthis_button_linkedin" style={{ cursor: 'pointer' }}></a>
+          </div>
+        </div>
       </div>
     ) : (
       <div>
-        {
-          React.cloneElement(children, { profile })
-        }
+        {this.getContent(stepIndex)}
         <div className="text-center two-buttons">
           <div className="btn-group">
             <FlatButton
@@ -171,7 +196,7 @@ export default class StepToSignUp extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
 
     const actions = [
       <RaisedButton
@@ -186,7 +211,7 @@ export default class StepToSignUp extends React.Component {
         primary
         onTouchTap={this.handleYes}
       />,
-    ]
+    ];
 
     const stepLabelStyle = {
       fontSize: 20,
@@ -205,17 +230,13 @@ export default class StepToSignUp extends React.Component {
                 <StepLabel className="step-label" style={stepLabelStyle}>Teaching experience</StepLabel>
               </Step>
               <Step>
-                <StepLabel className="step-label" style={stepLabelStyle}>Interview schedule</StepLabel>
+                <StepLabel className="step-label" style={stepLabelStyle}>Interview propose</StepLabel>
               </Step>
             </Stepper>
             <div className="step-content">
-              {
-                !this.props.pendingCounter ? (
-                  <section className="content">
-                    {content}
-                  </section>
-                    ) : <SiteLoading />
-              }
+              <section className="content">
+                {content}
+              </section>
             </div>
           </div>
           <Dialog
@@ -223,6 +244,7 @@ export default class StepToSignUp extends React.Component {
             modal={false}
             open={this.state.confirmDialogueOpen}
             onRequestClose={this.handleClose}
+            autoScrollBodyContent
           >
             <h2 style={{ marginBottom: 30 }} className="confirm-words text-center">Please note:</h2>
             <h2 style={{ marginBottom: 30 }} className="confirm-words text-center">Once you submit your application you will not be able to make any changes.</h2>
@@ -233,3 +255,5 @@ export default class StepToSignUp extends React.Component {
     )
   }
 }
+
+export default StepToSignUpComp;

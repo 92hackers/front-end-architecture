@@ -1,5 +1,10 @@
 import { connect } from 'react-redux'
-import { notificationActions, geoDataActions, applicationActions } from '../../actions'
+import {
+  notificationActions,
+  userActions,
+  applicationActions,
+  geoDataActions,
+} from '../../actions'
 import { default as Comp } from '../../components/application-steps/BasicInfo'
 
 const generateList = (list, rawData) => {
@@ -11,55 +16,104 @@ const generateList = (list, rawData) => {
 }
 
 const mapStateToProps = (state) => {
-  const { geoData } = state
+  const { geoResources, user } = state
+  const { profile, token } = user
+  const { residence_n, residence_p, residence_c,
+    zoomid, tel_code,
+    firstname, lastname, gender,
+    nationality, isNative, avatar,
+    timeAdjust, eduexp, experience,
+    workexp, tel_num,
+  } = profile
 
-  const nationalityListRaw = geoData.nationalityList
-  const countryListRaw = geoData.countryList
-  const regionListRaw = geoData.regionList
-  const cityListRaw = geoData.cityList
-  const timezoneListRaw = geoData.timezoneList
+  let { certs, timezone } = profile
 
-  /* eslint-disable */
-  let nationalityList = []
-  let countryList = []
-  let regionList = []
-  let cityList = []
+  const {
+    countryList: countryListRaw,
+    regionList: regionListRaw,
+    cityList: cityListRaw,
+    nationalityList: nationalityListRaw,
+    timezoneList: timezoneListRaw,
+  } = geoResources
+
+  const nationalityList = []
+  const countryList = []
+  const regionList = []
+  const cityList = []
   let timezoneList = []
-  /* eslint-enable */
 
   generateList(nationalityList, nationalityListRaw)
   generateList(countryList, countryListRaw)
   generateList(regionList, regionListRaw)
   generateList(cityList, cityListRaw)
 
+
   if (timezoneListRaw.length > 0) {
-    timezoneList = timezoneListRaw.map(item => ({ value: item.id, label: item.en_name }))
+    timezoneList = timezoneListRaw.map(item => ({ value: item.id, label: item.timezone }))
+  }
+
+  let timezoneIndex = 0
+
+  if (!timezone) {
+    const today = new Date();
+    const localTimezone = today.toString().match(/GMT[+-]\d{2}/)[0].replace('+', '\\+');
+
+    timezoneList.forEach((item, index) => {
+      if (item.label.search(new RegExp(localTimezone)) !== -1) {
+        timezone = item.value
+        timezoneIndex = index
+      }
+    })
+  } else {
+    timezoneList.forEach((item, index) => {
+      if (item.value === timezone) {
+        timezoneIndex = index
+      }
+    })
+  }
+  if (typeof certs[0] !== 'object') {
+    certs = []
   }
 
   return {
-    nationalityList,
-    countryList,
-    regionList,
+    token,
     cityList,
+    regionList,
+    countryList,
     timezoneList,
+    nationalityList,
+    timezoneIndex,
+    initialValues: {
+      certs, workexp, tel_num,
+      timezone, zoomid, tel_code,
+      firstname, lastname, gender,
+      nationality, isNative, avatar,
+      timeAdjust, eduexp, experience,
+      residence_n, residence_p, residence_c,
+    },
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   getNationalityList: () => dispatch(geoDataActions.getNationalityList()),
-  getCountryList: () => dispatch(geoDataActions.getCountryList()),
-  getRegionList: () => dispatch(geoDataActions.getRegionList()),
-  getCityList: () => dispatch(geoDataActions.getCityList()),
-  getTimezoneList: () => dispatch(geoDataActions.getTimezoneList()),
-
+  getCountryList: () => {
+    dispatch(geoDataActions.getCountryList())
+  },
+  getRegionList: (countryCode) => {
+    dispatch(geoDataActions.getRegionList(countryCode))
+  },
+  getCityList: (regionCode) => {
+    dispatch(geoDataActions.getCityList(regionCode))
+  },
+  getTimezoneList: () => {
+    dispatch(geoDataActions.getTimezoneList())
+  },
   updateBasicInfo: data => dispatch(applicationActions.updateBasicInfo(data)),
-  /* eslint max-len: 0 */
-  changeTimezone: timezoneId => dispatch(applicationActions.changeTimezone(timezoneId)),
-
+  getProfile: () => dispatch(userActions.getProfile()),
   showNotification: message => dispatch(notificationActions.showNotification(message)),
   networkError: () => dispatch(notificationActions.networkError()),
 })
 
-const BasicInfo = connect(mapStateToProps, mapDispatchToProps)(Comp);
+const BasicInfo = connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Comp);
 
 export default BasicInfo

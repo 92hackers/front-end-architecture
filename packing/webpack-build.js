@@ -69,7 +69,7 @@ const jsPlugins = [
 ]
 
 export default {
-  entry: [main],
+  entry: ['babel-polyfill', main],
   output: {
     path: outputPath,
     publicPath: '/',

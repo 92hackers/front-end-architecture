@@ -1,383 +1,163 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { browserHistory } from 'react-router'
-import { autobind } from 'core-decorators'
-
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton'
-import RadioButton from 'material-ui/RadioButton'
-import Dialog from 'material-ui/Dialog';
-import { TextField, RadioButtonGroup } from 'redux-form-material-ui'
-import FaUser from 'react-icons/lib/fa/user'
-import FaGlobe from 'react-icons/lib/fa/globe'
-import FaPhone from 'react-icons/lib/fa/phone'
-import FaCamera from 'react-icons/lib/fa/camera'
-import FaMapMarker from 'react-icons/lib/fa/map-marker'
-import FaClockO from 'react-icons/lib/fa/clock-o'
-
-import WrappedSelect from '../universal/WrappedSelect';
-import Avatar from '../Avatar'
-import AvatarUpload from '../universal/AvatarUpload'
+import { Field, FieldArray, reduxForm } from 'redux-form'
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
+import { TextField } from 'redux-form-material-ui'
+import Select from 'react-select'
+import api from '../network/api'
+import TableDialog from './TableDialog'
+import WrappedSelect from '../universal/WrappedSelect'
+import TimezoneLocalTime from '../universal/TimezoneLocalTime'
+import AvatarUploadBtn from '../universal/AvatarUploadBtn'
 
 class BasicInfo extends React.Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      profilePictureSrc: '',
-      avatarUrl: '',
-
-      eduExpSelectedIndex: 0,
-      eduExpSelected: '',
-      eduExpSelectedDialogOpen: false,
-    }
+  constructor (props) {
+    super(props);
+    this.degreeList = [
+      { label: 'Associate', value: 'Associate' },
+      { label: "Bachelor's", value: "Bachelor's" },
+      { label: "Master's", value: "Master's" },
+      { label: 'Doctorate', value: 'Doctorate' },
+    ];
+    this.certList = [
+      { label: "TEFL", value: "TEFL", },
+      { label: "TESL", value: "TESL", },
+      { label: "TESOL", value: "TESOL", },
+      { label: "CELTA", value: "CELTA", },
+      { label: "DELTA", value: "DELTA", },
+      { label: 'Other', value: 'Other', },
+    ];
+    this.jobType = [
+      { label: 'Online', value: 'Online' },
+      { label: 'Offline', value: 'Offline' },
+      { label: 'Both', value: 'Both' },
+    ];
+    this.experiences = [
+      { value: 1, label: "Less than 5 years" },
+      { value: 2, label: "Between 5 to 15 years" },
+      { value: 3, label: "More than 15 years" },
+    ]
   }
 
   componentWillMount() {
-    /* eslint max-len: 0 */
-    const { timezoneList } = this.props // todo: 最好是放在 redux form 的那个 initialValues里面。优先 profile里面的数据。
-    const localDate = new Date();
-    let defaultTimezone = '';
-    let defaultTimezoneId = '';
-    const localTimezone = localDate.toString().match(/GMT[+-]\d{2}/)[0];
-    const regExpTimezone = localTimezone.replace('+', '\\+');
-
-    for (let i = 0; i < timezoneList.length; i++) {
-      if (timezoneList[i].label.search(new RegExp(regExpTimezone)) !== -1) {
-        defaultTimezone = timezoneList[i].label;
-        defaultTimezoneId = timezoneList[i].value;
-        break;
-      }
-    }
-
     const {
       getNationalityList,
       getCountryList,
       getTimezoneList,
       getRegionList,
       getCityList,
-
+      initialValues,
+      timezoneIndex,
+    } = this.props
+    const {
       residence_n,
       residence_p,
-    } = this.props
-    if (residence_n) getRegionList(residence_n)
-    if (residence_p) getCityList(residence_p)
+      residence_c,
+      avatar,
+    } = initialValues
+    if (!!residence_n) getRegionList(residence_n)
+    if (!!residence_p) getCityList(residence_p)
     getNationalityList()
     getCountryList()
     getTimezoneList()
   }
 
-  @autobind
-  profilePictureSelect(e) {
-    e.preventDefault();
-
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.setState({
-        profilePictureSrc: reader.result,
-      }, () => {
-        this.refs.avatarUpload.getWrappedInstance().handleOpen();        //  open the dialog.
-      });
-    };
-
-    reader.readAsDataURL(files[0]);
-  }
-
-  @autobind
-  setAvatarUrl(url) {
-    this.setState({
-      avatarUrl: url,
-    });
-  }
-
-  @autobind
-  showFullDetail(index) {
-    if (!!index && !!this.state.eduListItems) {
-      const expData = this.state.eduListItems[index[0]];
-
-      this.setState({
-        eduExpSelectedIndex: index[0],
-        eduExpSelected: expData,
-      }, () => {
-        this.handleUpdateDiaOpen();
-      });
-    }
-  }
-
-  handleUpdateDiaOpen() {
-    this.setState({
-      eduExpSelectedDialogOpen: true,
-    });
-  }
-
-  addEduExp(e) {
-    e.preventDefault();
-
-    let notification = '';
-    const temp = this.state.eduListItems;
-    let tempEduList = this.state.eduList;
-
-    const getValue = ele => document.getElementById(ele).value
-
-    const startYear = getValue('t-edu-start-year');
-    const endYear = getValue('t-edu-end-year');
-    const school = getValue('t-edu-school');
-    const major = getValue('t-edu-major');
-    const degree = getValue('t-edu-degree');
-
-
-    if (!!startYear && !!endYear && !!school && !!major && !!degree) {
-      const regExp = /^[0-9]+$/;
-
-      if (startYear.length !== 4
-        || endYear.length !== 4
-        || !regExp.test(startYear)
-        || !regExp.test(endYear)
-      ) {
-        notification = 'Year should be exactly 4 numbers.';
-      }
-
-      if (notification.length > 0) {
-        this.props.showNotification(notification);
-        return
-      }
-
-      const data = {
-        timefrom: startYear,
-        timeto: endYear,
-        institution: school,
-        major,
-        degree,
-      };
-
-      temp.push(data);
-      tempEduList += 1;
-      this.setState({
-        eduListItems: temp,
-        eduDialogOpen: false,
-        eduList: tempEduList,
-      });
-    } else {
-      this.props.showNotification('Please complete all required details.');
-    }
-  }
-
-  @autobind
-  handleEduDialogOpen() {
-    this.setState({
-      eduDialogOpen: true,
-    });
-  }
-
-  handleEduDialogClose() {
-    this.setState({
-      eduDialogOpen: false,
-    });
-  }
-
-  handleEduUpdate(e) {
-    e.preventDefault();
-    this.handleUpdateDiaClose();
-
-    const tmp = this.state.eduListItems;
-    const updateIndex = this.state.eduExpSelectedIndex;
-    const self = this;
-    let notification = '';
-
-    const getValue = ele => document.getElementById(ele).value;
-
-    const startYear = getValue('t-edu-start-year-m');
-    const endYear = getValue('t-edu-end-year-m');
-    const school = getValue('t-edu-school-m');
-    const major = getValue('t-edu-major-m');
-    const degree = getValue('t-edu-degree-m');
-
-    if (!!startYear && !!endYear && !!school && !!major && !!degree) {
-      const regExp = /^[0-9]+$/;
-
-      if (startYear.length !== 4
-        || endYear.length !== 4
-        || !regExp.test(startYear)
-        || !regExp.test(endYear)
-      ) {
-        notification = 'Year should be exactly 4 numbers.';
-      }
-
-      if (notification.length > 0) {
-        this.props.showNotification(notification);
-        return
-      }
-
-      const data = {
-        timefrom: startYear,
-        timeto: endYear,
-        institution: school,
-        major,
-        degree,
-      };
-
-      tmp[updateIndex] = data;
-
-      this.setState({
-        eduListItems: tmp,
-      });
-    } else {
-      this.props.showNotification('Please Complete All Fields.');
-    }
-  }
-
-  handleEduExpDel(e) {
-    e.preventDefault();
-
-    let tempEduList = this.state.eduList;
-    tempEduList -= 1;
-
-    this.handleUpdateDiaClose();
-    const tmp = this.state.eduListItems;
-    tmp.splice(this.state.eduExpSelectedIndex, 1);
-    this.setState({
-      eduListItems: tmp,
-      eduList: tempEduList,
-    });
-  }
-
-  handleUpdateDiaClose(e) {
-    this.setState({
-      eduExpSelectedDialogOpen: false,
-    });
-  }
-
-  @autobind
-  changeTimezone(...args) {
-    const { changeTimezoneAtApplication } = this.props
-    changeTimezoneAtApplication(args[0])      //  设置 schedule interview 要用的时区。
+  componentDidMount() {
+    window.scrollTo(0, 0)
   }
 
   render() {
     const styles = {
-      radioButtonGroup: {
-        marginBottom: -20,
-      },
       radioButton: {
-        width: 'initial',
-        display: 'inline-block',
-        marginRight: 50,
+        width: 183,
+        display: "inline-block",
       },
     };
 
-    const eduTableStyle = {
-      display: this.state.eduList ? 'table' : 'none',
-    };
-
-    const updateActions = [
-      <RaisedButton
-        className="dialog-button"
-        label="Delete"
-        default
-        onTouchTap={this.handleEduExpDel}
-        style={{ float: 'left' }}
-      />,
-      <RaisedButton
-        className="dialog-button"
-        label="Cancel"
-        default
-        onTouchTap={this.handleUpdateDiaClose}
-      />,
-      <RaisedButton
-        className="dialog-button"
-        id="submitEdu"
-        label="Update"
-        primary
-        onTouchTap={this.handleEduUpdate}
-      />,
-    ];
-
-    const addEduExpActions = [
-      <RaisedButton
-        className="dialog-button"
-        label="Cancel"
-        default
-        onTouchTap={this.handleEduDialogClose}
-      />,
-      <RaisedButton
-        className="dialog-button"
-        id="submitEdu"
-        label="Add"
-        primary
-        onTouchTap={this.addEduExp}
-      />,
-    ];
-
-    const {
-      profile,
-      /* eslint no-unused-vars: 0 */
+    const   {
       initialValues,
-      handleSubmit,
       nationalityList,
       countryList,
       regionList,
       cityList,
       timezoneList,
+      timezoneIndex,
+      handleSubmit,
+      pristine,
       getRegionList,
       getCityList,
+      showNotification,
+      change,
     } = this.props
 
-    const labelStyle = { color: '#666666', fontWeight: 'bold' }
+    const {
+      workexp,
+      eduexp,
+      certs,
+      timezone,
+      timeAdjust,
+      avatar,
+      gender,
+      isNative,
+    } = initialValues
+
+    var labelStyle = { color: '#666666', fontWeight: 'bold'};
 
     return (
       <div className="basic-info">
-        <form onSubmit={handleSubmit(this.handleSubmit)}>
+        <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
           <div className="meta-data-picture clearfix">
             <div className="meta-data">
               <ul>
                 <li className="data-item">
                   <div className="name">
-                    <div className="icon-wrap"><FaUser className="fa fa-user" /></div>
-                    <TextField
+                    <span className="required-icon">*</span>
+                    <div className="icon-wrap"><i className="fa fa-user"></i></div>
+                    <Field
                       floatingLabelStyle={labelStyle}
+                      className="field"
                       name="firstname"
-                      floatingLabelText="FirstName"
+                      component={TextField}
                       style={{ width: 130, marginRight: 20 }}
                     />
-                    <i className="vertical-line" />
-                    <TextField
+                    <i className="vertical-line"></i>
+                    <Field
                       floatingLabelStyle={labelStyle}
+                      className="field"
                       name="lastname"
-                      floatingLabelText="LastName"
+                      component={TextField}
                       style={{ width: 130, marginLeft: 20 }}
                     />
                   </div>
                 </li>
                 <li className="data-item">
                   <div className="gender">
-                    <p id="gender-caption" className="primary-color">Gender</p>
-                    <Field name="gender" component={RadioButtonGroup}>
-                      <RadioButton
-                        labelStyle={{ color: '#999' }}
-                        value="1"
-                        label="Male"
-                        style={styles.radioButton}
-                      />
-                      <RadioButton
-                        labelStyle={{ color: '#999' }}
-                        value="0"
-                        label="Female"
-                        style={styles.radioButton}
-                      />
-                    </Field>
+                    <span className="required-icon">*</span>
+                    <div className="field">
+                      <RadioButtonGroup
+                        name="gender"
+                        defaultSelected={gender || 0}
+                        onChange={({...rest}) => change('gender', rest.target.value)}
+                      >
+                        <RadioButton
+                          labelStyle={{ color: '#999' }}
+                          style={styles.radioButton}
+                          value={1}
+                          label="Male"
+                        />
+                        <RadioButton
+                          labelStyle={{ color: '#999' }}
+                          style={styles.radioButton}
+                          value={0}
+                          label="Female"
+                        />
+                      </RadioButtonGroup>
+                    </div>
                   </div>
                 </li>
                 <li className="data-item">
                   <div className="nationality">
-                    <div className="dropdown-icon-wrap"><FaGlobe className="fa fa-globe" /></div>
+                    <span className="required-icon">*</span>
+                    <div className="dropdown-icon-wrap"><i className="fa fa-globe"></i></div>
                     <Field
                       name="nationality"
                       component={WrappedSelect}
@@ -387,308 +167,247 @@ class BasicInfo extends React.Component {
                   </div>
                 </li>
                 <li className="data-item">
+                  <div className="native-speaker">
+                    <span className="required-icon">*</span>
+                    <div className="field">
+                      <RadioButtonGroup
+                        name="isNative"
+                        defaultSelected={isNative || 0}
+                        onChange={({...rest}) => change('isNative', rest.target.value)}
+                      >
+                        <RadioButton
+                          labelStyle={{ color: '#999' }}
+                          style={{ width: 'initial', display: 'inline-block' }}
+                          value={1}
+                          label="Native English speaker"
+                        />
+                        <RadioButton
+                          labelStyle={{ color: '#999' }}
+                          style={styles.radioButton}
+                          value={0}
+                          label="Non-native English speaker"
+                        />
+                      </RadioButtonGroup>
+                    </div>
+                  </div>
+                </li>
+                <li className="data-item">
                   <div className="phone-num">
-                    <div className="icon-wrap"><FaPhone className="fa fa-phone" /></div>
+                    <span className="required-icon">*</span>
+                    <div className="icon-wrap"><i className="fa fa-phone"></i></div>
                     <div className="country-code-wrap">
                       <span className="plus-icon">+</span>
-                      <TextField
+                      <Field
                         floatingLabelStyle={labelStyle}
                         name="tel_code"
-                        floatingLabelText="Country Code"
-                        style={{ width: 130, marginRight: 20 }}
+                        style={{ width: 113, marginRight: 20 }}
+                        component={TextField}
+                        type="text"
                       />
                     </div>
-                    <i className="vertical-line" />
-                    <TextField
-                      floatingLabelStyle={labelStyle}
+                    <i className="vertical-line"></i>
+                    <Field
                       name="tel_num"
-                      floatingLabelText="Phone Number"
+                      component={TextField}
+                      type="text"
+                      floatingLabelStyle={labelStyle}
                       style={{ width: 130, marginLeft: 20 }}
                     />
                   </div>
                 </li>
               </ul>
             </div>
-            <div className="picture text-center">
-              <div className="avatar">
-                <Avatar avatarUrl={this.state.avatarUrl} />
-              </div>
-              <br />
-              <a href="#" className="btn button-change-avatar">
-                <FaCamera className="fa fa-camera" style={{ fontSize: 20, color: '#fff' }} />
-                <label htmlFor="upload-profile-picture">
-                  Upload profile picture
-                  <input type="file" id="upload-profile-picture" onChange={this.profilePictureSelect} />
-                </label>
-              </a>
-              <AvatarUpload ref="avatarUpload" src={this.state.profilePictureSrc} setAvatarUrl={this.setAvatarUrl} />
-            </div>
+            <AvatarUploadBtn
+              change={change}
+              avatar={avatar}
+              showNotification={showNotification}
+            />
           </div>
           <div className="residence-timezone clearfix">
             <div className="residence">
-              <div className="dropdown-icon-wrap"><FaMapMarker className="fa fa-map-marker" /></div>
+              <span className="required-icon">*</span>
+              <div className="dropdown-icon-wrap"><i className="fa fa-map-marker"></i></div>
               <Field
                 name="residence_n"
+                placeholder="Country"
                 component={WrappedSelect}
                 options={countryList}
-                onChange={getRegionList}
-                placeholder="Country"
+                onChange={getRegionList.bind(this)}
               />
-              <i className="vertical-line" />
+              <i className="vertical-line"></i>
               <Field
                 name="residence_p"
+                placeholder="Region"
                 component={WrappedSelect}
                 options={regionList}
-                onChange={getCityList}
-                placeholder="Region/State"
+                onChange={getCityList.bind(this)}
               />
-              <i className="vertical-line" />
+              <i className="vertical-line"></i>
               <Field
                 name="residence_c"
+                placeholder="City"
                 component={WrappedSelect}
                 options={cityList}
-                placeholder="City"
               />
-            </div>
-            <div className="timezone">
-              <div className="dropdown-icon-wrap"><FaClockO className="fa fa-clock-o" /></div>
-              <Field
-                name="timezone"
-                component={WrappedSelect}
-                options={timezoneList}
-                onChange={this.changeTimezone}
-                placeholder="Your Time Zone"
-              />
-              <p className="tooltip">This is the local time on your device. Is this timezone correct ?</p>
             </div>
           </div>
-          <div className="education-background">
-            <div className="title">
-              <h1 className="primary-color">Education Background</h1>
-              <RaisedButton
-                label="Add"
+          <TimezoneLocalTime
+            change={change}
+            timezone={timezone}
+            timezoneList={timezoneList}
+            timezoneIndex={timezoneIndex}
+            timeAdjust={timeAdjust}
+          />
+          <div className="education-background table-dialog-wrap">
+            <FieldArray
+              name="eduexp"
+              component={TableDialog}
+              title="Education background"
+              dialogTitle="education background"
+              valueListItems={eduexp}
+              showNotification={showNotification}
+              iconClassName="fa-graduation-cap"
+              dropdownItem={{ index: 0, options: this.degreeList }}
+              schemas={['degree', 'major', 'institution', 'timefrom', 'timeto']}
+              tableMenus={['Degree', 'Field of study', 'Institution', 'From', 'To']}
+            />
+          </div>
+          <div className="teaching-certificates table-dialog-wrap">
+            <FieldArray
+              name="certs"
+              component={TableDialog}
+              title="Teaching certificates"
+              dialogTitle="teaching certificates"
+              valueListItems={certs}
+              showNotification={showNotification}
+              iconClassName="fa-certificate"
+              dropdownItem={{ index: 0, options: this.certList }}
+              notRequired={{ index: 3 }}
+              schemas={['cert', 'institution', 'dateobt', 'remark']}
+              tableMenus={['Certificates', 'Institution', 'Date obtained', 'Remark']}
+            />
+          </div>
+          <div className="teaching-experience-list table-dialog-wrap">
+            <div className="select-years">
+              <Field
+                id="teach-experience"
+                name="experience"
+                component={WrappedSelect}
                 style={{ verticalAlign: 'middle' }}
-                icon={<i style={{ color: '#ffffff', fontSize: 18 }} className="fa fa-graduation-cap" />}
-                primary
-                onClick={this.handleEduDialogOpen}
+                placeholder="Select..."
+                options={this.experiences}
               />
-              <span className="education-background-tooltip" style={{ display: this.state.eduList ? 'inline-block' : 'none' }}>Click The Item To Edit!</span>
-              <Dialog
-                title="Add Your Education Experience"
-                actions={addEduExpActions}
-                modal={false}
-                open={this.state.eduDialogOpen}
-                onRequestClose={this.handleEduDialogClose}
-              >
-                <div className="t-edu-form-wrap">
-                  <div className="clearfix">
-                    <TextField
-                      floatingLabelStyle={labelStyle}
-                      className="left"
-                      style={{ width: '40%' }}
-                      id="t-edu-start-year"
-                      floatingLabelText="Start Year"
-                    />
-                    <TextField
-                      floatingLabelStyle={labelStyle}
-                      className="right"
-                      style={{ width: '40%' }}
-                      id="t-edu-end-year"
-                      floatingLabelText="End Year"
-                    />
-                  </div>
-                  <TextField
-                    floatingLabelStyle={labelStyle}
-                    id="t-edu-school"
-                    type="text"
-                    floatingLabelText="School"
-                  />
-                  <br />
-                  <TextField
-                    floatingLabelStyle={labelStyle}
-                    id="t-edu-major"
-                    type="text"
-                    floatingLabelText="Major"
-                  />
-                  <br />
-                  <TextField
-                    floatingLabelStyle={labelStyle}
-                    id="t-edu-degree"
-                    type="text"
-                    floatingLabelText="Degree"
-                  />
-                </div>
-              </Dialog>
-              <Dialog
-                title="Modify Your Education Experience"
-                actions={updateActions}
-                modal={false}
-                open={this.state.eduExpSelectedDialogOpen}
-                onRequestClose={this.handleUpdateDiaClose}
-              >
-                <div className="t-edu-form-wrap">
-                  <div className="clearfix">
-                    <TextField
-                      floatingLabelStyle={labelStyle}
-                      className="left"
-                      style={{ width: '40%' }}
-                      id="t-edu-start-year-m"
-                      defaultValue={this.state.eduExpSelected.timefrom}
-                      floatingLabelText="Start Year"
-                    />
-                    <TextField
-                      floatingLabelStyle={labelStyle}
-                      className="right"
-                      style={{ width: '40%' }}
-                      id="t-edu-end-year-m"
-                      defaultValue={this.state.eduExpSelected.timeto}
-                      floatingLabelText="End Year"
-                    />
-                  </div>
-                  <TextField
-                    floatingLabelStyle={labelStyle}
-                    id="t-edu-school-m"
-                    defaultValue={this.state.eduExpSelected.institution}
-                    type="text"
-                    floatingLabelText="School"
-                  />
-                  <br />
-                  <TextField
-                    floatingLabelStyle={labelStyle}
-                    id="t-edu-major-m"
-                    defaultValue={this.state.eduExpSelected.major}
-                    type="text"
-                    floatingLabelText="Major"
-                  />
-                  <br />
-                  <TextField
-                    floatingLabelStyle={labelStyle}
-                    id="t-edu-degree-m"
-                    defaultValue={this.state.eduExpSelected.degree}
-                    type="text"
-                    floatingLabelText="Degree"
-                  />
-                </div>
-              </Dialog>
             </div>
-            <Table style={eduTableStyle} onRowSelection={this.showFullDetail}>
-              <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                <TableRow>
-                  <TableHeaderColumn>Start Time</TableHeaderColumn>
-                  <TableHeaderColumn>End Time</TableHeaderColumn>
-                  <TableHeaderColumn>School</TableHeaderColumn>
-                  <TableHeaderColumn>Major</TableHeaderColumn>
-                  <TableHeaderColumn>Degree</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false} showRowHover>
-                {
-                  this.state.eduListItems.map((item, index) => (
-                    <TableRow key={index} data-index={index} hoverable style={{ cursor: 'pointer' }}>
-                      <TableRowColumn>{item.timefrom}</TableRowColumn>
-                      <TableRowColumn>{item.timeto}</TableRowColumn>
-                      <TableRowColumn>{item.institution}</TableRowColumn>
-                      <TableRowColumn>{item.major}</TableRowColumn>
-                      <TableRowColumn>{item.degree}</TableRowColumn>
-                    </TableRow>
-                  ))
-                }
-              </TableBody>
-            </Table>
+            <FieldArray
+              name='workexp'
+              component={TableDialog}
+              title="Teaching experience"
+              dialogTitle="teaching experience"
+              valueListItems={workexp}
+              showNotification={showNotification}
+              iconClassName="fa-briefcase"
+              dropdownItem={{ index: 2, options: this.jobType }}
+              schemas={['position', 'company', 'onoff', 'timefrom', 'timeto']}
+              tableMenus={['Position', 'Employer', 'Online/Offline', 'From', 'To']}
+            />
           </div>
         </form>
       </div>
     )
   }
 
-  handleSubmit() {
-    const self = this;
-    let notification = '';
+  handleSubmit(values) {
+    var self = this;
+    var notification = "";
 
     const {
-      updateBasicInfo,
-      showNotification,
-      networkError,
-      displaySuccess,
-      displayError,
-    } = this.props
+      firstname, lastname, gender,
+      nationality, isNative, tel_code,
+      tel_num, residence_n, residence_p,
+      residence_c, avatar, timezone,
+      timeAdjust, eduexp, experience,
+      certs, workexp,
+    } = values
 
-    const firstName = document.querySelector("input[name='firstname']").value;
-    const lastName = document.querySelector("input[name='lastname']").value;
-    const checkedElem = document.querySelector('input[name="gender"]:checked');
-    const nationality = this.state.nationalityId;
-    const gender = checkedElem ? checkedElem.value : '';
-    const avatar = this.state.avatarUrl;
-    const country = this.state.countryId;
-    const region = this.state.regionId;
-    const city = this.state.cityId;
-    const timezone = this.state.timezoneId;
-    const nationCode = document.querySelector("[name='tel_code']").value;
-    const phoneNum = document.querySelector("[name='tel_num']").value;
-    const eduExperienceList = this.state.eduListItems;
+    let numericP = /^[0-9]+$/;
 
-    const numericP = /^[0-9]+$/;
-
-    if (!firstName.length) {
-      notification = 'Please enter your first name.';
-    } else if (!lastName.length) {
-      notification = 'Please enter your last name.';
+    if (!firstname) {
+      notification = "Please enter your first name.";
+    } else if (!lastname) {
+      notification = "Please enter your last name.";
     } else if (!nationality) {
-      notification = 'Please select your nationality.';
-    } else if (!gender.length) {
-      notification = 'Please select your gender.';
-    } else if (!avatar.length) {
-      notification = 'Please upload your profile picture.';
-    } else if (!country) {
-      notification = 'Please select your country of residence.';
+      notification = "Please select your nationality.";
+      // } else if (!avatar.length) {                   //  å¤´åƒéžå¿…å¡«ã€‚
+      //   notification = "Please upload your profile picture.";
+    } else if (!residence_n) {
+      notification = "Please select your country of residence.";
     } else if (!timezone) {
-      notification = 'Please select your location timezone.';
-    } else if (!phoneNum.length) {
-      notification = 'Please enter your phone number.';
-    } else if (!eduExperienceList.length) {
-      notification = 'Please complete Education Background.';
-    } else if (!numericP.test(phoneNum)) {
-      notification = 'Phone number should be numbers.';
-    } else if (!!nationCode.length && !numericP.test(nationCode)) {
-      notification = 'Country code should be numbers.';
+      notification = "Please select your location timezone.";
+    } else if (!tel_num) {
+      notification = "Please enter your phone number.";
+    } else if (!eduexp.length) {
+      notification = "Please complete your education background.";
+    } else if (!certs.length) {
+      notification = 'Please complete your certificates.'
+    } else if (!experience) {
+      notification = "Please select the number of years that you have taught.";
+    } else if (!workexp.length) {
+      notification = 'Please complete working experience.'
+    } else if (!numericP.test(tel_num)) {
+      notification = "Phone number should be numbers.";
+    } else if (!!tel_code.length && !numericP.test(tel_code)) {
+      notification = "Country code should be numbers.";
+    } else if (!avatar) {
+      notification = 'Please upload your picture.';
     }
 
     if (notification.length > 0) {
-      showNotification(notification);
+      self.props.showNotification(notification);
       return;
     }
 
-    const data = {
-      firstname: firstName,
-      lastname: lastName,
-      gender: gender === 'male' ? 1 : 0,
-      residence_n: country,
-      residence_p: region,
-      residence_c: city,
-      eduexp: eduExperienceList,
-      tel_code: nationCode,
-      tel_num: phoneNum,
-      avatar,
-      nationality,
-      timezone,
-    };
+    const {
+      displayLoader,
+      token,
+      displaySuccess,
+      displayError,
+      getProfile,
+    } = this.props
 
-    updateBasicInfo(data).then((res) => {
-      if (res.payload.success) {
-        displaySuccess()
-      } else {
-        displayError()
+    displayLoader();
+
+    console.log(values);
+
+    api.TApplyStep1(values,
+      {"Authorization": token},
+      "",
+      (resp) => {
+        if (resp.success) {
+          api.TGetProfile('',
+          { 'Authorization': token },
+          '',
+          res => {
+            if (res.success) {
+              getProfile(res.data)
+              displaySuccess();
+            }
+          },
+          err => alert('Network is busy, please contact support: teacher@weteach.info')
+          )
+        } else {
+          displayError();
+        }
+      },
+      (err) => {
+        displayError();
       }
-    }).catch(() => networkError())
+    );
   }
 }
 
-
 BasicInfo = reduxForm({
-  form: 'applicationBasicInfo',
-  initialValues: {
-
-  },
+  form: "basicInfo",
+  enableReinitialize: true        // allow comp to re initialize.
 })(BasicInfo)
 
 export default BasicInfo

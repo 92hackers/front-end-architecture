@@ -1,14 +1,13 @@
 import React from 'react'
+import CircularProgress from 'material-ui/CircularProgress'
+import { blue500 } from 'material-ui/styles/colors'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import CircularProgress from 'material-ui/CircularProgress'
-import { autobind } from 'core-decorators'
-import FaCalendar from 'react-icons/lib/fa/calendar'
-import FaClockO from 'react-icons/lib/fa/clock-o'
+import api from '../network/api'
 
 class ScheduleInterview extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super (props);
     this.state = {
       dateValue: 0,
       timeValue: 0,
@@ -17,117 +16,210 @@ class ScheduleInterview extends React.Component {
       allAvailableTime: [],
       timeToIdMapping: [],
       dataIsReady: false,
+      notification: "",
+      allTimeBooked: false,
     };
+    this.token = this.props.token;
   }
 
-  componentWillMount() {
-    const { timezoneId, getInterviewList } = this.props
-    getInterviewList(timezoneId)        // 这个地方有问题，如何判断是否 timetable 是空的，已经被排满了？
-    .then(() => this.setState({ dataIsReady: true }))
-    .catch(() => this.setState({ dataIsReady: true }))
-  }
-
-  @autobind
-  bookTheViewDateChange(e, index, value) {
+  bookTheViewDateChange (e, index, value) {
     this.setState({
       dateValue: value,
       timeValue: 0,
-      availableTime: this.state.allAvailableTime[index],
+      availableTime: this.state.allAvailableTime[index]
     });
   }
 
-  @autobind
-  bookTheViewTimeChange(e, index, value) {
+  bookTheViewTimeChange (e, index, value) {
     this.setState({
-      timeValue: value,
+      timeValue: value
     });
   }
 
-  render() {
-    const date = []
-    const time = []
-    const { interviewTimeList } = this.props
-    /* eslint no-unused-vars: 0 */
-    let allTimeBooked = false
-    if (interviewTimeList.length > 0) {
-      interviewTimeList.forEach((item) => {
-        date.push(item.date)
-        time.push(item.timeList)
-      })
-    } else {
-      allTimeBooked = true
-    }
+  fetchInterviewData() {
+    var self = this;
 
+    var token = self.props.token;
+
+    const { showNotification } = this.props
+
+    this.interviewDateTimeRequest = api.TInterview("",
+    { "Authorization": token },
+    '',
+    (resp) => {
+      if (resp.success) {
+        self.setState({
+          dataIsReady: true,
+        })
+
+        var data = resp.data;
+        if (!data.timetable.length) {
+          self.setState({
+            allTimeBooked: true,
+          })
+          showNotification('All interview times are currently booked. Please contact support: teacher@weteach.info and we will try and arrange an alternative interview time as soon as possible.')
+          return ;
+        }
+        var interviewTime = data["timetable"].map((date, index) => {
+          return {
+            date: date["inter_date"],
+            timeList: date["inter_time"].map((time,index) => {
+              return {
+                id: time.id,
+                period: time.period
+              };
+            })
+          };
+        });
+        var date = [];
+        var time = [];
+        var timeToIdMapping = data.timetable;
+        for (let i = 0; i < interviewTime.length; i++) {
+          date.push(interviewTime[i].date);
+          time.push(interviewTime[i].timeList);
+        }
+
+        self.setState({
+          availableDate: date || [],
+          allAvailableTime: time || [],
+          timeToIdMapping: timeToIdMapping || [],
+          availableTime: time[0] || []
+        });
+      } else {
+        showNotification('Fetching interview time data error. Please contact supprt: teacher@weteach.info.')
+      }
+    },
+    (err) => {
+      showNotification('Network is busy, please try again later.')
+    }
+  )
+}
+
+  render () {
     return (
       <div className="schedule-interview">
         <div className="wrap">
-          <h1 className="title">Schedule Video Interview</h1>
+          <header>
+            <h1 className="title">Propose an interview time</h1>
+            <div className="notes">
+              <p>Please note, all times are in China Standard Time.</p>
+              <p>You can click <a href="http://timebie.com/" target="_blank" style={{ color: blue500, textDecoration: 'underline' }}>here</a> to determine the time difference between your location and China.</p>
+            </div>
+          </header>
           {
             this.state.dataIsReady ? (
               <div className="input-box">
-                <div className="input-item">
-                  <span className="interview-icon"><FaCalendar className="fa fa-calendar" /></span>
-                  <SelectField
-                    style={{ verticalAlign: 'middle' }}
-                    value={this.state.dateValue}
-                    onChange={this.bookTheViewDateChange}
-                  >
-                    {
-                      this.state.availableDate.map((item, index) => <MenuItem style={{ cursor: 'pointer' }} value={index} key={index} primaryText={item} />)
-                    }
-                  </SelectField>
-                </div>
-                <br />
-                <div className="input-item">
-                  <span className="interview-icon"><FaClockO className="fa fa-clock-o" /></span>
-                  <SelectField
-                    style={{ verticalAlign: 'middle' }}
-                    id="interview-time"
-                    value={this.state.timeValue}
-                    onChange={this.bookTheViewTimeChange}
-                  >
-                    {
-                      this.state.availableTime.map((item, index) => <MenuItem style={{ cursor: 'pointer' }} value={index} key={index} primaryText={item.period} />)
-                    }
-                  </SelectField>
-                </div>
+                {
+                  this.state.allTimeBooked ? (
+                    <p className="all-time-booked">All interview times are currently booked. Please contact support: teacher@weteach.info.</p>
+                  ) : (
+                    <div>
+                      <div className="input-item">
+                        <span className="interview-icon"><i className="fa fa-calendar"></i></span>
+                        <SelectField style={{verticalAlign: "middle"}} id="interview-date" value={this.state.dateValue} onChange={this.bookTheViewDateChange.bind(this)}>
+                          {
+                            this.state.availableDate.map((item, index) => {
+                              return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item}></MenuItem>;
+                            })
+                          }
+                        </SelectField>
+                      </div>
+                      <br/>
+                      <div className="input-item">
+                        <span className="interview-icon"><i className="fa fa-clock-o"></i></span>
+                        <SelectField style={{verticalAlign: "middle"}} id="interview-time" value={this.state.timeValue} onChange={this.bookTheViewTimeChange.bind(this)}>
+                          {
+                            this.state.availableTime.map((item, index) => {
+                              return <MenuItem style={{cursor: "pointer"}} value={index} key={index} primaryText={item.period}></MenuItem>;
+                            })
+                          }
+                        </SelectField>
+                      </div>
+                    </div>
+                  )
+                }
               </div>
-            ) : <CircularProgress />
+            ) : <CircularProgress></CircularProgress>
           }
         </div>
       </div>
     )
   }
 
-  handleSubmit() {
-    const interviewPeriod = document.getElementById('interview-time').innerText.trim();
-    const {
-      updateInterview,
-      showNotification,
-      networkError,
-      displaySuccessWorlds,
-      getProfile,
-    } = this.props
+  componentDidMount() {
+    window.scrollTo(0, 0)
+    this.fetchInterviewData()
+  }
 
-    if (!interviewPeriod) {
-      self.props.showNotification('Please select an interview time.');
+  handleSubmit () {
+    var self = this;
+
+    if (this.state.allTimeBooked) {
       return;
     }
 
-    // TODO:  这里需要增加 time to id 的映射。
-    const interviewId = 0
-    const data = {
-      inter_time: interviewId,
+    const interviewDate = document.getElementById('interview-date').innerText.trim();
+    const interviewPeriod = document.getElementById("interview-time").innerText.trim();
+
+    if (!interviewDate) {
+      this.props.showNotification('Please select an interview date.')
+    } else if (!interviewPeriod) {
+      self.props.showNotification("Please select an interview time.");
+      return;
     }
 
-    updateInterview(data).then((res) => {
-      if (res.payload.success) {
-        displaySuccessWorlds()
-        getProfile()
-      } else {
-        networkError()
+    var interviewId = "";
+    var timeToIdMapping = this.state.timeToIdMapping;
+
+    for (let i = 0; i < timeToIdMapping.length; i++) {
+      let tmp1 = timeToIdMapping[i]
+      if (tmp1.inter_date === interviewDate) {
+        for (let j = 0; j < tmp1.inter_time.length; j++) {
+          let tmp2 = tmp1.inter_time[j]
+          if (tmp2.period === interviewPeriod) {
+            interviewId = tmp2.id;
+            break;
+          }
+        }
+        break;
       }
-    }).catch(() => networkError())
+    }
+
+    const { setProposedTime } = this.props
+
+    var data = {
+      "inter_time": interviewId
+    };
+
+    api.TApplyStep3(data,
+      {"Authorization": self.token},
+      "",
+      (resp) => {
+        if (resp.success) {
+          const { timeCN, timeLoc } = resp.data
+          setProposedTime({ timeCN, timeLoc })
+
+          api.TGetProfile("",
+          {"Authorization": self.token},
+          "",
+          (resp) => {
+            if (resp.success) {
+              self.props.displaySuccessWorlds();
+              self.props.getProfile(resp.data);
+            }
+          },
+          (err) => {
+            self.props.networkError();
+          }
+          );
+        } else {
+          self.props.showNotification(resp.data.error);
+        }
+      },
+      (err) => {
+        self.props.networkError();
+      }
+    );
   }
 }
 
